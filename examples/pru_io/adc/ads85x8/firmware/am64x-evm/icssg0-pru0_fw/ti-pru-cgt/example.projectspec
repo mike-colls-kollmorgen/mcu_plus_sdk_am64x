@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+    <applicability>
+        <when>
+            <context
+                deviceFamily="PRU"
+                deviceId="AM64x_GP_EVM"
+            />
+        </when>
+    </applicability>
+
+    <project
+        title="Adc"
+        name = "adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt"
+        products="com.ti.MCU_PLUS_SDK_AM64X"
+        configurations="
+            Debug,
+            Release,
+        "
+        connection="TIXDS110_Connection.xml"
+        toolChain="TI"
+        cgtVersion="2.3.3"
+        device="AM64x_GP_EVM"
+        deviceCore="ICSS_G0_PRU_0"
+        ignoreDefaultDeviceSettings="true"
+        ignoreDefaultCCSSettings="true"
+        endianness="little"
+        outputFormat="ELF"
+        outputType="executable"
+
+        compilerBuildOptions="
+            -I${CG_TOOL_ROOT}/include
+            -I${MCU_PLUS_SDK_PATH}/source
+            -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/common
+            -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/adc/include
+            -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/adc/ads8598
+            -DPRU0
+            -v4
+            -DSOC_AM64X
+        "
+        linkerBuildOptions="
+            -i${CG_TOOL_ROOT}/lib
+            -m=adc.${ConfigName}.map
+            -llibc.a
+        "
+
+        postBuildStep="
+            $(CG_TOOL_ROOT)/bin/hexpru.exe $(COM_TI_MCU_PLUS_SDK_AM64X_INSTALL_DIR)/examples/pru_io/adc/ads85x8/firmware/adc_hexpru.cmd adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.out;
+            $(COM_TI_MCU_PLUS_SDK_AM64X_INSTALL_DIR)/tools/bin2header/bin2header.exe adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.b00 pru_load_bin.h PRUFirmware 4;
+        "
+
+        description="A Adc FW project">
+
+        <configuration name="Debug"
+            compilerBuildOptions="
+                -D_DEBUG_=1
+            "
+            linkerBuildOptions="
+            "
+        ></configuration>
+        <configuration name="Release"
+            compilerBuildOptions="
+                -O3
+            "
+            linkerBuildOptions="
+            "
+        ></configuration>
+        <pathVariable name="MCU_PLUS_SDK_PATH" path="${COM_TI_MCU_PLUS_SDK_AM64X_INSTALL_DIR}" scope="project" />
+        <file path="../../../main.asm" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+        <file path="../../../adc_diagnostic.cmd" openOnCreation="false" excludeFromBuild="false" action="link">
+        </file>
+    </project>
+</projectSpec>

@@ -1,0 +1,40 @@
+%%{
+    let module     = system.modules['/pru_io/pru_ipc/pru_ipc'];
+    let icss0_intc = system.modules['/drivers/pruicss/icss_intc/icss0_intc_mapping'];
+    let icss1_intc = system.modules['/drivers/pruicss/icss_intc/icss1_intc_mapping'];
+
+    /**
+     * @brief Event Value for PRU
+     *
+     *  Simultaneously writing a ‘1’ to pru<n>_r31_vec_valid (R31 bit 5) and a channel number from 0
+     *  to 15 to pru<n>_r31_vec[3:0] (R31 bits 3-0) creates a pulse on the output of the corresponding
+     *  pr<k>_pru_mst_intr[x]_intr_req INTC system event.
+     */
+    function getEventValue(instance, dir) {
+        if(dir === "rx")
+            return  0x0020 + parseInt(instance.rxIntcMapping?.event) - 16;
+        if(dir === "tx")
+            return  0x0020 + parseInt(instance.txIntcMapping?.event) - 16;
+    }
+%%}
+;------------------------------------------------------------------------------
+;   PRU IPC
+;   Interrupt mapping for PRU IPC
+;------------------------------------------------------------------------------
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    .if     $defined(`instance.icssInstance`)
+    .if     $defined(`instance.pruCore`)
+
+    % if(instance.interruptRx) {
+    .asg    1,       PRU_IPC_RX_INTR_ENABLE
+    .asg    0x`getEventValue(instance, "rx").toString(16)`,       PRU_IPC_RX_EVENT
+    % }
+    % if(instance.interruptTx) {
+    .asg    1,       PRU_IPC_TX_INTR_ENABLE
+    .asg    0x`getEventValue(instance, "tx").toString(16)`,       PRU_IPC_TX_EVENT
+    % }
+
+    .endif  ; `instance.pruCore`
+    .endif  ; `instance.icssInstance`
+% }

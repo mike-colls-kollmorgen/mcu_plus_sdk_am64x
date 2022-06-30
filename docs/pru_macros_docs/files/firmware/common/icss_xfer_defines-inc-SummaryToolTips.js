@@ -1,0 +1,1 @@
+﻿NDSummary.OnToolTipsLoaded("File:firmware/common/icss_xfer_defines.inc",{});
