@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -147,6 +147,10 @@ Macros</h2></td></tr>
 <tr class="separator:ga65c56429a6d2aab7780f370b147c4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga25742c00c254eac8c87c2a681d257920"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga25742c00c254eac8c87c2a681d257920">BOOTLOADER_MEDIA_EMMC</a>&#160;&#160;&#160;(0xB0070003)</td></tr>
 <tr class="separator:ga25742c00c254eac8c87c2a681d257920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad029e37d57b29cfa2bf9addf8a304a1f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#gad029e37d57b29cfa2bf9addf8a304a1f">BOOTLOADER_MEDIA_SD</a>&#160;&#160;&#160;(0xB0070004)</td></tr>
+<tr class="separator:gad029e37d57b29cfa2bf9addf8a304a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f998332cc5f2dd0241e9ad6b9129a43"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga0f998332cc5f2dd0241e9ad6b9129a43">BOOTLOADER_MEDIA_BUFIO</a>&#160;&#160;&#160;(0xB0070005)</td></tr>
+<tr class="separator:ga0f998332cc5f2dd0241e9ad6b9129a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -220,6 +224,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1444b0d35694d4bbd4076f60b75374fa"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga1444b0d35694d4bbd4076f60b75374fa">Bootloader_runSelfCpuWithLinux</a> ()</td></tr>
 <tr class="memdesc:ga1444b0d35694d4bbd4076f60b75374fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to boot self CPU with Linux.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga1444b0d35694d4bbd4076f60b75374fa">More...</a><br /></td></tr>
 <tr class="separator:ga1444b0d35694d4bbd4076f60b75374fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63c0b10a5110cbf256ba86b853894389"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga63c0b10a5110cbf256ba86b853894389">Bootloader_getMulticoreImageSize</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle)</td></tr>
+<tr class="memdesc:ga63c0b10a5110cbf256ba86b853894389"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to fetch the size of the multicore image.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga63c0b10a5110cbf256ba86b853894389">More...</a><br /></td></tr>
+<tr class="separator:ga63c0b10a5110cbf256ba86b853894389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga204681c31a9a2aefc21f898e5506b9c3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga204681c31a9a2aefc21f898e5506b9c3">Bootloader_isCorePresent</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle, uint32_t cslCoreId)</td></tr>
+<tr class="memdesc:ga204681c31a9a2aefc21f898e5506b9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to check if a particular core's RPRC image is present in the multicore image.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga204681c31a9a2aefc21f898e5506b9c3">More...</a><br /></td></tr>
+<tr class="separator:ga204681c31a9a2aefc21f898e5506b9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga88acad431f45d32987fdd9a0318f79a9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga88acad431f45d32987fdd9a0318f79a9">Bootloader_getBootMedia</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle)</td></tr>
+<tr class="memdesc:ga88acad431f45d32987fdd9a0318f79a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to get the selected boot media in the bootloader instance.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga88acad431f45d32987fdd9a0318f79a9">More...</a><br /></td></tr>
+<tr class="separator:ga88acad431f45d32987fdd9a0318f79a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

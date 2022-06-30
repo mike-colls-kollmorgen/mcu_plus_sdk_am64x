@@ -1,4 +1,3 @@
-
 let common = system.getScript("/common");
 let soc = system.getScript(`/pru_io/soc/pru_io_${common.getSocName()}`);
 

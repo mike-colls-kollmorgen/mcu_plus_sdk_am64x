@@ -33,6 +33,12 @@
 #ifndef _PRU_TYPES_H_
 #define _PRU_TYPES_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* Custom Resource info: Must match drivers/remoteproc/pru_rproc.h */
 #define TYPE_PRU_INTS       1
 
@@ -80,5 +86,10 @@ struct fw_rsc_custom_ints
     uint32_t num_evts;
     struct ch_map *event_channel;
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PRU_TYPES_H_ */

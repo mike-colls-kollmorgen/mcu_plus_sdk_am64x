@@ -50,6 +50,12 @@
 #ifndef KEYWRITER_H
 #define KEYWRITER_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *
  *  \brief Declarations for all functions dealing with keywriter
@@ -149,6 +155,11 @@ enum keywriter_error_codes {
     /** Error in programming EXT OTP extension field */
     KEYWR_ERR_PROGR_EXT_OTP      = 29,
 };
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 /** @} */

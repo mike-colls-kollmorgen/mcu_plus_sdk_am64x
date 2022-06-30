@@ -38,25 +38,24 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <drivers/soc.h>
-#include <drivers/pinmux.h>
-#include <drivers/pruicss.h>
 #include <kernel/dpl/TaskP.h>
 
-#include "ti_board_config.h"
 #include "ti_board_open_close.h"
-#include "ti_drivers_config.h"
 #include "ti_drivers_open_close.h"
 
 #include <osal.h>
 #include <hwal.h>
+
+#include <PN_API_PDEV.h>
+
+#include "phy/appPhyReset.h"
+#include <CUST_PHY_base.h>
 
 #include "appStackConfigure.h"
 #include "appUserInfo.h"
@@ -66,17 +65,72 @@
 
 static  uint8_t          aTaskStackMainStack_s[APP_STACK_MAIN_TASK_STACK_SIZE] __attribute__((__aligned__ (32)));
 static  TaskP_Object     mainTaskHandle_s;
+static  char             aOutStream_s[0x200] = {0};
 
-/*
- * 
- * Currently, the workaround with adding 1 to the instance number is needed.
- * Number and name of PRU_ICSS instance used for Profinet shall not be changed!
- *
- */
-static  uint8_t          pruLogicalInstance_s = CONFIG_PRU_ICSS1 + 1;
+/* For TI eval boards PROFINET stack must use PRU ICSS1 instance */
+static  uint8_t          pruLogicalInstance_s = CONFIG_PRU_ICSS1;
 
 static void APP_taskStackMain (void *pTaskArg_p);
 static void APP_taskStackMainFunc (void *pTaskArg_p);
+
+/*!
+ *  <!-- Description: -->
+ *
+ *  \brief
+ *  Printf implementation.
+ *
+ *  \details
+ *  Implementation to be done within Application and to be registered in Application to OS Abstraction Layer.
+ *  <!-- Parameters and return values: -->
+ *
+ *  \param[in]  pFormat_p       Format string.
+ *  \param[in]  ...             Parameter list.
+ *  \return     Return code
+ *
+ *  <!-- Example: -->
+ *
+ *  \par Example
+ *  \code{.c}
+ *  
+ *  // required variables
+ *  int32_t retVal = 0;
+ *  va_list vaArg;
+ *
+ *  retVal = APP_printf(NULL, "Hello %s %d", vaArg);
+ *  \endcode
+ *
+ *  <!-- References: -->
+ *
+ *  \sa OSAL_vprintf
+ *
+ *
+ */
+
+/* Referenced from EtherCAT ServiceApps/common/os/freertos/ESL_OS_os.c */
+
+void APP_printf(void* pContext_p, const char* __restrict pFormat_p, va_list arg_p)
+{
+    /* @cppcheck_justify{unusedVariable} false-positive: variable is used */
+    //cppcheck-suppress unusedVariable
+    int32_t             transferOK;
+    /* @cppcheck_justify{unusedVariable} false-positive: variable is used */
+    //cppcheck-suppress unusedVariable
+    UART_Transaction    transaction;
+    
+    OSALUNREF_PARM(pContext_p);
+    
+    UART_Transaction_init(&transaction);
+    
+    memset(aOutStream_s, 0, sizeof(aOutStream_s));
+    (void)vsnprintf(aOutStream_s, sizeof(aOutStream_s), pFormat_p, arg_p);
+    
+    transaction.count   = strlen(aOutStream_s);
+    transaction.buf     = (void *)aOutStream_s;
+    transaction.args    = NULL;
+    transferOK = UART_write(gUartHandle[CONFIG_UART_CONSOLE], &transaction);
+    
+    (void)transferOK;
+}
 
 /*!
 *  <!-- Description: -->
@@ -131,6 +185,8 @@ int main (
     {
         goto laError;
     }
+
+    OSAL_registerPrintOut(NULL, APP_printf);
 
     /* Create main application task. */
     TaskP_Params_init (&mainTaskParam);
@@ -222,6 +278,11 @@ void APP_taskStackMainFunc (
     systemRetVal = Board_driversOpen();
     DebugP_assert(systemRetVal==SystemP_SUCCESS);
 
+    /* Init board-specific PHY reset driver. */
+    APP_PHY_RESET_open();
+    APP_PHY_RESET_all();
+    CUST_PHY_CBregisterLibDetect(CUST_PHY_detect, NULL);
+
     /*Configure and start PROFINET stack.*/
     OSAL_printf ("\r[APP] INFO: Configuring and starting PROFINET stack...\n");
     osalRetVal = APP_startProfinetStack (pruLogicalInstance_s);
@@ -238,6 +299,8 @@ void APP_taskStackMainFunc (
         OSAL_printf ("\r[APP] ERROR: Failed to start LED task.\n");
         return;
     }
+
+    print_dumpVersions();
 
     OSAL_printf("\r[APP] INFO: Stack configured successfully! Stack runs.\n");
     while (1)

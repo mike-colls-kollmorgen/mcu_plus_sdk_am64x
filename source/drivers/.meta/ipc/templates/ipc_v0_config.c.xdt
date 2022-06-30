@@ -56,7 +56,7 @@ void IpcNotify_getConfig(IpcNotify_InterruptConfig **interruptConfig, uint32_t *
 uint8_t gRPMessageVringMem[IPC_RPMESSAGE_NUM_VRINGS][IPC_RPMESSAGE_VRING_SIZE] __attribute__((aligned(128), section(".bss.ipc_vring_mem")));
 
     % }
-    % if ( enabledRPMessageCpus.length > 0 && instance.enableLinuxIpc === true ) {
+    % if (instance.enableLinuxIpc === true ) {
 
 /* Buffer used for trace, address and size of this buffer is put in the resource table so that Linux can read it */
 extern char gDebugMemLog[];

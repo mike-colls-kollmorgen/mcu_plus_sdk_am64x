@@ -34,6 +34,12 @@
 #ifndef SS_DEV_HW_H
 #define SS_DEV_HW_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 typedef struct {
     uint32_t USBR_CONF;
     uint32_t USBR_STS;
@@ -436,6 +442,11 @@ static inline uint32_t SET_DMA_AXI_CTRL_MAWPROT(uint32_t reg, uint32_t mawprot) 
     uint32_t regval = reg & (~DMA_AXI_CTRL_MAWPROT_MASK);
     regval |= ((mawprot << DMA_AXI_CTRL_MAWPROT_OFFST) & DMA_AXI_CTRL_MAWPROT_MASK);
     return regval;
+}
+#endif
+
+
+#ifdef __cplusplus
 }
 #endif
 

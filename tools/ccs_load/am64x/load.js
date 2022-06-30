@@ -75,7 +75,7 @@ isAvailableA53 = true;
 sdkPath = System.getenv("MCU_PLUS_SDK_AM64X_PATH");
 if(sdkPath == null)
 {
-    sdkPath = "C:/ti/mcu_plus_sdk_am64x_08_02_00_31";
+    sdkPath = "C:/ti/mcu_plus_sdk_am64x_08_03_00_18";
 }
 
 // !!! EDIT THIS !!! Edit all of below based on the example you want to run

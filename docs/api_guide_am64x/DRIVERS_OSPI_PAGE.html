@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,16 @@ $(document).ready(function(){initNavTree('DRIVERS_OSPI_PAGE.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md599">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md600">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md601">Features not Supported</a></li>
-<li class="level1"><a href="#autotoc_md602">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md603">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md667">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md668">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md669">Features not Supported</a></li>
+<li class="level1"><a href="#autotoc_md670">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md671">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_ospi"></a></p>
 <p>The Octal Serial Peripheral Interface (OSPI) module is a kind of Serial Peripheral Interface (SPI) module which allows single, dual, quad or octal read and write access to external flash devices. The OSPI module is used to transfer data, either in a memory mapped direct mode (for example a processor wishing to execute code directly from external flash memory), or in an indirect mode where the module is set-up to silently perform some requested operation, signaling its completion via interrupts or status registers.</p>
-<h1><a class="anchor" id="autotoc_md599"></a>
+<h1><a class="anchor" id="autotoc_md667"></a>
 Features Supported</h1>
 <ul>
 <li>Support for single, dual, quad (QSPI mode) or octal I/O instructions.</li>
@@ -130,7 +130,7 @@ Features Supported</h1>
 <li>Supports BOOT mode.</li>
 <li>Handling ECC errors for flash devices with embedded correction engine.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md600"></a>
+<h1><a class="anchor" id="autotoc_md668"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
@@ -142,13 +142,13 @@ SysConfig Features</h1>
 <li>In advanced config, you can choose various parameters like frame format, decoder chip select, read dummy cycles etc.</li>
 <li>Pinmux configurations for the OSPI instance</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md601"></a>
+<h1><a class="anchor" id="autotoc_md669"></a>
 Features not Supported</h1>
 <ul>
 <li>PHY mode is not supported yet.</li>
 <li>Interrupt mode is not supported yet.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md602"></a>
+<h1><a class="anchor" id="autotoc_md670"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="ospi_8h.html">drivers/ospi.h</a>&gt;</span></div>
@@ -158,7 +158,7 @@ Example Usage</h1>
 <div class="line">    gOspiHandle = <a class="code" href="group__DRV__OSPI__MODULE.html#gaf74c4b8836a43513f0b2c0a7893c02da">OSPI_open</a>(0, &amp;ospiParams);</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(gOspiHandle != NULL);</div>
 </div><!-- fragment --><p> Instance Close Example </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__OSPI__MODULE.html#ga6be5558d3c8085469468d6f8e7c697f2">OSPI_close</a>(gOspiHandle);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md603"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md671"></a>
 API</h1>
 <p><a class="el" href="group__DRV__OSPI__MODULE.html">APIs for OSPI</a> </p>
 </div></div><!-- contents -->

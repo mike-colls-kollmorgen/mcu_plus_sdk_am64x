@@ -13,5 +13,14 @@ var group__DRV__SOC__MODULE =
     [ "SOC_setEpwmTbClk", "group__DRV__SOC__MODULE.html#gac389565caa4342dc40635cd2b214ee01", null ],
     [ "SOC_virtToPhy", "group__DRV__SOC__MODULE.html#ga9a3dd12ed6ec3bce4b786744c5cb134d", null ],
     [ "SOC_phyToVirt", "group__DRV__SOC__MODULE.html#ga91e92e9398edf29e171ad3974ca8ef1d", null ],
-    [ "SOC_setDevStat", "group__DRV__SOC__MODULE.html#gaf58c32a05571e2e722842e5a327afa2b", null ]
+    [ "SOC_setDevStat", "group__DRV__SOC__MODULE.html#gaf58c32a05571e2e722842e5a327afa2b", null ],
+    [ "SOC_isR5FDualCoreMode", "group__DRV__SOC__MODULE.html#ga7785b90319b11fb60282c60fda62803e", null ],
+    [ "SOC_generateSwWarmResetMainDomain", "group__DRV__SOC__MODULE.html#gabfae83163d8d08bedfe81e76d1ac0fac", null ],
+    [ "SOC_generateSwPORResetMainDomain", "group__DRV__SOC__MODULE.html#ga68ad222c0086223c6915af9b5a5077a8", null ],
+    [ "SOC_getWarmResetCauseMainDomain", "group__DRV__SOC__MODULE.html#gad4549e8fe280bd0bf5d46d09d37ae8fd", null ],
+    [ "SOC_generateSwWarmResetMcuDomain", "group__DRV__SOC__MODULE.html#ga9dc41ce8b58cc2e1e0c026887565992a", null ],
+    [ "SOC_generateSwWarmResetMainDomainFromMcuDomain", "group__DRV__SOC__MODULE.html#gae2cf935a5964605fee355f2e99def47d", null ],
+    [ "SOC_generateSwPORResetMainDomainFromMcuDomain", "group__DRV__SOC__MODULE.html#ga751821835b36128abffbc1480b84dc5a", null ],
+    [ "SOC_getWarmResetCauseMcuDomain", "group__DRV__SOC__MODULE.html#gacd0bd887589429840445272c568008f3", null ],
+    [ "SOC_clearResetCauseMainMcuDomain", "group__DRV__SOC__MODULE.html#ga50d09affae77c3d926674a0f28aea462", null ]
 ];

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">EtherCAT Slave
-   &#160;<span id="projectnumber">1.06.01</span>
+   &#160;<span id="projectnumber">1.08.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -115,7 +115,7 @@ Supported EtherCAT Functionality</h1>
 <tr>
 <td>Distributed Clocks </td><td>By using distributed clocks the EtherCAT real-time Ethernet protocol is able to synchronize the time in all local bus devices within a very narrow tolerance range. </td><td>Yes  </td></tr>
 <tr>
-<td>Object Dictionary </td><td>freely definable, only limited by ressources available. </td><td>Yes  </td></tr>
+<td>Object Dictionary </td><td>Freely definable, only limited by available resources. </td><td>Yes  </td></tr>
 <tr>
 <td>CiA 402 </td><td>This profile standardizes the functional behavior of controllers for servo drives, frequency inverters, and stepper motors. </td><td>Yes  </td></tr>
 <tr>
@@ -151,9 +151,9 @@ Supported EtherCAT Functionality</h1>
 <tr>
 <td>RX ERR Counter Port 0/1 </td><td>Yes  </td></tr>
 <tr>
-<td>Forward Error Counter Port 0/1 </td><td>Yes  </td></tr>
+<td>Forwarded Error Counter Port 0/1 </td><td>Yes  </td></tr>
 <tr>
-<td>EtherCAT Processing Unit Counter Port 0/1 </td><td>Yes  </td></tr>
+<td>EtherCAT Processing Unit Error Counter Port 0/1 </td><td>Yes  </td></tr>
 </table>
 <h1><a class="anchor" id="ethercat_kpi"></a>
 Key Performance Parameters</h1>
@@ -161,19 +161,19 @@ Key Performance Parameters</h1>
 <tr>
 <th>Feature </th><th>Detail </th><th>Value  </th></tr>
 <tr>
-<td rowspan="2">EtherCat Commands </td><td>FMMU </td><td>4  </td></tr>
+<td>Fieldbus Memory Management Units (FMMU) </td><td>Convert logical addresses into physical addresses by means of internal address mapping </td><td>4  </td></tr>
 <tr>
-<td>SYNC Master </td><td>4  </td></tr>
+<td>SYNC Manager </td><td>Insure consistent and secure data exchange between EtherCAT master and local application of slave device </td><td>4  </td></tr>
 <tr>
-<td rowspan="3">Processdata </td><td>Maximum Input </td><td>1024 Bytes  </td></tr>
+<td rowspan="2">Processdata </td><td>Maximum Input </td><td>1024 Bytes  </td></tr>
 <tr>
 <td>Maximum Output </td><td>1024 Bytes  </td></tr>
 <tr>
-<td>Cycletime </td><td>31.25 &micro;s  </td></tr>
+<td rowspan="2">Cycle Time </td><td>Free run </td><td>31.25 &micro;s  </td></tr>
 <tr>
-<td rowspan="5">Distributed Clocks </td><td>Cycletime </td><td>50 &micro;s  </td></tr>
+<td>DC mode </td><td>50 &micro;s  </td></tr>
 <tr>
-<td>Accuracy </td><td>64-bit  </td></tr>
+<td rowspan="4">Distributed Clocks </td><td>Accuracy </td><td>64-bit  </td></tr>
 <tr>
 <td>SYNC0 </td><td>generation single shot and cyclic mode support  </td></tr>
 <tr>
@@ -192,17 +192,17 @@ General Stack Parameters</h1>
 <table class="doxtable">
 <caption>Stack Memory Usage</caption>
 <tr>
-<td rowspan="2">AM64xx Simple Demo</td><td>Read Only Memory</td><td>281053</td><td>Bytes</td></tr>
+<td rowspan="2">AM64xx-evm Simple Demo</td><td>Read Only Memory</td><td>286836</td><td>Bytes</td></tr>
 <tr>
-<td>Random Access Memory</td><td>163184</td><td>Bytes </td></tr>
+<td>Random Access Memory</td><td>163520</td><td>Bytes </td></tr>
 <tr>
-<td rowspan="2">AM64xx CiA402 Demo</td><td>Read Only Memory</td><td>281875</td><td>Bytes</td></tr>
+<td rowspan="2">AM64xx-evm CiA402 Demo</td><td>Read Only Memory</td><td>285489</td><td>Bytes</td></tr>
 <tr>
-<td>Random Access Memory</td><td>323671</td><td>Bytes </td></tr>
+<td>Random Access Memory</td><td>324007</td><td>Bytes </td></tr>
 <tr>
-<td rowspan="2">AM64xx Conformance Test Demo</td><td>Read Only Memory</td><td>280318</td><td>Bytes</td></tr>
+<td rowspan="2">AM64xx-evm Conformance Test Demo</td><td>Read Only Memory</td><td>283511</td><td>Bytes</td></tr>
 <tr>
-<td>Random Access Memory</td><td>163056</td><td><p class="starttd">Bytes</p>
+<td>Random Access Memory</td><td>163392</td><td><p class="starttd">Bytes</p>
 <p class="endtd"></p>
 </td></tr>
 </table>

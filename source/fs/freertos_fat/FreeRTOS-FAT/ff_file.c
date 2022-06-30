@@ -132,7 +132,7 @@ static FF_FILE * prvAllocFileHandle( FF_IOManager_t * pxIOManager,
 {
     FF_FILE * pxFile;
 
-    pxFile = ffconfigMALLOC( sizeof( FF_FILE ) );
+    pxFile = (FF_FILE *) ffconfigMALLOC( sizeof( FF_FILE ) );
 
     if( pxFile == NULL )
     {

@@ -16,6 +16,8 @@ function getSelfSysCfgCoreName() {
             return "r5fss0-0";
         case "awr294x":
             return "r5fss0-0";
+        case "am62x":
+            return "m4fss0-0";
     }
 };
 
@@ -24,6 +26,8 @@ function isSciClientSupported() {
         case "am243x":
             return true;
         case "am64x":
+            return true;
+        case "am62x":
             return true;
         default:
             return false;
@@ -41,6 +45,8 @@ function getSocName() {
         return "am273x";
     if((system.deviceData.device == "AWR294X") || (system.deviceData.device == "AWR294XLOP"))
         return "awr294x";
+    if(system.deviceData.device == "AM62x")
+        return "am62x";
 };
 
 function getDeviceName() {
@@ -56,6 +62,8 @@ function getDeviceName() {
         return "am273x-evm";
     if(system.deviceData.device == "AWR294X")
         return "awr294x-evm";
+    if(system.deviceData.device == "AM62x")
+        return "am62x-sk";
 };
 
 function isCName(id) {
@@ -186,6 +194,8 @@ function isMcuDomainSupported()
         case "am243x":
             return true;
         case "am64x":
+            return true;
+        case "am62x":
             return true;
         default:
             return false;

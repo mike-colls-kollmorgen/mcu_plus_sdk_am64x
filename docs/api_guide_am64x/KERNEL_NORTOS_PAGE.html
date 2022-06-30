@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,21 +108,21 @@ $(document).ready(function(){initNavTree('KERNEL_NORTOS_PAGE.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md394">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md395">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md396">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md397">Features Not Supported</a></li>
-<li class="level1"><a href="#autotoc_md398">Important files and directory structure</a></li>
+<ul><li class="level1"><a href="#autotoc_md450">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md451">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md452">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md453">Features Not Supported</a></li>
+<li class="level1"><a href="#autotoc_md454">Important files and directory structure</a></li>
 <li class="level1"><a href="#NORTOS_ADDITIONAL_REFERENCES">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md399">See also</a></li>
+<li class="level1"><a href="#autotoc_md455">See also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_os_nortos"></a></p>
 <dl class="section note"><dt>Note</dt><dd>A53 will not be available on all SOCs. All references to A53 should be ignored on such SOCs.</dd></dl>
-<h1><a class="anchor" id="autotoc_md394"></a>
+<h1><a class="anchor" id="autotoc_md450"></a>
 Introduction</h1>
 <p>NORTOS is a SW module that implements APIs which allow the upper layers of SW to run in no-RTOS mode. i.e without any RTOS. The NO RTOS APIs are implemented underneath the <a class="el" href="KERNEL_DPL_PAGE.html">Driver Porting Layer (DPL)</a> APIs. This allows the device drivers to run either in no-RTOS mode or with a RTOS.</p>
-<h1><a class="anchor" id="autotoc_md395"></a>
+<h1><a class="anchor" id="autotoc_md451"></a>
 Features Supported</h1>
 <p>Common across all CPUs,</p><ul>
 <li>Clock APIs to initialize a system tick ISR and allow SW to create multiple SW timers using a single underlying HW timer.</li>
@@ -176,7 +176,7 @@ Features Supported</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md396"></a>
+<h1><a class="anchor" id="autotoc_md452"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure below modules with NORTOS</p><ul>
@@ -187,7 +187,7 @@ SysConfig Features</h1>
 <li>RAT to setup address translation regions, needed for M4F</li>
 <li>Timer to setup HW timer available on the SOC, including enabling timer interrupt and ISR registration</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md397"></a>
+<h1><a class="anchor" id="autotoc_md453"></a>
 Features Not Supported</h1>
 <ul>
 <li>Task APIs are not supported in NORTOS mode. Task APIs necessarily need a RTOS and cannot be used in no-RTOS mode</li>
@@ -209,7 +209,7 @@ Features Not Supported</h1>
 </li>
 <li>A53 multi-core SMP mode is not supported.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md398"></a>
+<h1><a class="anchor" id="autotoc_md454"></a>
 Important files and directory structure</h1>
 <table class="doxtable">
 <tr>
@@ -225,11 +225,15 @@ Important files and directory structure</h1>
 <tr>
 <td>dpl/common/ </td><td>NORTOS APIs that are common across all CPUs  </td></tr>
 <tr>
-<td>dpl/m4/ </td><td>NORTOS APIs that are specific to M4F CPUs  </td></tr>
+<td>dpl/m4/ </td><td><p class="starttd">NORTOS APIs that are specific to M4F CPUs </p>
+<p class="endtd"></p>
+</td></tr>
 <tr>
 <td>dpl/r5/ </td><td>NORTOS APIs that are specific to R5F CPUs  </td></tr>
 <tr>
-<td>dpl/a53/ </td><td>NORTOS APIs that are specific to A53 CPUs  </td></tr>
+<td>dpl/a53/ </td><td><p class="starttd">NORTOS APIs that are specific to A53 CPUs </p>
+<p class="endtd"></p>
+</td></tr>
 </table>
 <h1><a class="anchor" id="NORTOS_ADDITIONAL_REFERENCES"></a>
 Additional References</h1>
@@ -237,21 +241,33 @@ Additional References</h1>
 <p>Please also refer to below documents from ARM Ltd. to understand more about R5F, M4F, A53 CPUs including features like MPU, MMU, cache and interrupts.</p>
 <table class="doxtable">
 <tr>
-<th>Document Title </th><th>Description  </th></tr>
+<th>Document Title </th><th><p class="starttd">Description </p>
+<p class="endtd"></p>
+</th></tr>
 <tr>
-<td>ARM v7R Architecture Reference Manual </td><td>Information about ARM architecture that is implemented by R5F. Should be used in conjunction with R5F TRM to understand R5F architecture details.  </td></tr>
+<td>ARM v7R Architecture Reference Manual </td><td><p class="starttd">Information about ARM architecture that is implemented by R5F. Should be used in conjunction with R5F TRM to understand R5F architecture details. </p>
+<p class="endtd"></p>
+</td></tr>
 <tr>
-<td>ARM v7M Architecture Reference Manual </td><td>Information about ARM architecture that is implemented by M4F. Should be used in conjunction with M4F TRM to understand M4F architecture details.  </td></tr>
+<td>ARM v7M Architecture Reference Manual </td><td><p class="starttd">Information about ARM architecture that is implemented by M4F. Should be used in conjunction with M4F TRM to understand M4F architecture details. </p>
+<p class="endtd"></p>
+</td></tr>
 <tr>
 <td>ARM v8A Architecture Reference Manual </td><td>Information about ARM architecture that is implemented by A53. Should be used in conjunction with A53 TRM to understand A53 architecture details.  </td></tr>
 <tr>
-<td>ARM Cortex R5F Technical Reference Manual </td><td>Information about R5F CPU architecture.  </td></tr>
+<td>ARM Cortex R5F Technical Reference Manual </td><td><p class="starttd">Information about R5F CPU architecture. </p>
+<p class="endtd"></p>
+</td></tr>
 <tr>
-<td>ARM Cortex M4F Technical Reference Manual </td><td>Information about M4F CPU architecture.  </td></tr>
+<td>ARM Cortex M4F Technical Reference Manual </td><td><p class="starttd">Information about M4F CPU architecture. </p>
+<p class="endtd"></p>
+</td></tr>
 <tr>
-<td>ARM Cortex A53 Technical Reference Manual </td><td>Information about A53 CPU architecture.  </td></tr>
+<td>ARM Cortex A53 Technical Reference Manual </td><td><p class="starttd">Information about A53 CPU architecture. </p>
+<p class="endtd"></p>
+</td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md399"></a>
+<h1><a class="anchor" id="autotoc_md455"></a>
 See also</h1>
 <p><a class="el" href="KERNEL_DPL_PAGE.html">Driver Porting Layer (DPL)</a> </p>
 </div></div><!-- contents -->

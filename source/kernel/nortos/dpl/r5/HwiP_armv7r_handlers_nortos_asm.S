@@ -35,6 +35,7 @@
 
         .text
         .arm
+        .align 2
 
         .set SVC_MODE,  0x13
         .set IRQ_MODE,  0x12
@@ -44,6 +45,7 @@
         .type HwiP_irq_handler,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_irq_handler:
         /* Return to the interrupted instruction. */
         SUB             lr, lr, #4

@@ -157,6 +157,8 @@ int main()
 
 
     Bootloader_socWaitForFWBoot();
+    Bootloader_socOpenFirewalls();
+
 
     System_init();
     Bootloader_profileAddProfilePoint("System_init");

@@ -333,12 +333,12 @@ MMCSD_Handle MMCSD_open(uint32_t index, const MMCSD_Params *openParams)
 
         if(MMCSD_CARD_TYPE_SD == obj->cardType)
         {
-            obj->sdData = openParams->deviceData;
+            obj->sdData = (MMCSD_SdDeviceData *) openParams->deviceData;
             status = MMCSD_initSD(config);
         }
         else if(MMCSD_CARD_TYPE_EMMC == obj->cardType)
         {
-            obj->emmcData = openParams->deviceData;
+            obj->emmcData = (MMCSD_EmmcDeviceData *) openParams->deviceData;
             status = MMCSD_initEMMC(config);
         }
         else if(MMCSD_CARD_TYPE_NO_DEVICE == obj->cardType)
@@ -499,7 +499,7 @@ int32_t MMCSD_write(MMCSD_Handle handle, uint8_t *buf, uint32_t startBlk, uint32
     MMCSD_Object *obj = ((MMCSD_Config *)handle)->object;
     MMCSD_Transaction trans;
     uint32_t addr = 0U;
-    uint32_t cmd = 0U, stopCmd = 0U;
+    uint32_t stopCmd = 0U;
     uint32_t blockSize = MMCSD_getBlockSize(handle);
 
     obj->writeBufIdx = buf;
@@ -510,11 +510,11 @@ int32_t MMCSD_write(MMCSD_Handle handle, uint8_t *buf, uint32_t startBlk, uint32
         stopCmd = MMCSD_MMC_CMD(12);
         if(numBlks >  1U)
         {
-            cmd = MMCSD_MMC_CMD(18);
+            // cmd = MMCSD_MMC_CMD(18);
         }
         else
         {
-            cmd = MMCSD_MMC_CMD(17);
+            // cmd = MMCSD_MMC_CMD(17);
         }
     }
     else
@@ -522,11 +522,11 @@ int32_t MMCSD_write(MMCSD_Handle handle, uint8_t *buf, uint32_t startBlk, uint32
         stopCmd = MMCSD_SD_CMD(12);
         if(numBlks >  1U)
         {
-            cmd = MMCSD_SD_CMD(18);
+            // cmd = MMCSD_SD_CMD(18);
         }
         else
         {
-            cmd = MMCSD_SD_CMD(17);
+            // cmd = MMCSD_SD_CMD(17);
         }
     }
 
@@ -901,7 +901,7 @@ static int32_t MMCSD_initSD(MMCSD_Handle handle)
     if(SystemP_SUCCESS == status)
     {
         MMCSD_parseSCRSd(obj->sdData, obj->tempDataBuf);
-        
+
         obj->isCmd23 = obj->sdData->isCmd23;
 
         MMCSD_initTransaction(&trans);
@@ -1007,7 +1007,7 @@ static int32_t MMCSD_initEMMC(MMCSD_Handle handle)
     {
         /* OCR query */
         uint32_t hostOCR = 0U;
-        
+
         /* Sector mode */
         hostOCR |= (2U << 29U);
 
@@ -1203,7 +1203,7 @@ static int32_t MMCSD_initEMMC(MMCSD_Handle handle)
     ClockP_usleep(100U*1000U);
 
     /* Enable boot partition by default */
-    
+
 
     if(SystemP_SUCCESS != status)
     {
@@ -1319,7 +1319,7 @@ static int32_t MMCSD_transfer(MMCSD_Handle handle, MMCSD_Transaction *trans)
             {
                 /* Setup ADMA2 descriptor */
                 uint32_t dataSize = trans->blockCount * trans->blockSize;
-                
+
                 status = MMCSD_setupADMA2(handle, &gADMA2Desc, (uint64_t)trans->dataBuf, dataSize);
 
                 if(status == SystemP_SUCCESS)
@@ -1547,7 +1547,7 @@ static uint32_t MMCSD_getModeEmmc(MMCSD_Handle handle)
     if((deviceModes & MMCSD_EMMC_ECSD_DEVICE_TYPE_HS400_200MHZ_1P8V) &&
        (controllerModes & MMCSD_SUPPORT_MMC_HS400))
     {
-        if((eStrobe == MMCSD_ECSD_STROBE_SUPPORT_ENHANCED_EN) && 
+        if((eStrobe == MMCSD_ECSD_STROBE_SUPPORT_ENHANCED_EN) &&
            (controllerModes & MMCSD_SUPPORT_MMC_HS400_ES))
         {
             mode = MMCSD_SUPPORT_MMC_HS400_ES;
@@ -1710,7 +1710,7 @@ static void MMCSD_initTransaction(MMCSD_Transaction *trans)
         trans->autoCmdEn = 0U;
         trans->enableDma = FALSE;
         trans->isTuning = FALSE;
-        
+
         trans->response[0] = 0U;
         trans->response[1] = 0U;
         trans->response[2] = 0U;
@@ -1855,7 +1855,7 @@ static int32_t MMCSD_switchEmmcMode(MMCSD_Handle handle, uint32_t mode)
         {
             es = 1U;
         }
-        
+
         hsTimingVal = MMCSD_ECSD_HS_TIMING_HIGH_SPEED;
         MMCSD_initTransaction(&trans);
         trans.cmd   = MMCSD_MMC_CMD(6);
@@ -2078,10 +2078,11 @@ static void MMCSD_xferStatusPollingFxn(MMCSD_Handle handle)
                 for(i = 0; i < dataLength; i += 4U)
                 {
                     tempWord = CSL_REG32_RD(&pReg->DATA_PORT);
-                    obj->dataBufIdx[offset + i] = *((uint8_t *)&tempWord);
-                    obj->dataBufIdx[offset + i + 1U] = *((uint8_t *)&tempWord + 1U);
-                    obj->dataBufIdx[offset + i + 2U] = *((uint8_t *)&tempWord + 2U);
-                    obj->dataBufIdx[offset + i + 3U] = *((uint8_t *)&tempWord + 3U);
+                    uint8_t *pTempWord = (uint8_t *)&tempWord;
+                    obj->dataBufIdx[offset + i] = *(pTempWord);
+                    obj->dataBufIdx[offset + i + 1U] = *(pTempWord + 1U);
+                    obj->dataBufIdx[offset + i + 2U] = *(pTempWord + 2U);
+                    obj->dataBufIdx[offset + i + 3U] = *(pTempWord + 3U);
                 }
                 obj->readBlockCount--;
             }
@@ -2153,7 +2154,7 @@ static void MMCSD_xferStatusPollingFxn(MMCSD_Handle handle)
         }
     }
 
-    if((errorIntrStatus & CSL_MMC_CTLCFG_ERROR_INTR_STS_DATA_TIMEOUT_MASK) && 
+    if((errorIntrStatus & CSL_MMC_CTLCFG_ERROR_INTR_STS_DATA_TIMEOUT_MASK) &&
         !(normalIntrStatus & CSL_MMC_CTLCFG_NORMAL_INTR_STS_XFER_COMPLETE_MASK))
     {
         if(obj->xferInProgress == TRUE)
@@ -2190,10 +2191,11 @@ static void MMCSD_xferStatusPollingFxnCMD19(MMCSD_Handle handle)
                 for(i = 0; i < dataLength; i += 4U)
                 {
                     tempWord = CSL_REG32_RD(&pReg->DATA_PORT);
-                    obj->dataBufIdx[i] = *((uint8_t *)&tempWord);
-                    obj->dataBufIdx[i + 1U] = *((uint8_t *)&tempWord + 1U);
-                    obj->dataBufIdx[i + 2U] = *((uint8_t *)&tempWord + 2U);
-                    obj->dataBufIdx[i + 3U] = *((uint8_t *)&tempWord + 3U);
+                    uint8_t *pTempWord = (uint8_t *)&tempWord;
+                    obj->dataBufIdx[i] = *(pTempWord);
+                    obj->dataBufIdx[i + 1U] = *(pTempWord + 1U);
+                    obj->dataBufIdx[i + 2U] = *(pTempWord + 2U);
+                    obj->dataBufIdx[i + 3U] = *(pTempWord + 3U);
                 }
             }
 
@@ -2205,7 +2207,7 @@ static void MMCSD_xferStatusPollingFxnCMD19(MMCSD_Handle handle)
     }
 
     /* Check for errors */
-    if((errorIntrStatus & CSL_MMC_CTLCFG_ERROR_INTR_STS_DATA_TIMEOUT_MASK) && 
+    if((errorIntrStatus & CSL_MMC_CTLCFG_ERROR_INTR_STS_DATA_TIMEOUT_MASK) &&
         !(normalIntrStatus & CSL_MMC_CTLCFG_NORMAL_INTR_STS_XFER_COMPLETE_MASK))
     {
         if(obj->xferInProgress == TRUE)
@@ -2509,9 +2511,9 @@ static int32_t MMCSD_halSoftReset(uint32_t ctrlBaseAddr)
     int32_t status = SystemP_SUCCESS;
     volatile uint32_t timeout = 0xFFFFU;
     const CSL_mmc_ctlcfgRegs *pReg = (const CSL_mmc_ctlcfgRegs *)ctrlBaseAddr;
-    
-    CSL_REG8_FINS(&pReg->SOFTWARE_RESET, 
-        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL, 
+
+    CSL_REG8_FINS(&pReg->SOFTWARE_RESET,
+        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL,
         CSL_MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL_VAL_RESET);
 
     uint8_t resetStatus = CSL_REG8_FEXT(&pReg->SOFTWARE_RESET, MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL);
@@ -2535,9 +2537,9 @@ static int32_t MMCSD_halLinesResetCmd(uint32_t ctrlBaseAddr)
     int32_t status = SystemP_SUCCESS;
     volatile uint32_t timeout = 0xFFFFU;
     const CSL_mmc_ctlcfgRegs *pReg = (const CSL_mmc_ctlcfgRegs *)ctrlBaseAddr;
-    
-    CSL_REG8_FINS(&pReg->SOFTWARE_RESET, 
-        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_CMD, 
+
+    CSL_REG8_FINS(&pReg->SOFTWARE_RESET,
+        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_CMD,
         CSL_MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL_VAL_RESET);
 
     uint8_t resetStatus = CSL_REG8_FEXT(&pReg->SOFTWARE_RESET, MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_CMD);
@@ -2561,9 +2563,9 @@ static int32_t MMCSD_halLinesResetDat(uint32_t ctrlBaseAddr)
     int32_t status = SystemP_SUCCESS;
     volatile uint32_t timeout = 0xFFFFU;
     const CSL_mmc_ctlcfgRegs *pReg = (const CSL_mmc_ctlcfgRegs *)ctrlBaseAddr;
-    
-    CSL_REG8_FINS(&pReg->SOFTWARE_RESET, 
-        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_DAT, 
+
+    CSL_REG8_FINS(&pReg->SOFTWARE_RESET,
+        MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_DAT,
         CSL_MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_ALL_VAL_RESET);
 
     uint8_t resetStatus = CSL_REG8_FEXT(&pReg->SOFTWARE_RESET, MMC_CTLCFG_SOFTWARE_RESET_SWRST_FOR_DAT);
@@ -2681,7 +2683,7 @@ static int32_t MMCSD_halIsClockStable(uint32_t ctrlBaseAddr, uint32_t timeout)
     int32_t status = SystemP_SUCCESS;
     const CSL_mmc_ctlcfgRegs *pReg = (const CSL_mmc_ctlcfgRegs *)ctrlBaseAddr;
 
-    while((CSL_REG16_FEXT(&pReg->CLOCK_CONTROL, MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_STABLE) != 
+    while((CSL_REG16_FEXT(&pReg->CLOCK_CONTROL, MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_STABLE) !=
         CSL_MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_STABLE_VAL_READY) && (timeout > 0U))
     {
         timeout--;
@@ -2700,7 +2702,7 @@ static int32_t MMCSD_halEnableInternalClock(uint32_t ctrlBaseAddr, uint32_t clkS
     int32_t status = SystemP_SUCCESS;
     const CSL_mmc_ctlcfgRegs *pReg = (const CSL_mmc_ctlcfgRegs *)ctrlBaseAddr;
 
-    if((clkState == CSL_MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_ENA_VAL_OSCILLATE) || 
+    if((clkState == CSL_MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_ENA_VAL_OSCILLATE) ||
        (clkState == CSL_MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_ENA_VAL_STOP))
     {
         CSL_REG16_FINS(&pReg->CLOCK_CONTROL, MMC_CTLCFG_CLOCK_CONTROL_INT_CLK_ENA, clkState);
@@ -2863,7 +2865,7 @@ static uint32_t MMCSD_halErrorIntrStatusGet(uint32_t ctrlBaseAddr, uint16_t intr
     regVal = (uint32_t)(CSL_REG16_RD(&pReg->ERROR_INTR_STS) & intrFlag);
 
     return regVal;
-    
+
 }
 
 static int32_t MMCSD_halErrorIntrStatusClear(uint32_t ctrlBaseAddr, uint16_t intrFlag)
@@ -2874,7 +2876,7 @@ static int32_t MMCSD_halErrorIntrStatusClear(uint32_t ctrlBaseAddr, uint16_t int
     CSL_REG16_WR(&pReg->ERROR_INTR_STS, intrFlag);
 
     return status;
-    
+
 }
 
 static int32_t MMCSD_halNormalIntrStatusEnable(uint32_t ctrlBaseAddr, uint16_t intrFlag)

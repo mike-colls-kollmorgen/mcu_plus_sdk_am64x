@@ -37,6 +37,12 @@
 
 #ifndef __HSR_PRP_FIRMWARE_H__
 #define __HSR_PRP_FIRMWARE_H__
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 // #define PRU_DEBUG
 //uncomment the the define shared by the host and the PRU
 #define COMMON_HOST_PRU_ENABLE
@@ -534,6 +540,11 @@
 //*************************************************************************************
 
 #endif // HSR_AND_PRP //
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __HSR_PRP_FIRMWARE_H__
 

@@ -27,6 +27,12 @@
 #ifndef FF_CONFIG_H_
 #define FF_CONFIG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define ffconfigBYTE_ORDER                   (pdFREERTOS_LITTLE_ENDIAN)
 #define ffconfigHAS_CWD                      (0U) /* Use only absolute paths */
 #define ffconfigCWD_THREAD_LOCAL_INDEX       (4U)
@@ -51,5 +57,10 @@
 #define ffconfigDRIVER_BUSY_SLEEP_MS         (40)
 #define ffconfigMALLOC( size )               malloc( size )
 #define ffconfigFREE( ptr )                  free( ptr )
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FF_CONFIG_H_ */

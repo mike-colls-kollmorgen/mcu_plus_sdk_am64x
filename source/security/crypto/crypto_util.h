@@ -48,6 +48,12 @@
 #ifndef PKA_UTIL_H_
 #define PKA_UTIL_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -150,6 +156,11 @@ void Crypto_PKCSPaddingForSign(const uint8_t *shaHash, uint32_t keyLengthInBytes
  *  \param  output              Resultant padded buffer stored in dest
  */
 void Crypto_PKCSPaddingForMessage(const uint8_t *message, uint32_t msgLengthInBytes, uint32_t keyLengthInBytes, uint8_t *output);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PKA_UTIL_H_ */
 /** @} */

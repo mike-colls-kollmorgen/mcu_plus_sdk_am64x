@@ -1,8 +1,6 @@
 var group__PN__CPM__PPM__MANAGEMENT =
 [
     [ "t_ppmDesc", "structt__ppmDesc.html", [
-      [ "R5F Function:", "EXAMPLES_PRU_ADC_ADS85x8.html#autotoc_md1463", null ],
-      [ "PRU Function:", "EXAMPLES_PRU_ADC_ADS85x8.html#autotoc_md1464", null ],
       [ "FrameReference", "structt__ppmDesc.html#ac7f4116935e4c37e4d52e792267c48ec", null ],
       [ "FrameLength", "structt__ppmDesc.html#a79b91d255ef632eba82d23637b4a1238", null ],
       [ "FrameSendOffset", "structt__ppmDesc.html#a1244b8428b02d960fc9a1c03fc23582f", null ],

@@ -1,5 +1,5 @@
 /********************************************************************
- * Copyright (C) 2019 Texas Instruments Incorporated.
+ * Copyright (C) 2019-2022 Texas Instruments Incorporated.
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -120,7 +120,7 @@ typedef struct {
 
 
 typedef struct {
-    volatile uint32_t FETCH_LOC[1024];           /* Revision Register */
+    volatile uint32_t FETCH_LOC[128];            /* EST Fetch RAM */
 } CSL_Xge_cpswRegs_CPSW_NU_EST;
 
 
@@ -267,6 +267,7 @@ typedef struct {
     CSL_Xge_cpswEnetportRegs ENETPORT[8];
     volatile uint8_t  Resv_73728[32768];
     CSL_Xge_cpswRegs_CPSW_NU_EST CPSW_NU_EST[8];
+    volatile uint8_t  Resv_106496[28672];
     CSL_Xge_cpswStatsRegs STATS[9];
 } CSL_Xge_cpswRegs;
 
@@ -384,7 +385,7 @@ typedef struct {
 #define CSL_XGE_CPSW_PN_INTERVLAN_OPX_B_REG(ENETPORT)                 (0x000023B4U+((ENETPORT)*0x1000U))
 #define CSL_XGE_CPSW_PN_INTERVLAN_OPX_C_REG(ENETPORT)                 (0x000023B8U+((ENETPORT)*0x1000U))
 #define CSL_XGE_CPSW_PN_INTERVLAN_OPX_D_REG(ENETPORT)                 (0x000023BCU+((ENETPORT)*0x1000U))
-#define CSL_XGE_CPSW_CPSW_NU_EST_FETCH_LOC(CPSW_NU_EST,FETCH_LOC)              (0x00012000U+((CPSW_NU_EST)*0x1000U)+((FETCH_LOC)*0x4U))
+#define CSL_XGE_CPSW_CPSW_NU_EST_FETCH_LOC(CPSW_NU_EST,FETCH_LOC)              (0x00012000U+((CPSW_NU_EST)*0x200U)+((FETCH_LOC)*0x4U))
 #define CSL_XGE_CPSW_STATS_RXGOODFRAMES(STATS)                                 (0x0001A000U+((STATS)*0x200U))
 #define CSL_XGE_CPSW_STATS_RXBROADCASTFRAMES(STATS)                            (0x0001A004U+((STATS)*0x200U))
 #define CSL_XGE_CPSW_STATS_RXMULTICASTFRAMES(STATS)                            (0x0001A008U+((STATS)*0x200U))

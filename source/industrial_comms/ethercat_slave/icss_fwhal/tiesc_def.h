@@ -33,6 +33,12 @@
 #ifndef TIESC_DEF_H_
 #define TIESC_DEF_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
 ECAT_TIMER_INT: If this switch is set, then the watchdog time for the EtherCAT watchdog will be checked in a timer interrupt routine. */
 #ifndef ECAT_TIMER_INT
@@ -59,6 +65,11 @@ ESC_EEPROM_EMULATION: If this switch is set EEPROM emulation is supported. Not a
 
 #ifndef ESC_DC_SYNC1_CYCLETIME_OFFSET
 #define ESC_DC_SYNC1_CYCLETIME_OFFSET           0x09A4
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* TIESC_DEF_H_*/

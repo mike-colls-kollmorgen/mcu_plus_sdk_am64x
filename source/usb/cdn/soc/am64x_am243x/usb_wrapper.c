@@ -448,7 +448,7 @@ void usbDeviceInit(usb_init_param_t *usbInitParamsPtr)
     for(i = 0; i < 32; i++)
     {
         epMemRes[i].memPageIndex = 0;
-        epMemRes[i].trbAddr = (void*) buff[i];
+        epMemRes[i].trbAddr = (CUSBDMA_DmaTrb*) buff[i];
         epMemRes[i].trbBufferSize = 8;
         epMemRes[i].trbDmaAddr = (uintptr_t) buff[i];
     }

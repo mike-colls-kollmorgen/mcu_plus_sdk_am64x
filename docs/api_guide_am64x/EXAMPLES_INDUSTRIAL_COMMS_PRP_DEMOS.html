@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,26 +108,26 @@ $(document).ready(function(){initNavTree('EXAMPLES_INDUSTRIAL_COMMS_PRP_DEMOS.ht
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1372">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1373">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1374">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1375">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1376">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1377">AM64X-EVM</a></li>
+<ul><li class="level1"><a href="#autotoc_md1598">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1599">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1600">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1601">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1602">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1603">AM64X-EVM</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md1378">Run the example</a></li>
-<li class="level2"><a href="#autotoc_md1379">UART Menu</a><ul><li class="level3"><a href="#autotoc_md1380">Sample Output</a></li>
+<li class="level2"><a href="#autotoc_md1604">Run the example</a></li>
+<li class="level2"><a href="#autotoc_md1605">UART Menu</a><ul><li class="level3"><a href="#autotoc_md1606">Sample Output</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md1381">IP Configuration</a></li>
-<li class="level2"><a href="#autotoc_md1382">Communicate with the EVM using ethernet</a></li>
-<li class="level2"><a href="#autotoc_md1383">Troubleshooting issues</a></li>
+<li class="level2"><a href="#autotoc_md1607">IP Configuration</a></li>
+<li class="level2"><a href="#autotoc_md1608">Communicate with the EVM using ethernet</a></li>
+<li class="level2"><a href="#autotoc_md1609">Troubleshooting issues</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1384">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1610">See Also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_industrial_comms_prp_demo"></a></p>
-<h1><a class="anchor" id="autotoc_md1372"></a>
+<h1><a class="anchor" id="autotoc_md1598"></a>
 Introduction</h1>
 <p>The example is an PRP (Parallel Redundancy Protocol) Dual Attached Node demo application using LwIP stack. PRP is zero downtime industrial redundancy protocol that operate at Layer 2 and use commercial off-the-shelf Ethernet communication chips and physical media. PRP has trailer attached to standard ethernet frames and can be supported using traditional switches. PRP is mainly used in the substation automation market and the target applications use IEC 61850 protocols. This application does not provide any IEC 61850 integrated examples but it’s easy to integrate one given the transparent nature of PRP implementation.</p><ul>
 <li>The implementation consists of<ul>
@@ -139,7 +139,7 @@ Introduction</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1373"></a>
+<h1><a class="anchor" id="autotoc_md1599"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -155,18 +155,18 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/industrial_comms/hsr_prp_demo   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1374"></a>
+<h1><a class="anchor" id="autotoc_md1600"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1375"></a>
+<h2><a class="anchor" id="autotoc_md1601"></a>
 Build the example</h2>
 <ul>
 <li>When using CCS projects to build, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li>When using makefiles to build, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1376"></a>
+<h2><a class="anchor" id="autotoc_md1602"></a>
 HW Setup</h2>
 <dl class="section note"><dt>Note</dt><dd>Make sure you have setup the EVM with cable connections as shown here, <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>. In addition do below steps.</dd></dl>
-<h3><a class="anchor" id="autotoc_md1377"></a>
+<h3><a class="anchor" id="autotoc_md1603"></a>
 AM64X-EVM</h3>
 <ul>
 <li>Connect a ethernet cable to the EVM from host PC as shown below</li>
@@ -175,16 +175,16 @@ AM64X-EVM</h3>
 <img src="am64x_evm_lwip_example_01.png" alt=""/>
 <div class="caption">
 Ethernet cable for ICSS based ethernet</div></div>
-<h2><a class="anchor" id="autotoc_md1378"></a>
+<h2><a class="anchor" id="autotoc_md1604"></a>
 Run the example</h2>
-<dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run again, a CPU power-cycle is MUST</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run the example again, EVM power-cycle is MUST.</dd></dl>
 <ul>
 <li>Launch a CCS debug session and run the example executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>You will see logs in the UART terminal as shown in the next section.</li>
 <li>Note the IP address seen in the log, this is what we will use to communicate with the EVM.</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>PRP RGMII example is partially tested.</dd></dl>
-<h2><a class="anchor" id="autotoc_md1379"></a>
+<h2><a class="anchor" id="autotoc_md1605"></a>
 UART Menu</h2>
 <ul>
 <li>The application has a built in UART console menu. It allows the user to perform the following tasks :<ul>
@@ -200,7 +200,7 @@ UART Menu</h2>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md1380"></a>
+<h3><a class="anchor" id="autotoc_md1606"></a>
 Sample Output</h3>
 <div class="fragment"><div class="line">Mode: MII</div>
 <div class="line">Starting lwIP, local interface IP is 192.168.1.10</div>
@@ -227,7 +227,7 @@ Sample Output</h3>
 <div class="line">H : Help menu. Shows details on all the options</div>
 <div class="line">********************************************</div>
 <div class="line">link_callback==UP</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1381"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1607"></a>
 IP Configuration</h2>
 <ul>
 <li>The example starts off with stack being initialised with a &#160;static IP stored in EEPROM or from default IP in application code. The PRP UART menu gives user ability to change IP Address via terminal using steps mentioned below.</li>
@@ -256,13 +256,13 @@ IP Configuration</h2>
 <div class="line"> </div>
 <div class="line">IP Address      : 192.168.1.11</div>
 <div class="line">Device config   : PRP</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1382"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1608"></a>
 Communicate with the EVM using ethernet</h2>
 <ul>
 <li>Firstly you can try to reach the EVM using ping as shown below, using a command shell on the host PC <pre class="fragment">  &gt; ping 192.168.1.10
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1383"></a>
+<h2><a class="anchor" id="autotoc_md1609"></a>
 Troubleshooting issues</h2>
 <ul>
 <li>If you see a valid MAC address and address and <code>link_callback==DOWN</code> is seen then<ul>
@@ -270,7 +270,7 @@ Troubleshooting issues</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1384"></a>
+<h1><a class="anchor" id="autotoc_md1610"></a>
 See Also</h1>
 <p><a class="el" href="PRP_FWHAL.html">PRP(Parallel Redundancy Protocol) FWHAL</a> </p>
 </div></div><!-- contents -->

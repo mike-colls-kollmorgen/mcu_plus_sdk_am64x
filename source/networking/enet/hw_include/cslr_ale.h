@@ -41,6 +41,12 @@
 #ifndef CSLR_ALE_TOP_H_
 #define CSLR_ALE_TOP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #if defined(SOC_K2G)
 #include <ti/csl/src/ip/ale/V1/cslr_ale.h>
@@ -51,5 +57,10 @@
 #else
 #include <ti/csl/src/ip/ale/V0/cslr_ale.h>
 #endif /* SOC_XXXXX */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

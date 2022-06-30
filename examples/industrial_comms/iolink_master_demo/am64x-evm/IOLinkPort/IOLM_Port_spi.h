@@ -45,8 +45,12 @@
 /*                             Include Files                                  */
 /* ========================================================================== */
 #include <stdint.h>
+#include <stdbool.h>
+#include "osal.h"
+#include "IOL_Port_Types.h"
 #include "IOLM_Port_LEDTask.h"
 #include <drivers/mcspi.h>
+#include <kernel/dpl/CacheP.h>
 #include "ti_drivers_config.h"
 
 /* ========================================================================== */
@@ -67,12 +71,6 @@
 /* ========================================================================== */
 /*                             typedefs                                       */
 /* ========================================================================== */
-
-typedef enum IOLM_SPI_eSpiBusy
-{
-    IOLM_SPI_eSpiBusy_NotBusy,
-    IOLM_SPI_eSpiBusy_Busy
-}IOLM_SPI_eSpiBusy_t;
 
 typedef struct IOLM_SPI_mapping
 {
@@ -181,47 +179,5 @@ bool IOLM_SPI_getIq(uint8_t portNum_p);
  *
  */
 int32_t IOLM_SPI_baseBoardLED(uint32_t ledNumber_p, bool ledState_p);
-
-/**
- * \brief  Enable the desired Phy for SPI communication
- *
- * \param[in]   instance_p      SPI instance
- *
- */
-void IOLM_Phy_SPI_ChipSelect(uint8_t instance_p);
-
-/**
- * \brief  Disable the desired Phy for SPI communication
- *
- * \param[in]   instance_p      SPI instance
- *
- */
-void IOLM_Phy_SPI_ChipDeSelect(uint8_t instance_p);
-
-/**
- * \brief  Transfer data to and from IO-Link Phy over SPI
- *
- * \param[in]   instance_p      IO-Link port number
- * \param[in]   pTxData_p       pointer to Tx data buffer
- * \param[in]   pRxData_p       pointer to Rx data buffer
- * \param[in]   length_p        length of the data to exchange
- *
- * \return      error           as uint8_t
- */
-uint8_t IOLM_Phy_SPI_Transfer(uint8_t instance_p, uint8_t *pTxData_p, uint8_t *pRxData_p, uint8_t length_p);
-
-/*!
-*  \brief
-*  Registers the connected IRQ's
-*
-* \details
-*  The function connects the IRQ lines from Maxim chips
-*  (which are driven low in case of IO-Link message reception)
-*  to the corresponding interrupts functions, in order
-*  to trigger the driver to read data over the SPI
-*
-*  \return void
-*/
-void IOLM_Phy_RegIRQCallbacks();
 
 #endif /* IO_LINK_IOLINK_SPI_H_ */

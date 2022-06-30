@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['adcaveraging_5ft_17559',['adcAveraging_t',['../group__DRV__ADC__MODULE.html#ga76dbfab2dd5ffcbe14e53090facdf55c',1,'adc.h']]],
-  ['adcchannel_5ft_17560',['adcChannel_t',['../group__DRV__ADC__MODULE.html#ga240288af80a15a1bec36636a4b987319',1,'adc.h']]],
-  ['adcfifonum_5ft_17561',['adcFIFONum_t',['../group__DRV__ADC__MODULE.html#gabee2ec134eae1e257707d62e3e36b5fe',1,'adc.h']]],
-  ['adcidlemode_5ft_17562',['adcIdleMode_t',['../group__DRV__ADC__MODULE.html#ga420505a686c3e6e6a66f6692476498e7',1,'adc.h']]],
-  ['adcintrsrc_5ft_17563',['adcIntrSrc_t',['../group__DRV__ADC__MODULE.html#gaa8116dd58f1b7887fb2cb6a1974520c7',1,'adc.h']]],
-  ['adcoperationmode_5ft_17564',['adcOperationMode_t',['../group__DRV__ADC__MODULE.html#gaff13821e2111779e83e526c2a349f5cf',1,'adc.h']]],
-  ['adcstepid_5ft_17565',['adcStepId_t',['../group__DRV__ADC__MODULE.html#gaad62fd113d5231403ffc865af4d857ef',1,'adc.h']]]
+  ['adcaveraging_5ft_18158',['adcAveraging_t',['../group__DRV__ADC__MODULE.html#ga76dbfab2dd5ffcbe14e53090facdf55c',1,'adc.h']]],
+  ['adcchannel_5ft_18159',['adcChannel_t',['../group__DRV__ADC__MODULE.html#ga240288af80a15a1bec36636a4b987319',1,'adc.h']]],
+  ['adcfifonum_5ft_18160',['adcFIFONum_t',['../group__DRV__ADC__MODULE.html#gabee2ec134eae1e257707d62e3e36b5fe',1,'adc.h']]],
+  ['adcidlemode_5ft_18161',['adcIdleMode_t',['../group__DRV__ADC__MODULE.html#ga420505a686c3e6e6a66f6692476498e7',1,'adc.h']]],
+  ['adcintrsrc_5ft_18162',['adcIntrSrc_t',['../group__DRV__ADC__MODULE.html#gaa8116dd58f1b7887fb2cb6a1974520c7',1,'adc.h']]],
+  ['adcoperationmode_5ft_18163',['adcOperationMode_t',['../group__DRV__ADC__MODULE.html#gaff13821e2111779e83e526c2a349f5cf',1,'adc.h']]],
+  ['adcstepid_5ft_18164',['adcStepId_t',['../group__DRV__ADC__MODULE.html#gaad62fd113d5231403ffc865af4d857ef',1,'adc.h']]]
 ];

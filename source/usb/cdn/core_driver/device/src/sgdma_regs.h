@@ -34,6 +34,12 @@
 #ifndef SGDMA_REGS_H
 #define SGDMA_REGS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* set PRECISE_BURST_LENGTH to one above */
 #define PRECISE_BURST_LENGTH    0x00000000U
 #define TD_SIZE_MASK            0x00001FFFFU
@@ -213,6 +219,11 @@ typedef struct {
 #define DMARF_EP_TRBERREN   0x00000080U
 #define DMARF_EP_OUTSMMEN   0x00004000U
 #define DMARF_EP_ISOERREN   0x00008000U
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* SGDMA_REGS_H */
 

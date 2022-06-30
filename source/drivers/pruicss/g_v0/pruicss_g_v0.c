@@ -156,7 +156,6 @@ int32_t PRUICSS_intcInit(PRUICSS_Handle              handle,
 {
     uintptr_t               baseaddr;
     PRUICSS_HwAttrs const   *hwAttrs;
-    PRUICSS_Object          *object;
     uint32_t                i = 0;
     uint32_t                mask[5];
     int32_t                 retVal = SystemP_SUCCESS;
@@ -168,7 +167,6 @@ int32_t PRUICSS_intcInit(PRUICSS_Handle              handle,
 
     if(retVal == SystemP_SUCCESS)
     {
-        object = (PRUICSS_Object *)handle->object;
         hwAttrs = (PRUICSS_HwAttrs const *)handle->hwAttrs;
         baseaddr = hwAttrs->intcRegBase;
 

@@ -34,6 +34,12 @@
 #ifndef CUSBD_OBJ_IF_H
 #define CUSBD_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cusbd_if.h"
 
 /** @defgroup DriverObject Driver API Object
@@ -278,5 +284,10 @@ extern CUSBD_OBJ *CUSBD_GetInstance(void);
  *  @}
  */
 /* parasoft-end-suppress METRICS-36-3 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBD_OBJ_IF_H */

@@ -62,11 +62,9 @@
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-#if (_DEBUG_ == 1)
-#define ENETMCM_TSK_STACK_MAIN (8 * 1024)
-#else
-#define ENETMCM_TSK_STACK_MAIN (2 * 1024)
-#endif
+#define ENETMCM_TSK_STACK_MAIN              (3 * 1024)
+#define ENETMCM_PERIODIC_TICK_TSK_STACK     (3 * 1024)
+#define ENETMCM_ASYNC_IOCTL_TSK_STACK       (2 * 1024)
 
 #define ENETMCM_MBOX_MSG_COUNT              (10U)
 #define ENETMCM_TSK_PRIORITY                (2U)
@@ -116,21 +114,7 @@ typedef struct EnetMcm_Obj_s
 
     Udma_DrvHandle hUdmaDrv;
 
-    Cpsw_Cfg cpswCfg;
-
-#if (ENET_ENABLE_PER_ICSSG == 1)
-    Icssg_Cfg icssgCfg;
-#endif
-
-    EnetUdma_Cfg dmaCfg;
-
     uint32_t selfCoreId;
-
-    EnetMcm_setPortLinkCfg setPortLinkCfg;
-
-    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
-
-    uint8_t numMacPorts;
 
     TaskP_Object taskObj;
 
@@ -174,9 +158,9 @@ typedef struct EnetMcm_Obj_s
 
     uint8_t mcmMainTaskStack[ENETMCM_TSK_STACK_MAIN] __attribute__ ((aligned(32)));
 
-    uint8_t mcmPrdTaskStack[ENETMCM_TSK_STACK_MAIN] __attribute__ ((aligned(32)));
+    uint8_t mcmPrdTaskStack[ENETMCM_PERIODIC_TICK_TSK_STACK] __attribute__ ((aligned(32)));
 
-    uint8_t asyncIoctlTaskStack[ENETMCM_TSK_STACK_MAIN] __attribute__ ((aligned(32)));
+    uint8_t asyncIoctlTaskStack[ENETMCM_ASYNC_IOCTL_TSK_STACK] __attribute__ ((aligned(32)));
 
 }EnetMcm_Obj;
 
@@ -246,8 +230,6 @@ static void     EnetMcm_close(EnetMcm_Handle hMcm);
 
 static void     EnetMcm_serverTask(void * hMcm);
 
-static int32_t  EnetMcm_enablePorts(EnetMcm_Handle hMcm);
-
 /* ========================================================================== */
 /*                            Global Variables                                */
 /* ========================================================================== */
@@ -258,9 +240,9 @@ static EnetMcm_Obj gMcmObj[] =
     {
         .isInitDone             = false,
         .timerTaskShutDownFlag  = false,
-        .hMutex                 = NULL_PTR,
-        .hMboxCmd               = NULL_PTR,
-        .hMboxResponse          = NULL_PTR,
+        .hMutex                 = (SemaphoreP_Object *) NULL_PTR,
+        .hMboxCmd               = (QueueHandle_t) NULL_PTR,
+        .hMboxResponse          = (QueueHandle_t) NULL_PTR,
         .asyncIoctlDone         = false,
         .asyncIoctlTaskShutdown = false,
     },
@@ -318,7 +300,7 @@ static EnetMcm_CoreAttachTableEntry *EnetMcm_getCoreAttachEntry(EnetMcm_CoreAtta
     uint32_t i;
     EnetMcm_CoreAttachTableEntry *entry;
 
-    entry = NULL_PTR;
+    entry = (EnetMcm_CoreAttachTableEntry *) NULL_PTR;
     for (i = 0; i < attachTbl->numCoresAttached; i++)
     {
         if (attachTbl->entry[i].coreId == coreId)
@@ -434,50 +416,13 @@ static void EnetMcm_initMbox(EnetMcm_Handle hMcm)
 static int32_t EnetMcm_validateInitCfg(const EnetMcm_InitConfig *pMcmInitCfg)
 {
     int32_t status = ENET_SOK;
-    EnetUdma_Cfg *udmaCfg = NULL_PTR;
-    Cpsw_Cfg *cpswCfg;
-    Enet_Type enetType;
-    uint32_t instId;
-#if (ENET_ENABLE_PER_ICSSG == 1)
-    Icssg_Cfg *icssgCfg;
-#endif
 
-    if ((pMcmInitCfg != NULL_PTR) &&
-        (pMcmInitCfg->perCfg != NULL_PTR) &&
-        (pMcmInitCfg->setPortLinkCfg != NULL_PTR))
+    if (pMcmInitCfg != NULL_PTR)
     {
-        enetType = pMcmInitCfg->enetType;
-        instId = pMcmInitCfg->instId;
-
-        if (Enet_isCpswFamily(enetType))
-        {
-            cpswCfg = (Cpsw_Cfg *) pMcmInitCfg->perCfg;
-            udmaCfg = (EnetUdma_Cfg *)cpswCfg->dmaCfg;
-        }
-#if (ENET_ENABLE_PER_ICSSG == 1)
-        else
-        {
-            icssgCfg = (Icssg_Cfg *) pMcmInitCfg->perCfg;
-            udmaCfg = (EnetUdma_Cfg *)icssgCfg->dmaCfg;
-        }
-#endif
-        if ((udmaCfg == NULL_PTR) || (udmaCfg->hUdmaDrv == NULL_PTR))
+        if (pMcmInitCfg->hUdmaDrv == NULL_PTR)
         {
             status = ENET_EINVALIDPARAMS;
         }
-
-        if ((enetType == ENET_CPSW_2G) &&
-            ((pMcmInitCfg->numMacPorts != EnetSoc_getMacPortMax(enetType, instId)) ||
-             (pMcmInitCfg->macPortList[0] != ENET_MAC_PORT_1)))
-        {
-            status = ENET_EINVALIDPARAMS;
-        }
-
-        if ((pMcmInitCfg->numMacPorts > EnetSoc_getMacPortMax(enetType, instId)))
-        {
-            status = ENET_EINVALIDPARAMS;
-        }
-
     }
     else
     {
@@ -493,12 +438,6 @@ int32_t  EnetMcm_init(const EnetMcm_InitConfig *pMcmInitCfg)
     uintptr_t key;
     Enet_Type enetType  = pMcmInitCfg->enetType;
     EnetMcm_Handle hMcm;
-    Cpsw_Cfg *cpswCfg;
-    EnetUdma_Cfg *dmaCfg = NULL_PTR;
-
-#if (ENET_ENABLE_PER_ICSSG == 1)
-    Icssg_Cfg *icssgCfg;
-#endif
 
     key = HwiP_disable();
 
@@ -520,30 +459,12 @@ int32_t  EnetMcm_init(const EnetMcm_InitConfig *pMcmInitCfg)
 
         if (status == ENET_SOK)
         {
-            if (Enet_isCpswFamily(enetType))
-            {
-                cpswCfg = (Cpsw_Cfg *)pMcmInitCfg->perCfg;
-                dmaCfg = (typeof(dmaCfg))cpswCfg->dmaCfg;
-                hMcm->selfCoreId = cpswCfg->resCfg.selfCoreId;
-                hMcm->cpswCfg = *cpswCfg;
-            }
-#if (ENET_ENABLE_PER_ICSSG == 1)
-            else
-            {
-                icssgCfg = (Icssg_Cfg *)pMcmInitCfg->perCfg;
-                dmaCfg = (typeof(dmaCfg))icssgCfg->dmaCfg;
-                hMcm->selfCoreId = icssgCfg->resCfg.selfCoreId;
-                hMcm->icssgCfg = *icssgCfg;
-            }
-#endif
-            hMcm->dmaCfg             = *dmaCfg;
+            hMcm->selfCoreId = pMcmInitCfg->selfCoreId;
             hMcm->refCnt             = 0U;
             hMcm->enetType           = enetType;
             hMcm->instId             = pMcmInitCfg->instId;
-            hMcm->hEnet              = NULL_PTR;
-            hMcm->hUdmaDrv           = NULL_PTR;
-            hMcm->setPortLinkCfg     = pMcmInitCfg->setPortLinkCfg;
-            hMcm->numMacPorts        = pMcmInitCfg->numMacPorts;
+            hMcm->hEnet              = (Enet_Handle)NULL_PTR;
+            hMcm->hUdmaDrv           = pMcmInitCfg->hUdmaDrv;
             hMcm->periodicTaskPeriod = pMcmInitCfg->periodicTaskPeriod;
 
             hMcm->print = pMcmInitCfg->print;
@@ -554,7 +475,6 @@ int32_t  EnetMcm_init(const EnetMcm_InitConfig *pMcmInitCfg)
 
             EnetMcm_initAttachTable(&hMcm->coreAttachTable);
 
-            memcpy(&hMcm->macPortList[0U], &pMcmInitCfg->macPortList[0U], sizeof(pMcmInitCfg->macPortList));
             EnetMcm_initMbox(hMcm);
 
             hMcm->isInitDone = true;
@@ -637,137 +557,6 @@ void EnetMcm_deInit(Enet_Type enetType)
     SemaphoreP_post(hMcm->hMutex);
 }
 
-static int32_t EnetMcm_enablePorts(EnetMcm_Handle hMcm)
-{
-    int32_t status = ENET_SOK;
-    Enet_IoctlPrms prms;
-    Enet_Handle hEnet = hMcm->hEnet;
-    uint32_t coreId   = hMcm->selfCoreId;
-    uint8_t i;
-
-    for (i = 0U; i < hMcm->numMacPorts; i++)
-    {
-        EnetPer_PortLinkCfg linkArgs;
-        CpswMacPort_Cfg cpswMacCfg;
-#if (ENET_ENABLE_PER_ICSSG == 1)
-        IcssgMacPort_Cfg icssgMacCfg;
-#endif
-        if (Enet_isCpswFamily(hMcm->enetType))
-        {
-            linkArgs.macCfg = &cpswMacCfg;
-        }
-#if (ENET_ENABLE_PER_ICSSG == 1)
-        else
-        {
-            linkArgs.macCfg = &icssgMacCfg;
-        }
-#endif
-        linkArgs.macPort = hMcm->macPortList[i];
-        hMcm->setPortLinkCfg(&linkArgs, hMcm->macPortList[i]);
-
-        ENET_IOCTL_SET_IN_ARGS(&prms, &linkArgs);
-        status = Enet_ioctl(hEnet,
-                            coreId,
-                            ENET_PER_IOCTL_OPEN_PORT_LINK,
-                            &prms);
-        if (status != ENET_SOK)
-        {
-            hMcm->print("EnetMcm_enablePorts() failed to open MAC port: %d\r\n", status);
-        }
-
-#if (ENET_ENABLE_PER_ICSSG == 1)
-        if ((status == ENET_SOK) && (Enet_isIcssFamily(hMcm->enetType)))
-        {
-            IcssgMacPort_SetPortStateInArgs setPortStateInArgs;
-
-            setPortStateInArgs.macPort   = hMcm->macPortList[i];
-            setPortStateInArgs.portState = ICSSG_PORT_STATE_FORWARD;
-            ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
-            prms.outArgs = NULL_PTR;
-
-            status = Enet_ioctl(hEnet, coreId, ICSSG_PER_IOCTL_SET_PORT_STATE, &prms);
-            if (status == ENET_SINPROGRESS)
-            {
-                /* Wait for asyc ioctl to complete */
-                hMcm->asyncIoctlDone = false;
-                while (!hMcm->asyncIoctlDone)
-                {
-                    Enet_poll(hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
-                    TaskP_yield();
-                }
-
-                status = ENET_SOK;
-            }
-            else
-            {
-                hMcm->print("EnetMcm_enablePorts() failed ICSSG_MACPORT_IOCTL_SET_PORT_STATE: %d\r\n", status);
-            }
-        }
-#endif
-    }
-
-    if ((status == ENET_SOK) && (Enet_isCpswFamily(hMcm->enetType)))
-    {
-        CpswAle_SetPortStateInArgs setPortStateInArgs;
-
-        setPortStateInArgs.portNum   = CPSW_ALE_HOST_PORT_NUM;
-        setPortStateInArgs.portState = CPSW_ALE_PORTSTATE_FORWARD;
-        ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
-        prms.outArgs = NULL_PTR;
-        status       = Enet_ioctl(hEnet,
-                                  coreId,
-                                  CPSW_ALE_IOCTL_SET_PORT_STATE,
-                                  &prms);
-        if (status != ENET_SOK)
-        {
-            hMcm->print("EnetMcm_enablePorts() failed CPSW_ALE_IOCTL_SET_PORT_STATE: %d\r\n", status);
-        }
-
-        if (status == ENET_SOK)
-        {
-            ENET_IOCTL_SET_NO_ARGS(&prms);
-            status = Enet_ioctl(hEnet,
-                                coreId,
-                                ENET_HOSTPORT_IOCTL_ENABLE,
-                                &prms);
-            if (status != ENET_SOK)
-            {
-                hMcm->print("EnetMcm_enablePorts() Failed to enable host port: %d\r\n", status);
-            }
-        }
-    }
-
-    /* Show alive PHYs */
-    if (status == ENET_SOK)
-    {
-        Enet_IoctlPrms prms;
-        bool alive;
-        int8_t i;
-
-        for (i = 0U; i < ENET_MDIO_PHY_CNT_MAX; i++)
-        {
-            ENET_IOCTL_SET_INOUT_ARGS(&prms, &i, &alive);
-            status = Enet_ioctl(hEnet,
-                                coreId,
-                                ENET_MDIO_IOCTL_IS_ALIVE,
-                                &prms);
-            if (status == ENET_SOK)
-            {
-                if (alive == true)
-                {
-                    hMcm->print("PHY %d is alive\r\n", i);
-                }
-            }
-            else
-            {
-                hMcm->print("Failed to get PHY %d alive status: %d\r\n", i, status);
-            }
-        }
-    }
-
-    return status;
-}
-
 static void EnetMcm_timerCb(ClockP_Object *clkInst, void * arg)
 {
     SemaphoreP_Object * timerSem = (SemaphoreP_Object *)arg;
@@ -826,7 +615,7 @@ static void EnetMcm_createClock(EnetMcm_Handle hMcm)
     TaskP_Params_init(&tskParams);
     tskParams.priority       = ENETMCM_PERIODICTSK_PRIORITY;
     tskParams.stack          = &hMcm->mcmPrdTaskStack[0];
-    tskParams.stackSize      = ENETMCM_TSK_STACK_MAIN;
+    tskParams.stackSize      = sizeof(hMcm->mcmPrdTaskStack);
     tskParams.args           = hMcm;
     tskParams.name           = "Enet_PeriodicTickTask";
     tskParams.taskMain       =  &EnetMcm_periodicTick;
@@ -838,64 +627,53 @@ static void EnetMcm_createClock(EnetMcm_Handle hMcm)
 static int32_t EnetMcm_open(EnetMcm_Handle hMcm)
 {
     int32_t status = ENET_SOK;
-    EnetOsal_Cfg osalPrms;
-    EnetUtils_Cfg utilsPrms;
-    void *perCfg = NULL_PTR;
-    EnetUdma_Cfg *udmaCfg = &hMcm->dmaCfg;
 
-    uint32_t cfgSize = sizeof(hMcm->cpswCfg);
     TaskP_Params tskParams;
 
-    if (Enet_isCpswFamily(hMcm->enetType))
-    {
-        perCfg = &hMcm->cpswCfg;
-        cfgSize = sizeof(hMcm->cpswCfg);
-    }
-#if (ENET_ENABLE_PER_ICSSG == 1)
-    else
-    {
-        perCfg = &hMcm->icssgCfg;
-        cfgSize = sizeof(hMcm->icssgCfg);
-    }
-#endif
+    // if (Enet_isCpswFamily(hMcm->enetType))
+    // {
+    //     perCfg = &hMcm->cpswCfg;
+    //     cfgSize = sizeof(hMcm->cpswCfg);
+    // }
 
-    if (ENET_CPSW_3G == hMcm->enetType)
-    {
-        hMcm->print("CPSW_3G Test on MAIN NAVSS\r\n");
-    }
-    else if (ENET_ICSSG_DUALMAC == hMcm->enetType)
-    {
-        hMcm->print("ICSSG Dual MAC Test\r\n");
-    }
-    else if (ENET_ICSSG_SWITCH == hMcm->enetType)
-    {
-        hMcm->print("ICSSG Switch Test\r\n");
-    }
-    else
-    {
-        hMcm->print("Invalid Enet Type\r\n");
-    }
+    // if (ENET_CPSW_3G == hMcm->enetType)
+    // {
+    //     hMcm->print("CPSW_3G Test on MAIN NAVSS\r\n");
+    // }
+    // else if (ENET_ICSSG_DUALMAC == hMcm->enetType)
+    // {
+    //     hMcm->print("ICSSG Dual MAC Test\r\n");
+    // }
+    // else if (ENET_ICSSG_SWITCH == hMcm->enetType)
+    // {
+    //     hMcm->print("ICSSG Switch Test\r\n");
+    // }
+    // else
+    // {
+    //     hMcm->print("Invalid Enet Type\r\n");
+    // }
 
-    /* Initialize CPSW driver with default OSAL, utils */
-    utilsPrms.print     = hMcm->print;
-    utilsPrms.physToVirt = &EnetAppUtils_phyToVirtFxn;
-    utilsPrms.virtToPhys = &EnetAppUtils_virtToPhyFxn;
+    // /* Initialize CPSW driver with default OSAL, utils */
+    // utilsPrms.print     = hMcm->print;
+    // utilsPrms.physToVirt = &EnetAppUtils_phyToVirtFxn;
+    // utilsPrms.virtToPhys = &EnetAppUtils_virtToPhyFxn;
 
-    Enet_initOsalCfg(&osalPrms);
+    // Enet_initOsalCfg(&osalPrms);
 
-    Enet_init(&osalPrms, &utilsPrms);
+    // Enet_init(&osalPrms, &utilsPrms);
 
-    status = EnetMem_init();
-    EnetAppUtils_assert(ENET_SOK == status);
+    // hMcm->hEnet = Enet_open(hMcm->enetType, hMcm->instId, perCfg, cfgSize);
+    // if(hMcm->hEnet == NULL_PTR)
+    // {
+    //     EnetAppUtils_print("Enet_open failed\r\n");
+    //     EnetAppUtils_assert(hMcm->hEnet != NULL_PTR);
+    // }
 
-    hMcm->hUdmaDrv = udmaCfg->hUdmaDrv;
+    // status = EnetMem_init();
+    // EnetAppUtils_assert(ENET_SOK == status);
 
-    hMcm->hEnet = Enet_open(hMcm->enetType, hMcm->instId, perCfg, cfgSize);
-    if(hMcm->hEnet == NULL_PTR)
-    {
-        EnetAppUtils_print("Enet_open failed\r\n");
-        EnetAppUtils_assert(hMcm->hEnet != NULL_PTR);
-    }
+    hMcm->hEnet = Enet_getHandle(hMcm->enetType, hMcm->instId);
+    EnetAppUtils_assert(NULL != hMcm->hEnet);
 
     status = SemaphoreP_constructCounting(&hMcm->asyncIoctlSemObj, 0, 128);
     EnetAppUtils_assert(SystemP_SUCCESS == status);
@@ -925,14 +703,6 @@ static int32_t EnetMcm_open(EnetMcm_Handle hMcm)
                              (void *) &hMcm->asyncIoctlSemObj);
     }
 #endif
-
-    /* Enable Host and MAC Ports */
-    status = EnetMcm_enablePorts(hMcm);
-    if(status != ENET_SOK)
-    {
-        EnetAppUtils_print("EnetMcm_enablePorts failed\r\n");
-        EnetAppUtils_assert(ENET_SOK == status);
-    }
 
     EnetMcm_createClock(hMcm);
 
@@ -1124,8 +894,12 @@ static void EnetMcm_serverTask(void * McmHandle)
 static void EnetMcm_close(EnetMcm_Handle hMcm)
 {
     Enet_IoctlPrms prms;
-    uint8_t i;
     int32_t status;
+    uint32_t i;
+    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
+    uint8_t numMacPorts;
+
+    EnetApp_getEnetInstMacInfo(hMcm->enetType, hMcm->instId, macPortList, &numMacPorts);
 
     if (Enet_isCpswFamily(hMcm->enetType))
     {
@@ -1154,9 +928,9 @@ static void EnetMcm_close(EnetMcm_Handle hMcm)
                                0U);
     }
 
-    for (i = 0U; i < hMcm->numMacPorts; i++)
+    for (i = 0U; i < numMacPorts; i++)
     {
-        Enet_MacPort macPort = hMcm->macPortList[i];
+        Enet_MacPort macPort = macPortList[i];
 
         ENET_IOCTL_SET_IN_ARGS(&prms, &macPort);
         status = Enet_ioctl(hMcm->hEnet,
@@ -1195,7 +969,7 @@ static void EnetMcm_close(EnetMcm_Handle hMcm)
 
     Enet_deinit();
 
-    hMcm->hEnet = NULL_PTR;
+    hMcm->hEnet = (Enet_Handle) NULL_PTR;
 }
 
 void EnetMcm_acquireHandleInfo(const EnetMcm_CmdIf *hMcmCmdIf,

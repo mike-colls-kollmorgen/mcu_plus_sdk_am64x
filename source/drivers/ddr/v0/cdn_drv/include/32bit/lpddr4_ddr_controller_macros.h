@@ -36,6 +36,12 @@
 #ifndef REG_LPDDR4_DDR_CONTROLLER_MACROS_H_
 #define REG_LPDDR4_DDR_CONTROLLER_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define LPDDR4__DENALI_CTL_0_READ_MASK                               0xFFFF0F01U
 #define LPDDR4__DENALI_CTL_0_WRITE_MASK                              0xFFFF0F01U
 #define LPDDR4__DENALI_CTL_0__START_MASK                             0x00000001U
@@ -7815,6 +7821,11 @@
 #define LPDDR4__DENALI_CTL_458__PORT_TO_CORE_LR_ERR_INJ_EN_3_WIDTH            4U
 #define LPDDR4__PORT_TO_CORE_LR_ERR_INJ_EN_3__REG DENALI_CTL_458
 #define LPDDR4__PORT_TO_CORE_LR_ERR_INJ_EN_3__FLD LPDDR4__DENALI_CTL_458__PORT_TO_CORE_LR_ERR_INJ_EN_3
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_LPDDR4_DDR_CONTROLLER_MACROS_H_ */
 

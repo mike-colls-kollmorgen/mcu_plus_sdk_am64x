@@ -62,9 +62,7 @@ typedef void (*TaskP_FxnMain)(void *args);
 /**
  * \brief Value to be used for highest priority task
  */
-#define TaskP_PRIORITY_HIGHEST      (15u)
-
-
+#define TaskP_PRIORITY_HIGHEST      (31u)
 
 /**
  * \brief The update rate at which TaskP_loadUpdateAll() is called

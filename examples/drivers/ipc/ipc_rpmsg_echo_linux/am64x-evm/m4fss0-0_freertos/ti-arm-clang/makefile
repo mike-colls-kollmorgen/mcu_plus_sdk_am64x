@@ -1,5 +1,5 @@
 #
-# Auto generated makefile - DO NOT MODIFY
+# Auto generated makefile
 #
 
 export MCU_PLUS_SDK_PATH?=$(abspath ../../../../../../..)
@@ -61,11 +61,24 @@ DEFINES_common := \
 CFLAGS_common := \
 	-mcpu=cortex-m4 \
 	-mfloat-abi=hard \
+	-mthumb \
 	-Wall \
 	-Werror \
 	-g \
 	-Wno-gnu-variable-sized-type-not-at-end \
 	-Wno-unused-function \
+
+CFLAGS_cpp_common := \
+	-Wno-c99-designator \
+	-Wno-extern-c-compat \
+	-Wno-c++11-narrowing \
+	-Wno-reorder-init-list \
+	-Wno-deprecated-register \
+	-Wno-writable-strings \
+	-Wno-enum-compare \
+	-Wno-reserved-user-defined-literal \
+	-Wno-unused-const-variable \
+	-x c++ \
 
 CFLAGS_debug := \
 	-D_DEBUG_=1 \
@@ -91,6 +104,7 @@ LIBS_common = \
 LFLAGS_common = \
 	-Wl,--ram_model \
 	-Wl,--reread_libs \
+
 
 LIBS_NAME = \
 	freertos.am64x.m4f.ti-arm-clang.${ConfigName}.lib \
@@ -160,6 +174,7 @@ clean:
 	$(RM) $(BOOTIMAGE_NAME)
 	$(RM) $(BOOTIMAGE_NAME_XIP)
 	$(RM) $(BOOTIMAGE_NAME_SIGNED)
+	$(RM) $(BOOTIMAGE_NAME_HS)
 	$(RM) $(BOOTIMAGE_RPRC_NAME)
 	$(RM) $(BOOTIMAGE_RPRC_NAME_XIP)
 	$(RMDIR) generated/

@@ -98,6 +98,15 @@ typedef enum EnetMacPort_Ioctl_e
     /*!
      * \brief Set ingress DSCP priority (TOS) map.
      *
+     * NOTE:
+     * - For ICSSG upto 7 DSCP values can have traffic class mapping,
+     *   All others will be treated as best effort traffic.
+     * - For ICSSG only IPv4 based priority mapping is supported and
+     *   Ipv6 based is not supported.
+     * - For ICSSG incase of local generated traffic for switch mode
+     *   expecting both ports has same mapping and if it is undirected
+     *   traffic priorities are taken from Port1 mapping
+     *
      * IOCTL parameters:
      * -  inArgs: #EnetMacPort_SetIngressDscpPriorityMapInArgs
      * - outArgs: None

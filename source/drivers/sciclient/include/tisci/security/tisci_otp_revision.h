@@ -50,6 +50,12 @@
 #ifndef REVISION_RD_WR_H
 #define REVISION_RD_WR_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *
  *  \brief Declarations for all message structures to read and write SWREV and
@@ -169,6 +175,11 @@ enum tisci_otp_revision_identifier {
     /** Software Revision Secure Board Configuration */
     OTP_REV_ID_SEC_BRDCFG = 2,
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,23 +108,23 @@ $(document).ready(function(){initNavTree('EXAMPLES_ENET_VLAN_ICSSG.html',''); in
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1339">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1340">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1341">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1342">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1343">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1344">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1345">For ICSSG based example</a></li>
+<ul><li class="level1"><a href="#autotoc_md1565">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1566">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1567">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1568">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1569">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1570">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1571">For ICSSG based example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md1346">Run the example</a></li>
-<li class="level2"><a href="#autotoc_md1347">Sample output for VLAN ICSSG example</a></li>
+<li class="level2"><a href="#autotoc_md1572">Run the example</a></li>
+<li class="level2"><a href="#autotoc_md1573">Sample output for VLAN ICSSG example</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1348">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1574">See Also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_networking_enet_vlan_icssg"></a></p>
-<h1><a class="anchor" id="autotoc_md1339"></a>
+<h1><a class="anchor" id="autotoc_md1565"></a>
 Introduction</h1>
 <p>This Enet VLAN icssg example demonstrates UNH-IOL VLAN conformance and FDB conformance using Enet with ICSSG peripheral.</p>
 <p>On AM64X, we can do ethernet based communication using ICSSG HW Mechanism</p>
@@ -165,7 +165,7 @@ Introduction</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1340"></a>
+<h1><a class="anchor" id="autotoc_md1566"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -181,20 +181,20 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/networking/enet_vlan_icssg   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1341"></a>
+<h1><a class="anchor" id="autotoc_md1567"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1342"></a>
+<h2><a class="anchor" id="autotoc_md1568"></a>
 Build the example</h2>
 <ul>
 <li>When using CCS projects to build, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li>When using makefiles to build, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1343"></a>
+<h2><a class="anchor" id="autotoc_md1569"></a>
 HW Setup</h2>
 <dl class="section note"><dt>Note</dt><dd>Make sure you have setup the EVM with cable connections as shown here, <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>. In addition do below steps.</dd></dl>
-<h3><a class="anchor" id="autotoc_md1344"></a>
+<h3><a class="anchor" id="autotoc_md1570"></a>
 AM64X-EVM</h3>
-<h4><a class="anchor" id="autotoc_md1345"></a>
+<h4><a class="anchor" id="autotoc_md1571"></a>
 For ICSSG based example</h4>
 <ul>
 <li>Connect two ethernet cables to the EVM from two host PC's as shown below</li>
@@ -203,7 +203,7 @@ For ICSSG based example</h4>
 <img src="am64x_evm_lwip_example_01.png" alt=""/>
 <div class="caption">
 Ethernet cable for ICSS based ethernet</div></div>
-<h2><a class="anchor" id="autotoc_md1346"></a>
+<h2><a class="anchor" id="autotoc_md1572"></a>
 Run the example</h2>
 <dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run again, a CPU power-cycle is MUST</dd></dl>
 <ul>
@@ -212,17 +212,11 @@ Run the example</h2>
 <li>Select the Unit test default settings test case(5) from main menu and configure switch in VLAN Aware mode by selecting testcase number 4 and provide input as 1 to enable VLAN aware mode and 0 for VLAN unaware mode.</li>
 <li>We can start sending packets from Colasoft Pkt Builder or packETH tool and capture the packets in Wireshark.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1347"></a>
+<h2><a class="anchor" id="autotoc_md1573"></a>
 Sample output for VLAN ICSSG example</h2>
 <div class="fragment"><div class="line">================================</div>
 <div class="line">      ENET ICSSG UNIT TEST</div>
 <div class="line">================================</div>
-<div class="line">Init Enet&#39;s OSAL and utils to use defaults</div>
-<div class="line">Init memory utils</div>
-<div class="line">Create clock and task for periodic tick</div>
-<div class="line">Create periodic tick task</div>
-<div class="line">Create periodic tick clock</div>
-<div class="line">Open Main UDMA driver</div>
 <div class="line"> </div>
 <div class="line">Init all peripheral clocks</div>
 <div class="line">----------------------------------------------</div>
@@ -230,11 +224,18 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line"> </div>
 <div class="line">Init all configs</div>
 <div class="line">----------------------------------------------</div>
-<div class="line">icssg1: init config</div>
+<div class="line"> </div>
+<div class="line">Init  configs EnetType:2, InstId :1</div>
+<div class="line">----------------------------------------------</div>
+<div class="line">icssg1: Open port 1</div>
+<div class="line">EnetPhy_bindDriver:</div>
+<div class="line">icssg1: Open port 2</div>
+<div class="line">EnetPhy_bindDriver:</div>
+<div class="line">PHY 3 is alive</div>
+<div class="line">PHY 15 is alive</div>
 <div class="line"> </div>
 <div class="line">Open all peripherals</div>
 <div class="line">----------------------------------------------</div>
-<div class="line">icssg1: Open enet</div>
 <div class="line">icssg1: Register async IOCTL callback</div>
 <div class="line">icssg1: Register TX timestamp callback</div>
 <div class="line"> </div>
@@ -245,12 +246,6 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line">Create RX tasks</div>
 <div class="line">----------------------------------------------</div>
 <div class="line">icssg1: Create RX task</div>
-<div class="line">icssg1: Open port 1</div>
-<div class="line">icssg1: Open port 1 link</div>
-<div class="line">EnetPhy_bindDriver: PHY 15: OUI:080028 Model:0f Ver:01 &lt;-&gt; &#39;dp83869&#39; : OK</div>
-<div class="line">icssg1: Open port 2</div>
-<div class="line">icssg1: Open port 2 link</div>
-<div class="line">EnetPhy_bindDriver: PHY 3: OUI:080028 Model:0f Ver:01 &lt;-&gt; &#39;dp83869&#39; : OK</div>
 <div class="line">icssg1: Waiting for link up...</div>
 <div class="line"> </div>
 <div class="line">***************************************************</div>
@@ -262,12 +257,12 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line">4.  TC_configure_vlan_aware_unaware</div>
 <div class="line">5.  setup_unit_test_default_settings</div>
 <div class="line"> </div>
-<div class="line">Test case id: Icssg_handleLinkUp: icssg1: Port 1: Link up: 1-Gbps Full-Duplex</div>
-<div class="line">Icssg_handleLinkUp: icssg1: Port 2: Link up: 1-Gbps Full-Duplex</div>
+<div class="line">Test case id: Icssg_handleLinkUp:</div>
 <div class="line">icssg1: Port 1 link is up</div>
 <div class="line">icssg1: Set port state to &#39;Forward&#39;</div>
 <div class="line">icssg1: Async IOCTL completed</div>
 <div class="line">icssg1: Async IOCTL completed</div>
+<div class="line">Icssg_handleLinkUp:</div>
 <div class="line">icssg1: Port 2 link is up</div>
 <div class="line">icssg1: Set port state to &#39;Forward&#39;</div>
 <div class="line">icssg1: Async IOCTL completed</div>
@@ -279,45 +274,6 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> Invalid test case please select valid test case</div>
-<div class="line"> </div>
-<div class="line">***************************************************</div>
-<div class="line">                UNIT TEST MENU</div>
-<div class="line">***************************************************</div>
-<div class="line">1.  TC_VLAN_testing</div>
-<div class="line">2.  TC_FDB_testing</div>
-<div class="line">3.  UTILS_testing</div>
-<div class="line">4.  TC_configure_vlan_aware_unaware</div>
-<div class="line">5.  setup_unit_test_default_settings</div>
-<div class="line"> </div>
-<div class="line">Test case id: 1</div>
-<div class="line">In VLAN part of ENET@UT</div>
-<div class="line">Please select Test no to choose particular test case to execute</div>
-<div class="line">1.  VLAN Classification</div>
-<div class="line">2.  Acceptable Frame Types Parameter: Part A: Default Behavior</div>
-<div class="line">3.  Acceptable Frame Types Parameter: Part B: Admit All Frames</div>
-<div class="line">4.  Acceptable Frame Types Parameter: Part C: Admit only VLAN-Tagged Frames</div>
-<div class="line">5.  Acceptable Frame Types Parameter: Part D: Admit only Untagged and Priority-Tagged Frames</div>
-<div class="line">6.  Enable Ingress Filtering: Part C</div>
-<div class="line">7.  PVID Configured through Management: Part A: setting the untagged member set and PVID to invalid VID</div>
-<div class="line">8.  PVID Configured through Management: Part B: Setting the Tagged Member Set to Invalid VIDs</div>
-<div class="line">9.  PVID Configured through Management: Part C: Setting the Untagged Member Set and PVID to Valid VIDs</div>
-<div class="line">10.  PVID Configured through Management: Part D: Setting the Tagged Member Set to Valid VIDs</div>
-<div class="line">11.  PVID Assigned to a Port in no VLAN Member Set: Part B</div>
-<div class="line">12.  Minimum Frame Size: Part A: Minimum Untagged Size</div>
-<div class="line">13.  Minimum Frame Size: Part B: Less Than Minimum Untagged Size</div>
-<div class="line">14.  Minimum Frame Size: Part C: Minimum Tagged Size</div>
-<div class="line">15.  Minimum Frame Size: Part D: Less Than Minimum Tagged Size</div>
-<div class="line">16.  Maximum Tagged Size: Part A: Maximum Tagged Size</div>
-<div class="line">17.  Maximum Tagged Size: Part B: Maximum Tagged Size Exceeded</div>
-<div class="line">18.  Untagging Minimum-Sized Tagged Frames</div>
-<div class="line">19.  Regenerating User Priority</div>
-<div class="line">20.  Bad FCS Received</div>
-<div class="line">21.  Recalculating FCS</div>
-<div class="line">1</div>
-<div class="line">Selected Test case: VLAN Classification</div>
-<div class="line">Test VLAN Classification  run successfully from DUT side...</div>
-<div class="line"> </div>
-<div class="line">Test TC_VLAN_testing run successfully from DUT side...</div>
 <div class="line"> </div>
 <div class="line">***************************************************</div>
 <div class="line">                UNIT TEST MENU</div>
@@ -350,19 +306,15 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line"> </div>
 <div class="line"> icssg1 statistics</div>
 <div class="line">--------------------------------</div>
-<div class="line">  rxGoodFrames            = 10</div>
-<div class="line">  rxBCastFrames           = 10</div>
-<div class="line">  rxMCastFrames           = 10</div>
-<div class="line">  rxClass8                = 10</div>
-<div class="line">  rxClass9                = 10</div>
-<div class="line">  rxBucket2SizedFrame     = 10</div>
-<div class="line">  rxTotalByte             = 1280</div>
-<div class="line">  rxTxTotalByte           = 4000</div>
-<div class="line">  txGoodFrame             = 20</div>
-<div class="line">  txBcastFrame            = 10</div>
-<div class="line">  txMcastFrame            = 10</div>
-<div class="line">  txBucket3SizedFrame     = 20</div>
-<div class="line">  txTotalByte             = 2720</div>
+<div class="line">  rxGoodFrames            = 76991</div>
+<div class="line">  rxClass8                = 76991</div>
+<div class="line">  rxClass9                = 76991</div>
+<div class="line">  rxBucket2SizedFrame     = 65535</div>
+<div class="line">  rxTotalByte             = 9854848</div>
+<div class="line">  rxTxTotalByte           = 20325624</div>
+<div class="line">  txGoodFrame             = 468106</div>
+<div class="line">  txBucket3SizedFrame     = 65535</div>
+<div class="line">  txTotalByte             = 63662416</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line">Print statistics</div>
@@ -370,22 +322,88 @@ Sample output for VLAN ICSSG example</h2>
 <div class="line"> </div>
 <div class="line"> icssg1 statistics</div>
 <div class="line">--------------------------------</div>
-<div class="line">  rxGoodFrames            = 10</div>
-<div class="line">  rxBCastFrames           = 10</div>
-<div class="line">  rxMCastFrames           = 10</div>
-<div class="line">  rxClass8                = 10</div>
-<div class="line">  rxClass9                = 10</div>
-<div class="line">  rxBucket2SizedFrame     = 10</div>
-<div class="line">  rxTotalByte             = 1280</div>
-<div class="line">  rxTxTotalByte           = 4000</div>
-<div class="line">  txGoodFrame             = 20</div>
-<div class="line">  txBcastFrame            = 10</div>
-<div class="line">  txMcastFrame            = 10</div>
-<div class="line">  txBucket3SizedFrame     = 20</div>
-<div class="line">  txTotalByte             = 2720</div>
+<div class="line">  rxGoodFrames            = 468106</div>
+<div class="line">  rxClass8                = 468106</div>
+<div class="line">  rxClass9                = 468106</div>
+<div class="line">  rxBucket2SizedFrame     = 65535</div>
+<div class="line">  rxTotalByte             = 59917568</div>
+<div class="line">  rxTxTotalByte           = 123579984</div>
+<div class="line">  txGoodFrame             = 76991</div>
+<div class="line">  txBucket3SizedFrame     = 65535</div>
+<div class="line">  txTotalByte             = 10470776</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line">Test UTILS_display_icssg_hw_consolidated_statistics run successfully from DUT side...</div>
+<div class="line"> </div>
+<div class="line">*****************************************************</div>
+<div class="line">        TEST UTILITY EXECUTION SUMMARY</div>
+<div class="line">*****************************************************</div>
+<div class="line"> </div>
+<div class="line">Test UTILS_testing run successfully from DUT side...</div>
+<div class="line"> </div>
+<div class="line">***************************************************</div>
+<div class="line">                UNIT TEST MENU</div>
+<div class="line">***************************************************</div>
+<div class="line">1.  TC_VLAN_testing</div>
+<div class="line">2.  TC_FDB_testing</div>
+<div class="line">3.  UTILS_testing</div>
+<div class="line">4.  TC_configure_vlan_aware_unaware</div>
+<div class="line">5.  setup_unit_test_default_settings</div>
+<div class="line"> </div>
+<div class="line">Test case id: 3</div>
+<div class="line">In UTILS related testing...</div>
+<div class="line">Please select Test no to choose particular test case to execute</div>
+<div class="line">1.  UTILS_display_icssg_hw_consolidated_statistics</div>
+<div class="line">2.  UTILS_clear_icssg_hw_consolidated_statistics</div>
+<div class="line">3.  UTILS_NRT_add_del_mac_fdb_entry</div>
+<div class="line">4.  UTILS_NRT_cofig_port_state</div>
+<div class="line">5.  UTILS_NRT_add_fid_vid_entry for PORT1 and PORT2</div>
+<div class="line">6.  UTILS_config_PVID</div>
+<div class="line">7.  UTILS_get_receive_packet_count</div>
+<div class="line">8.  UTILS_clear_receive_packet_count</div>
+<div class="line">9.  UTILS_Transmit_UC_packets</div>
+<div class="line">9</div>
+<div class="line">Enter port number(PORT1 = 1 and PORT2 = 2) to start transmitting the packets:</div>
+<div class="line">1</div>
+<div class="line">Enter number of packets to transmit:</div>
+<div class="line">100</div>
+<div class="line"> </div>
+<div class="line">Test UTILS_Transmit_UC_packets run successfully from DUT side...</div>
+<div class="line"> </div>
+<div class="line">*****************************************************</div>
+<div class="line">        TEST UTILITY EXECUTION SUMMARY</div>
+<div class="line">*****************************************************</div>
+<div class="line"> </div>
+<div class="line">Test UTILS_testing run successfully from DUT side...</div>
+<div class="line"> </div>
+<div class="line">***************************************************</div>
+<div class="line">                UNIT TEST MENU</div>
+<div class="line">***************************************************</div>
+<div class="line">1.  TC_VLAN_testing</div>
+<div class="line">2.  TC_FDB_testing</div>
+<div class="line">3.  UTILS_testing</div>
+<div class="line">4.  TC_configure_vlan_aware_unaware</div>
+<div class="line">5.  setup_unit_test_default_settings</div>
+<div class="line"> </div>
+<div class="line">Test case id: 3</div>
+<div class="line">In UTILS related testing...</div>
+<div class="line">Please select Test no to choose particular test case to execute</div>
+<div class="line">1.  UTILS_display_icssg_hw_consolidated_statistics</div>
+<div class="line">2.  UTILS_clear_icssg_hw_consolidated_statistics</div>
+<div class="line">3.  UTILS_NRT_add_del_mac_fdb_entry</div>
+<div class="line">4.  UTILS_NRT_cofig_port_state</div>
+<div class="line">5.  UTILS_NRT_add_fid_vid_entry for PORT1 and PORT2</div>
+<div class="line">6.  UTILS_config_PVID</div>
+<div class="line">7.  UTILS_get_receive_packet_count</div>
+<div class="line">8.  UTILS_clear_receive_packet_count</div>
+<div class="line">9.  UTILS_Transmit_UC_packets</div>
+<div class="line">9</div>
+<div class="line">Enter port number(PORT1 = 1 and PORT2 = 2) to start transmitting the packets:</div>
+<div class="line">2</div>
+<div class="line">Enter number of packets to transmit:</div>
+<div class="line">100</div>
+<div class="line"> </div>
+<div class="line">Test UTILS_Transmit_UC_packets run successfully from DUT side...</div>
 <div class="line"> </div>
 <div class="line">*****************************************************</div>
 <div class="line">        TEST UTILITY EXECUTION SUMMARY</div>
@@ -410,7 +428,7 @@ Sample output for VLAN ICSSG example</h2>
 <img src="layer2_icssg_example_wireshark_log.png" alt=""/>
 <div class="caption">
 Wireshark log for VLAN ICSSG Example</div></div>
-<h1><a class="anchor" id="autotoc_md1348"></a>
+<h1><a class="anchor" id="autotoc_md1574"></a>
 See Also</h1>
 <p><a class="el" href="group__DRV__ENET__MODULE.html">APIs for Enet LLD</a> <a class="el" href="NETWORKING.html">Networking</a> </p>
 </div></div><!-- contents -->

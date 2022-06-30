@@ -36,6 +36,12 @@
 #ifndef REG_LPDDR4_PI_MACROS_H_
 #define REG_LPDDR4_PI_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define LPDDR4__DENALI_PI_0_READ_MASK                                0x00000F01U
 #define LPDDR4__DENALI_PI_0_WRITE_MASK                               0x00000F01U
 #define LPDDR4__DENALI_PI_0__PI_START_MASK                           0x00000001U
@@ -5419,6 +5425,11 @@
 #define LPDDR4__DENALI_PI_299__PI_PARITY_ERROR_REGIF_WIDTH                   11U
 #define LPDDR4__PI_PARITY_ERROR_REGIF__REG DENALI_PI_299
 #define LPDDR4__PI_PARITY_ERROR_REGIF__FLD LPDDR4__DENALI_PI_299__PI_PARITY_ERROR_REGIF
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_LPDDR4_PI_MACROS_H_ */
 

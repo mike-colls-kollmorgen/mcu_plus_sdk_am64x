@@ -37,8 +37,19 @@
 #ifndef LPDDR4_16BIT_STRUCTS_IF_H
 #define LPDDR4_16BIT_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "../common/cdn_stdtypes.h"
 #include "lpddr4_16bit_if.h"
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* LPDDR4_16BIT_STRUCTS_IF_H */

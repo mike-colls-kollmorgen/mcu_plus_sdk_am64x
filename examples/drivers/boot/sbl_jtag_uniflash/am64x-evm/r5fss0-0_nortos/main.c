@@ -68,7 +68,7 @@ char gMainMenu[] = {
 int32_t sbl_jtag_uniflash_load_file(char optype)
 {
     int32_t status = SystemP_SUCCESS;
-    uint32_t offset, tempChunkSize, remainder, pageSize;
+    uint32_t offset;
     uint32_t fileSize;
     uint32_t eraseBlkSize;
     uint32_t flashSize;
@@ -84,8 +84,8 @@ int32_t sbl_jtag_uniflash_load_file(char optype)
         status = SystemP_FAILURE;
     }
     if(status==SystemP_SUCCESS)
-    {   /* if file fileSize > buffer fileSize then exit, we will load the file in one shot so
-         * so file fileSize has to be < buffer fileSize
+    {   /* if file size > buffer size then exit, we will load the file in one shot so
+         * so file size has to be < buffer size
          */
         fseek(fp, 0, SEEK_END); 
         fileSize = ftell(fp);
@@ -117,18 +117,17 @@ int32_t sbl_jtag_uniflash_load_file(char optype)
         {
             eraseBlkSize = flashAttrs->blockSize;
             flashSize = flashAttrs->flashSize;
-            pageSize = flashAttrs->pageSize;
 
             if( (offset % eraseBlkSize) != 0)
             {
-                DebugP_log(" [FLASH WRITER] Flash offset MUST be multiple of erase block fileSize of 0x%08x !!!\r\n",
+                DebugP_log(" [FLASH WRITER] Flash offset MUST be multiple of erase block size of 0x%08x !!!\r\n",
                     eraseBlkSize
                     );
                 status = SystemP_FAILURE;
             }
             if( (offset+fileSize) > flashSize)
             {
-                DebugP_log(" [FLASH WRITER] Flash offset + file fileSize MUST be <= flash fileSize of %d bytes !!!\r\n",
+                DebugP_log(" [FLASH WRITER] Flash offset + file size MUST be <= flash size of %d bytes !!!\r\n",
                     flashSize
                     );
                 status = SystemP_FAILURE;
@@ -155,6 +154,7 @@ int32_t sbl_jtag_uniflash_load_file(char optype)
 
         uniflashHeader.magicNumber = BOOTLOADER_UNIFLASH_FILE_HEADER_MAGIC_NUMBER;
         uniflashHeader.offset = offset;
+        uniflashHeader.actualFileSize = fileSize;
 
         if(optype == '2')
         {
@@ -193,56 +193,34 @@ int32_t sbl_jtag_uniflash_load_file(char optype)
                 gets(inputStr);
             } while(inputStr[0]!='1');
 
-            /* Align fileSize to multiple of pageSize as this is a known issue */
-            tempChunkSize = 0U;
-            remainder = fileSize % pageSize;
-            if ((remainder != 0U) && (fileSize > pageSize))
-            {
-                tempChunkSize = pageSize - remainder;
-            }
+            /* Process the buffer */
+            Bootloader_UniflashConfig uniflashConfig;
+            Bootloader_UniflashResponseHeader respHeader;
 
-            if ((fileSize + tempChunkSize)  > FILE_MAX_SIZE)
+            uniflashConfig.flashIndex = CONFIG_FLASH0;
+            uniflashConfig.buf = gFileBuf;
+            uniflashConfig.bufSize = 0U; /* Actual filesize is part of the header */
+            uniflashConfig.verifyBuf = gVerifyBuf;
+            uniflashConfig.verifyBufSize = VERIFY_BUF_MAX_SIZE;
+
+            /* Process the flash commands and return a response */
+            Bootloader_uniflashProcessFlashCommands(&uniflashConfig, &respHeader);
+
+            if(respHeader.statusCode == BOOTLOADER_UNIFLASH_STATUSCODE_SUCCESS)
             {
-                status = SystemP_FAILURE;
+                if(optype == '2')
+                {
+                    DebugP_log(" [FLASH WRITER] Flashing success!!... \r\n");
+                }
+                else if(optype == '3')
+                {
+                    DebugP_log(" [FLASH WRITER] Verifying success!!... \r\n");
+                }
+                status = SystemP_SUCCESS;
             }
             else
             {
-                /* Pad 0's at the end */
-                if (tempChunkSize != 0U)
-                {
-                    memset(gFileBuf + sizeof(uniflashHeader) + fileSize, 0, tempChunkSize);
-                    fileSize += tempChunkSize;
-                }
-
-                /* Process the buffer */
-                Bootloader_UniflashConfig uniflashConfig;
-                Bootloader_UniflashResponseHeader respHeader;
-
-                uniflashConfig.flashIndex = CONFIG_FLASH0;
-                uniflashConfig.buf = gFileBuf;
-                uniflashConfig.bufSize = fileSize;
-                uniflashConfig.verifyBuf = gVerifyBuf;
-                uniflashConfig.verifyBufSize = VERIFY_BUF_MAX_SIZE;
-
-                /* Process the flash commands and return a response */
-                Bootloader_uniflashProcessFlashCommands(&uniflashConfig, &respHeader);
-
-                if(respHeader.statusCode == BOOTLOADER_UNIFLASH_STATUSCODE_SUCCESS)
-                {
-                    if(optype == '2')
-                    {
-                        DebugP_log(" [FLASH WRITER] Flashing success!!... \r\n");
-                    }
-                    else if(optype == '3')
-                    {
-                        DebugP_log(" [FLASH WRITER] Verifying success!!... \r\n");
-                    }
-                    status = SystemP_SUCCESS;
-                }
-                else
-                {
-                    status = SystemP_FAILURE;
-                }
+                status = SystemP_FAILURE;
             }
         }
     }

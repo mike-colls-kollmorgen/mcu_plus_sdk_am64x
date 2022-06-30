@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -147,7 +147,18 @@ Enumerations</h2></td></tr>
 <a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba81e13a9c0ff993725440cd666f8d9ff4">ENET_MDIO_IOCTL_C22_WRITE</a> = ENET_MDIO_PUBLIC_IOCTL(6U), 
 <a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19babad7f0c2be612b0478717d5a085cf56184">ENET_MDIO_IOCTL_C45_READ</a> = ENET_MDIO_PUBLIC_IOCTL(7U), 
 <br />
-&#160;&#160;<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba02b717c5172b5fc5e2ec589a67e34933">ENET_MDIO_IOCTL_C45_WRITE</a> = ENET_MDIO_PUBLIC_IOCTL(8U)
+&#160;&#160;<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba02b717c5172b5fc5e2ec589a67e34933">ENET_MDIO_IOCTL_C45_WRITE</a> = ENET_MDIO_PUBLIC_IOCTL(8U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba9a23285588696c2e8419998f5cca8297">ENET_MDIO_IOCTL_C22_ASYNC_READ_TRIGGER</a> = ENET_MDIO_PUBLIC_IOCTL(9U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba2969fa060db22b707885d067b16ce400">ENET_MDIO_IOCTL_C22_ASYNC_READ_COMPLETE</a> = ENET_MDIO_PUBLIC_IOCTL(10U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba227e4e6b1dcc9933edd17cabfe8b916f">ENET_MDIO_IOCTL_C22_ASYNC_WRITE_TRIGGER</a> = ENET_MDIO_PUBLIC_IOCTL(11U), 
+<br />
+&#160;&#160;<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19babab989e69234d1ee1800d951583229fe26">ENET_MDIO_IOCTL_C22_ASYNC_WRITE_COMPLETE</a> = ENET_MDIO_PUBLIC_IOCTL(12U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba5f5eac3f463ab84eea6a210b0ed34442">ENET_MDIO_IOCTL_C45_ASYNC_READ_TRIGGER</a> = ENET_MDIO_PUBLIC_IOCTL(13U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba02bd9f761b2fdfadea609984c9d415bb">ENET_MDIO_IOCTL_C45_ASYNC_READ_COMPLETE</a> = ENET_MDIO_PUBLIC_IOCTL(14U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba67cbfe066c5d63b624086d6ccf334c40">ENET_MDIO_IOCTL_C45_ASYNC_WRITE_TRIGGER</a> = ENET_MDIO_PUBLIC_IOCTL(15U), 
+<br />
+&#160;&#160;<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19babaf89b36accf25a07ada8a7118ba351dc8">ENET_MDIO_IOCTL_C45_ASYNC_WRITE_COMPLETE</a> = ENET_MDIO_PUBLIC_IOCTL(16U), 
+<a class="el" href="group__ENET__MOD__MDIO.html#gga3d1296252044e355873ecdb16dd19baba110f12d7de3d46bc21b58ca90a521829">ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE</a> = ENET_MDIO_PUBLIC_IOCTL(17U)
 <br />
  }</td></tr>
 <tr class="memdesc:ga3d1296252044e355873ecdb16dd19bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">MDIO IOCTL commands.  <a href="group__ENET__MOD__MDIO.html#ga3d1296252044e355873ecdb16dd19bab">More...</a><br /></td></tr>
@@ -425,6 +436,60 @@ Macros</h2></td></tr>
 <tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba02b717c5172b5fc5e2ec589a67e34933"></a>ENET_MDIO_IOCTL_C45_WRITE&#160;</td><td class="fielddoc"><p>Write a PHY register using clause-45 frame. </p>
 <p>IOCTL parameters:</p><ul>
 <li>inArgs: <a class="el" href="structEnetMdio__C45WriteInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_WRITE command.">EnetMdio_C45WriteInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba9a23285588696c2e8419998f5cca8297"></a>ENET_MDIO_IOCTL_C22_ASYNC_READ_TRIGGER&#160;</td><td class="fielddoc"><p>Trigger Asynchronous read to PHY register. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45ReadInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_READ command.">EnetMdio_C45ReadInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba2969fa060db22b707885d067b16ce400"></a>ENET_MDIO_IOCTL_C22_ASYNC_READ_COMPLETE&#160;</td><td class="fielddoc"><p>Checks for async read completion to PHY register. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45ReadInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_READ command.">EnetMdio_C45ReadInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba227e4e6b1dcc9933edd17cabfe8b916f"></a>ENET_MDIO_IOCTL_C22_ASYNC_WRITE_TRIGGER&#160;</td><td class="fielddoc"><p>Trigger Asynchronous Write to PHY register. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45WriteInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_WRITE command.">EnetMdio_C45WriteInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19babab989e69234d1ee1800d951583229fe26"></a>ENET_MDIO_IOCTL_C22_ASYNC_WRITE_COMPLETE&#160;</td><td class="fielddoc"><p>Checks for async Write completion to PHY register. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45WriteInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_WRITE command.">EnetMdio_C45WriteInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba5f5eac3f463ab84eea6a210b0ed34442"></a>ENET_MDIO_IOCTL_C45_ASYNC_READ_TRIGGER&#160;</td><td class="fielddoc"><p>Trigger Asynchronous Read to PHY register using clause-45 frame. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45ReadInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_READ command.">EnetMdio_C45ReadInArgs</a></li>
+<li>outArgs: uint16_t </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba02bd9f761b2fdfadea609984c9d415bb"></a>ENET_MDIO_IOCTL_C45_ASYNC_READ_COMPLETE&#160;</td><td class="fielddoc"><p>Checks for async Read completion to PHY register using clause-45 frame. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45ReadInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_READ command.">EnetMdio_C45ReadInArgs</a></li>
+<li>outArgs: uint16_t </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba67cbfe066c5d63b624086d6ccf334c40"></a>ENET_MDIO_IOCTL_C45_ASYNC_WRITE_TRIGGER&#160;</td><td class="fielddoc"><p>Trigger Asynchronous Write to PHY register using clause-45 frame. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45WriteInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_WRITE command.">EnetMdio_C45WriteInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19babaf89b36accf25a07ada8a7118ba351dc8"></a>ENET_MDIO_IOCTL_C45_ASYNC_WRITE_COMPLETE&#160;</td><td class="fielddoc"><p>Checks for async Write completion to PHY register using clause-45 frame. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structEnetMdio__C45WriteInArgs.html" title="Input args for ENET_MDIO_IOCTL_C45_WRITE command.">EnetMdio_C45WriteInArgs</a></li>
+<li>outArgs: None </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3d1296252044e355873ecdb16dd19baba110f12d7de3d46bc21b58ca90a521829"></a>ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE&#160;</td><td class="fielddoc"><p>Enable MDIO state machine. Use. </p>
+<p>If <a class="el" href="structMdio__Cfg.html#a7222eca907432c1a9b11f27bad14b698">Mdio_Cfg.disableStateMachineOnInit</a> is set, this IOCTL allows enabling Mdio state machine via IOCTL. This is used for sequencing external PHY management operation with MDIO state machine so that any link interrupts are not missed and MDIO state machine is enabled only after PHY initialization is complete IOCTL parameters:</p><ul>
+<li>inArgs: None</li>
 <li>outArgs: None </li>
 </ul>
 </td></tr>

@@ -37,6 +37,12 @@
 #ifndef CPS_V3_H
 #define CPS_V3_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #ifdef ERROR_INJECTION
 #include "cps_ei.h"
 #else
@@ -225,5 +231,10 @@ extern void CPS_MemoryBarrierRead(void);
 /* parasoft-end-suppress MISRA2012-RULE-8_6-2 */
 
 #endif /* ERROR_INJECTION */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* multiple inclusion protection */

@@ -1,0 +1,265 @@
+%%{
+    let module = system.modules["/networking/enet_icss/enet_icss"];
+%%}
+% let instance = module.$instances[0];
+/*
+ * Enet DMA memory allocation utility functions.
+ */
+
+/* ========================================================================== */
+/*                             Include Files                                  */
+/* ========================================================================== */
+
+#include <string.h>
+#include <stdint.h>
+#include <stdarg.h>
+
+#include <enet.h>
+#include "enet_appmemutils.h"
+#include "enet_appmemutils_cfg.h"
+#include "enet_apputils.h"
+% if(instance.McmEnable == true){
+#include "enet_mcm.h"
+% }
+#include <enet_cfg.h>
+#include <include/core/enet_per.h>
+#include <include/core/enet_utils.h>
+#include <include/core/enet_dma.h>
+#include <include/per/icssg.h>
+#include <priv/per/icssg_priv.h>
+#include <soc/k3/icssg_soc.h>
+
+#include <kernel/dpl/TaskP.h>
+#include <kernel/dpl/ClockP.h>
+
+#include "ti_enet_config.h"
+#include "ti_drivers_config.h"
+#include "ti_enet_open_close.h"
+
+static const  Icssg_FwPoolMem *Icssq_FwPoolMemInfo[2][4] = 
+{
+    [0] = {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+              [0] = &gEnetSoc_Icssg0_0_FwPoolMem[0],
+%}
+%else {
+              [0] = NULL,
+%}
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+              [1] = &gEnetSoc_Icssg0_1_FwPoolMem[0],
+%}
+%else {
+              [1] = NULL,
+%}
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+              [2] = &gEnetSoc_Icssg1_0_FwPoolMem[0],
+%}
+%else {
+              [2] = NULL,
+%}
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+              [3] = &gEnetSoc_Icssg1_1_FwPoolMem[0],
+%}
+%else {
+              [3] = NULL,
+%}
+          },
+    [1] = {
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+              [0] = &gEnetSoc_Icssg0_Swt_FwPoolMem[0],
+%}
+%else {
+              [0] = NULL,
+%}
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+              [1] = &gEnetSoc_Icssg1_Swt_FwPoolMem[0],
+%}
+%else {
+              [1] = NULL,
+%}
+              [2] = NULL,
+              [3] = NULL,
+          },
+};
+
+
+const Icssg_FwPoolMem* EnetCb_GetFwPoolMem(Enet_Type enetType, uint32_t instId)
+{
+    uint32_t enetIdx = 0;
+    const Icssg_FwPoolMem* fwPoolMem;
+
+    switch (enetType)
+    {
+        case ENET_ICSSG_DUALMAC:
+            enetIdx = 0;
+            break;
+
+        case ENET_ICSSG_SWITCH:
+            enetIdx = 1;
+            break;
+
+        default:
+            EnetAppUtils_assert(false);
+    }
+    EnetAppUtils_assert(enetIdx < ENET_ARRAYSIZE(Icssq_FwPoolMemInfo));
+    EnetAppUtils_assert(instId < ENET_ARRAYSIZE(Icssq_FwPoolMemInfo[0]));
+    fwPoolMem = Icssq_FwPoolMemInfo[enetIdx][instId];
+    EnetAppUtils_assert(fwPoolMem != NULL);
+    return (fwPoolMem);
+}
+
+void EnetApp_getEnetInstInfo(Enet_Type *enetType,
+                             uint32_t *instId)
+{
+%{
+% let matchInstId = module.getInstId(instance);
+    *enetType = `matchInstId.enetType`;
+    *instId   = `Number(matchInstId.instId)`;
+% }
+}
+
+
+void EnetApp_getEnetInstMacInfo(Enet_Type enetType,
+                             uint32_t instId,
+                             Enet_MacPort macPortList[],
+                             uint8_t *numMacPorts)
+{
+%{
+%let macPortInfo = module.getMacPortInfo(instance);
+    *numMacPorts = `(macPortInfo.numMacPorts)`;
+%for (var i in macPortInfo.macPortList) {
+    macPortList[`i`] = `(macPortInfo.macPortList[i])`;
+%}
+%}
+}
+
+% if(instance.McmEnable == true){
+void EnetApp_acquireHandleInfo(Enet_Type enetType, uint32_t instId,
+                                   EnetApp_HandleInfo *handleInfo)
+{
+    EnetMcm_CmdIf hMcmCmdIf;
+    EnetMcm_getCmdIf(enetType, &hMcmCmdIf);
+
+    EnetAppUtils_assert(hMcmCmdIf.hMboxCmd != NULL);
+    EnetAppUtils_assert(hMcmCmdIf.hMboxResponse != NULL);
+    EnetMcm_acquireHandleInfo(&hMcmCmdIf, handleInfo);
+
+}
+
+void EnetApp_coreAttach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            EnetPer_AttachCoreOutArgs *attachInfo)
+{
+    EnetMcm_CmdIf hMcmCmdIf;
+    EnetMcm_getCmdIf(enetType, &hMcmCmdIf);
+
+    EnetAppUtils_assert(hMcmCmdIf.hMboxCmd != NULL);
+    EnetAppUtils_assert(hMcmCmdIf.hMboxResponse != NULL);
+    EnetMcm_coreAttach(&hMcmCmdIf, coreId, attachInfo);
+}
+
+void EnetApp_coreDetach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            uint32_t coreKey)
+{
+    EnetMcm_CmdIf hMcmCmdIf;
+    EnetMcm_getCmdIf(enetType, &hMcmCmdIf);
+
+    EnetAppUtils_assert(hMcmCmdIf.hMboxCmd != NULL);
+    EnetAppUtils_assert(hMcmCmdIf.hMboxResponse != NULL);
+    EnetMcm_coreDetach(&hMcmCmdIf, coreId, coreKey);
+}
+
+void EnetApp_releaseHandleInfo(Enet_Type enetType, uint32_t instId)
+{
+    EnetMcm_CmdIf hMcmCmdIf;
+    EnetMcm_getCmdIf(enetType, &hMcmCmdIf);
+
+    EnetAppUtils_assert(hMcmCmdIf.hMboxCmd != NULL);
+    EnetAppUtils_assert(hMcmCmdIf.hMboxResponse != NULL);
+    EnetMcm_releaseHandleInfo(&hMcmCmdIf);
+}
+% }
+% else {
+void EnetApp_acquireHandleInfo(Enet_Type enetType, uint32_t instId,
+                                   EnetApp_HandleInfo *handleInfo)
+{
+    handleInfo->hEnet = Enet_getHandle(enetType, instId);
+    handleInfo->hUdmaDrv = &gUdmaDrvObj[CONFIG_UDMA_PKTDMA_0];
+}
+
+void EnetApp_coreAttach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            EnetPer_AttachCoreOutArgs *attachInfo)
+{
+    Enet_IoctlPrms prms;
+    int32_t status;
+    Enet_Handle hEnet = Enet_getHandle(enetType, instId);
+
+    if (NULL_PTR != attachInfo)
+    {
+        ENET_IOCTL_SET_INOUT_ARGS(&prms, &coreId, attachInfo);
+        status = Enet_ioctl(hEnet,
+                            coreId,
+                            ENET_PER_IOCTL_ATTACH_CORE,
+                            &prms);
+        if (status != ENET_SOK)
+        {
+            EnetAppUtils_print("EnetApp_coreAttach failed ENET_PER_IOCTL_ATTACH_CORE: %d\r\n", status);
+            EnetAppUtils_assert(false);
+        }
+    }
+    else
+    {
+        EnetAppUtils_assert(false);
+    }
+}
+
+void EnetApp_coreDetach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            uint32_t coreKey)
+{
+    Enet_IoctlPrms prms;
+    int32_t status;
+    Enet_Handle hEnet = Enet_getHandle(enetType, instId);
+
+    ENET_IOCTL_SET_IN_ARGS(&prms, &coreKey);
+    status = Enet_ioctl(hEnet,
+                        coreId,
+                        ENET_PER_IOCTL_DETACH_CORE,
+                        &prms);
+    if (status != ENET_SOK)
+    {
+        EnetAppUtils_print("close() failed ENET_PER_IOCTL_DETACH_CORE: %d\r\n", status);
+        EnetAppUtils_assert(false);
+    }
+}
+
+void EnetApp_releaseHandleInfo(Enet_Type enetType, uint32_t instId)
+{
+    EnetApp_driverClose(enetType, instId);
+}
+% }
+
+%if(instance.ExternalPhyMgmtEnable == false){
+bool EnetApp_isPortLinked(Enet_Handle hEnet)
+{
+    uint32_t coreId = EnetSoc_getCoreId();
+    uint32_t linkUpMask = 0U;
+    bool linkUp;
+%{
+%let icssMacInfo = module.getMacPortInfo(instance);
+%for (var i in icssMacInfo.macPortList) {
+    linkUpMask |= (EnetAppUtils_isPortLinkUp(hEnet, coreId, `icssMacInfo.macPortList[i]`)) << `i`;     
+%}
+
+%if (instance.AppLinkUpPortMask == 'ALL_PORTS') {
+    linkUp =  (linkUpMask == ((1 << `icssMacInfo.macPortList.length`) - 1))  ? true : false;
+%}
+%if (instance.AppLinkUpPortMask == 'ANY_PORT') {
+    linkUp =  (linkUpMask != 0) ? true : false;
+%}
+%}
+    return linkUp;
+}
+%}

@@ -27,9 +27,7 @@ PYTHON=python3
 endif
 CHMOD=chmod
 
-# ObjCopy Tool
-BOARDCFG_GEN_OBJCOPY?=$(CGT_TI_ARM_CLANG_PATH)/bin/tiarmobjcopy$(EXE_EXT)
-GCC_ARM_OBJCOPY=$(CGT_GCC_ARM_PATH)/bin/arm-none-eabi-objcopy
+OBJCOPY=$(CCS_PATH)/utils/tiobj2bin/tiobj2bin
 
 # CC
 BOARDCFG_GEN_CC?=$(CGT_TI_ARM_CLANG_PATH)/bin/tiarmclang$(EXE_EXT)
@@ -137,7 +135,7 @@ $(OBJDIR)/$(1).$(OBJEXT) : $(2).c
 $(OBJDIR)/$(1).bin.unsigned : SHELL:=/bin/bash   # HERE: this is setting the shell for this step only
 $(OBJDIR)/$(1).bin.unsigned : $(OBJDIR)/$(1).$(OBJEXT)
 	@echo "Create unsigned Board Configuration binary"
-	$(GCC_ARM_OBJCOPY) --gap-fill=0xFF -O binary $(OBJDIR)/$(notdir $(2)).$(OBJEXT) $(OBJDIR)/$(1).bin.unsigned
+	$(OBJCOPY) $(OBJDIR)/$(notdir $(2)).$(OBJEXT) $(OBJDIR)/$(1).bin.unsigned $(CGT_TI_ARM_CLANG_PATH)/bin/tiarmofd $(CGT_TI_ARM_CLANG_PATH)/bin/tiarmhex $(CCS_PATH)/utils/tiobj2bin/mkhex4bin
 	$(PYTHON) $(VALIDATOR_SCRIPT) -b $(OBJDIR)/$(1).bin.unsigned -s $(SOC) -l $(OBJDIR)/output_$(BRD_CFG).log -i -o $(OBJDIR)/$(1)_temp.bin.unsigned -r $(VALIDATOR_JSON)
 	$(MV) $(OBJDIR)/$(1)_temp.bin.unsigned $(OBJDIR)/$(1).bin.unsigned
 

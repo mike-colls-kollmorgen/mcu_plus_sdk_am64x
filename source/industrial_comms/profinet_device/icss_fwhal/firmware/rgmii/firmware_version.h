@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2022 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -33,6 +33,12 @@
 #ifndef __firmware_version_h
 #define __firmware_version_h 1
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 // ICSS_FIRMWARE_RELEASE_1:
 // bit 31..16 reserved
 // bit15..8	device number
@@ -63,7 +69,7 @@
 // bit23..16		minor version number
 #define		FIRMWARE_VERSION_MINOR			0x0F
 // bit15..0		build number
-#define		FIRMWARE_VERSION_BUILD			0x01
+#define		FIRMWARE_VERSION_BUILD			0x10
 
 
 
@@ -82,4 +88,9 @@
 #define		ICSS_FIRMWARE_RELEASE_2 ((FIRMWARE_RELEASE_TYPE << 31) | (FIRMWARE_VERSION_MAJOR << 24) | (FIRMWARE_VERSION_MINOR << 16) | (FIRMWARE_VERSION_BUILD << 0))
 #define     ICSS_FIRMWARE_FEATURE_MASK (FEATURE_MODE| FEATURE_STORM_PREVENTION| FEATURE_REDUNDANCY|FEATURE_SYNCHRONIZATION|FEATURE_NUMBER_OF_QUEUES|FEATURE_PROFINET|FEATURE_DCP_FILTER)
 #define     ICSS_FIRMWARE_RESERVED      0x00000000
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

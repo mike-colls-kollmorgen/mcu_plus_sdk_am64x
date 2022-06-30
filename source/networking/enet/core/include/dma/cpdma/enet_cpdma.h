@@ -165,6 +165,8 @@ typedef struct EnetCpdma_SGListEntry_s
     uint8_t *bufPtr;
     /*! Length of valid data in the scatter fragment */
     uint32_t filledLen;
+
+    bool disableCacheOps;
 } EnetCpdma_SGListEntry;
 
 /*!
@@ -180,7 +182,7 @@ typedef struct EnetCpdma_SGListEntry_s
  */
 typedef struct EnetCpdma_SGList_s
 {
-    /*! Number of valid scatter segments in the packet to be transmitted 
+    /*! Number of valid scatter segments in the packet to be transmitted
      *  If packet is made of a single continuous buffer (no scatter list
      *  case) then numScatterSegments == 0
      */
@@ -203,7 +205,7 @@ typedef struct EnetCpdma_SGList_s
  *     Packet length is tx.totalPktLen
  *     tx.bufPtrFilledLen is equal to totalPktLen
  *     sgList.numScatterSegments == 0
- * - Transmit scatter list case 
+ * - Transmit scatter list case
  *   Packet is made of discontinuous chunks of data linked together
  *   If list of discontinuous fragments make up a single packet
  *     First segment is pointed to by bufPtr
@@ -231,14 +233,14 @@ typedef struct EnetCpdma_PktInfo_s
     /*! Length of data buffer allocated */
     uint32_t bufPtrAllocLen;
 
-    /*! Actual filled buffer length while receiving data with DMA 
+    /*! Actual filled buffer length while receiving data with DMA
      *  For transmit indicates length of valid data in bufPtr
      *  If packet to be trasmitted is a single contiguous fragment
      *  bufPtrFilledLen = txTotalPktLen
      */
     uint32_t bufPtrFilledLen;
 
-    /*! Total length of the packet to be transmitted . Not used for receive packets 
+    /*! Total length of the packet to be transmitted . Not used for receive packets
      *  Total packet length == sum of bufPtrFilledLen + valid sgList entries filledLen
      */
     uint32_t txTotalPktLen;
@@ -290,6 +292,8 @@ typedef struct EnetCpdma_PktInfo_s
      *  This variable contains the port number from which the packet was received.
      *  This value is obtained from the Source Tag – Low bits of packet descriptor. */
     Enet_MacPort rxPortNum;
+
+    bool disableCacheOps;
 
     /*! Scatter Gather list information for packets to be transmitted.
      *  When a single tx packet is fragmented across multiple chunks
@@ -408,6 +412,13 @@ typedef struct EnetCpdma_Cfg_s
     /*! Number of rx Interrupts per millisecond */
     uint32_t rxInterruptPerMSec;
 
+    /*! Flag to enable channel override feature to be used by classifier.
+     *  For Rx channels, the packet is directed to a specific rx channel number based on switch priority by default.
+	 *  The default priority mapping is identity based like packet with priority 1 will go to rx channel 1, and so on.
+     *  To override this and direct packets to a specific rx channels based on ALE flow id classifier match enable this flag.
+     *  This feature is supported only on AM263x SOC and not AM273x/AWR294x	*/
+    bool     enChOverrideFlag;
+
     /*! RX channel configuration parameters */
     EnetCpdma_RxChInitPrms rxChInitPrms;
 } EnetCpdma_Cfg;
@@ -492,6 +503,18 @@ int32_t EnetCpdma_txIsr(EnetDma_Handle hEnetDma);
  * \return \ref Enet_ErrorCodes
  */
 int32_t EnetCpdma_miscIsr(EnetDma_Handle hEnetDma, uint32_t *pStatusMask);
+
+/**
+ *  @b EnetCpdma_ackMiscIsr
+ *  @n
+ *      CPSW CPDMA Miscellaneous ISR ACK.
+ *
+ *  @param[in]  hEnetDma
+ *
+ *  @retval
+ *      ENET_SOK
+ */
+int32_t EnetCpdma_ackMiscIsr(EnetDma_Handle hEnetDma);
 
 /*!
  * \brief Initialize CPDMA config params

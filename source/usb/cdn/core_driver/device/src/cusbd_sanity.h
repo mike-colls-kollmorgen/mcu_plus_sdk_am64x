@@ -49,6 +49,12 @@
 #ifndef CUSBD_SANITY_H
 #define CUSBD_SANITY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_errno.h"
 #include "cusbd_if.h"
@@ -90,6 +96,11 @@ uint32_t CUSBD_SanityFunction19(const CUSBD_PrivateData* pD, const CH9_ConfigPar
 #define CUSBD_DSetSelfpoweredSF CUSBD_SanityFunction3
 #define CUSBD_DClearSelfpoweredSF CUSBD_SanityFunction3
 #define CUSBD_DGetConfigParamsSF CUSBD_SanityFunction19
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBD_SANITY_H */
 

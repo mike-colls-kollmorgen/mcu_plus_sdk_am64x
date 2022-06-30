@@ -34,55 +34,41 @@
 
 #include <osal.h>
 #include <ecSlvApi.h>
+#include <custom_phy.h>
 
 #if (defined __cplusplus)
 extern "C" {
 #endif
 
 extern int16_t  EC_SLV_APP_TLK110_phyLibDetect          (void*                          pPhyLibCtxt_p
-                                                        ,uint8_t                        phyIdx_p
                                                         ,uint32_t                       phyId_p
-                                                        ,uint8_t                        phyAddr_p
-                                                        ,EC_API_SLV_SPhyDescriptor_t*   pPhyLibDesc_p);
+                                                        ,CUST_PHY_SPhyDescriptor_t*     pPhyLibDesc_p);
 extern void     EC_SLV_APP_TLK110_softwareReset         (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_enablePhyAutoMDIX     (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableAutoMDIX     (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
 extern void     EC_SLV_APP_TLK110_setMIIMode            (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_configMLED            (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableExtFD           (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableODDNibbleDet    (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableRxErrIdle       (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_configLed             (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_configLedBlink        (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableFastLinkDownDet (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_enableFastRXDVDet     (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_configSwStrapDone     (void*                          pAppCtxt_p
+                                                        ,void*                          pStackCtxt_p);
+extern void     EC_SLV_APP_TLK110_setPowerMode             (void*                          pCtxt_p
                                                         ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_mLEDConfig            (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_extFDEnable           (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_oDDNibbleDetEnable    (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_rxErrIdleEnable       (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_ledConfig             (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_ledBlinkConfig        (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_fastLinkDownDetEnable (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_fastRXDVDetEnable     (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_swStrapConfigDone     (void*                          pAppCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p);
-extern void     EC_SLV_APP_TLK110_powerMode             (void*                          pCtxt_p
-                                                        ,void*                          pStackCtxt_p
-                                                        ,uint32_t                       phyAddr_p
                                                         ,bool                           powerDown_p);
 
 #if (defined __cplusplus)

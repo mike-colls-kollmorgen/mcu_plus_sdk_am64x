@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Texas Instruments Incorporated
+ *  Copyright (C) 2020-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -58,9 +58,12 @@ extern "C"
 #define IP_VERSION_MDIO_V0
 #define IP_VERSION_MMCSD_V0
 #define IP_VERSION_OSPI_V0
+#define IP_VERSION_PCIE_V0
 #define IP_VERSION_PKTDMA_V0
 #define IP_VERSION_PRUICSS_G_V0
 #define IP_VERSION_PSILCFG_V0
+#define IP_VERSION_RINGACC_V0
+#define IP_VERSION_SERDES_V1
 #define IP_VERSION_SPINLOCK_V0
 #define IP_VERSION_UART_V0
 #define DDR_16BIT
@@ -82,10 +85,15 @@ extern "C"
 #define DRV_VERSION_MDIO_V0
 #define DRV_VERSION_MMCSD_V0
 #define DRV_VERSION_OSPI_V0
+#define DRV_VERSION_PCIE_V0
 #define DRV_VERSION_PRUICSS_G_V0
+#define DRV_VERSION_SERDES_V1
 #define DRV_VERSION_SPINLOCK_V0
 #define DRV_VERSION_UART_V0
 #define DRV_VERSION_WATCHDOG_V1
+
+/* Driver DMA integration */
+#define DMA_VERSION_MCSPI_UDMA
 
 #ifdef __cplusplus
 }

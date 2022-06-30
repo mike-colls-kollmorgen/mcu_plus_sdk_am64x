@@ -41,6 +41,12 @@
 #ifndef __IOL_SERIAL_H__
 #define __IOL_SERIAL_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #include <IOLM_SMI.h>
 
@@ -84,5 +90,10 @@ void IOL_Serial_vInit(IOL_Serial_SHandle* psuHandle_p);
 
 void IOL_Serial_vReceive(IOL_Serial_SHandle* psuHandle_p, INT8U* pu8Data_p, INT32U u32Length_p);
 void IOL_Serial_vRxProcessing(IOL_Serial_SHandle* psuHandle_p);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

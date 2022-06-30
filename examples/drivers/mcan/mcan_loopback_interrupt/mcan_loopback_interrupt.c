@@ -50,6 +50,7 @@
 #include <stdio.h>
 #include <kernel/dpl/DebugP.h>
 #include <kernel/dpl/AddrTranslateP.h>
+#include <kernel/dpl/SemaphoreP.h>
 #include <drivers/mcan.h>
 #include "ti_drivers_config.h"
 #include "ti_drivers_open_close.h"

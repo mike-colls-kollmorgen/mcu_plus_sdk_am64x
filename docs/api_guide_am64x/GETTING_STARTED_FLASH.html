@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,19 +108,25 @@ $(document).ready(function(){initNavTree('GETTING_STARTED_FLASH.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md29">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md30">Getting ready to flash the application</a></li>
-<li class="level1"><a href="#autotoc_md31">Flashing the application</a></li>
-<li class="level1"><a href="#autotoc_md32">Running the flashed application</a></li>
+<ul><li class="level1"><a href="#autotoc_md50">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md51">Getting ready to flash the application</a></li>
+<li class="level1"><a href="#autotoc_md52">Flashing the application</a><ul><li class="level2"><a href="#autotoc_md53">AM64X-EVM</a></li>
+<li class="level2"><a href="#autotoc_md54">AM64X-SK</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md55">Running the flashed application</a><ul><li class="level2"><a href="#autotoc_md56">AM64X-EVM</a></li>
+<li class="level2"><a href="#autotoc_md57">AM64X-SK</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_getting_started_getting_started_flash"></a></p>
 <dl class="section attention"><dt>Attention</dt><dd>Flashing a application will overwrite the SOC init application that was flashed earlier. So if you want to load and run from CCS again, you will need to do the SOC init steps again. See <a class="el" href="EVM_SETUP_PAGE.html#EVM_SOC_INIT">SOC Initialization</a> for more details.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See also <a class="el" href="TOOLS_FLASH.html">Flashing Tools</a> for more details on the flashing tools.</dd></dl>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 Introduction</h1>
 <p>In this step we will flash the application that we have build and run using CCS to the EVM flash. We can then boot this application without being connected to CCS via JTAG.</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Getting ready to flash the application</h1>
 <ul>
 <li>A quick recap of steps done so far that are needed for the flashing to work<ul>
@@ -151,8 +157,10 @@ Getting ready to flash the application</h1>
 <li>This file will additionally also list the flashing application that is run on the EVM and a OSPI flash bootloader that also needs to be flashed. You can keep this unchanged if you have not modified these applications.</li>
 <li>Save and close the config file.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 Flashing the application</h1>
+<h2><a class="anchor" id="autotoc_md53"></a>
+AM64X-EVM</h2>
 <ul>
 <li><b>POWER-OFF</b> the EVM</li>
 <li>Set boot mode to UART BOOTMODE as shown in below image</li>
@@ -219,8 +227,78 @@ Flash in progress</div></div>
 <li>If flashing has failed, see <a class="el" href="TOOLS_FLASH.html#TOOLS_FLASH_ERROR_MESSAGES">Flash tool error messages and solutions</a>, and resolve the errors.</li>
 <li>If flashing is successful, do the next steps ...</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
+AM64X-SK</h2>
+<ul>
+<li><b>POWER-OFF</b> the AM64X-SK</li>
+<li>Set boot mode to UART BOOTMODE as shown in below image</li>
+</ul>
+<p> <style>div.image img[src="sk_boot_pins_uart_mode.png"]{width:30%}</style> </p><div class="image">
+<img src="sk_boot_pins_uart_mode.png" alt=""/>
+<div class="caption">
+UART BOOT MODE</div></div>
+<ul>
+<li><b>POWER-ON</b> the AM64X-SK</li>
+<li>You should see character "C" getting printed on the UART terminal every 2-3 seconds as shown below</li>
+</ul>
+<p> <style>div.image img[src="uart_rom_boot.png"]{width:80%}</style> </p><div class="image">
+<img src="uart_rom_boot.png" alt=""/>
+<div class="caption">
+UART output in UART BOOT MODE</div></div>
+<ul>
+<li>Close the UART terminal as shown below. This is important, else the UART script in next step wont be able to connect to the UART port.</li>
+</ul>
+<p> <style>div.image img[src="ccs_uart_close.png"]{width:80%}</style> </p><div class="image">
+<img src="ccs_uart_close.png" alt=""/>
+<div class="caption">
+Close UART terminal</div></div>
+<ul>
+<li>Open a command prompt and run the below command to flash the SOC initialization binary to the AM64X-SK. <pre class="fragment">  cd ${SDK_INSTALL_PATH}/tools/boot
+  python uart_uniflash.py -p COM6 --cfg=sbl_prebuilt/am64x-sk/default_sbl_ospi.cfg
+</pre><ul>
+<li>Here COM6 is the port name of the identified UART port in Windows.</li>
+<li>On Linux,<ul>
+<li>The name for UART port is typically something like <code>/dev/ttyUSB0</code></li>
+<li>On some Linux systems, one needs to use <code>python3</code> to invoke python3.x, just <code>python</code> command may invoke python 2.x which will not work with the flashing script.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>When the flashing is in progress you will see something like below</li>
+</ul>
+<p> <style>div.image img[src="flash_soc_init_in_progress.png"]{width:100%}</style> </p><div class="image">
+<img src="flash_soc_init_in_progress.png" alt=""/>
+<div class="caption">
+Flash in progress</div></div>
+<ul>
+<li>After all the flashing is done, you will see something like below <pre class="fragment">  C:/ti/mcu_plus_sdk/tools/boot&gt;python uart_uniflash.py -p COM6 --cfg=sbl_prebuilt/am64x-sk/default_sbl_ospi.cfg
+
+  Parsing config file ...
+  Parsing config file ... SUCCESS. Found 3 command(s) !!!
+
+  Executing command 1 of 3 ...
+  Found flash writer ... sending sbl_prebuilt/am64x-sk/sbl_uart_uniflash.release.tiimage
+  Sent flashwriter sbl_prebuilt/am64x-sk/sbl_uart_uniflash.release.tiimage of size 289169 bytes in 28.52s.
+
+  Executing command 2 of 3 ...
+  Command arguments : --file=sbl_prebuilt/am64x-sk/sbl_ospi.release.tiimage --operation=flash --flash-offset=0x0
+  Sent sbl_prebuilt/am64x-sk/sbl_ospi.release.tiimage of size 241937 bytes in 25.31s.
+  [STATUS] SUCCESS !!!
+
+  Executing command 3 of 3 ...
+  Command arguments : --file=C:/Users/XYZ/workspace_v10/hello_world_{board}_r5fss0-0_freertos_ti-arm-clang/Release/hello_world_{board}_r5fss0-0_freertos_ti-arm-clang.appimage --operation=flash --flash-offset=0x80000
+  Sent C:/Users/XYZ/workspace_v10/hello_world_{board}_r5fss0-0_freertos_ti-arm-clang/Release/hello_world_{board}_r5fss0-0_freertos_ti-arm-clang.appimage of size 58772 bytes in 8.43s.
+  [STATUS] SUCCESS !!!
+
+  All commands from config file are executed !!!
+</pre></li>
+<li>If flashing has failed, see <a class="el" href="TOOLS_FLASH.html#TOOLS_FLASH_ERROR_MESSAGES">Flash tool error messages and solutions</a>, and resolve the errors.</li>
+<li>If flashing is successful, do the next steps ...</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md55"></a>
 Running the flashed application</h1>
+<h2><a class="anchor" id="autotoc_md56"></a>
+AM64X-EVM</h2>
 <ul>
 <li><b>POWER-OFF</b> the EVM</li>
 <li>Switch the EVM boot mode to OSPI mode as shown below,</li>
@@ -256,7 +334,48 @@ OSPI BOOT MODE</div></div>
   [DPL] Free'ed 1023 bytes @ 0x70086080, heap free size = 1984 bytes
   All tests have passed!!
 </pre></li>
-<li>Congratulations now the EVM is flashed with your application and you dont need CCS anymore to run the application. </li>
+<li>Congratulations now the EVM is flashed with your application and you dont need CCS anymore to run the application.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md57"></a>
+AM64X-SK</h2>
+<ul>
+<li><b>POWER-OFF</b> the AM64X-SK</li>
+<li>Switch the EVM boot mode to OSPI mode as shown below,</li>
+</ul>
+<p> <style>div.image img[src="sk_boot_pins_ospi_mode.png"]{width:30%}</style> </p><div class="image">
+<img src="sk_boot_pins_ospi_mode.png" alt=""/>
+<div class="caption">
+OSPI BOOT MODE</div></div>
+<ul>
+<li>Re-connect the UART terminal in CCS window as shown in <a class="el" href="EVM_SETUP_PAGE.html#CCS_UART_TERMINAL">Setup UART Terminal</a></li>
+<li><b>POWER-ON</b> the AM64X-SK</li>
+<li>You should see the application output in UART terminal as below <pre class="fragment">  Starting OSPI Bootloader ...
+
+  DMSC Firmware Version 21.1.1--v2021.01a (Terrific Lla
+  DMSC Firmware revision 0x15
+  DMSC ABI revision 3.1
+
+  INFO: Bootloader_runCpu:150: CPU r5f1-0  is initialized to 800000000 Hz !!!
+  INFO: Bootloader_runCpu:150: CPU r5f1-1 is initialized to 800000000 Hz !!!
+  INFO: Bootloader_runCpu:150: CPU m4f0-0 is initialized to 400000000 Hz !!!
+  INFO: Bootloader_runCpu:150: CPU a530-0 is initialized to 800000000 Hz !!!
+  INFO: Bootloader_runCpu:150: CPU a530-1 is initialized to 800000000 Hz !!!
+  INFO: Bootloader_loadSelfCpu:202: CPU r5f0-0 is initialized to 800000000 Hz !!!
+  INFO: Bootloader_loadSelfCpu:202: CPU r5f0-1 is initialized to 800000000 Hz !!!
+  INFO: Bootloader_runSelfCpu:219: All done, reseting self ...
+
+  [DPL] Hwi post ...
+  [DPL] Hwi post ... DONE !!!
+  [DPL] Sleep for 100 msecs ...
+  [DPL] Sleep ... DONE (Measured time = 100002 usecs, CPU cycles = 438501 ) !!!
+  [DPL] Running cache operations ...
+  [DPL] Running cache operations ... DONE !!!
+  [DPL] Heap free size = 1984 bytes
+  [DPL] Allocated 1023 bytes @ 0x70086080, heap free size = 896 bytes
+  [DPL] Free'ed 1023 bytes @ 0x70086080, heap free size = 1984 bytes
+  All tests have passed!!
+</pre></li>
+<li>Congratulations now the AM64X-SK is flashed with your application and you dont need CCS anymore to run the application. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

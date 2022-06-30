@@ -161,7 +161,7 @@ typedef struct EC_SLV_APP_Sapplication
     TaskP_Params                    mainThreadParam;
     void*                           loopThreadHandle;
 
-    /* Ressources */
+    /* Resources */
     void*                           gpioHandle;
     void*                           remoteHandle;
     void*                           ioexpLedHandle;

@@ -383,7 +383,7 @@ int32_t EnetPhyMdioDflt_ioctl(EnetPhy_Handle hPhy,
     {
         case ENET_PHY_IOCTL_GET_ID:
         {
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
             const EnetPhy_GenericInArgs *inArgs = (const EnetPhy_GenericInArgs *)prms->inArgs;
 #endif
             EnetPhy_Version *version = (EnetPhy_Version *)prms->outArgs;
@@ -427,7 +427,7 @@ int32_t EnetPhyMdioDflt_ioctl(EnetPhy_Handle hPhy,
 
         case ENET_PHY_IOCTL_GET_LINK_MODE:
         {
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
             const EnetPhy_GenericInArgs *inArgs = (const EnetPhy_GenericInArgs *)prms->inArgs;
 #endif
             EnetMacPort_LinkCfg *linkCfg = (EnetMacPort_LinkCfg *)prms->outArgs;

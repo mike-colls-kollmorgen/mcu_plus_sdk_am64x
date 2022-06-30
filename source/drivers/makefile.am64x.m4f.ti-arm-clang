@@ -1,5 +1,5 @@
 #
-# Auto generated makefile - DO NOT MODIFY
+# Auto generated makefile
 #
 
 export MCU_PLUS_SDK_PATH?=$(abspath ../..)
@@ -66,12 +66,16 @@ FILES_PATH_common = \
     ddr/v0/cdn_drv/include/32bit \
     ddr/v0/cdn_drv/include/common \
     ddr/v0/cdn_drv/src \
+    ddr/v0/soc/am64x_am243x \
     epwm/v0 \
     ecap/v0 \
     eqep/v0 \
     fsi/v0 \
     gpio/v0 \
     gtc/v0 \
+    hw_include/ringacc/V0/priv \
+    hw_include/serdes_cd/V1 \
+    hw_include/serdes_cd/V1/V1_1 \
     i2c/v0 \
     ipc_notify/v0 \
     ipc_notify/v0/soc/am64x \
@@ -86,6 +90,9 @@ FILES_PATH_common = \
     ospi/v0 \
     ospi/v0/dma \
     ospi/v0/dma/udma \
+    pcie \
+    pcie/v0 \
+    pcie/v0/soc/am64x_am243x \
     pinmux/am64x_am243x \
     pruicss/g_v0 \
     pruicss/soc/am64x_am243x \
@@ -118,11 +125,24 @@ endif
 CFLAGS_common := \
     -mcpu=cortex-m4 \
     -mfloat-abi=hard \
+    -mthumb \
     -Wall \
     -Werror \
     -g \
     -Wno-gnu-variable-sized-type-not-at-end \
     -Wno-unused-function \
+
+CFLAGS_cpp_common := \
+    -Wno-c99-designator \
+    -Wno-extern-c-compat \
+    -Wno-c++11-narrowing \
+    -Wno-reorder-init-list \
+    -Wno-deprecated-register \
+    -Wno-writable-strings \
+    -Wno-enum-compare \
+    -Wno-reserved-user-defined-literal \
+    -Wno-unused-const-variable \
+    -x c++ \
 
 CFLAGS_debug := \
     -D_DEBUG_=1 \
@@ -137,6 +157,10 @@ FILES := $(FILES_common) $(FILES_$(PROFILE))
 ASMFILES := $(ASMFILES_common) $(ASMFILES_$(PROFILE))
 FILES_PATH := $(FILES_PATH_common) $(FILES_PATH_$(PROFILE))
 CFLAGS := $(CFLAGS_common) $(CFLAGS_$(PROFILE))
+ASMFLAGS := $(CFLAGS_common) $(CFLAGS_$(PROFILE))
+ifeq ($(CPLUSPLUS_BUILD), yes)
+CFLAGS += $(CFLAGS_cpp_common)
+endif
 DEFINES := $(DEFINES_common) $(DEFINES_$(PROFILE))
 INCLUDES := $(INCLUDES_common) $(INCLUDE_$(PROFILE))
 ARFLAGS := $(ARFLAGS_common) $(ARFLAGS_$(PROFILE))
@@ -157,7 +181,7 @@ $(OBJDIR)/%.obj %.obj: %.c
 
 $(OBJDIR)/%.obj %.obj: %.S
 	@echo  Compiling: $(LIBNAME): $<
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/$@ $<
+	$(CC) -c $(ASMFLAGS) -o $(OBJDIR)/$@ $<
 
 all: $(LIBDIR)/$(LIBNAME)
 

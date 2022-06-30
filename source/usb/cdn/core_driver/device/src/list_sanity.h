@@ -49,11 +49,22 @@
 #ifndef LIST_SANITY_H
 #define LIST_SANITY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_errno.h"
 #include "list_if.h"
 
 uint32_t LIST_ListHeadSF(const LIST_ListHead *obj);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* LIST_SANITY_H */
 

@@ -48,6 +48,7 @@
 
 #include <api/EI_API.h>
 #include <api/EI_API_def.h>
+#include <CUST_PHY_base.h>
 
 #include "AppPerm.h"
 #include <kernel/dpl/TaskP.h>
@@ -63,7 +64,6 @@
 #include <osal_error.h>
 #include <hwal.h>
 #include <pru.h>
-#include <pru_EthernetIP.h>
 #include <Board.h>
 
 #include <kbTrace.h>
@@ -89,6 +89,7 @@ uint8_t EI_APP_aMacAddr_g[] = {0xc8, 0x3e, 0xa7, 0x00, 0x00, 0x59};
 // Static variables and pointers used in this example.
 static StackType_t EI_APP_aTaskStackMainStack_s[EI_APP_STACK_MAIN_TASK_STACK_SIZE] __attribute__((aligned(32), section(".threadstack"))) = {0};
 
+static uint16_t EI_APP_aExtendedStatus[255] = {0};
 static char aOutStream_s[0x200] = {0};
 
 static EI_API_ADP_T*      pAdp_s = NULL;
@@ -100,7 +101,6 @@ static bool     EI_APP_cipSetup(EI_API_CIP_NODE_T* pCipNode_p);
 static bool     EI_APP_cipCreateCallback(EI_API_CIP_NODE_T* pCipNode_p);
 
 uint32_t EI_APP_globalError_g = 0;
-uint8_t  EI_APP_pruLogicalInstance_g = CONFIG_PRU_ICSS1;
 
 
 /*!
@@ -395,8 +395,13 @@ static bool EI_APP_cipCreateCallback(EI_API_CIP_NODE_T* pCipNode_p)
  *  ForwardOpen, LargeForwardOpen and ForwardClose was received.
  *
  */
-void EI_APP_CmgrCb(uint32_t serviceCode_p, EI_API_ADP_UCmgrInfo_u cmgrInfo)
+EI_API_ADP_SEipStatus_t EI_APP_CmgrCb(uint32_t serviceCode_p, EI_API_ADP_UCmgrInfo_u cmgrInfo)
 {
+
+    EI_API_ADP_SEipStatus_t ret_val= {.gen_status=0,
+                                      .extended_status_size=0,
+                                      .extended_status_arr=EI_APP_aExtendedStatus};
+
     switch(serviceCode_p)
     {
     case 0x54:
@@ -411,6 +416,8 @@ void EI_APP_CmgrCb(uint32_t serviceCode_p, EI_API_ADP_UCmgrInfo_u cmgrInfo)
     default:
         printf("unknown service code");
     }
+
+    return ret_val;
 }
 
 /*!
@@ -456,7 +463,7 @@ bool EI_APP_init(void)
     EI_API_ADP_setQuickConnectSupported(pAdp_s);
 #endif
 
-    EI_APP_stackInit(EI_APP_pruLogicalInstance_g);
+    EI_APP_stackInit();
 
 
     // Create a CIP node.
@@ -552,16 +559,18 @@ void EI_APP_mainTask(
 
     Board_init();
 
-    OSAL_registerPrintOut(NULL, EI_APP_osPrintfCb);
-
     Drivers_open();
     Board_driversOpen();
+
+    OSAL_registerPrintOut(NULL, EI_APP_osPrintfCb);
 
     err = HWAL_init ();
     if (err != OSAL_NO_ERROR)
     {
         goto laError;
     }
+
+    CUST_PHY_CBregisterLibDetect(CUST_PHY_detect, NULL);
 
     int16_t resetServiceFlag;
     if (false == EI_APP_init())
@@ -589,7 +598,7 @@ laError:
 
     EI_APP_cleanup();
 
-    PRU_EIP_stop();
+    EI_API_ADP_pruicssStop();
 
     Board_driversClose();
 
@@ -645,7 +654,7 @@ int main(
     appThreadParam.stack     = (uint8_t*)EI_APP_aTaskStackMainStack_s;
     appThreadParam.priority  = TaskP_PRIORITY_LOWEST+4;
     appThreadParam.taskMain  = (TaskP_FxnMain)EI_APP_mainTask;
-    appThreadParam.args      = (void*)&EI_APP_pruLogicalInstance_g;
+    appThreadParam.args      = NULL;
 
     err = TaskP_construct(&appThreadHandle, &appThreadParam);
 
@@ -757,7 +766,7 @@ void EI_APP_osPrintfCb(void* pContext_p, const char* __restrict pFormat_p, va_li
 
 
 //*************************************************************************************************
-void EI_APP_stackInit (uint8_t pruInstance_p)
+void EI_APP_stackInit (void)
 {
     uint32_t err;
     EIP_SLoadParameter tParam;
@@ -770,15 +779,20 @@ void EI_APP_stackInit (uint8_t pruInstance_p)
 
     memset (&tParam, 0, sizeof (EIP_SLoadParameter));
     memmove (tParam.ai8uMacAddr, EI_APP_aMacAddr_g, 6);
-    err = EI_API_ADP_loadMac (&tParam, pruInstance_p);
+
+    tParam.pruInstance  = CONFIG_PRU_ICSS1; /* SysConfig definition of PRU-ICSS block instance used by stack */
+    tParam.phy0Instance = CONFIG_ETHPHY0;   /* SysConfig definition of PHY0 instance used by stack */
+    tParam.phy1Instance = CONFIG_ETHPHY1;   /* SysConfig definition of PHY1 instance used by stack */
+
+    err = EI_API_ADP_pruicssInit (&tParam);
     if (err)
     {
         goto laError;
     }
 
-    OSAL_printf("+EI_API_ADP_startFirmware\r\n");
-    EI_API_ADP_startFirmware();
-    OSAL_printf("-EI_API_ADP_startFirmware\r\n");
+    OSAL_printf("+EI_API_ADP_pruicssStart\r\n");
+    EI_API_ADP_pruicssStart();
+    OSAL_printf("-EI_API_ADP_pruicssStart\r\n");
 
     return;
 

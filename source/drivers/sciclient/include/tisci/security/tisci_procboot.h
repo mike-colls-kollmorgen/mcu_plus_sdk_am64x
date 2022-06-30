@@ -54,6 +54,12 @@
 #ifndef TISCI_PROCBOOT_H_
 #define TISCI_PROCBOOT_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request for physical processor control request
@@ -503,6 +509,11 @@ struct tisci_msg_proc_status_wait_req {
 struct tisci_msg_proc_status_wait_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_SECURITY_H_ */
 

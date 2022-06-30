@@ -81,63 +81,9 @@
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* UDMA driver objects */
-static Udma_DrvObject udmaDrvObj;
-
 /* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
-
-uint32_t EnetAppUtils_getNavSSInstanceId(Enet_Type enetType)
-{
-    uint32_t instId;
-
-#if defined (SOC_AM64X) || defined (SOC_AM243X)
-    instId = UDMA_INST_ID_PKTDMA_0;
-#else
-#error
-#endif
-
-    return instId;
-}
-
-Udma_DrvHandle EnetAppUtils_udmaOpen(Enet_Type enetType,
-                                     Udma_InitPrms *pInitPrms)
-{
-    Udma_InitPrms initPrms;
-    Udma_DrvHandle hUdmaDrv;
-    int32_t retVal;
-    uint32_t instId;
-
-    hUdmaDrv = &udmaDrvObj;
-    memset(hUdmaDrv, 0U, sizeof(*hUdmaDrv));
-
-    /* Use default params if not passed by caller */
-    if (NULL == pInitPrms)
-    {
-        instId = EnetAppUtils_getNavSSInstanceId(enetType);
-        /* Initialize the UDMA driver based on NAVSS instance */
-        UdmaInitPrms_init(instId, &initPrms);
-        retVal            = Udma_init(hUdmaDrv, &initPrms);
-    }
-    else
-    {
-        retVal = Udma_init(hUdmaDrv, pInitPrms);
-    }
-
-    /* assert if UDMA failed to open */
-    EnetAppUtils_assert(UDMA_SOK == retVal);
-
-    return hUdmaDrv;
-}
-
-void EnetAppUtils_udmaclose(Udma_DrvHandle hUdmaDrv)
-{
-    EnetAppUtils_assert(NULL != hUdmaDrv);
-    /* App should make sure that all Rx & Tx channels & are closed */
-    /* Deinitialize the UDMA driver */
-    Udma_deinit(hUdmaDrv);
-}
 
 void EnetAppUtils_freePktInfoQ(EnetDma_PktQ *pPktInfoQ)
 {
@@ -330,30 +276,6 @@ int32_t EnetAppUtils_freeTxCh(Enet_Handle hEnet,
     return status;
 }
 
-void EnetAppUtils_setCommonRxFlowPrms(EnetUdma_OpenRxFlowPrms *pRxFlowPrms)
-{
-    pRxFlowPrms->numRxPkts           = ENET_MEM_NUM_RX_PKTS;
-    pRxFlowPrms->disableCacheOpsFlag = false;
-    pRxFlowPrms->rxFlowMtu           = ENET_MEM_LARGE_POOL_PKT_SIZE;
-
-    pRxFlowPrms->ringMemAllocFxn = &EnetMem_allocRingMem;
-    pRxFlowPrms->ringMemFreeFxn  = &EnetMem_freeRingMem;
-
-    pRxFlowPrms->dmaDescAllocFxn = &EnetMem_allocDmaDesc;
-    pRxFlowPrms->dmaDescFreeFxn  = &EnetMem_freeDmaDesc;
-}
-
-void EnetAppUtils_setCommonTxChPrms(EnetUdma_OpenTxChPrms *pTxChPrms)
-{
-    pTxChPrms->numTxPkts           = ENET_MEM_NUM_TX_PKTS;
-    pTxChPrms->disableCacheOpsFlag = false;
-
-    pTxChPrms->ringMemAllocFxn = &EnetMem_allocRingMem;
-    pTxChPrms->ringMemFreeFxn  = &EnetMem_freeRingMem;
-
-    pTxChPrms->dmaDescAllocFxn = &EnetMem_allocDmaDesc;
-    pTxChPrms->dmaDescFreeFxn  = &EnetMem_freeDmaDesc;
-}
 
 uint32_t EnetAppUtils_getStartFlowIdx(Enet_Handle hEnet,
                                       uint32_t coreId)

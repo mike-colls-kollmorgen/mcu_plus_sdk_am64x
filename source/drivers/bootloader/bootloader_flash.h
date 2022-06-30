@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_FLASH_H
 #define BOOTLOADER_FLASH_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  * \brief Arguments to be passed to driver implementation callbacks when boot media is OSPI flash
  */
@@ -45,5 +51,10 @@ typedef struct Bootloader_FlashArgs_s
 } Bootloader_FlashArgs;
 
 extern Bootloader_Fxns gBootloaderFlashFxns;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* BOOTLOADER_FLASH_H */

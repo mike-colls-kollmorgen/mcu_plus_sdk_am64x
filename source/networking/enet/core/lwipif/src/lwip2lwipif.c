@@ -64,7 +64,6 @@
  */
 #include "lwip/opt.h"
 #include "lwip/def.h"
-#include "lwip/mem.h"
 #include "lwip/pbuf.h"
 #include "lwip/sys.h"
 #include <lwip/stats.h>
@@ -89,7 +88,12 @@
 #define LWIP_RX_PACKET_TASK_STACK    (4096)
 
 #define LWIP_POLL_TASK_PRI           (OS_TASKPRIHIGH)
+
+#if (_DEBUG_ == 1)
+#define LWIP_POLL_TASK_STACK         (3072)
+#else
 #define LWIP_POLL_TASK_STACK         (1024)
+#endif
 
 //TODO this should come from stack
 /* Maximum Ethernet Payload Size. */
@@ -150,7 +154,7 @@ static err_t LWIPIF_LWIP_send(struct netif *netif,
 
     /* Enqueue the packet */
     pbufQ_enQ(&hLwip2Enet->txReadyPbufPktQ, p);
-    Lwip2EnetStats_addOne(&gLwip2EnetStats.txReadyPbufPktEnq);
+    LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.txReadyPbufPktEnq);
 
     /* Pass the packet to the translation layer */
     Lwip2Enet_sendTxPackets(hLwip2Enet);
@@ -182,48 +186,55 @@ void LWIPIF_LWIP_input(struct netif *netif,
     if (netif->input(hPbufPacket, netif) != ERR_OK)
     {
         LWIP_DEBUGF(NETIF_DEBUG, ("lwipif_input: IP input error\n"));
+        if (!ENET_UTILS_IS_ALIGNED(hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT))
+        {
+            Lwip2Enet_assert(FALSE);
+        }
+        /* Put the new packet on the free queue */
         pbuf_free(hPbufPacket);
-        hPbufPacket = NULL;
+        /* Allocate a new Pbuf packet to be used */
+        bufSize = ENET_UTILS_ALIGN(hLwip2Enet->appInfo.hostPortRxMtu, ENETDMA_CACHELINE_ALIGNMENT);
+        hPbufPacket = pbuf_alloc(PBUF_RAW, bufSize, PBUF_POOL);
+        if (hPbufPacket != NULL)
+        {
+            Lwip2Enet_assert(hPbufPacket->payload != NULL);
+
+            /* Ensures that the ethernet frame is always on a fresh cacheline */
+            Lwip2Enet_assert(ENET_UTILS_IS_ALIGNED(hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT));
+            /* Put the new packet on the free queue */
+            pbufQ_enQ(&hLwip2Enet->rxFreePbufPktQ, hPbufPacket);
+            LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxFreePbufPktEnq);
+        }
+        else
+        {
+            LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxPbufAllocFailCnt);
+            hLwip2Enet->rxReclaimCount++;
+        }
+        LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxFreePbufPktEnq);
+        LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxLwipInputFail);
     }
     else
     {
-        Lwip2EnetStats_addOne(&gLwip2EnetStats.rxStackNotifyCnt);
+        LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxStackNotifyCnt);
 
         /* Allocate a new Pbuf packet to be used */
-        bufSize = ENET_UTILS_ALIGN(PBUF_POOL_BUFSIZE, ENETDMA_CACHELINE_ALIGNMENT);
+        bufSize = ENET_UTILS_ALIGN(hLwip2Enet->appInfo.hostPortRxMtu, ENETDMA_CACHELINE_ALIGNMENT);
 
         hPbufPacket = pbuf_alloc(PBUF_RAW, bufSize, PBUF_POOL);
         if (hPbufPacket != NULL)
         {
             Lwip2Enet_assert(hPbufPacket->payload != NULL);
 
-#if 0
             /* Ensures that the ethernet frame is always on a fresh cacheline */
             Lwip2Enet_assert(ENET_UTILS_IS_ALIGNED(hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT));
-#else
-            /*
-             * Corrects the total length to account for alignment correction
-             */
-            hPbufPacket->len -= (!ENET_UTILS_IS_ALIGNED(hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT)) * ENETDMA_CACHELINE_ALIGNMENT;
-            hPbufPacket->tot_len = hPbufPacket->len;
-
-            /*
-             * Ensures that the ethernet frame is always on a fresh cacheline
-             */
-            hPbufPacket->payload = (void *) ENET_UTILS_ALIGN((uint32_t)hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT);
-
-            if (!ENET_UTILS_IS_ALIGNED(hPbufPacket->payload, ENETDMA_CACHELINE_ALIGNMENT))
-            {
-                Lwip2Enet_assert(FALSE);
-            }
-#endif
             /* Put the new packet on the free queue */
             pbufQ_enQ(&hLwip2Enet->rxFreePbufPktQ, hPbufPacket);
-            Lwip2EnetStats_addOne(&gLwip2EnetStats.rxFreePbufPktEnq);
+            LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxFreePbufPktEnq);
         }
         else
         {
-            Lwip2EnetStats_addOne(&gLwip2EnetStats.rxPbufAllocFailCnt);
+            LWIP2ENETSTATS_ADDONE(&gLwip2EnetStats.rxPbufAllocFailCnt);
+            hLwip2Enet->rxReclaimCount++;
         }
     }
 }
@@ -314,7 +325,6 @@ static int LWIPIF_LWIP_start(struct netif *netif)
     int retVal = -1;
     Lwip2Enet_Handle hLwip2Enet;
     TaskP_Params params;
-    uint32_t semInitCnt;
     int32_t status;
     ClockP_Params clkPrms;
 
@@ -330,7 +340,6 @@ static int LWIPIF_LWIP_start(struct netif *netif)
         netif->state = (void *)hLwip2Enet;
 
         /*Initialize semaphore to call synchronize the poll function with a timer*/
-        semInitCnt = 0U;
         status = SemaphoreP_constructBinary(&hLwip2Enet->pollLinkSemObj, 0U);
         Lwip2Enet_assert(status == SystemP_SUCCESS);
 

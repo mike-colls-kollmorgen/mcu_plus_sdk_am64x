@@ -44,10 +44,11 @@
 
 #include <osal.h>
 #include "IOLM_Port_spi.h"
+#include "IOL_Port_Types.h"
 /* ========================================================================== */
 /*                          Setup SPI Instances                               */
 /* ========================================================================== */
-IOLM_SPI_eSpiBusy_t spiBusyFlag_g = IOLM_SPI_eSpiBusy_NotBusy;
+
 IOLM_SPI_mapping_t ledPortConfig_g =
 {
     .spiInstance    = IOLM_SPI_LED_INSTANCE,
@@ -77,10 +78,13 @@ void IOLM_SPI_close(void)
 int32_t IOLM_SPI_mcspiTransfer(uint32_t mcspiInstance_p, uint32_t mcspiChannel_p, uint32_t mcspiDataSize_p,
                                 uint8_t *pTxData_p, uint8_t *pRxData_p, uint32_t lengthInBytes_p)
 {
-    MCSPI_Transaction   transaction;  /* SPI transaction structure */
     uint32_t            lengthInBits;
     uint32_t            lengthInWords;
     int32_t             error;
+    MCSPI_Transaction   *pTransaction;
+    // check the platform
+    MCSPI_Transaction   transaction;
+    pTransaction = &transaction;
 
     if((mcspiInstance_p >= CONFIG_MCSPI_NUM_INSTANCES) || (mcspiChannel_p >= MCSPI_MAX_NUM_CHANNELS)
        || (gMcspiConfig[mcspiInstance_p].object == NULL))
@@ -100,19 +104,22 @@ int32_t IOLM_SPI_mcspiTransfer(uint32_t mcspiInstance_p, uint32_t mcspiChannel_p
         lengthInWords++;
     }
 
-    MCSPI_Transaction_init(&transaction);
+    MCSPI_Transaction_init(pTransaction);
+    // load data to the cache
+    if(MCSPI_OPER_MODE_DMA == ((MCSPI_Config *) gMcspiConfig[mcspiInstance_p].object->handle)->attrs->operMode)
+    {
+        CacheP_wb(pTxData_p, lengthInBytes_p, CacheP_TYPE_ALLD);
+        CacheP_wbInv(pRxData_p, lengthInBytes_p, CacheP_TYPE_ALLD);
+    }
 
-    transaction.channel     = mcspiChannel_p;
-    transaction.txBuf       = pTxData_p;
-    transaction.rxBuf       = pRxData_p;
-    transaction.dataSize    = mcspiDataSize_p;
-    transaction.count       = lengthInWords;
-    transaction.csDisable   = TRUE;
+    pTransaction->channel     = mcspiChannel_p;
+    pTransaction->txBuf       = pTxData_p;
+    pTransaction->rxBuf       = pRxData_p;
+    pTransaction->dataSize    = mcspiDataSize_p;
+    pTransaction->count       = lengthInWords;
+    pTransaction->csDisable   = TRUE;
 
-    spiBusyFlag_g = IOLM_SPI_eSpiBusy_Busy;
-    error = MCSPI_transfer(gMcspiConfig[mcspiInstance_p].object->handle, &transaction);
-    spiBusyFlag_g = IOLM_SPI_eSpiBusy_NotBusy;
-
+    error = MCSPI_transfer(gMcspiConfig[mcspiInstance_p].object->handle, pTransaction);
 laExit:
     return error;
 }

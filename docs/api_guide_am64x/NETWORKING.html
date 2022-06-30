@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,18 +108,33 @@ $(document).ready(function(){initNavTree('NETWORKING.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md303">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md356">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md357">Enet LLD</a></li>
+<li class="level1"><a href="#autotoc_md358">ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md359">ICSS TimeSync</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_networking_networking"></a></p>
-<h1><a class="anchor" id="autotoc_md303"></a>
+<h1><a class="anchor" id="autotoc_md356"></a>
 Introduction</h1>
-<p>It consists of below sub-modules</p>
-<ul>
-<li><a class="el" href="ICSS_EMAC.html">ICSS-EMAC</a></li>
-<li><a class="el" href="ICSS_TIMESYNC.html">ICSS TimeSync</a></li>
-<li><a class="el" href="ENET_LLD.html">Enet-LLD</a> </li>
+<p>Networking is supported using following two hardware IPs :</p><ul>
+<li>Common Port SWitch (CPSW) : CPSW subsystem provides Ethernet packet communication for the device and can be configured as an Ethernet switch. CPSW supports RGMII and RMII modes.</li>
+<li>Programmable Real-Time Unit and Industrial Communication Subsystem - Gigabit (PRU-ICSSG) : PRU-ICSSG is firmware programmable and can take on various personalities like Industrial Communication Protocol Switch (for protocols like EtherCAT, Profinet, EtherNet/IP), Ethernet Switch, Ethernet MAC, Industrial Drives, etc. PRU-ICSSG supports RGMII and MII modes.</li>
 </ul>
+<p>There are two separate drivers based on the use-case :</p><ul>
+<li><a class="el" href="ENET_LLD.html">Enet-LLD</a></li>
+<li><a class="el" href="ICSS_EMAC.html">ICSS-EMAC</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md357"></a>
+Enet LLD</h1>
+<p>Ethernet Low-Level Driver (<a class="el" href="ENET_LLD.html">Enet-LLD</a>) is a driver that aims at providing an unified interface for standard ethernet MAC and switch using CPSW and PRU-ICSSG IPs.</p>
+<h1><a class="anchor" id="autotoc_md358"></a>
+ICSS-EMAC</h1>
+<p>Industrial Communications Subsystem Ethernet Media Access Controller (<a class="el" href="ICSS_EMAC.html">ICSS-EMAC</a>) driver provide APIs to transmit and receive packets with a firmware based Ethernet switch that has been implemented on PRU-ICSS cores. It is used for 100M Industrial Ethernet Protocols like EtherNet/IP, Profinet etc.</p>
+<h2><a class="anchor" id="autotoc_md359"></a>
+ICSS TimeSync</h2>
+<p><a class="el" href="ICSS_TIMESYNC.html">ICSS TimeSync</a> is a separate driver based on ICSS-EMAC, which provides APIs for PTP/1588 v2 slave implementation on PRU-ICSSG. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

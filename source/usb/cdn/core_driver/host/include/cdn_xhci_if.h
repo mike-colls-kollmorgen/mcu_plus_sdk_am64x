@@ -35,6 +35,12 @@
 #ifndef CDN_XHCI_IF_H
 #define CDN_XHCI_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_a_c90-2 "C90 - limits, DRV-3906" */
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_b_c90-2 "C90 - limits, DRV-3906" */
 
@@ -657,5 +663,10 @@ uint32_t USBSSP_GetDevAddressState(const USBSSP_DriverResourcesT* res, uint8_t* 
 
 /* parasoft-end-suppress MISRA2012-RULE-1_1_b_c90-2 */
 /* parasoft-end-suppress MISRA2012-RULE-1_1_a_c90-2 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CDN_XHCI_IF_H */

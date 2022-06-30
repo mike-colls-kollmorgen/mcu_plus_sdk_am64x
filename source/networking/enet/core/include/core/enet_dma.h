@@ -75,16 +75,21 @@ extern "C" {
 /*                                 Macros                                     */
 /* ========================================================================== */
 
+#if ((__ARM_ARCH == 7) && (__ARM_ARCH_PROFILE == 'R'))
+/*! * \brief Set the cacheline alignment size */
+#define ENETDMA_CACHELINE_ALIGNMENT            (32U)
+#else
+#error "Enet library compilation not supported on non cortex R cores. Update correct cache line size"
+#endif
+
+
+
 #if defined(SOC_AM273X) || defined(SOC_AWR294X) || defined(SOC_AM263X)
 /*! * \brief Set to false as Cache is not coherent in AM273X, AWR294X SOC.*/
 #define Enet_isCacheCoherent()                  (false)
-/*! * \brief Set the cacheline alignment size */
-#define ENETDMA_CACHELINE_ALIGNMENT            (128U)
 #elif defined(SOC_AM64X) || defined(SOC_AM243X)
 /*! * \brief Use cache coherent macro from UDMA driver */
 #define Enet_isCacheCoherent()                  (Udma_isCacheCoherent())
-/*! * \brief Set the cacheline alignment size */
-#define ENETDMA_CACHELINE_ALIGNMENT            (UDMA_CACHELINE_ALIGNMENT)
 #else
 #error "SOC not supported"
 #endif
@@ -95,7 +100,7 @@ extern "C" {
  *
  * Number of entries kept in the statistics for DMA module.
  */
-#define ENET_DMA_STATS_HISTORY_CNT                  ((uint32_t)32U)
+#define ENET_DMA_STATS_HISTORY_CNT                  ((uint32_t)8U)
 
 /*!
  * \name Enet DMA driver callback function types.

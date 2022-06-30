@@ -1,6 +1,12 @@
 #ifndef _USBSS_FUNCTIONS_H_
 #define _USBSS_FUNCTIONS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/hw_include/cslr.h>
 #include <hw_usb.h>
 
@@ -100,5 +106,10 @@ uint8_t check_usbss_host_mode ( usb_handle_t *h );
 uint8_t check_usbss_device_mode ( usb_handle_t *h );
 
 void usb_local_disable_module ( uint32_t cfg_base );
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

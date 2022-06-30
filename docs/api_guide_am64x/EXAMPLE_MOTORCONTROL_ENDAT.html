@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,23 +108,23 @@ $(document).ready(function(){initNavTree('EXAMPLE_MOTORCONTROL_ENDAT.html',''); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1033">Introduction</a><ul><li class="level2"><a href="#autotoc_md1034">Features Supported</a></li>
-<li class="level2"><a href="#autotoc_md1035">SysConfig Features</a></li>
-<li class="level2"><a href="#autotoc_md1036">Features Not Supported</a></li>
-<li class="level2"><a href="#autotoc_md1037">Important files and directory structure</a></li>
+<ul><li class="level1"><a href="#autotoc_md1148">Introduction</a><ul><li class="level2"><a href="#autotoc_md1149">Features Supported</a></li>
+<li class="level2"><a href="#autotoc_md1150">SysConfig Features</a></li>
+<li class="level2"><a href="#autotoc_md1151">Features Not Supported</a></li>
+<li class="level2"><a href="#autotoc_md1152">Important files and directory structure</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#EXAMPLES_MOTORCONTROL_ENDAT_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1038">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1039">Hardware Prerequisites</a></li>
-<li class="level2"><a href="#autotoc_md1040">Hardware Setup</a></li>
-<li class="level2"><a href="#autotoc_md1041">Build, load and run</a></li>
+<li class="level1"><a href="#autotoc_md1153">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1154">Hardware Prerequisites</a></li>
+<li class="level2"><a href="#autotoc_md1155">Hardware Setup</a></li>
+<li class="level2"><a href="#autotoc_md1156">Build, load and run</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1042">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1157">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_motorcontrol_endat_example"></a></p>
-<h1><a class="anchor" id="autotoc_md1033"></a>
+<h1><a class="anchor" id="autotoc_md1148"></a>
 Introduction</h1>
 <p>EnDat is a bidirectional interface for position encoders. During EnDat operation the EnDat master receives position information from the EnDat position encoder. The EnDat diagnostic application, described here, demonstrates the EnDat master operation.</p>
 <p>The EnDat driver provides a well defined set of API's to expose EnDat master interface.</p>
@@ -155,7 +155,7 @@ Introduction</h1>
 <li>Then the EnDat API is invoked to process the command.</li>
 <li>The received EnDat is processed &amp; validated using the defined API's. The result is then presented to the user.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1034"></a>
+<h2><a class="anchor" id="autotoc_md1149"></a>
 Features Supported</h2>
 <ul>
 <li>PRU Firmware source</li>
@@ -171,19 +171,19 @@ Features Supported</h2>
 <li>Channel select</li>
 <li>Concurrent multi channel support (up-to 3 encoders with identical part number @ 8MHz maximum)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1035"></a>
+<h2><a class="anchor" id="autotoc_md1150"></a>
 SysConfig Features</h2>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure things mentioned below:</p><ul>
 <li>Selecting the ICSSG0PRUx instance.(Tested on ICSSG0-PRU1)</li>
 <li>Configuring PINMUX.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1036"></a>
+<h2><a class="anchor" id="autotoc_md1151"></a>
 Features Not Supported</h2>
 <p>In general, peripherals or features not mentioned as part of "Features Supported" section are not supported in this release, including the below</p><ul>
 <li>Safety</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1037"></a>
+<h2><a class="anchor" id="autotoc_md1152"></a>
 Important files and directory structure</h2>
 <table class="doxtable">
 <tr>
@@ -217,9 +217,9 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/motorcontrol/endat_example   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1038"></a>
+<h1><a class="anchor" id="autotoc_md1153"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1039"></a>
+<h2><a class="anchor" id="autotoc_md1154"></a>
 Hardware Prerequisites</h2>
 <p>Other than the basic EVM setup mentioned in <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>, below additional HW is required to run this demo</p><ul>
 <li>EnDAT encoder</li>
@@ -227,13 +227,13 @@ Hardware Prerequisites</h2>
 <li>TIDEP-01015 3 Axis board</li>
 <li>Interface card connecting EVM and TIDEP-01015 3 Axis board</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1040"></a>
+<h2><a class="anchor" id="autotoc_md1155"></a>
 Hardware Setup</h2>
 <p> <style>div.image img[src="EnDAT_Connections.png"]{width:40%}</style> </p><div class="image">
 <img src="EnDAT_Connections.png" alt=""/>
 <div class="caption">
 Hardware Setup</div></div>
-<h2><a class="anchor" id="autotoc_md1041"></a>
+<h2><a class="anchor" id="autotoc_md1156"></a>
 Build, load and run</h2>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
@@ -241,7 +241,7 @@ Build, load and run</h2>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>Refer to UART terminal for user interface menu options.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1042"></a>
+<h1><a class="anchor" id="autotoc_md1157"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run:</p>
 <p> <style>div.image img[src="EnDAT_1.png"]{width:60%}</style> </p><div class="image">

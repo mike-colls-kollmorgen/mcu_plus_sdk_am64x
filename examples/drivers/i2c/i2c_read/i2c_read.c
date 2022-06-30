@@ -36,7 +36,7 @@
 #include "ti_drivers_open_close.h"
 #include "ti_board_open_close.h"
 
-#define I2C_READ_SLAVE_ADDR             (0x50U)
+extern uint32_t Board_i2cGetEepromDeviceAddr();
 #define I2C_READ_LEN                    (1U)
 
 static void i2c_read_error_handler(uint16_t sample, int32_t status);
@@ -45,6 +45,7 @@ void i2c_read_main(void *arg0)
 {
     uint16_t        sample;
     int32_t         status;
+    uint32_t        i2cReadSlaveAddr;
     uint8_t         rxBuffer[I2C_READ_LEN];
     I2C_Handle      i2cHandle;
     I2C_Transaction i2cTransaction;
@@ -52,6 +53,7 @@ void i2c_read_main(void *arg0)
     Drivers_open();
     Board_driversOpen();
 
+    i2cReadSlaveAddr     = Board_i2cGetEepromDeviceAddr();
     i2cHandle = gI2cHandle[CONFIG_I2C0];
 
     DebugP_log("[I2C] Read data ... !!!\r\n");
@@ -62,7 +64,7 @@ void i2c_read_main(void *arg0)
     /* Override with required transaction parameters */
     i2cTransaction.readBuf      = rxBuffer;
     i2cTransaction.readCount    = I2C_READ_LEN;
-    i2cTransaction.slaveAddress = I2C_READ_SLAVE_ADDR;
+    i2cTransaction.slaveAddress = i2cReadSlaveAddr;
 
     /* Read 20 samples and log them */
     for(sample = 0; sample < 20; sample++)

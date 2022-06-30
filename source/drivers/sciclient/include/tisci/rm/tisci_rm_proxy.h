@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_PROXY_H
 #define RM_TISCI_PROXY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Configures a Navigator Subsystem proxy
@@ -94,6 +100,11 @@ struct tisci_msg_rm_proxy_cfg_req {
 struct tisci_msg_rm_proxy_cfg_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_PROXY_H */
 

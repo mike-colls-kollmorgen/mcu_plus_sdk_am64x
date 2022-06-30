@@ -139,6 +139,7 @@ let mcspi_module = {
             }]
         },
     },
+    sharedModuleInstances: addModuleInstances,
     getInstanceConfig,
     pinmuxRequirements,
     getMaxChannels,
@@ -146,6 +147,18 @@ let mcspi_module = {
     getPeripheralPinNames,
     getClockEnableIds,
 };
+
+function addModuleInstances(instance) {
+    let modInstances = new Array();
+
+    modInstances.push({
+        name: "edmaDriver",
+        displayName: "EDMA Configuration",
+        moduleName: "/drivers/edma/edma",
+    });
+
+    return modInstances;
+}
 
 function getConfigurables()
 {
@@ -287,6 +300,10 @@ function getConfigurables()
                     name: "INTERRUPT",
                     displayName: "Interrupt Mode"
                 },
+                {
+                    name: "DMA",
+                    displayName: "DMA Mode"
+                },
             ],
             onChange: function (inst, ui) {
                 if(inst.intrEnable == "POLLED") {
@@ -294,13 +311,13 @@ function getConfigurables()
                     ui.transferMode.hidden = true;
                     ui.transferTimeout.hidden = true;
                 }
-                if((inst.intrEnable == "INTERRUPT")) {
+                if((inst.intrEnable == "INTERRUPT") || (inst.intrEnable == "DMA")) {
                     ui.intrPriority.hidden = false;
                     ui.transferMode.hidden = false;
                     ui.transferTimeout.hidden = false;
                 }
             },
-            description: "Driver Operating Mode"
+            description: "Driver Operating Mode. In case of DMA mode, Default TX Data feature is not supported"
         },
         {
             name: "intrPriority",
@@ -411,6 +428,13 @@ function validate(inst, report) {
         report.logError("Callback function MUST be provided for callback transfer mode", inst, "transferCallbackFxn");
     }
     common.validate.checkNumberRange(inst, report, "intrPriority", 0, hwi.getHwiMaxPriority(), "dec");
+    if(inst.intrEnable == "DMA")
+    {
+        if(inst.edmaDriver.intrEnable == "FALSE")
+        {
+            report.logError(`Interrupt must be enabled in `+system.getReference(inst.edmaDriver,"intrEnable"), inst, "intrEnable");
+        }
+    }
 }
 
 /*
@@ -430,6 +454,7 @@ function moduleInstances(inst) {
         defaultInstanceCount: 1,
         args: {
             interfaceName: getInterfaceName(inst),
+            dmaEnable: inst.intrEnable,
         },
     });
 

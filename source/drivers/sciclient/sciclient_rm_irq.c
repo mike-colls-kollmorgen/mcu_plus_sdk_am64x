@@ -44,6 +44,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <kernel/dpl/SystemP.h>
+#include <kernel/dpl/AddrTranslateP.h>
 #include <drivers/hw_include/csl_types.h>
 #include <drivers/sciclient.h>
 #include <drivers/sciclient/sciclient_rm_priv.h>
@@ -763,23 +764,6 @@ static bool Sciclient_rmIrOutpRomMapped(const struct Sciclient_rmIrInst  *inst,
                                         uint16_t                         outp);
 
 /**
- * \brief Checks the output's control register to see if the output line has an
- *        input line mapped to it.
- *
- * \param id
- * IR SoC device ID.
- *
- * \param outp
- * Output line from IR
- *
- * \return
- *      SystemP_SUCCESS - Output line is free
- *      SystemP_FAILURE - Output line is in use
- */
-static int32_t Sciclient_rmIrOutpIsFree(uint16_t    id,
-                                        uint16_t    outp);
-
-/**
  * \brief Returns the output line to which the specified input line has been
  *        mapped.  An error is returned if the inp line does not map to an
  *        output line.
@@ -836,7 +820,7 @@ int32_t Sciclient_rmProgramInterruptRoute (const struct tisci_msg_rm_irq_set_req
     uint16_t messageType = TISCI_MSG_RM_IRQ_SET;
     uint8_t dst_host;
     struct Sciclient_rmIrqCfg cfg;
-    
+
     memset(&cfg, 0, sizeof(cfg));
 
     /* Run all error checks */
@@ -851,7 +835,7 @@ int32_t Sciclient_rmProgramInterruptRoute (const struct tisci_msg_rm_irq_set_req
     } else {
         dst_host = (uint8_t) gSciclientMap[Sciclient_getCurrentContext(messageType)].hostId;
     }
-    
+
     if (r == SystemP_SUCCESS &&
         Sciclient_rmParamIsValid(req->valid_params,
                                  TISCI_MSG_VALUE_RM_IA_ID_VALID) == TRUE) {
@@ -859,7 +843,7 @@ int32_t Sciclient_rmProgramInterruptRoute (const struct tisci_msg_rm_irq_set_req
     } else {
         cfg.s_ia = SCICLIENT_RM_DEV_NONE;
     }
-    
+
     if (r == SystemP_SUCCESS) {
         cfg.valid_params = req->valid_params;
         cfg.host = dst_host;
@@ -882,7 +866,7 @@ int32_t Sciclient_rmProgramInterruptRoute (const struct tisci_msg_rm_irq_set_req
                  */
                 cfg.vint = cfg.s_idx;
             }
-    
+
             /* Route search for non event-source routes */
             r = Sciclient_rmIrqFindRoute(&cfg);
             if (r == SystemP_SUCCESS) {
@@ -917,7 +901,7 @@ int32_t Sciclient_rmProgramInterruptRoute (const struct tisci_msg_rm_irq_set_req
             r = CSL_EBADARGS;
         }
     }
-    
+
     return r;
 }
 
@@ -944,7 +928,7 @@ int32_t Sciclient_rmClearInterruptRoute (const struct tisci_msg_rm_irq_release_r
     } else {
         dst_host = (uint8_t) gSciclientMap[Sciclient_getCurrentContext(messageType)].hostId;
     }
-    
+
     if (r == SystemP_SUCCESS &&
         Sciclient_rmParamIsValid(req->valid_params,
                                  TISCI_MSG_VALUE_RM_IA_ID_VALID) == TRUE) {
@@ -952,7 +936,7 @@ int32_t Sciclient_rmClearInterruptRoute (const struct tisci_msg_rm_irq_release_r
     } else {
         cfg.s_ia = SCICLIENT_RM_DEV_NONE;
     }
-    
+
     if (r == SystemP_SUCCESS) {
         cfg.valid_params = req->valid_params;
         cfg.host = dst_host;
@@ -1076,7 +1060,7 @@ int32_t Sciclient_rmTranslateIrqInput(uint16_t  dst_dev_id,
     if ((Sciclient_rmIrIsIr(src_dev_id) == true) ||
         (Sciclient_rmIaIsIa(src_dev_id) == true)) {
         /*
-         * Translate the specified destination processor IRQ input to the 
+         * Translate the specified destination processor IRQ input to the
          * IR/IA output
          */
         r = Sciclient_rmIrqGetNode(src_dev_id, &cur_n);
@@ -1122,11 +1106,12 @@ static uint32_t * Sciclient_getIrAddr (uint32_t addr, uint32_t i)
     int_ctrl_reg = (uint32_t *)((uint64_t)addr + (uint64_t)Sciclient_rmIrIntControlReg(i));
 #else
     int_ctrl_reg = (uint32_t *)(addr + Sciclient_rmIrIntControlReg(i));
+    int_ctrl_reg = (uint32_t *)AddrTranslateP_getLocalAddr( (uint64_t)int_ctrl_reg);
 #endif
 #if defined (BUILD_C66X_1) || defined (BUILD_C66X_2)
     /* This corresponds to the IR registers for which the RAT is configured */
-    if (((uint32_t)int_ctrl_reg >= CSL_C66SS0_INTROUTER0_INTR_ROUTER_CFG_BASE) && 
-        ((uint32_t)int_ctrl_reg < (CSL_C66SS1_INTROUTER0_INTR_ROUTER_CFG_BASE + 
+    if (((uint32_t)int_ctrl_reg >= CSL_C66SS0_INTROUTER0_INTR_ROUTER_CFG_BASE) &&
+        ((uint32_t)int_ctrl_reg < (CSL_C66SS1_INTROUTER0_INTR_ROUTER_CFG_BASE +
                          CSL_C66SS1_INTROUTER0_INTR_ROUTER_CFG_SIZE)))
     {
         int_ctrl_reg = (uint32_t *)((uint32_t)int_ctrl_reg + CSL_C66_COREPAC_RAT_REGION_BASE);
@@ -1173,12 +1158,12 @@ static int32_t Sciclient_rmPsPop(const struct Sciclient_rmIrqNode  **n,
                                  uint16_t                          *if_idx)
 {
     int32_t r = SystemP_SUCCESS;
-    
+
     if ((gPstack.psp > (0u)) && (n != NULL) && (if_idx != NULL)) {
         gPstack.psp--;
         *n = gPstack.ps[gPstack.psp].p_n;
         *if_idx = gPstack.ps[gPstack.psp].if_idx;
-        
+
         /* Clear the just popped node */
         gPstack.ps[gPstack.psp].p_n = NULL;
         gPstack.ps[gPstack.psp].if_idx = 0;
@@ -1187,7 +1172,7 @@ static int32_t Sciclient_rmPsPop(const struct Sciclient_rmIrqNode  **n,
     } else {
         r = SystemP_FAILURE;
     }
-    
+
     return r;
 }
 
@@ -1539,9 +1524,9 @@ static bool Sciclient_rmIrqRouteValidate(struct Sciclient_rmIrqCfg  *cfg)
     bool cur_outp_valid = false, next_inp_valid = false;
     uint32_t cur_inp;
     uint16_t cur_outp = 0, next_inp = 0;
-    struct tisci_msg_rm_get_resource_range_req req = {0};
-    struct tisci_msg_rm_get_resource_range_resp host_resp = {0};
-    struct tisci_msg_rm_get_resource_range_resp all_resp = {0};
+    struct tisci_msg_rm_get_resource_range_req req = {{0}};
+    struct tisci_msg_rm_get_resource_range_resp host_resp = {{0}};
+    struct tisci_msg_rm_get_resource_range_resp all_resp = {{0}};
 
     if (cfg->s_ia == SCICLIENT_RM_DEV_NONE) {
         /* First node's interface must contain the source IRQ */
@@ -2774,8 +2759,8 @@ static bool Sciclient_rmIrOutpRomMapped(const struct Sciclient_rmIrInst  *inst,
     return rom_mapped;
 }
 
-static int32_t Sciclient_rmIrOutpIsFree(uint16_t    id,
-                                        uint16_t    outp)
+int32_t Sciclient_rmIrOutpIsFree(uint16_t    id,
+                                 uint16_t    outp)
 {
     int32_t r = SystemP_SUCCESS;
     struct Sciclient_rmIrInst *inst = NULL;

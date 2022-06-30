@@ -38,6 +38,12 @@
 #ifndef RED_PRP_H_
 #define RED_PRP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -185,5 +191,10 @@ void       PrpSupFrameUpdateTlv(RED_FRAME *pRedFrame, uint8_t type);
 void       PrpSupFrameIncrementSeqNr(hsrPrpHandle *hsrPrphandle);
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_PRP_H_ */

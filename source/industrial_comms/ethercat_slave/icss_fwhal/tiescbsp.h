@@ -213,6 +213,8 @@ process path latency improvement can be achieved by disabling below define */
 #define ESC_ADDR_TI_PORT1_TX_START_DELAY    0xE12
 #define ESC_ADDR_TI_ESC_RESET       0xE14
 #define ESC_ADDR_TI_EDMA_LATENCY_ENHANCEMENT    0xE24
+#define ESC_ADDR_TI_PHY_RX_ER_REG               0xE28
+#define ESC_ADDR_TI_PRU_CLK_FREQUENCY           0xE34
 #define TI_ESC_RST_CMD_U    0x545352
 #define TI_ESC_RST_CMD_L    0x747372
 
@@ -351,11 +353,18 @@ process path latency improvement can be achieved by disabling below define */
 #define PDI_WD_TRIGGER_SYNC1_OUT    (3 << 4)
 
 #if ENABLE_MULTIPLE_SM_ACCESS_IN_SINGLE_DATAGRAM
-#define TIESC_PORT0_TX_DELAY    0xA0
+#define TIESC_PORT0_TX_DELAY_200_MHZ_CLOCK    0x98
 #else
-#define TIESC_PORT0_TX_DELAY    0x50
+#define TIESC_PORT0_TX_DELAY_200_MHZ_CLOCK    0x48
 #endif
-#define TIESC_PORT1_TX_DELAY    0x50
+#define TIESC_PORT1_TX_DELAY_200_MHZ_CLOCK    TIESC_PORT0_TX_DELAY_200_MHZ_CLOCK
+
+#if ENABLE_MULTIPLE_SM_ACCESS_IN_SINGLE_DATAGRAM
+#define TIESC_PORT0_TX_DELAY_333_MHZ_CLOCK    0xA0
+#else
+#define TIESC_PORT0_TX_DELAY_333_MHZ_CLOCK    0x50
+#endif
+#define TIESC_PORT1_TX_DELAY_333_MHZ_CLOCK    TIESC_PORT0_TX_DELAY_333_MHZ_CLOCK
 
 #define PDI_ISR_EDIO_NUM    7 //GPMC_CSN(2) -> pr1_edio_data_out7 for ICEv2.J4.Pin21
 
@@ -426,6 +435,18 @@ extern volatile uint32_t ecat_timer_inc_p_ms;
  */
 #define LOCK_PD_BUF_CHECK_AVAILABILITY_RETRY_COUNT    (10U)
 
+/**
+ * \brief TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ
+ *  PRU-ICSS Core Clock and IEP Clock running at 200 MHz
+ */
+#define TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ (0)
+
+/**
+ * \brief TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ
+ *  PRU-ICSS Core Clock and IEP Clock running at 333 MHz
+ */
+#define TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ (1)
+
 typedef int32_t (*bsp_eeprom_read_t)(uint8_t *buf, uint32_t len);
 typedef int32_t (*bsp_eeprom_write_t)(uint8_t *buf, uint32_t len);
 typedef void (*bsp_init_spinlock_t)(void);
@@ -485,6 +506,13 @@ typedef struct bsp_params_s
     /**< SYNC0 IRQ handler in the EtherCAT slave stack. Needed only if ENABLE_SYNC_TASK is not enabled */
     bsp_ethercat_stack_isr_function     sync1_isr;
     /**< SYNC1 IRQ handler in the EtherCAT slave stack. Needed only if ENABLE_SYNC_TASK is not enabled */
+    uint16_t                            phy_rx_err_reg;
+    /**< Address of PHY register maintaining RX Error (RX_ERR) count during frame(when RX_DV is asserted).
+     *   This value will be configured in TI ESC's PHY RX Error Counter Register (0x0E28-0x0E29) */
+    uint8_t                             pruicssClkFreq;
+    /**< PRU-ICSS Core Clock and IEP Clock Frequency.
+     *   Set TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ/TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ. Default is TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ.
+     *   NOTE : Only applicable for PRU-ICSSG (AM64x/AM243x). Not applicable for PRU-ICSSM(AM263x). */
 } bsp_params;
 
 /**
@@ -672,14 +700,14 @@ extern void bsp_set_pdi_wd_trigger_mode(PRUICSS_Handle pruIcssHandle,
 *  -------------------------------| ------------- | ----------------------------------------- | ------------- | ------------- | ------------------------------------------------------------------------------------ |
 *  CMD_DL_USER_ACK_MBX_READ       | 4             | address                                   | length        | NA            | Indicate PDI side mailbox read completion to firmware                                |
 *  CMD_DL_USER_ACK_MBX_WRITE      | 5             | address                                   | length        | NA            | Indicate PDI side mailbox write to firmware                                          |
-*  CMD_DL_USER_EEPROM_CMD_ACK     | 6             | NA                                        | NA            | NA            | Acknowledge EEEPROM emulation command execution by ARM host stack                    |
+*  CMD_DL_USER_EEPROM_CMD_ACK     | 6             | NA                                        | NA            | NA            | Acknowledge EEPROM emulation command execution by ARM host stack                     |
 *  CMD_DL_USER_READ_SYNC_STATUS   | 7             | sync_sel                                  | NA            | NA            | Indicate SYNC0/1 status register read by PDI to firmware                             |
 *  CMD_DL_USER_READ_AL_CONTROL    | 8             | NA                                        | NA            | NA            | Indicate AL control register read by PDI to firmware                                 |
 *  CMD_DL_USER_WRITE_AL_STATUS    | 9             | NA                                        | NA            | NA            | Indicate AL status register write by PDI to firmware                                 |
 *  CMD_DL_USER_READ_PD_WD_STATUS  | 10            | NA                                        | NA            | NA            | Indicate PD watchdog status register read by PDI to firmware updating register status|
 *  CMD_DL_USER_READ_SM_ACTIVATE   | 11            | sm_index                                  | NA            | NA            | Indicate SM activate register read by PDI to firmware                                |
 *  CMD_DL_USER_WRITE_SM_PDI_CTRL  | 12            | (sm_index<<8) OR pdi control reg value    | NA            | NA            | Indicate SM PDI control write to control SM from PDI to firmware                     |
-*  CMD_DL_USER_READ_LATCH_TIME    | 13            | latch_sel                                 | NA            | NA            | Indicate Latch0/1 time registest read by PDI to firmware                             |
+*  CMD_DL_USER_READ_LATCH_TIME    | 13            | latch_sel                                 | NA            | NA            | Indicate Latch0/1 time register read by PDI to firmware                              |
 *  CMD_DL_USER_READ_SYS_TIME      | 14            | NA                                        | NA            | NA            | Indicate System Time register read by PDI to firmware                                |
 *  CMD_DL_USER_CLEAR_AL_EVENT_LOW | 15            | event_mask                                | NA            | NA            | Clear events not set in event_mask in AL event request register                      |
 *  CMD_DL_USER_SYSTIME_PDI_CONTROL| 16            | reg_sel                                   | NA            | NA            | Indicate to the firmware DC register update from PDI side                            |

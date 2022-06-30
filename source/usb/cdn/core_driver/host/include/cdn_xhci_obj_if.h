@@ -34,6 +34,12 @@
 #ifndef CDN_XHCI_OBJ_IF_H
 #define CDN_XHCI_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_xhci_if.h"
 
 /** @defgroup DriverObject Driver API Object
@@ -416,5 +422,10 @@ extern USBSSP_OBJ *USBSSP_GetInstance(void);
  *  @}
  */
 /* parasoft-end-suppress METRICS-36-3 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CDN_XHCI_OBJ_IF_H */

@@ -108,6 +108,12 @@ extern "C" {
 #define ENET_CFG_CPSW_INTERVLAN                     (ENET_ON)
 #endif
 
+/* CPSW EST support */
+#if defined(SOC_AM263X)
+#define ENET_CFG_CPSW_EST                           (ENET_ON)
+#define ENET_CFG_CPSW_MACPORT_EST                   (ENET_ON)
+#endif
+
 /*! \brief MDIO Clause-45 frame support. */
 #if defined(SOC_AM273X) || defined(SOC_AWR294X) || defined(SOC_AM64X) || defined(SOC_AM243X) || defined(SOC_AM263X)
 #define ENET_CFG_MDIO_CLAUSE45                      (ENET_OFF)
@@ -115,7 +121,7 @@ extern "C" {
 #define ENET_CFG_MDIO_CLAUSE45                      (ENET_ON)
 #endif
 
-#if defined(SOC_AM273X) || defined(SOC_AWR294X) || defined(SOC_AM64X) || defined(SOC_AM243X) || defined(SOC_AM263X)
+#if defined(SOC_AWR294X) || defined(SOC_AM64X) || defined(SOC_AM243X) || defined(SOC_AM263X)
 #define ENET_CFG_CPSW_HOSTPORT_TRAFFIC_SHAPING      (ENET_OFF)
 #define ENET_CFG_CPSW_MACPORT_SGMII                 (ENET_OFF)
 #define ENET_CFG_CPSW_MACPORT_INTERVLAN             (ENET_OFF)
@@ -125,6 +131,16 @@ extern "C" {
 #define ENET_CFG_RM_MAC_ADDR_MAX                    (3U)
 #define ENET_CFG_RM_TX_CH_MAX                       (2U)
 #define ENET_CFG_RM_RX_CH_MAX                       (4U)
+#elif defined(SOC_AM273X)
+#define ENET_CFG_CPSW_HOSTPORT_TRAFFIC_SHAPING      (ENET_OFF)
+#define ENET_CFG_CPSW_MACPORT_SGMII                 (ENET_OFF)
+#define ENET_CFG_CPSW_MACPORT_INTERVLAN             (ENET_OFF)
+#define ENET_CFG_CPSW_CPTS_STATS                    (ENET_OFF)
+#define ENET_CFG_CPSW_CPTS_EVENTS_POOL_SIZE         (8U)
+#define ENET_CFG_REMOTE_CLIENT_CORES_MAX            (1U)
+#define ENET_CFG_RM_MAC_ADDR_MAX                    (1U)
+#define ENET_CFG_RM_TX_CH_MAX                       (1U)
+#define ENET_CFG_RM_RX_CH_MAX                       (1U)
 #else
 #define ENET_CFG_CPSW_HOSTPORT_TRAFFIC_SHAPING      (ENET_ON)
 #define ENET_CFG_CPSW_MACPORT_SGMII                 (ENET_ON)
@@ -170,6 +186,19 @@ extern "C" {
 #define ENET_CFG_USE_OPTIMIZED_IRQ_CRITICAL_SECTION  (0U)
 #endif
 
+/** \brief Maximum number of CPDMA channels allocated by application */
+#if defined(SOC_AM273X) || defined(SOC_AWR294X) || defined(SOC_AM263X)
+#define ENET_CFG_CPDMA_CPSW_MAX_TX_CH                (3U)
+#define ENET_CFG_CPDMA_CPSW_MAX_RX_CH                (3U)
+#endif
+
+/*! \brief Eliminate embedded strings from all ASSERT/TRACE invocation.
+ *
+ * Enabling this option reduces rodata footprint of enet library by removing strings in trace.
+ * Removal of strings will result in cryptic trace msgs because informative strings are removed and
+ * only function name, file,line num info will be printed based on ENET_CFG_TRACE_TRACE_FORMAT define.
+ */
+#define ENET_CFG_TRACE_DISABLE_INFOSTRING           (ENET_ON)
 
 /* --------------------------------------------------------------------------*/
 /*       ICSS-G Peripheral and CPSW Module related config options            */

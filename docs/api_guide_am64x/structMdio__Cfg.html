@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -127,6 +127,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a106d720ba92dce9729eae1091043bf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a455bdd4279e85494eb9ec41197c7cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMdio__Cfg.html#a6a455bdd4279e85494eb9ec41197c7cf">isMaster</a></td></tr>
 <tr class="separator:a6a455bdd4279e85494eb9ec41197c7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7222eca907432c1a9b11f27bad14b698"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMdio__Cfg.html#a7222eca907432c1a9b11f27bad14b698">disableStateMachineOnInit</a></td></tr>
+<tr class="separator:a7222eca907432c1a9b11f27bad14b698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="af75342f0cb46f0a9ebea170c28315ae6"></a>
@@ -216,6 +218,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>MDIO module can be shared by multiple peripherals, so only one peripheral (master) must perform the MDIO initial configuration and be skipped by the other peripherals (slaves). There must be only one peripheral marked as master among the those that share the MDIO. This condition is not enforced in driver, so it's application's responsibility this requirement is met. </p>
+
+</div>
+</div>
+<a id="a7222eca907432c1a9b11f27bad14b698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7222eca907432c1a9b11f27bad14b698">&#9670;&nbsp;</a></span>disableStateMachineOnInit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Mdio_Cfg::disableStateMachineOnInit</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Config to disable MDIO state machine on MDIO_open . By default MDIO state machine is enabled on MDIO_open Setting this flag, will cause MDIO to not enable MDIO state machine on open. The MDIO state machine can be enabled at a later point of time via IOCTL. This option allows Synchronizing externally managed PHY with the MDIO whereby external PHY initalization is done and then MDIO state machine can be enabled so that any linkup interrupts are not missed </p>
 
 </div>
 </div>

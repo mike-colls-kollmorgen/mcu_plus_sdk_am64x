@@ -39,13 +39,14 @@
 */
 
 
-#include <osal.h>
-#include "ti_drivers_open_close.h"
+#define IOLM_SMI_TASK_STACK_SIZE       (0x2000U / sizeof(configSTACK_DEPTH_TYPE))
 
+#include <FreeRTOS.h>
 #include <drivers/uart.h>
+#include <ti_drivers_open_close.h>
+#include <osal.h>
 #include <IOLM_SMI.h>
 #include <IOL_Serial.h>
-
 #include "IOLM_Port_SMI.h"
 
 OSAL_SCHED_SMutexHandle_t*pSemSMI_g;
@@ -71,8 +72,8 @@ UART_Transaction txTransaction_g;
 int32_t s32LastRxCancelTime_g;
 
 static void* IOLM_pSmiTaskHandle_s;
-#define IOLM_SMI_TASK_STACK_SIZE       4096
-static uint8_t IOLM_pSmiTaskStack_s[IOLM_SMI_TASK_STACK_SIZE];
+static StackType_t IOLM_pSmiTaskStack_s[IOLM_SMI_TASK_STACK_SIZE]   \
+                   __attribute__((aligned(32), section(".threadstack"))) = {0};
 
 /**
 \brief SMI generic confirmation
@@ -250,7 +251,7 @@ void IOLM_SMI_portInit(void)
     IOLM_pSmiTaskHandle_s = OSAL_SCHED_startTask((OSAL_SCHED_CBTask_t)vUARTrun,
                                                  NULL,
                                                  OSAL_TASK_ePRIO_IOL_SMI,
-                                                 IOLM_pSmiTaskStack_s,
+                                                 (uint8_t*)IOLM_pSmiTaskStack_s,
                                                  sizeof(IOLM_pSmiTaskStack_s),
                                                  OSAL_OS_START_TASK_FLG_NONE,
                                                  "SMI Task");

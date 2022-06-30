@@ -78,11 +78,21 @@ extern int main(int argc, char **argv);
 __attribute__((section(".text:_c_int00"), noreturn))
 void _c_int00(void)
 {
-   // Initialize the stack pointer
+   /*
+    * Initialize the CONTROL register to change to Main
+    * Stack Pointer (MSP) by setting SPSEL to 0.
+    *
+    */
+   __asm ("mrs r1, control");
+   __asm ("bic r1, r1, #0x2");
+   __asm ("msr control, r1");
+   __asm ("isb sy");
+
+   /* Initialize the stack pointer */
    register char* stack_ptr = (char*)&__STACK_END;
    __asm volatile ("MSR msp, %0" : : "r" (stack_ptr) : );
 
-   // Initialize the FPU if building for floating point
+   /* Initialize the FPU if building for floating point */
    #ifdef __ARM_FP
    volatile uint32_t* cpacr = (volatile uint32_t*)0xE000ED88;
    *cpacr |= (0xf0 << 16);
@@ -97,4 +107,6 @@ void _c_int00(void)
    main(0, (char**)0);
 
    exit(1);
+
+   while (1);
 }

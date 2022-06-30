@@ -98,7 +98,7 @@ static int32_t Flash_norQspiWaitReady(Flash_Config *config, uint32_t timeOut)
     int32_t status = SystemP_SUCCESS;
     Flash_NorQspiDevDefines *devDefines = (Flash_NorQspiDevDefines *)config->devDefines;
 
-    uint8_t  readStatus;
+    uint8_t  readStatus = 0;
     uint8_t  cmd, numAddrBytes;
     uint32_t cmdAddr;
 
@@ -233,10 +233,10 @@ static int32_t Flash_norQspiSetAddrLen(Flash_Config *config, uint32_t AddrLen)
 static int32_t Flash_norQspiSetQuadDataWidth(Flash_Config *config, uint8_t enable)
 {
     Flash_NorQspiDevDefines *devDefines = (Flash_NorQspiDevDefines *)config->devDefines;
-    uint8_t  regData;
+    uint8_t  regData = 0;
     uint8_t  cmd;
     uint32_t regAddr;
-    
+
     int32_t status;
 
     status = Flash_norQspiRegRead(config, devDefines->NOR_CFG2_VREG_ADDR, &regData);
@@ -298,7 +298,7 @@ static int32_t Flash_norQspiHybridSectCfg(Flash_Config *config,
                                            uint32_t cfgFlag)
 {
     int32_t status = 0;
-    uint8_t regData;
+    uint8_t regData = 0;
 
     /* Read configuration register3 */
     Flash_NorQspiDevDefines *devDefines = (Flash_NorQspiDevDefines *)config->devDefines;
@@ -487,7 +487,7 @@ static void Flash_norQspiSetOpcodes(Flash_Config *config)
         readCmd    = devDefines->NOR_CMD_READ;
         progCmd    = devDefines->NOR_CMD_PAGE_PROG;
     }
-    
+
     OSPI_setXferLines(obj->ospiHandle, obj->xferLines);
     OSPI_setXferOpCodes(obj->ospiHandle, readCmd, progCmd);
 
@@ -496,7 +496,7 @@ static void Flash_norQspiSetOpcodes(Flash_Config *config)
 static int32_t Flash_norQspiSetMode1s1s4s(Flash_Config *config)
 {
     Flash_NorQspiDevDefines *devDefines = (Flash_NorQspiDevDefines *)config->devDefines;
-    uint8_t  regData;
+    uint8_t  regData = 0;
     int32_t status = SystemP_SUCCESS;
 
     status = Flash_norQspiRegRead(config, devDefines->NOR_CFG1_VREG_ADDR, &regData);
@@ -523,7 +523,7 @@ static int32_t Flash_norQspiOpen(Flash_Config *config, Flash_Params *params)
     int32_t attackVectorStatus = SystemP_FAILURE;
 
     obj->ospiHandle = OSPI_getHandle(config->attrs->driverInstance);
-    
+
     if(obj->ospiHandle==NULL)
     {
         status = SystemP_FAILURE;

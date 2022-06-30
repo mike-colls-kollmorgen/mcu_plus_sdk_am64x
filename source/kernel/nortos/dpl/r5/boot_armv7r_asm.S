@@ -60,6 +60,7 @@ __stack: .zero 4
         .type   _c_int00_sbl,%function
         .section ".text.boot","ax",%progbits
         .arm
+        .align 2
 
 _c_int00_sbl:
         // entry point for bootloader, if Core 1, then loop forever, else goto _c_int00
@@ -80,6 +81,8 @@ _c_int00_addr:  .long _c_int00
         .type   _c_int00,%function
         .section ".text.boot","ax",%progbits
         .arm
+        .align 2
+
 //***************************************************************
 //* FUNCTION DEF: _c_int00
 //***************************************************************

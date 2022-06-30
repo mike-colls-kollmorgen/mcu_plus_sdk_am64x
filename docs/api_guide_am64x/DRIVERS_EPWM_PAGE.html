@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,17 +108,17 @@ $(document).ready(function(){initNavTree('DRIVERS_EPWM_PAGE.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md507">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md508">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md509">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md510">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md511">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md512">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md574">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md575">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md576">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md577">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md578">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md579">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_epwm"></a></p>
 <p>The ePWM driver provides API to configure various sub-modules within the ePWM module. Below are the high level features supported by the driver.</p>
-<h1><a class="anchor" id="autotoc_md507"></a>
+<h1><a class="anchor" id="autotoc_md574"></a>
 Features Supported</h1>
 <ul>
 <li>Configuration of Time Base submodule to set time-base clock, counter mode,</li>
@@ -129,7 +129,7 @@ Features Supported</h1>
 <li>Configuration of Trip Zone submodule to specify the tripping action to take when a fault occurs</li>
 <li>Configuration of event-trigger submodule to trigger an interrupt and rate at which these events occur</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md508"></a>
+<h1><a class="anchor" id="autotoc_md575"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
@@ -137,16 +137,16 @@ SysConfig Features</h1>
 <li>Configuring pinmux based on selected pin.</li>
 <li>Enabling TimeBase Clock based on selected ePWM instance.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md509"></a>
+<h1><a class="anchor" id="autotoc_md576"></a>
 Features NOT Supported</h1>
 <ul>
 <li>ePWM digital comparator modules</li>
 <li>ePWM high-resolution modules</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md510"></a>
+<h1><a class="anchor" id="autotoc_md577"></a>
 Important Usage Guidelines</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md511"></a>
+<h1><a class="anchor" id="autotoc_md578"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="epwm_8h.html">drivers/epwm.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Check external Synchronization signal </p><div class="fragment"><div class="line">    uint16_t tbStatus = <a class="code" href="group__DRV__EPWM__MODULE.html#ga4e9d6921457456cce8fad462ba179d37">EPWM_tbGetStatus</a>(ePWMBaseAddr, <a class="code" href="group__DRV__EPWM__MODULE.html#ga6c14239a94d052ef9a7d4a69b2d1a240">EPWM_TB_STS_SYNCI</a>);</div>
@@ -185,7 +185,7 @@ Example Usage</h1>
 <div class="line">    {</div>
 <div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a>(<span class="stringliteral">&quot;Comparator value write failed\r\n&quot;</span>);</div>
 <div class="line">    }</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md512"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md579"></a>
 API</h1>
 <p><a class="el" href="group__DRV__EPWM__MODULE.html">APIs for EPWM</a> </p>
 </div></div><!-- contents -->

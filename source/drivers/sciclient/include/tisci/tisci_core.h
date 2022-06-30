@@ -54,6 +54,12 @@
 #ifndef MESSAGES_CORE_H
 #define MESSAGES_CORE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Notification message to indicate the DMSC is available.
@@ -285,6 +291,11 @@ struct tisci_query_msmc_resp {
     uint32_t            msmc_end_low;
     uint32_t            msmc_end_high;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MESSAGES_CORE_H */
 

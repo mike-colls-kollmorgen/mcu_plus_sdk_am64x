@@ -575,7 +575,7 @@ void PN_setLegPkt(void *arg, void *arg2)
 {
     PN_Handle pnHandle = (PN_Handle)arg;
 
-    pnHandle->pLegPkt = arg2;
+    pnHandle->pLegPkt = (t_rtcPacket *)arg2;
 }
 
 #endif /*IRT_LEGACY_STARTUP_SUPPORT*/

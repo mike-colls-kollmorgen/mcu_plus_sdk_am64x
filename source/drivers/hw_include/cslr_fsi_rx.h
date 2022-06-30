@@ -44,6 +44,10 @@ extern "C"
 #include <drivers/fsi/v0/cslr_fsi_rx.h>
 #endif
 
+#if defined (IP_VERSION_FSI_V1)
+#include <drivers/fsi/v1/cslr_fsi_rx.h>
+#endif
+
 #ifdef __cplusplus
 }
 #endif

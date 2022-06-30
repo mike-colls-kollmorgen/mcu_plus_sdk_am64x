@@ -51,6 +51,12 @@
 #ifndef SOC_AM64X_CLOCKS_H
 #define SOC_AM64X_CLOCKS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define TISCI_DEV_ADC0_ADC_CLK 0
 #define TISCI_DEV_ADC0_ADC_CLK_PARENT_GLUELOGIC_HFOSC0_CLKOUT 1
 #define TISCI_DEV_ADC0_ADC_CLK_PARENT_POSTDIV1_16FFT_MAIN_1_HSDIVOUT6_CLK 2
@@ -1146,6 +1152,11 @@
 #define TISCI_DEV_BOARD0_SPI4_CLK_OUT 108
 #define TISCI_DEV_BOARD0_TCK_OUT 109
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SOC_AM64X_CLOCKS_H */
 

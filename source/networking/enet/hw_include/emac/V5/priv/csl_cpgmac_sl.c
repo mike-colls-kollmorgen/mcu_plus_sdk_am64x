@@ -1421,7 +1421,10 @@ void CSL_CPGMAC_SL_disableCastagnoliCRC
     Uint32                      portNum
 )
 {
-    CSL_FINS (hCpswRegs->ENETPORT[portNum].PN_MAC_CONTROL_REG, XGE_CPSW_PN_MAC_CONTROL_REG_CRC_TYPE, 0);
+	if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
+	{
+		CSL_FINS (hCpswRegs->ENETPORT[portNum].PN_MAC_CONTROL_REG, XGE_CPSW_PN_MAC_CONTROL_REG_CRC_TYPE, 0);
+	}
 
     return;
 }

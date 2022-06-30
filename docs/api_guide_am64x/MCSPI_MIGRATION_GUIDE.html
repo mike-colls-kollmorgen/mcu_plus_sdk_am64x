@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('MCSPI_MIGRATION_GUIDE.html',''); initR
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_migration_guides_mcspi_migration_guide"></a> This section describes the differences between MCSPI APIs of MCU+ SDK and Processor SDK RTOS (PDK). This can be used as a migration aid when moving from Processor SDK RTOS (PDK) to MCU+ SDK.</p>
 <p>In MCU+ SDK, the MCSPI module provides both low latency and higher level driver APIs.Refer <a class="el" href="DRIVERS_MCSPI_PAGE.html">MCSPI</a> for more details. From the user point of view, higher level API usage is same as in PDK.APIs name begins with <code>MCSPI_</code> instead of <code>SPI_</code>. Low latency APIs are provided on top of these higher level abstracted APIs and the usage of these APIs are showcased in <a class="el" href="EXAMPLES_DRIVERS_MCSPI_PERFORMANCE_8BIT.html">MCSPI Performance 8 Bit</a> example.</p>
-<h1><a class="anchor" id="autotoc_md322"></a>
+<h1><a class="anchor" id="autotoc_md378"></a>
 API changes</h1>
 <p>There are changes in API names, structure names and macro names. Low latency API names also begin with <code>MCSPI_</code> now. The low latency available API names and the name changes are listed below.</p>
 <table class="doxtable">
@@ -211,7 +211,7 @@ API changes</h1>
 <tr>
 <td>Not Available </td><td><a class="el" href="group__DRV__MCSPI__MODULE.html#gaf4a0b1f771d19e25a1e91deb5c2d2e43">MCSPI_getBufWidthShift</a> </td><td>This API is only present in MCU+SDK  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md323"></a>
+<h1><a class="anchor" id="autotoc_md379"></a>
 Important Notes</h1>
 <ul>
 <li>In MCU+ SDK, Users are recommended to use SysConfig as this will greatly simplify the task of driver configuration. SysConfig can be used to configure below parameters for both low latency and higher level driver usage.</li>
@@ -228,7 +228,7 @@ Important Notes</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md324"></a>
+<h1><a class="anchor" id="autotoc_md380"></a>
 See Also</h1>
 <ul>
 <li><a class="el" href="DRIVERS_MCSPI_PAGE.html">MCSPI</a></li>

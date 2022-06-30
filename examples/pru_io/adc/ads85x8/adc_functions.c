@@ -41,9 +41,10 @@
 #include <pru_load_bin.h> // > PRUFirmware array
 #include <pru_ipc.h>
 
+#include <board/ioexp/ioexp_tca6424.h>
 /**
  *  @brief PRU Core
- *  Wil come from sysconfig
+ *  Will come from sysconfig
  */
 #define PRUICSS_PRUx                PRUICSS_PRU0
 
@@ -59,12 +60,16 @@
 #define MAIN_SECTION        4
 #define RESET_SECTION       5
 
-/** \brief Global Structure pointer holding PRUSS1 memory Map. */
+#define R5F_TO_PRU_EVENT    22
+
+/** \brief Global PRUICSS Handle */
 extern PRUICSS_Handle gPruIcss0Handle;
 
 extern PRU_IPC_Handle gPruIpc0Handle;
 
 extern void PRU_IPC_Isr(void *args);
+
+static TCA6424_Config  gTCA6424_Config;
 
 /**
  * \brief   This function writes the specified core's DRAM memory with sectionID
@@ -106,9 +111,37 @@ int32_t PRUICSS_goToSection(PRUICSS_Handle handle, uint32_t pruCore, uint32_t se
     return retVal;
 }
 
+static void i2c_io_expander(void *args)
+{
+    int32_t             status = SystemP_SUCCESS;
+    TCA6424_Params      tca6424Params;
+    TCA6424_Params_init(&tca6424Params);
+    status = TCA6424_open(&gTCA6424_Config, &tca6424Params);
+    uint32_t            ioIndex;
+
+    if(status == SystemP_SUCCESS)
+    {
+        /* set P12 high which controls CPSW_FET_SEL -> enable PRU1 and PRU0 GPIOs */
+        ioIndex = 0x0a;
+        status = TCA6424_setOutput(
+                     &gTCA6424_Config,
+                     ioIndex,
+                     TCA6424_OUT_STATE_HIGH);
+
+        /* Configure as output  */
+        status += TCA6424_config(
+                      &gTCA6424_Config,
+                      ioIndex,
+                      TCA6424_MODE_OUTPUT);
+    }
+    TCA6424_close(&gTCA6424_Config);
+}
+
 void ADC_init()
 {
     int status;
+    /* Configure the IO Expander to connect the PRU IOs to HSE */
+    i2c_io_expander(NULL);
     /* ----------------------------------------------------------------- */
     /* Program ADC code on PRU Core/s;                                   */
     /* depends on usecase - might have to program multiple cores         */
@@ -150,11 +183,14 @@ void ADC_powerUp()
     GPIO_setDirMode(ADC_POWER_ENABLE_PIN_1_BASE_ADDR, ADC_POWER_ENABLE_PIN_1_PIN, GPIO_DIRECTION_OUTPUT);
     GPIO_pinWriteHigh(ADC_POWER_ENABLE_PIN_1_BASE_ADDR, ADC_POWER_ENABLE_PIN_1_PIN);
     ClockP_sleep(1);
+    #ifdef  CONFIG_ADC0_T_M_SEM_ADAPTER
+    /* Enable in case of T&M SEM Adapter Board as it needs 3 pins to power adapter. */
     /* Then Set other two POWER ENABLE 2, 3 pins High */
     GPIO_setDirMode(ADC_POWER_ENABLE_PIN_2_BASE_ADDR, ADC_POWER_ENABLE_PIN_2_PIN, GPIO_DIRECTION_OUTPUT);
     GPIO_pinWriteHigh(ADC_POWER_ENABLE_PIN_2_BASE_ADDR, ADC_POWER_ENABLE_PIN_2_PIN);
     GPIO_setDirMode(ADC_POWER_ENABLE_PIN_3_BASE_ADDR, ADC_POWER_ENABLE_PIN_3_PIN, GPIO_DIRECTION_OUTPUT);
     GPIO_pinWriteHigh(ADC_POWER_ENABLE_PIN_3_BASE_ADDR, ADC_POWER_ENABLE_PIN_3_PIN);
+    #endif
 }
 
 void ADC_reset()
@@ -172,20 +208,21 @@ void ADC_reset()
 void ADC_startConversion()
 {
     /* Control the PRU to execute particular code sections */
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IEP_SECTION, 22);
+    /* The interrupt mapping for event R5F_TO_PRU_EVENT is configured using SysConfig (under PRUICSS module) */
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IEP_SECTION, R5F_TO_PRU_EVENT);
     ClockP_usleep(1);
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, TM_SECTION, 22);
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, TM_SECTION, R5F_TO_PRU_EVENT);
     ClockP_usleep(1);
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IPC_SECTION, 22);
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IPC_SECTION, R5F_TO_PRU_EVENT);
     ClockP_usleep(1);
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, MAIN_SECTION, 22);
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, MAIN_SECTION, R5F_TO_PRU_EVENT);
     ClockP_usleep(1);
 }
 
 void ADC_stopConversion()
 {
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, RESET_SECTION, 22);
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, RESET_SECTION, R5F_TO_PRU_EVENT);
     ClockP_usleep(1);
     /* Can disable IEP of PRU from here only */
-    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IDLE_SECTION, 22);
+    PRUICSS_goToSection(gPruIcss0Handle, PRUICSS_PRUx, IDLE_SECTION, R5F_TO_PRU_EVENT);
 }

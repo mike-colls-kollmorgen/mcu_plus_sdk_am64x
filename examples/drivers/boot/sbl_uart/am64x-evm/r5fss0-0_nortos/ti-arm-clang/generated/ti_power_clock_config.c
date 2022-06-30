@@ -30,7 +30,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 #include <kernel/dpl/DebugP.h>
 #include <drivers/soc.h>

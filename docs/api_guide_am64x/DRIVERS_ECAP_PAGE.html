@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,17 +108,17 @@ $(document).ready(function(){initNavTree('DRIVERS_ECAP_PAGE.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md501">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md502">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md503">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md504">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md505">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md506">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md568">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md569">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md570">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md571">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md572">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md573">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_ecap"></a></p>
 <p>The eCAP driver provides API to configure eCAP module. Below are the high level features supported by the driver.</p>
-<h1><a class="anchor" id="autotoc_md501"></a>
+<h1><a class="anchor" id="autotoc_md568"></a>
 Features Supported</h1>
 <ul>
 <li>Configuration of timestamp capture event</li>
@@ -128,19 +128,19 @@ Features Supported</h1>
 <li>Configuration of input signal prescaling</li>
 <li>Configuration of mode to aPWM when not used in capture mode</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md502"></a>
+<h1><a class="anchor" id="autotoc_md569"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure below parameters apart from common configuration like Clock, MPU, RAT and others.</p><ul>
 <li>ECAP instances and pin mux configurations.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md503"></a>
+<h1><a class="anchor" id="autotoc_md570"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md504"></a>
+<h1><a class="anchor" id="autotoc_md571"></a>
 Important Usage Guidelines</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md505"></a>
+<h1><a class="anchor" id="autotoc_md572"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="ecap_8h.html">drivers/ecap.h</a>&gt;</span></div>
 </div><!-- fragment --><p> ECAP Interrupt Registration </p><div class="fragment"><div class="line">    int32_t             status = <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>;</div>
@@ -170,7 +170,7 @@ Example Usage</h1>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__SEMAPHORE.html#ga23075425da4d8a65a53209b5fdd3fafe">SemaphoreP_post</a>(&amp;gEcapSyncSemObject);</div>
 </div><!-- fragment --><p> ECAP Interrupt De-Registration </p><div class="fragment"><div class="line">    <a class="code" href="group__KERNEL__DPL__HWI.html#ga9dac4d4990b599de54662b9e32c0b47b">HwiP_destruct</a>(&amp;gEcapHwiObject);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md506"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md573"></a>
 API</h1>
 <p><a class="el" href="group__DRV__ECAP__MODULE.html">APIs for ECAP</a> </p>
 </div></div><!-- contents -->

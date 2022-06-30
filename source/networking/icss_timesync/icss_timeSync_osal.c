@@ -859,26 +859,8 @@ void TimeSync_txTSIsr(uintptr_t arg)
         TimeSync_getTxTimestamp(timeSyncHandle, SYNC_FRAME, portNum,
                                 &nanoseconds, &seconds);
 
-
-        if(timeSyncHandle->timeSyncConfig.isMaster)
-        {
-            timeSyncHandle->syncParam[portNum - 1]->txTsSec = seconds;
-            timeSyncHandle->syncParam[portNum - 1]->txTs = nanoseconds;
-        }
-
-        else
-        {
-            timeSyncHandle->syncParam[oppPort - 1]->txTsSec = seconds;
-            timeSyncHandle->syncParam[oppPort - 1]->txTs = nanoseconds;
-        }
-
-        /*If master then post event to
-         * send out follow up frame*/
-        if(timeSyncHandle->timeSyncConfig.isMaster &&
-                timeSyncHandle->timeSyncConfig.masterParams.ptp_flags[TS_PTP_TWO_STEP_INDEX])
-        {
-            EventP_setBits(&(timeSyncHandle->txTSAvailableEvtObject[portNum - 1]), timeSyncHandle->eventIdSync);
-        }
+        timeSyncHandle->syncParam[oppPort - 1]->txTsSec = seconds;
+        timeSyncHandle->syncParam[oppPort - 1]->txTs = nanoseconds;
 
         /*If slave and forced 2-step then post event to send out follow up frame*/
         if(timeSyncHandle->tsRunTimeVar->forced2step[oppPort - 1])

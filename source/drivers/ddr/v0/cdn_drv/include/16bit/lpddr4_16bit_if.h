@@ -37,6 +37,12 @@
 #ifndef LPDDR4_16BIT_IF_H
 #define LPDDR4_16BIT_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "../common/cdn_stdtypes.h"
 
 /** @defgroup ConfigInfo  Configuration and Hardware Operation Information
@@ -170,5 +176,10 @@ typedef enum {
  *  @}
  */
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* LPDDR4_16BIT_IF_H */

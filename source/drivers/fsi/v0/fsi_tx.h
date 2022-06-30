@@ -31,6 +31,15 @@
  */
 
 /**
+ *  \defgroup DRV_FSI_TX_MODULE APIs for FSI TX
+ *  \ingroup DRV_MODULE
+ *
+ *  This module contains APIs to program and use the FSI TX module.
+ *
+ *  @{
+ */
+
+/**
  *  \file   v0/fsi_tx.h
  *
  *  \brief  Header file containing various enumerations, structure definitions and function
@@ -60,53 +69,12 @@ extern "C" {
 /* ========================================================================== */
 
 /**
- *
- * @defgroup FSI_TX_API Fast Serial Transmit Interface (FSI_TX)
- *
- *
- * To increase functional safety and system reliability the memories (for example,
- * FIFOs, queues, SRAMs and others) in many device modules and subsystems are
- * protected by error correcting code (ECC). This is accomplished through an
- * ECC aggregator and ECC wrapper. The ECC aggregator is connected to
- * these memories (hereinafter ECC RAMs) and involved in the ECC process.
- * Each memory is surrounded by an ECC wrapper which performs the ECC detection
- * and correction. The wrapper communicates via serial interface with the
- * aggregator which has memory mapped configuration interface.
- * The ECC aggregator is also connected to interconnect ECC components that
- * protect the command, address and data buses of the system interconnect.
- * ECC is calculated for the data bus and parity and redundancy for the command
- * and address buses. Each interconnect ECC component has the same serial
- * interface for communication with the aggregator as the ECC wrapper.
- * An ECC aggregator may be connected to both endpoints the ECC wrapper and
- * interconnect ECC component.
- * The ECC aggregator, ECC wrapper and interconnect ECC component are considered
- * as single entity and are hereinafter referred to as ECC aggregator unless
- * otherwise explicitly specified.
- * The design focusses on CSL function layer providing the configuration for
- * ECC RAM ID, force ECC ram error, ECC aggregator interrupt handling features.
- *
+ *  \anchor FSI_TxEnum
+ *  \name FSI TX Enum type
+ *  @{
  */
 /**
-@defgroup FSI_TX_DATASTRUCT  FSI_TX Data Structures
-@ingroup FSI_TX_API
-*/
-/**
-@defgroup FSI_TX_FUNCTION  FSI_TX Functions
-@ingroup FSI_TX_API
-*/
-/**
-@defgroup FSI_TX_ENUM FSI_TX Enumerated Data Types
-@ingroup FSI_TX_API
-*/
-
-/**
- *  @addtogroup FSI_TX_ENUM
-    @{
- *
- */
-
-/**
- * @brief This enumerator defines the types of possible FSI TX events
+ * \brief This enumerator defines the types of possible FSI TX events
  *
  *  Values that can be passed to APIs to enable/disable interrupts and
  *  also to set/get/clear event status on FSI TX operation.
@@ -123,6 +91,8 @@ extern "C" {
  *
  *
  */
+typedef uint32_t FSI_TxEnumType;
+
 #define FSI_TX_EVT_FRAME_DONE       ((uint16_t)0x1U)
     /** TX frame done event */
 #define FSI_TX_EVT_BUF_UNDERRUN     ((uint16_t)0x2U)
@@ -135,20 +105,20 @@ extern "C" {
     /** TX ping hardware trigger event */
 
 /**
- * @brief Mask of all TX Event types
+ * \brief Mask of all TX Event types
  */
 #define FSI_TX_EVTMASK              ((uint16_t)0xFU)
 
 /**
- * @brief maximum number of external input for triggering frame-transmission
+ * \brief maximum number of external input for triggering frame-transmission
  */
-#define FSI_TX_MAX_NUM_EXT_TRIGGERS ((uint16_t)0x20U)
+#define FSI_TX_MAX_NUM_EXT_TRIGGERS ((uint16_t)0x40U)
 
 /**
- * @brief Shifts needed to control FSI TX interrupt generation on INT2
+ * \brief Shifts needed to control FSI TX interrupt generation on INT2
  */
 #define FSI_TX_INT2_CTRL_S          ((uint16_t)0x8U)
-
+/** @} */
 
 /**
  *  \anchor FSI_TxSubmoduleInReset
@@ -249,13 +219,6 @@ typedef uint32_t FSI_FrameTag;
 /**< Frame tag value 15 */
 /** @} */
 
-
-/** ===========================================================================
- *  @addtogroup FSI_TX_FUNCTION
-    @{
- * ============================================================================
- */
-
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
@@ -337,7 +300,7 @@ int32_t FSI_setTxDataWidth(uint32_t base, FSI_DataWidth dataWidth);
 /**
  * \brief   This API enables SPI compatible mode
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * FSI supports a compatibility mode in order to communicate with
  * legacy peripherals like SPI. Only the 16-bit mode of SPI will
@@ -354,7 +317,7 @@ int32_t FSI_enableTxSPIMode(uint32_t base);
 /**
  * \brief   This API disables SPI compatible mode
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * \param   base          [IN]  Base address of the FSI TX module.
  *
@@ -816,8 +779,6 @@ int32_t FSI_performTxInitialization(uint32_t base, uint16_t prescalar);
  *          CSL_EBADARGS = Invalid base address parameter
  */
 int32_t FSI_executeTxFlushSequence(uint32_t base, uint16_t prescalar);
-
-/** @} */
 
 #ifdef __cplusplus
 }

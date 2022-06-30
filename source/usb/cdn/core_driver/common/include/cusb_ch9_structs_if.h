@@ -41,6 +41,12 @@
 #ifndef CUSB_CH9_STRUCTS_IF_H
 #define CUSB_CH9_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cusb_ch9_if.h"
 
@@ -413,5 +419,10 @@ struct CH9_ConfigParams_s {
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSB_CH9_STRUCTS_IF_H */

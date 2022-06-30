@@ -142,21 +142,136 @@ function getPeripheralPinNames(inst)
     return pinList;
 }
 
+function validate(instance, report) {
+    common.validate.checkNumberRange(instance, report, "QoS", 1, 8);
+}
+
+function getInstId(instance) {
+
+    let matchInstId;
+
+    const IcssgDualMacInstIdMap = [
+        {mode:"DUAL MAC", instance:"ICSSG0", macPort:"ENET_MAC_PORT_1", instId:"0", enetType:"ENET_ICSSG_DUALMAC"},
+        {mode:"DUAL MAC", instance:"ICSSG0", macPort:"ENET_MAC_PORT_2", instId:"1", enetType:"ENET_ICSSG_DUALMAC"},
+        {mode:"DUAL MAC", instance:"ICSSG1", macPort:"ENET_MAC_PORT_1", instId:"2", enetType:"ENET_ICSSG_DUALMAC"},
+        {mode:"DUAL MAC", instance:"ICSSG1", macPort:"ENET_MAC_PORT_2", instId:"3", enetType:"ENET_ICSSG_DUALMAC"},
+    ];
+    if(instance.mode == "DUAL MAC")
+    {
+        matchInstId = IcssgDualMacInstIdMap.find(element => element.instance === instance.instance
+            && element.macPort === instance.dualMacPortSelected);
+    }
+    else
+    {
+        const IcssgSwtInstIdMap = [
+                                        {mode:"SWITCH", instance:"ICSSG0",instId:"0", enetType:"ENET_ICSSG_SWITCH"},
+                                        {mode:"SWITCH", instance:"ICSSG1",instId:"1", enetType:"ENET_ICSSG_SWITCH"},
+                                ];
+        matchInstId = IcssgSwtInstIdMap.find(element => element.instance === instance.instance)
+    }
+
+    return matchInstId;
+}
+
+function isDualMacIfEnabled(instance, icssgInst, macPort) {
+    let isEnabled =  (instance.instance === icssgInst)
+                     &&
+                     (instance.dualMacPortSelected === macPort);
+    return isEnabled;
+}
+
+function isSwitchIfEnabled(instance, icssgInst) {
+    let isEnabled =  ((instance.instance === icssgInst));
+    return isEnabled;
+}
+
+function isIcssgIfEnabled(instance, mode, icssgInst, macPort) {
+    let isEnabled = false;
+    if (instance.mode == mode) {
+        if (mode === "DUAL MAC") {
+            isEnabled = isDualMacIfEnabled(instance, icssgInst, macPort);
+        }
+        else {
+            isEnabled = isSwitchIfEnabled(instance, icssgInst);
+        }
+    }
+    return isEnabled;
+}
+
+function getMacPortInfo(instance) {
+    let macPortInfo = {numMacPorts:0, macPortList:[]};
+    if (instance.mode == "DUAL MAC") {
+        macPortInfo.numMacPorts++;
+        macPortInfo.macPortList.push(instance.dualMacPortSelected);
+    }
+    else
+    {
+        macPortInfo.numMacPorts++;
+        macPortInfo.macPortList.push('ENET_MAC_PORT_1');
+
+        macPortInfo.numMacPorts++;
+        macPortInfo.macPortList.push('ENET_MAC_PORT_2');
+    }
+    return macPortInfo;
+}
+
+function getPhyMask(instance) {
+    let macPortInfo = getMacPortInfo(instance);
+    let phyMask = '(' + '0';
+
+    for (var i in macPortInfo.macPortList)
+    {
+        if (macPortInfo.macPortList[i] == 'ENET_MAC_PORT_1')
+        {
+            phyMask += ' | ' + '( 1 << ' + instance.phyAddr1 + ')';
+        }
+        if (macPortInfo.macPortList[i] == 'ENET_MAC_PORT_2')
+        {
+            phyMask += ' | ' + '( 1 << ' + instance.phyAddr2 + ')';
+        }
+    }
+    phyMask += ')';
+    return phyMask;
+}
+
+
 let enet_icss_module_name = "/networking/enet_icss/enet_icss";
 
 let enet_icss_module = {
 
     displayName: "Enet (ICSS)",
+	longDescription: "Driver for Industrial Communication Subsystem - Gigabit (ICSSG) which is std. Ethernet similar to CPSW but TI recommendation is to use ICSSG for Industrial Ethernet use-cases",
     templates: {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: enet_icss_module_name,
         },
-        "/drivers/system/system_config.c.xdt": {
-            driver_config: "/networking/enet_icss/templates/enet_app_memutils_cfg.c.xdt",
+        "/networking/common/enet_config.c.xdt": {
+            enet_mem_config: "/networking/enet_icss/templates/enet_app_memutils_cfg.c.xdt",
+            enet_syscfg_info: "/networking/enet_icss/templates/enet_app_syscfg_info.c.xdt",
+            moduleName: enet_icss_module_name,
+        },
+        "/networking/common/enet_config.h.xdt": {
+            enet_config: "/networking/enet_icss/templates/enet_syscfg.h.xdt",
             moduleName: enet_icss_module_name,
         },
         "/drivers/system/system_config.h.xdt": {
             driver_config: "/networking/enet_icss/templates/enet_icss.h.xdt",
+            moduleName: enet_icss_module_name,
+        },
+        "/networking/common/enet_open.c.xdt": {
+            enet_open: "/networking/enet_icss/templates/enet_init.c.xdt",
+            moduleName: enet_icss_module_name,
+        },
+        "/networking/common/enet_open.h.xdt": {
+            enet_open: "/networking/enet_icss/templates/enet_init.h.xdt",
+            moduleName: enet_icss_module_name,
+        },
+        "/board/board/board_config.h.xdt": {
+            board_config: "/networking/enet_icss/templates/enet_board_cfg_am64x_am243x.h.xdt",
+            moduleName: enet_icss_module_name,
+        },
+        "/board/board/board_config.c.xdt": {
+            board_config: "/networking/enet_icss/templates/enet_board_cfg_am64x_am243x.c.xdt",
             moduleName: enet_icss_module_name,
         },
     },
@@ -188,6 +303,16 @@ let enet_icss_module = {
                 },
 
             ],
+            onChange: function (inst, ui) {
+                /* Init delay applicable only for single master mode */
+                if(inst.mode == "SWITCH") {
+                    ui.dualMacPortSelected.hidden = true;
+                }
+                else {
+                    ui.dualMacPortSelected.hidden = false;
+                }
+            },
+
         },
         {
             name: "phyToMacInterfaceMode",
@@ -215,30 +340,82 @@ let enet_icss_module = {
             default: 3,
         },
         {
+            name: "dualMacPortSelected",
+            displayName: "Dual-Mac Mode Port",
+            default: 'ENET_MAC_PORT_1',
+            hidden: true,
+            options: [
+                {
+                    name: "ENET_MAC_PORT_1",
+                },
+                {
+                    name: "ENET_MAC_PORT_2",
+                },
+            ],
+            description: "Enabled MAC port in Dual mac mode",
+        },
+        {
             name: "PktPoolEnable",
-            description: "Flag to enable allocation of Pkt pool. Not required for LWIP Based examples",
-            displayName: "Pkt Pool Flag",
+            description: "Flag to enable packet allocation from enet utils library. It should be disabled to avoid utils memory wastage, in case aplication allots packet via other mechanism. (Ex- Lwip pools)",
+            displayName: "Pkt Pool Enable",
             default: true,
         },
         {
             name: "TxPacketsCount",
             description: "No of Tx packets required for DMA channel",
             displayName: "Number of Tx Packets",
-            default: 0,
+            default: 16,
         },
         {
             name: "RxPacketsCount",
             description: "No of Rx packets required for DMA channel",
             displayName: "Number of Rx Packets",
-            default: 0,
+            default:32,
         },
         {
-            name: "RingsTypes",
-            description: "Number of Rings required for DMA Channel",
-            displayName: "Number of Rings Types",
-            default: 0,
+            name: "QoS",
+            description: "No of QoS level required",
+            displayName: "QoS Level",
+            default: 8,
         },
-
+        {
+            name: "PremptionEnable",
+            description: "Flag to enable premption",
+            displayName: "Premption Enable",
+            default: false,
+        },
+        {
+            name: "GigabitSupportEnable",
+            description: "Decides buffer pool allocation based on interface speed selected",
+            displayName: "Gigabit Support",
+            default: true,
+        },
+        {
+            name: "McmEnable",
+            description: "Flag to enable multi-client manager. Required for multi-core, multiple Enet client use cases",
+            displayName: "Mcm Enable",
+            default: false,
+        },
+        {
+            name: "ExternalPhyMgmtEnable",
+            description: "Flag to enable phy management in application. The enet driver internal phy functions including phy state machine is bypassed in this mode",
+            displayName: "External Phy Management Enable",
+            default: false,
+        },
+        {
+            name: "AppLinkUpPortMask",
+            description: "Application config to determine which macPorts should be polled for linkup to indicate link is up.Applicable in multi port scenario only",
+            displayName: "AppLinkUpPortMask Config",
+            default: "ANY_PORT",
+            options: [
+                {
+                    name: "ALL_PORTS",
+                },
+                {
+                    name: "ANY_PORT",
+                },
+            ],
+        },
     ],
     moduleStatic: {
         modules: function(inst) {
@@ -251,7 +428,12 @@ let enet_icss_module = {
     pinmuxRequirements,
     getInterfaceNameList,
     getPeripheralPinNames,
+    getInstId,
+    isIcssgIfEnabled,
+    getMacPortInfo,
+    getPhyMask,
     sharedModuleInstances: sharedModuleInstances,
+    validate: validate,
 };
 
 function sharedModuleInstances(instance) {

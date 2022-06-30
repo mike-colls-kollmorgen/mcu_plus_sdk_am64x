@@ -41,6 +41,11 @@
 #if !(defined __PRU_IOLINK_H__)
 #define __PRU_IOLINK_H__		1
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -152,4 +157,11 @@ void PRU_IOLM_registerSetIQModeCallback(IOLM_PL_cbPRUSetIQMode_t pCallback_p);
 void PRU_IOLM_Init(uint8_t instance_p);
 void PRU_IOLM_initSitara(void);
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* __PRU_IOLINK_H__ */
+
+
+

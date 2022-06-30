@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_OSPI_FLASH_DIAG.html'
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1175">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1290">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_DRIVERS_OSPI_FLASH_DIAG_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1176">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1177">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1178">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1291">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1292">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1293">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_ospi_flash_diag"></a></p>
-<h1><a class="anchor" id="autotoc_md1175"></a>
+<h1><a class="anchor" id="autotoc_md1290"></a>
 Introduction</h1>
 <p>This is a diagnostic example for NOR-OSPI Flashes. This example doesn't use the flash driver and should ideally pass for any NOR-OSPI flash. For this particular example, the options in SysCfg like the number of transfer lines used, or the clock divider value are ignored. This example will always talk to the flash in the lowest settings possible. The flash device is reset, and is expected to support 1s1s1s mode after reset. Then the OSPI controller is programmed to work in 1s1s1s mode with 3 byte addressing mode.</p>
 <p>The test itself is simple, first it tries to read the JEDEC ID of the flash which consists of the flash manufacturer ID and the flash device ID. These are then printed onto the logging console. When doing flash bring-ups in new boards, this example can be run first for sanity. Users can cross check the printed ID with the one in flash datasheet to confirm that basic communication with flash is working.</p>
@@ -131,21 +131,21 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Toolchain  </td><td class="markdownTableBodyNone">ti-arm-clang   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm   </td></tr>
+<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm, am64x-sk   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/ospi/ospi_flash_diag   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1176"></a>
+<h1><a class="anchor" id="autotoc_md1291"></a>
 Steps to Run the Example</h1>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li><b>When using makefiles to build</b>, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1177"></a>
+<h1><a class="anchor" id="autotoc_md1292"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_OSPI_PAGE.html">OSPI</a></p>
-<h1><a class="anchor" id="autotoc_md1178"></a>
+<h1><a class="anchor" id="autotoc_md1293"></a>
 Sample Output</h1>
 <div class="fragment"><div class="line">[OSPI Flash Diagnostic Test] Starting ...</div>
 <div class="line">[OSPI Flash Diagnostic Test] Flash Manufacturer ID : 0x34</div>
@@ -154,9 +154,9 @@ Sample Output</h1>
 <div class="line">[OSPI Flash Diagnostic Test] Done !!!</div>
 <div class="line">[OSPI Flash Diagnostic Test] Performing Write-Read Test...</div>
 <div class="line">[OSPI Flash Diagnostic Test] Write-Read Test Passed!</div>
-<div class="line">[OSPI Flash Diagnostic Test] SFDP Information : </div>
+<div class="line">[OSPI Flash Diagnostic Test] SFDP Information :</div>
 <div class="line">================================================</div>
-<div class="line">                      SFDP                      </div>
+<div class="line">                      SFDP</div>
 <div class="line">================================================</div>
 <div class="line">SFDP Major Revision                       : 0x1</div>
 <div class="line">SFDP Minor Revision                       : 0x8</div>
@@ -165,12 +165,12 @@ Sample Output</h1>
 <div class="line">Types of Additional Parameter Tables in this flash</div>
 <div class="line">---------------------------------------------------</div>
 <div class="line">4 BYTE ADDRESSING MODE INSTRUCTIONS TABLE</div>
-<div class="line">XSPI PROFILE TABLE </div>
+<div class="line">XSPI PROFILE TABLE</div>
 <div class="line">STATUS CONTROL AND CONFIGURATION REGISTER MAP TABLE</div>
 <div class="line">OCTAL DDR MODE COMMAND SEQUENCE TABLE</div>
 <div class="line">SECTOR MAP TABLE</div>
 <div class="line"> </div>
-<div class="line">Parsing of OCTAL DDR MODE COMMAND SEQUENCE TABLE table not yet supported. </div>
+<div class="line">Parsing of OCTAL DDR MODE COMMAND SEQUENCE TABLE table not yet supported.</div>
 <div class="line"> </div>
 <div class="line">Flash_NorXspiDevDefines gFlashNorXspiDeviceDefines_&lt;part-number&gt; = {</div>
 <div class="line"> </div>
@@ -208,12 +208,12 @@ Sample Output</h1>
 <div class="line">    .XSPI_NOR_OCTAL_READ_DUMMY_CYCLE = 24,</div>
 <div class="line">    .XSPI_NOR_OCTAL_READ_DUMMY_CYCLE_LC = 0x0B,</div>
 <div class="line">    .XSPI_NOR_OCTAL_DDR_RDSR_DUMMY_CYCLE = 4,</div>
-<div class="line">    .XSPI_NOR_OCTAL_DDR_RDREG_ADDR_BYTES = 4, </div>
-<div class="line">    .XSPI_NOR_OCTAL_DDR_WRREG_ADDR_BYTES = 4, </div>
-<div class="line">    .XSPI_NOR_OCTAL_DDR_RDVREG_DUMMY_CYCLE = 4, </div>
-<div class="line">    .XSPI_NOR_OCTAL_DDR_RDNVREG_DUMMY_CYCLE = 8, </div>
-<div class="line">    .XSPI_NOR_OCTAL_RDSFDP_DUMMY_CYCLE = 8, </div>
-<div class="line">    .XSPI_NOR_OCTAL_RDSFDP_ADDR_TYPE = 0, </div>
+<div class="line">    .XSPI_NOR_OCTAL_DDR_RDREG_ADDR_BYTES = 4,</div>
+<div class="line">    .XSPI_NOR_OCTAL_DDR_WRREG_ADDR_BYTES = 4,</div>
+<div class="line">    .XSPI_NOR_OCTAL_DDR_RDVREG_DUMMY_CYCLE = 4,</div>
+<div class="line">    .XSPI_NOR_OCTAL_DDR_RDNVREG_DUMMY_CYCLE = 8,</div>
+<div class="line">    .XSPI_NOR_OCTAL_RDSFDP_DUMMY_CYCLE = 8,</div>
+<div class="line">    .XSPI_NOR_OCTAL_RDSFDP_ADDR_TYPE = 0,</div>
 <div class="line">    .XSPI_NOR_WRR_WRITE_TIMEOUT = 5120,</div>
 <div class="line">    .XSPI_NOR_BULK_ERASE_TIMEOUT = 256000000,</div>
 <div class="line">    .XSPI_NOR_PAGE_PROG_TIMEOUT = 512,</div>

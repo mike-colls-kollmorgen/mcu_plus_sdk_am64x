@@ -33,6 +33,12 @@
 #ifndef IPTCPDRV_H_
 #define IPTCPDRV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                          Doxygen                                           */
 /* ========================================================================== */
@@ -316,5 +322,10 @@ int32_t PN_PTCP_getAbsoluteTime(PN_Handle pnHandle,
 
 
 void PN_PTCP_latchInit(PN_Handle pnHandle);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IPTCPDRV_H_ */

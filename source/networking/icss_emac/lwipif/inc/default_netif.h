@@ -33,6 +33,12 @@
 #ifndef LWIP_DEFAULT_NETIF_H
 #define LWIP_DEFAULT_NETIF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "lwip/ip_addr.h"
 
 #if LWIP_IPV4
@@ -43,5 +49,10 @@ void init_default_netif(void);
 
 void default_netif_poll(void);
 void default_netif_shutdown(void);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

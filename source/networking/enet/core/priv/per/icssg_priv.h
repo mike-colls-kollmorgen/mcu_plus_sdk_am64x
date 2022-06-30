@@ -80,6 +80,40 @@ extern "C" {
 /*! \brief Cache alignment used for IOCTL command structure */
 #define ICSSG_CACHELINE_ALIGNMENT                 (64U)
 
+/*! \brief ICSS switch QOS level to HOST_BUFFER_POOL_NUM Factor
+ *
+ * In Switch mode to support max QoS level of 8 
+ * number of pools should be set to 8 * number of ports 
+ * which is 3 (two external ports and 1 host port)
+ */
+#define ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_QOS_MULTIPLE    (3U)
+
+/*! \brief ICSS switch QOS level to HOST_BUFFER_POOL_NUM Factor
+ *
+ * In Dualmac mode to support max QoS level of 8 
+ * number of pools should be set to 8 * 1
+ */
+#define ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_QOS_MULTIPLE   (1U)
+
+/*! \brief Number of Host Buffer pools for dual mac mode     
+ *
+ * In DUAL_MAC mode to support max QoS level of 8 
+ * number of pools should be set to 8
+ */
+#define ICSSG_DUALMAC_GET_HOST_BUFFER_POOL_NUM(qos)     ((qos) * (ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_QOS_MULTIPLE))
+ 
+/*! \brief Number of Host Buffer pools for switch mode
+ *
+ * In Switch mode to support max QoS level of 8 
+ * number of pools should be set to 8 * number of ports 
+ * which is 3 (two external ports and 1 host port)
+ */
+#define ICSSG_SWITCH_GET_HOST_BUFFER_POOL_NUM(qos)     ((qos) * (ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_QOS_MULTIPLE))
+
+
+/*! \brief Maximum number of QoS levels supported */
+#define ICSSG_QOS_MAX                                  (ENET_PRI_NUM)
+
 /* ========================================================================== */
 /*                         Structures and Enums                               */
 /* ========================================================================== */
@@ -197,6 +231,37 @@ typedef struct Icssg_IoctlCmdResp_s
 } Icssg_IoctlCmdResp;
 
 /*!
+ * \brief MDIO status change (MDIO_LINKINT) context.
+ */
+typedef struct Icssg_MdioLinkIntCtx_s
+{
+    /*! Alive PHYs, updated upon MDIO_LINKINT interrupt */
+    uint32_t aliveMask;
+
+    /*! Linked PHYs, updated upon MDIO_LINKINT interrupt */
+    uint32_t linkedMask;
+
+    /*! Mask of PHYs with status change poll enabled */
+    uint32_t pollEnableMask;
+
+    /*! Link state change callback function pointer */
+    Icssg_MdioLinkStateChangeCb linkStateChangeCb;
+
+    /*! Application data to be passed to the link state change callback */
+    void *linkStateChangeCbArg;
+
+    /*! PRU Interrupt Event Number */
+    uint32_t pruEvtNum;
+    /*! MDIO interrupt handle */
+    void *hMdioIntr;
+    const PRUICSS_IntcInitData  *prussIntcInitData;
+} Icssg_MdioLinkIntCtx;
+
+/*!
+ * \brief Port link state (link up/down, tick enabled)
+ */
+
+/*!
  * \brief Icssg per object.
  */
 typedef struct Icssg_Obj_s
@@ -282,6 +347,26 @@ typedef struct Icssg_Obj_s
 
     /*! Cycle time in nanoseconds */
     uint32_t cycleTimeNs;
+
+    Icssg_MdioLinkIntCtx mdioLinkIntCtx;
+
+    /*! Disable Enet LLD PHY driver - Disables use on PHY driver inside the
+     *  Enet LLD. All PHY functionality including PHY state machine is bypassed
+     *  Application will use this mode if ethernet PHY is managed outside the Enet LLD
+     *  Application is responsible for PHY management. Application can register 
+     *  with Enet LLD to get mdioLinkStateChangeCb callback.
+     *  Application _must_ use Enet LLD IOCTLs to access MDIO as MDIO ownership 
+     *  is still with Enet LLD and there should not be multiple masters for the
+     *  MDIO peripheral
+     */
+    bool disablePhyDriver;
+
+    /*!  Max number of QoS Level supported. Used to determine number of hostBufferPoolNum */
+    uint32_t qosLevels;
+
+    /*! Whether premption Queue is enabled or not  */
+    uint32_t isPremQueEnable;
+
 } Icssg_Obj;
 
 /*!

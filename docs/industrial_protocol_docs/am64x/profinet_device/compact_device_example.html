@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PROFINET Device
-   &#160;<span id="projectnumber">v2.00.01</span>
+   &#160;<span id="projectnumber">v2.01.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -115,7 +115,57 @@ Introduction</h1>
 Features Overview</h1>
 <p>This example application implements all mandatory features, which are required by the PROFINET Specification for a CC-B IO-device. <br  />
  The main features are described below. </p>
-<h2><a class="anchor" id="leds"></a>
+<h2><a class="anchor" id="app_debug_console"></a>
+Debug UART Console</h2>
+<p>The PROFINET Stack provides a callback Interface to register a printf functionality. Such can be used to integrate a logging mechanism, for example printing the Information provided by the PROFINET Stack via a Serial Port Connection.</p>
+<p>Within the provided Example projects, a UART Interface is configured in the SysConfig Settings and results in below generated code in <code>ti_drivers_open_close.c</code> including the declaration of the handle <code>gUartHandle</code> that is later used in the example code to access the UART.</p>
+<div class="fragment"><div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment"> * UART</span></div>
+<div class="line"><span class="comment"> */</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">/* UART Driver handles */</span></div>
+<div class="line">UART_Handle gUartHandle[CONFIG_UART_NUM_INSTANCES];</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">/* UART Driver Parameters */</span></div>
+<div class="line">UART_Params gUartParams[CONFIG_UART_NUM_INSTANCES] =</div>
+<div class="line">{</div>
+<div class="line">    {</div>
+<div class="line">        .baudRate           = 115200,</div>
+<div class="line">        .dataLength         = UART_LEN_8,</div>
+<div class="line">        .stopBits           = UART_STOPBITS_1,</div>
+<div class="line">        .parityType         = UART_PARITY_NONE,</div>
+<div class="line"> </div>
+<div class="line">        :</div>
+<div class="line">        :</div>
+<div class="line">        :</div>
+</div><!-- fragment --><p>In the application <code>main</code> (main.c) Task a corresponding callback function is registered by calling <code>OSAL_registerPrintOut</code>. In the callback function strings are then written to the console output by calling <code>UART_write</code> from the Texas Instruments driver library:</p>
+<div class="fragment"><div class="line">OSAL_registerPrintOut(NULL, APP_printf);</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP_printf(<span class="keywordtype">void</span>* pContext_p, <span class="keyword">const</span> <span class="keywordtype">char</span>* __restrict pFormat_p, va_list arg_p)</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">/* @cppcheck_justify{unusedVariable} false-positive: variable is used */</span></div>
+<div class="line">    <span class="comment">//cppcheck-suppress unusedVariable</span></div>
+<div class="line">    int32_t             transferOK;</div>
+<div class="line">    <span class="comment">/* @cppcheck_justify{unusedVariable} false-positive: variable is used */</span></div>
+<div class="line">    <span class="comment">//cppcheck-suppress unusedVariable</span></div>
+<div class="line">    UART_Transaction    transaction;</div>
+<div class="line">    </div>
+<div class="line">    OSALUNREF_PARM(pContext_p);</div>
+<div class="line">    </div>
+<div class="line">    UART_Transaction_init(&amp;transaction);</div>
+<div class="line">    </div>
+<div class="line">    memset(aOutStream_s, 0, <span class="keyword">sizeof</span>(aOutStream_s));</div>
+<div class="line">    (void)vsnprintf(aOutStream_s, <span class="keyword">sizeof</span>(aOutStream_s), pFormat_p, arg_p);</div>
+<div class="line">    </div>
+<div class="line">    transaction.count   = strlen(aOutStream_s);</div>
+<div class="line">    transaction.buf     = (<span class="keywordtype">void</span> *)aOutStream_s;</div>
+<div class="line">    transaction.args    = NULL;</div>
+<div class="line">    transferOK = UART_write(gUartHandle[CONFIG_UART_CONSOLE], &amp;transaction);</div>
+<div class="line">    </div>
+<div class="line">    (void)transferOK;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>The function registered will then be called, when either Stack or Application will call an OSAL_printf().</p>
+<div class="fragment"><div class="line">OSAL_printf (<span class="stringliteral">&quot;\r[APP] INFO: Configuring and starting PROFINET stack...\n&quot;</span>);</div>
+</div><!-- fragment --><h2><a class="anchor" id="leds"></a>
 LEDs</h2>
 <p>There are some LEDs on the evaluation board which are controlled by the LED task in this example programme and used in the following way: </p><table class="doxtable">
 <tr>

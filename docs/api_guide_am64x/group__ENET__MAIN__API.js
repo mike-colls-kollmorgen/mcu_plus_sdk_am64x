@@ -195,5 +195,6 @@ var group__ENET__MAIN__API =
     [ "Enet_poll", "group__ENET__MAIN__API.html#ga6394f7b1160a819195c02c646952b10e", null ],
     [ "Enet_periodicTick", "group__ENET__MAIN__API.html#gae58c8009140824a5172ded24074de1b3", null ],
     [ "Enet_getMacPortCnt", "group__ENET__MAIN__API.html#ga66b739fe0b7e9306fa45677e0cf6aaf7", null ],
-    [ "Enet_close", "group__ENET__MAIN__API.html#ga4710f1318cbf2089a92a50609a403c39", null ]
+    [ "Enet_close", "group__ENET__MAIN__API.html#ga4710f1318cbf2089a92a50609a403c39", null ],
+    [ "Enet_getHandleInfo", "group__ENET__MAIN__API.html#ga1f380cf84a2b5b317683b71e60e211da", null ]
 ];

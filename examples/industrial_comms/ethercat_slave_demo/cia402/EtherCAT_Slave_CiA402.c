@@ -69,51 +69,9 @@
 /* stack */
 #include <ecSlvApi.h>
 
-/* Macros for timesync router configuration*/
-
-/* Address for mux control of event 8(PRG0_IEP0_EDC_LATCH_IN0). 4 + (4*8) = 36 = 0x24*/
-#define TIMESYNC_EVENT_INTROUTER0_MUXCNTL_8     (0x24)
-
-/* Address for mux control of event 9(PRG0_IEP0_EDC_LATCH_IN1). 4 + (4*9) = 40 = 0x28*/
-#define TIMESYNC_EVENT_INTROUTER0_MUXCNTL_9     (0x28)
-
-/* Address for mux control of event 12(PRG1_IEP0_EDC_LATCH_IN0). 4 + (4*12) = 52 = 0x34*/
-#define TIMESYNC_EVENT_INTROUTER0_MUXCNTL_12    (0x34)
-
-/* Address for mux control of event 13(PRG1_IEP0_EDC_LATCH_IN1). 4 + (4*13) = 56 = 0x38*/
-#define TIMESYNC_EVENT_INTROUTER0_MUXCNTL_13    (0x38)
-
 static OSAL_PJumpBuf_t  farJumpBuf_g;
 
 static uint32_t EC_SLV_APP_remoteInit(void** pRemHandle_p);
-
-
-void EC_SLV_APP_configureLatchPins()
-{
-    const PRUICSS_HwAttrs *pruicssHwAttrs;
-    uint32_t inEventLatch0, inEventLatch1, outEventLatch0, outEventLatch1;
-
-    pruicssHwAttrs = PRUICSS_getAttrs(ESL_DEFAULT_PRUICSS);
-
-    /* TimeSync Router configuration for latch pins */
-    if(pruicssHwAttrs->baseAddr == CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE)
-    {
-        inEventLatch0 = CSLR_TIMESYNC_EVENT_INTROUTER0_IN_PINFUNCTION_PRG0_IEP0_EDC_LATCH_IN0IN_PRG0_IEP0_EDC_LATCH_IN0_0;
-        inEventLatch1 = CSLR_TIMESYNC_EVENT_INTROUTER0_IN_PINFUNCTION_PRG0_IEP0_EDC_LATCH_IN1IN_PRG0_IEP0_EDC_LATCH_IN1_0;
-        outEventLatch0 = TIMESYNC_EVENT_INTROUTER0_MUXCNTL_8;
-        outEventLatch1 = TIMESYNC_EVENT_INTROUTER0_MUXCNTL_9;
-    }
-    else
-    {
-        inEventLatch0 = CSLR_TIMESYNC_EVENT_INTROUTER0_IN_PINFUNCTION_PRG1_IEP0_EDC_LATCH_IN0IN_PRG1_IEP0_EDC_LATCH_IN0_0;
-        inEventLatch1 = CSLR_TIMESYNC_EVENT_INTROUTER0_IN_PINFUNCTION_PRG1_IEP0_EDC_LATCH_IN1IN_PRG1_IEP0_EDC_LATCH_IN1_0;
-        outEventLatch0 = TIMESYNC_EVENT_INTROUTER0_MUXCNTL_12;
-        outEventLatch1 = TIMESYNC_EVENT_INTROUTER0_MUXCNTL_13;
-    }
-
-    HW_WR_REG32((CSL_TIMESYNC_EVENT_INTROUTER0_CFG_BASE + outEventLatch0), (inEventLatch0 | 0x10000));
-    HW_WR_REG32((CSL_TIMESYNC_EVENT_INTROUTER0_CFG_BASE + outEventLatch1), (inEventLatch1 | 0x10000));
-}
 
 /*!
  *  <!-- Description: -->
@@ -238,8 +196,6 @@ void EC_SLV_APP_mainTask(void* pArg_p)
     }
 
     retVal = EC_API_SLV_load(&farJumpBuf_g, NULL /* &applErrHandler*/, applicationInstance->selectedPruInstance);
-
-    EC_SLV_APP_configureLatchPins();
 
     if (0 == retVal)
     {

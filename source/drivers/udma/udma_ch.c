@@ -1471,9 +1471,9 @@ int32_t Udma_chGetStats(Udma_ChHandle chHandle, Udma_ChStats *chStats)
     Udma_ChHandleInt    chHandleInt = (Udma_ChHandleInt) chHandle;
     uint32_t            chNum;
 #if (UDMA_SOC_CFG_LCDMA_PRESENT == 1)
-    CSL_BcdmaChanStats  bcdmaChanStats;
+    CSL_BcdmaChanStats  bcdmaChanStats = {0};
     CSL_BcdmaChanDir    bcdmaChDir;
-    CSL_PktdmaChanStats pktdmaChanStats;
+    CSL_PktdmaChanStats pktdmaChanStats = {0};
     CSL_PktdmaChanDir   pktdmaChDir;
 #endif
 
@@ -1903,7 +1903,7 @@ static int32_t Udma_chAllocResource(Udma_ChHandleInt chHandle)
                          &chHandle->chPrms.fqRingPrms);
             if(UDMA_SOK != retVal)
             {
-                chHandle->fqRing = (Udma_RingHandle) NULL_PTR;
+                chHandle->fqRing = (Udma_RingHandleInt) NULL_PTR;
                 DebugP_logError("[UDMA] FQ ring alloc failed!!!\r\n");
             }
             else if(((chHandle->chType & UDMA_CH_FLAG_MAPPED) == UDMA_CH_FLAG_MAPPED) &&
@@ -1927,7 +1927,7 @@ static int32_t Udma_chAllocResource(Udma_ChHandleInt chHandle)
     if(UDMA_SOK == retVal)
     {
         /* In devices like AM64x, teardown is not supported.*/
-        chHandle->tdCqRing = (Udma_RingHandle) NULL_PTR;
+        chHandle->tdCqRing = (Udma_RingHandleInt) NULL_PTR;
     }
 
     if(UDMA_SOK != retVal)
@@ -2040,11 +2040,11 @@ static int32_t Udma_chFreeResource(Udma_ChHandleInt chHandle)
         {
             DebugP_logError("[UDMA] RM Free FQ ring failed!!!\r\n");
         }
-        chHandle->fqRing = (Udma_RingHandle) NULL_PTR;
+        chHandle->fqRing = (Udma_RingHandleInt) NULL_PTR;
     }
     if(NULL_PTR != chHandle->cqRing)
     {
-        chHandle->cqRing = (Udma_RingHandle) NULL_PTR;
+        chHandle->cqRing = (Udma_RingHandleInt) NULL_PTR;
     }
     if(NULL_PTR != chHandle->tdCqRing)
     {
@@ -2053,7 +2053,7 @@ static int32_t Udma_chFreeResource(Udma_ChHandleInt chHandle)
         {
             DebugP_logError("[UDMA] RM Free TDCQ ring failed!!!\r\n");
         }
-        chHandle->tdCqRing = (Udma_RingHandle) NULL_PTR;
+        chHandle->tdCqRing = (Udma_RingHandleInt) NULL_PTR;
     }
 
     return (retVal);

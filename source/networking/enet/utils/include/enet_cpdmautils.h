@@ -93,12 +93,14 @@ void EnetAppUtils_setCommonTxChPrms(EnetCpdma_OpenTxChPrms *pTxChPrms);
 
 void EnetAppUtils_setCommonRxChPrms(EnetCpdma_OpenRxChPrms *pRxChPrms);
 
-void EnetAppUtils_openRxCh(Enet_Handle hCpsw,
+void EnetAppUtils_openRxCh(Enet_Handle hEnet,
                            uint32_t coreKey,
                            uint32_t coreId,
                            uint32_t *pRxChNum,
                            EnetDma_RxChHandle *pRxChHandle,
-                           EnetCpdma_OpenRxChPrms *pEnetRxChCfg);
+                           EnetCpdma_OpenRxChPrms *pCpswRxChCfg,
+                           bool allocHostMacAddr,
+                           uint8_t macAddr[]);
 
 void EnetAppUtils_closeRxCh(Enet_Handle hCpsw,
                             uint32_t coreKey,
@@ -106,7 +108,9 @@ void EnetAppUtils_closeRxCh(Enet_Handle hCpsw,
                             EnetDma_PktQ *pFqPktInfoQ,
                             EnetDma_PktQ *pCqPktInfoQ,
                             EnetDma_RxChHandle hRxChHandle,
-                            uint32_t rxChNum);
+                            uint32_t rxChNum,
+                            bool freeHostMacAddr,
+                            uint8_t macAddr[]);
 
 void EnetAppUtils_openTxCh(Enet_Handle hCpsw,
                            uint32_t coreKey,

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,61 +108,61 @@ $(document).ready(function(){initNavTree('SECURITY_PKA_MODULE_PAGE.html',''); in
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md902">Features Supported In Hardware</a></li>
-<li class="level1"><a href="#autotoc_md903">Features Supported In Driver</a></li>
-<li class="level1"><a href="#autotoc_md904">Key Types</a><ul><li class="level2"><a href="#autotoc_md905">RSA Private Key</a></li>
-<li class="level2"><a href="#autotoc_md906">RSA public key</a></li>
-<li class="level2"><a href="#autotoc_md907">ECDSA public key</a></li>
-<li class="level2"><a href="#autotoc_md908">ECDSA private key</a></li>
+<ul><li class="level1"><a href="#autotoc_md991">Features Supported In Hardware</a></li>
+<li class="level1"><a href="#autotoc_md992">Features Supported In Driver</a></li>
+<li class="level1"><a href="#autotoc_md993">Key Types</a><ul><li class="level2"><a href="#autotoc_md994">RSA Private Key</a></li>
+<li class="level2"><a href="#autotoc_md995">RSA public key</a></li>
+<li class="level2"><a href="#autotoc_md996">ECDSA public key</a></li>
+<li class="level2"><a href="#autotoc_md997">ECDSA private key</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md909">RSA Encryption and Decryption</a><ul><li class="level2"><a href="#autotoc_md910">RSA Encryption</a></li>
-<li class="level2"><a href="#autotoc_md911">RSA Decryption</a></li>
+<li class="level1"><a href="#autotoc_md998">RSA Encryption and Decryption</a><ul><li class="level2"><a href="#autotoc_md999">RSA Encryption</a></li>
+<li class="level2"><a href="#autotoc_md1000">RSA Decryption</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md912">RSA Signing and Verification</a><ul><li class="level2"><a href="#autotoc_md913">RSA Signing</a></li>
-<li class="level2"><a href="#autotoc_md914">RSA Verification</a></li>
+<li class="level1"><a href="#autotoc_md1001">RSA Signing and Verification</a><ul><li class="level2"><a href="#autotoc_md1002">RSA Signing</a></li>
+<li class="level2"><a href="#autotoc_md1003">RSA Verification</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md915">ECDSA Signing and Verification</a><ul><li class="level2"><a href="#autotoc_md916">ECDSA Signing</a></li>
-<li class="level2"><a href="#autotoc_md917">ECDSA Verification</a></li>
+<li class="level1"><a href="#autotoc_md1004">ECDSA Signing and Verification</a><ul><li class="level2"><a href="#autotoc_md1005">ECDSA Signing</a></li>
+<li class="level2"><a href="#autotoc_md1006">ECDSA Verification</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md918">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md919">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md920">Openssl Commands For RSA</a><ul><li class="level2"><a href="#autotoc_md921">To Create Public and private keys</a></li>
-<li class="level2"><a href="#autotoc_md922">Create message</a></li>
-<li class="level2"><a href="#autotoc_md923">RSA Encryption operations</a></li>
-<li class="level2"><a href="#autotoc_md924">RSA Decryption operations</a></li>
-<li class="level2"><a href="#autotoc_md925">To Create Sha Hash</a></li>
-<li class="level2"><a href="#autotoc_md926">RSA Signing operations</a></li>
-<li class="level2"><a href="#autotoc_md927">RSA Verification operations</a></li>
+<li class="level1"><a href="#autotoc_md1007">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md1008">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md1009">Openssl Commands For RSA</a><ul><li class="level2"><a href="#autotoc_md1010">To Create Public and private keys</a></li>
+<li class="level2"><a href="#autotoc_md1011">Create message</a></li>
+<li class="level2"><a href="#autotoc_md1012">RSA Encryption operations</a></li>
+<li class="level2"><a href="#autotoc_md1013">RSA Decryption operations</a></li>
+<li class="level2"><a href="#autotoc_md1014">To Create Sha Hash</a></li>
+<li class="level2"><a href="#autotoc_md1015">RSA Signing operations</a></li>
+<li class="level2"><a href="#autotoc_md1016">RSA Verification operations</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md928">Openssl Commands For ECDSA</a><ul><li class="level2"><a href="#autotoc_md929">To Create Public and private keys</a></li>
-<li class="level2"><a href="#autotoc_md930">Create message</a></li>
-<li class="level2"><a href="#autotoc_md931">Create Random key</a></li>
-<li class="level2"><a href="#autotoc_md932">ECDSA Signing operations</a></li>
-<li class="level2"><a href="#autotoc_md933">ECDSA Verification operations</a></li>
+<li class="level1"><a href="#autotoc_md1017">Openssl Commands For ECDSA</a><ul><li class="level2"><a href="#autotoc_md1018">To Create Public and private keys</a></li>
+<li class="level2"><a href="#autotoc_md1019">Create message</a></li>
+<li class="level2"><a href="#autotoc_md1020">Create Random key</a></li>
+<li class="level2"><a href="#autotoc_md1021">ECDSA Signing operations</a></li>
+<li class="level2"><a href="#autotoc_md1022">ECDSA Verification operations</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#Bigintformat">Bigint format</a><ul><li class="level2"><a href="#autotoc_md934">Bigint Format Conversion for PKA RSA Driver</a><ul><li class="level3"><a href="#autotoc_md935">Steps for Bigint conversion</a></li>
+<li class="level1"><a href="#Bigintformat">Bigint format</a><ul><li class="level2"><a href="#autotoc_md1023">Bigint Format Conversion for PKA RSA Driver</a><ul><li class="level3"><a href="#autotoc_md1024">Steps for Bigint conversion</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md936">PKA API&#39;s Supported</a></li>
-<li class="level1"><a href="#autotoc_md937">API Sequence for PKA (Public-key accelerator)</a><ul><ul><li class="level3"><a href="#autotoc_md938">RSA</a></li>
-<li class="level3"><a href="#autotoc_md939">ECDSA</a></li>
+<li class="level1"><a href="#autotoc_md1025">PKA API&#39;s Supported</a></li>
+<li class="level1"><a href="#autotoc_md1026">API Sequence for PKA (Public-key accelerator)</a><ul><ul><li class="level3"><a href="#autotoc_md1027">RSA</a></li>
+<li class="level3"><a href="#autotoc_md1028">ECDSA</a></li>
 </ul>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md940">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md941">API</a></li>
+<li class="level1"><a href="#autotoc_md1029">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md1030">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_security_crypto_pka"></a> The PKA module provides a high-performance public key engine to accelerate the large vector math processing that is required for Public Key computations. It also includes hw acceleration for Elliptic Curve Cryptography such as binary field ECC point addition, inversion, multiplication and ECC prime field point addition, inversion and multiplication.The ECC prime field engine GF(p) supports all NIST (FIPS 186-3) recommended prime curves up to 521 bit key length.</p>
-<h1><a class="anchor" id="autotoc_md902"></a>
+<h1><a class="anchor" id="autotoc_md991"></a>
 Features Supported In Hardware</h1>
 <ul>
 <li>Basic Public key crypto operations that use the 32-bit PKCP engine<ul>
@@ -182,7 +182,7 @@ Features Supported In Hardware</h1>
 <li>Binary field GF2m engine to accelerate ECC binary field GF(2m) operations such as add, multiply and modular inversion</li>
 <li>ECC prime field GF(p) operations such as point addition, multiplication, doubling over all NIST recommended prime curves</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md903"></a>
+<h1><a class="anchor" id="autotoc_md992"></a>
 Features Supported In Driver</h1>
 <ul>
 <li>RSA Module<ul>
@@ -200,7 +200,7 @@ Features Supported In Driver</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md904"></a>
+<h1><a class="anchor" id="autotoc_md993"></a>
 Key Types</h1>
 <ul>
 <li>RSA Keys<ul>
@@ -214,7 +214,7 @@ Key Types</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md905"></a>
+<h2><a class="anchor" id="autotoc_md994"></a>
 RSA Private Key</h2>
 <ul>
 <li>RSA private key consists of below components:<ul>
@@ -230,7 +230,7 @@ RSA Private Key</h2>
 <li>To generate private key use this openssl command <b>openssl genrsa -out rsa_priv.pem</b>, it default create 2048 bit key.</li>
 <li>To generate specific size of private key use this openssl command <b>openssl genrsa -out rsa_priv.pem 4096</b>, it creates 4096 bit key.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md906"></a>
+<h2><a class="anchor" id="autotoc_md995"></a>
 RSA public key</h2>
 <ul>
 <li>RSA public key consists of two components:<ul>
@@ -240,7 +240,7 @@ RSA public key</h2>
 </li>
 <li>To Extract public key from private key use this openssl command <b> openssl rsa -pubout -in rsa_pub.pem -out public.pem </b></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md907"></a>
+<h2><a class="anchor" id="autotoc_md996"></a>
 ECDSA public key</h2>
 <ul>
 <li>ECDSA public key consists of below components:<ul>
@@ -250,7 +250,7 @@ ECDSA public key</h2>
 </li>
 <li>To Extract public key from private key use this openssl command <b>openssl ec -in private.pem -pubout -out public.pem</b></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md908"></a>
+<h2><a class="anchor" id="autotoc_md997"></a>
 ECDSA private key</h2>
 <ul>
 <li>ECDSA private key consists of below components:<ul>
@@ -259,9 +259,9 @@ ECDSA private key</h2>
 </li>
 <li>To generate private key use this reference openssl command <b>openssl ecparam -name prime256v1 -genkey -noout -out private.pem</b> </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md909"></a>
+<h1><a class="anchor" id="autotoc_md998"></a>
 RSA Encryption and Decryption</h1>
-<h2><a class="anchor" id="autotoc_md910"></a>
+<h2><a class="anchor" id="autotoc_md999"></a>
 RSA Encryption</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -286,7 +286,7 @@ RSA Encryption</h2>
 <img src="pka_rsa_encrypt.png" alt=""/>
 <div class="caption">
 RSA Encryption operation</div></div>
-<h2><a class="anchor" id="autotoc_md911"></a>
+<h2><a class="anchor" id="autotoc_md1000"></a>
 RSA Decryption</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -311,9 +311,9 @@ RSA Decryption operation</div></div>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md912"></a>
+<h1><a class="anchor" id="autotoc_md1001"></a>
 RSA Signing and Verification</h1>
-<h2><a class="anchor" id="autotoc_md913"></a>
+<h2><a class="anchor" id="autotoc_md1002"></a>
 RSA Signing</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -339,7 +339,7 @@ RSA Signing operation</div></div>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md914"></a>
+<h2><a class="anchor" id="autotoc_md1003"></a>
 RSA Verification</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -364,9 +364,9 @@ RSA Verification</h2>
 <img src="pka_rsa_verify.png" alt=""/>
 <div class="caption">
 RSA Verification operation</div></div>
-<h1><a class="anchor" id="autotoc_md915"></a>
+<h1><a class="anchor" id="autotoc_md1004"></a>
 ECDSA Signing and Verification</h1>
-<h2><a class="anchor" id="autotoc_md916"></a>
+<h2><a class="anchor" id="autotoc_md1005"></a>
 ECDSA Signing</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -387,7 +387,7 @@ ECDSA Signing operation</div></div>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md917"></a>
+<h2><a class="anchor" id="autotoc_md1006"></a>
 ECDSA Verification</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -408,36 +408,36 @@ ECDSA Verification operation</div></div>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md918"></a>
+<h1><a class="anchor" id="autotoc_md1007"></a>
 SysConfig Features</h1>
 <ul>
 <li>SysConfig contains PkA Instances, base address of Crypto accelerator and PKA module base address for pka handle to manage PKA api's.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md919"></a>
+<h1><a class="anchor" id="autotoc_md1008"></a>
 Features NOT Supported</h1>
 <ul>
 <li>ECDH not supported</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>Please use Linux terminal or git bash in windows to execute below openssl commands</dd></dl>
-<h1><a class="anchor" id="autotoc_md920"></a>
+<h1><a class="anchor" id="autotoc_md1009"></a>
 Openssl Commands For RSA</h1>
 <ul>
 <li>Used openssl version is <b>OpenSSL 1.1.1k 25 Mar 2021</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md921"></a>
+<h2><a class="anchor" id="autotoc_md1010"></a>
 To Create Public and private keys</h2>
 <ul>
 <li><b> openssl genrsa -out rsa_priv.pem </b>, default it creates 2048 bit Private key.</li>
 <li><b> openssl genrsa -out rsa_priv.pem 4096 </b>, it creates 4096 bit Private key.</li>
 <li><b> openssl rsa -pubout -in rsa_priv.pem -out rsa_pub.pem </b>, it extract public key from private key. </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md922"></a>
+<h2><a class="anchor" id="autotoc_md1011"></a>
 Create message</h2>
 <ul>
 <li>Write a message in message.txt file : <b>vi message.txt</b>,</li>
 <li>Convert txt file to bin file for better result : <b>xxd -r -p message.txt &gt;message.bin</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md923"></a>
+<h2><a class="anchor" id="autotoc_md1012"></a>
 RSA Encryption operations</h2>
 <dl class="section note"><dt>Note</dt><dd>Input message/sign and key length should be same. Non equivalent lengths not Supported, required padding in this case.</dd></dl>
 <ul>
@@ -445,25 +445,25 @@ RSA Encryption operations</h2>
 <li>To perform encryption operation : <b> openssl rsautl -encrypt -raw -pubin -inkey rsa_pub.pem -in message.bin -out cipher.bin </b></li>
 <li>To see the result : <b>xxd cipher.bin</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md924"></a>
+<h2><a class="anchor" id="autotoc_md1013"></a>
 RSA Decryption operations</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
 <li>To perform decryption operation : <b> openssl rsautl -decrypt -raw -inkey rsa_priv.pem -in cipher.bin -out decipher.bin </b></li>
 <li>To see the result : <b>xxd decipher.bin</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md925"></a>
+<h2><a class="anchor" id="autotoc_md1014"></a>
 To Create Sha Hash</h2>
 <ul>
 <li><b> openssl dgst -sha512 -binary -out msg_sha512.dgt message.bin </b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md926"></a>
+<h2><a class="anchor" id="autotoc_md1015"></a>
 RSA Signing operations</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
 <li>To perform signing operation : <b> openssl rsautl -sign -inkey rsa_priv.key -in msg_sha512.dgt -out msg_sha512_signed.dgt </b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md927"></a>
+<h2><a class="anchor" id="autotoc_md1016"></a>
 RSA Verification operations</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -475,28 +475,28 @@ RSA Verification operations</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md928"></a>
+<h1><a class="anchor" id="autotoc_md1017"></a>
 Openssl Commands For ECDSA</h1>
-<h2><a class="anchor" id="autotoc_md929"></a>
+<h2><a class="anchor" id="autotoc_md1018"></a>
 To Create Public and private keys</h2>
 <ul>
 <li>To create prime256v1 Private key : <b> openssl ecparam -name prime256v1 -genkey -noout -out private.pem </b></li>
 <li>To extract public key from private key : <b> openssl ec -in private.pem -pubout -out public.pem </b></li>
 <li>To see the key in text format : <b> Openssl pkey -in private.pem -text -noout </b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md930"></a>
+<h2><a class="anchor" id="autotoc_md1019"></a>
 Create message</h2>
 <ul>
 <li>Write a message in message.txt file : <b>vi message.txt</b>,</li>
 <li>Convert txt file to bin file for better result : <b>xxd -r -p message.txt &gt;message.bin</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md931"></a>
+<h2><a class="anchor" id="autotoc_md1020"></a>
 Create Random key</h2>
 <ul>
 <li>Write a random number in rand_key.txt file : <b>vi rand_key.txt</b>,</li>
 <li>Convert txt file to bin file for better result : <b>xxd -r -p rand_key.txt &gt;rand_key.bin</b> </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md932"></a>
+<h2><a class="anchor" id="autotoc_md1021"></a>
 ECDSA Signing operations</h2>
 <dl class="section note"><dt>Note</dt><dd>Openssl ECDSA Signature and our PKA ECDSA Signature will not match due to randomness of openssl</dd></dl>
 <ul>
@@ -504,7 +504,7 @@ ECDSA Signing operations</h2>
 <li>To perform signing operation : <b> openssl dgst -sha256 -sign private.pem -rand rand_key.bin -out ecdsa_sign.bin message.bin </b></li>
 <li>To see the signature in text format : <b>openssl asn1parse -in ecdsa_sign.bin -inform der</b></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md933"></a>
+<h2><a class="anchor" id="autotoc_md1022"></a>
 ECDSA Verification operations</h2>
 <ul>
 <li>PKA follows Bigint format, before passing data to driver please convert to <a class="el" href="SECURITY_PKA_MODULE_PAGE.html#Bigintformat">Bigint format</a></li>
@@ -527,9 +527,9 @@ Bigint format</h1>
 <div class="line">    0xXXXXXXXX  |</div>
 <div class="line">    0xXXXXXXXX  |</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md934"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md1023"></a>
 Bigint Format Conversion for PKA RSA Driver</h2>
-<h3><a class="anchor" id="autotoc_md935"></a>
+<h3><a class="anchor" id="autotoc_md1024"></a>
 Steps for Bigint conversion</h3>
 <ul>
 <li>For converting input to bigint please follow below steps<ul>
@@ -711,7 +711,7 @@ Steps for Bigint conversion</h3>
 <div class="line">0xB3DC1598UL,0x6E9F6DB7UL,0xCFCC4A8AUL,0xDFBA2F3EUL,</div>
 <div class="line">0x0CEA1413UL,0xF6E7AE2FUL,0x0429A8F5UL,0xFF21AFADUL,</div>
 <div class="line">0x9E529C69UL,0x75245098UL,0x958033AFUL,0xC56969C2UL,</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md936"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1025"></a>
 PKA API's Supported</h1>
 <ul>
 <li><a class="el" href="group__SECURITY__PKA__MODULE.html#ga6cbe677be35c975c42a3fa977af15800" title="Function to Open PKA instance, enable PKA engine, Initialize clocks and Load PKA Fw.">PKA_open()</a> : Open PKA instance, enable PKA engine, initialize clocks and load PKA fw.</li>
@@ -721,9 +721,9 @@ PKA API's Supported</h1>
 <li><a class="el" href="group__SECURITY__PKA__MODULE.html#ga43b383552dd022432d9d6a71a43c14f5" title="ECDSA verify primitive function.">PKA_ECDSAVerify()</a> : This function performs ECDSA verification operations.</li>
 <li><a class="el" href="group__SECURITY__PKA__MODULE.html#gadc48c7cd9768ad861c9501e440edb3ae" title="Function to close a PKA module specified by the PKA handle.">PKA_close()</a> : Close PKA instance, disable PKA engine, un-initialize clocks and unload PKA fw.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md937"></a>
+<h1><a class="anchor" id="autotoc_md1026"></a>
 API Sequence for PKA (Public-key accelerator)</h1>
-<h3><a class="anchor" id="autotoc_md938"></a>
+<h3><a class="anchor" id="autotoc_md1027"></a>
 RSA</h3>
 <p>This sequence performs PKA RSA operations.</p>
 <ul>
@@ -733,7 +733,7 @@ RSA</h3>
 <li><a class="el" href="group__SECURITY__PKA__MODULE.html#gadc48c7cd9768ad861c9501e440edb3ae" title="Function to close a PKA module specified by the PKA handle.">PKA_close()</a> : Close PKA instance, disable PKA engine, un-initialize clocks and unload PKA fw.</li>
 <li>Open the pka module with instance by using <a class="el" href="group__SECURITY__PKA__MODULE.html#ga6cbe677be35c975c42a3fa977af15800" title="Function to Open PKA instance, enable PKA engine, Initialize clocks and Load PKA Fw.">PKA_open()</a>, this call used for loading pka fw, clock enable and pka engine enable, for encryption or verification use <a class="el" href="group__SECURITY__PKA__MODULE.html#ga64286be0332bdfd6f5bd5831d2261779" title="This Function performs Encryption or Verification operations.">PKA_RSAPublic()</a>, for decryption or signing use <a class="el" href="group__SECURITY__PKA__MODULE.html#ga85b5b2fc288e7c8405cda05f1a17592d" title="This Function performs Decryption or Signing operations.">PKA_RSAPrivate()</a>, to close pka instance, disable engine, disable clock and fw unload use <a class="el" href="group__SECURITY__PKA__MODULE.html#gadc48c7cd9768ad861c9501e440edb3ae" title="Function to close a PKA module specified by the PKA handle.">PKA_close()</a>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md939"></a>
+<h3><a class="anchor" id="autotoc_md1028"></a>
 ECDSA</h3>
 <p>This sequence performs PKA ECDSA operations.</p>
 <ul>
@@ -743,7 +743,7 @@ ECDSA</h3>
 <li><a class="el" href="group__SECURITY__PKA__MODULE.html#gadc48c7cd9768ad861c9501e440edb3ae" title="Function to close a PKA module specified by the PKA handle.">PKA_close()</a> : Close PKA instance, disable PKA engine, un-initialize clocks and unload PKA fw.</li>
 <li>Open the pka module with instance by using <a class="el" href="group__SECURITY__PKA__MODULE.html#ga6cbe677be35c975c42a3fa977af15800" title="Function to Open PKA instance, enable PKA engine, Initialize clocks and Load PKA Fw.">PKA_open()</a>, this call used for loading pka fw, clock enable and pka engine enable, for signing use <a class="el" href="group__SECURITY__PKA__MODULE.html#ga9a855e5901acdd2e160ee2130431de87" title="ECDSA sign primitive function.">PKA_ECDSASign()</a>, for verification use <a class="el" href="group__SECURITY__PKA__MODULE.html#ga43b383552dd022432d9d6a71a43c14f5" title="ECDSA verify primitive function.">PKA_ECDSAVerify()</a>, to close pka instance, disable engine, disable clock and fw unload use <a class="el" href="group__SECURITY__PKA__MODULE.html#gadc48c7cd9768ad861c9501e440edb3ae" title="Function to close a PKA module specified by the PKA handle.">PKA_close()</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md940"></a>
+<h1><a class="anchor" id="autotoc_md1029"></a>
 Example Usage</h1>
 <p>Include the below file to access the SA2UL PKA APIs </p><div class="fragment"><div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
@@ -924,7 +924,7 @@ Example Usage</h1>
 <div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a>(<span class="stringliteral">&quot;[PKA] PKA_RSAPrivate output did not match expected output\n&quot;</span>);</div>
 <div class="line">    }</div>
 <div class="line">    </div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md941"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1030"></a>
 API</h1>
 <p><a class="el" href="group__SECURITY__PKA__MODULE.html">APIs for PKA</a> </p>
 </div></div><!-- contents -->

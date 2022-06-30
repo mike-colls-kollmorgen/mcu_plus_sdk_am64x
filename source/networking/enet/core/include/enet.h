@@ -415,6 +415,18 @@ uint32_t Enet_getMacPortCnt(Enet_Handle hEnet);
  */
 void Enet_close(Enet_Handle hEnet);
 
+/*!
+ * \brief Get enetType and instId info from the enet handle.
+ *
+ * Returns the enetType and instance id associated with Enet_Handle.
+ *
+ * \param hEnet        Enet driver handle
+ * \param enetType     Pointer to enetType set by this function
+ * \param instId       Instance Id
+ */
+int32_t Enet_getHandleInfo(Enet_Handle hEnet,
+                           Enet_Type *enetType,
+                           uint32_t *instId);
 /* ========================================================================== */
 /*                        Deprecated Function Declarations                    */
 /* ========================================================================== */

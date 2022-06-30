@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_TIMER_PAGE.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md449">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md450">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md451">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md452">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md453">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md515">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md516">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md517">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md518">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md519">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_TimerP"></a></p>
-<h1><a class="anchor" id="autotoc_md449"></a>
+<h1><a class="anchor" id="autotoc_md515"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to setup timer configuration</li>
@@ -124,17 +124,17 @@ Features Supported</h1>
 <li>APIs to get the current timer count</li>
 <li>APIs to check for counter overflow and clear timer overflow interrupt</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md450"></a>
+<h1><a class="anchor" id="autotoc_md516"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md451"></a>
+<h1><a class="anchor" id="autotoc_md517"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>Support configuration for DM timer</li>
 <li>Supports continues and oneshot mode</li>
 <li>When configuring the timer period in micro second the 'periodInNsec' should be set to 0</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md452"></a>
+<h1><a class="anchor" id="autotoc_md518"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="TimerP_8h.html">kernel/dpl/TimerP.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Example usage to initialize the timer </p><div class="fragment"><div class="line">    <a class="code" href="structTimerP__Params.html">TimerP_Params</a> timerParams;</div>
@@ -154,7 +154,7 @@ Example Usage</h1>
 <div class="line">    <a class="code" href="tisci__rm__ra_8h.html#a86988a65e0d3ece7990c032c159786d6">count</a> = <a class="code" href="group__KERNEL__DPL__TIMER.html#ga96751678fbfb85801094a1e5a0e3d122">TimerP_getCount</a>(timerBaseAddr);</div>
 </div><!-- fragment --><p> Example usage to stop the timer </p><div class="fragment"><div class="line">    <span class="comment">/* stop the tick timer */</span></div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__TIMER.html#ga0c3aa4924c4313976a28561e6257a747">TimerP_stop</a>(timerBaseAddr);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md453"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md519"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__TIMER.html">APIs for timer setup and control</a> </p>
 </div></div><!-- contents -->

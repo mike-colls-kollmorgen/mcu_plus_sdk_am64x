@@ -51,7 +51,8 @@
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-#define BOOTLOADER_PROFILE_MAX_LOGS (32U)
+#define BOOTLOADER_PROFILE_MAX_LOGS  (32U)
+#define BOOTLOADER_PROFILE_MAX_CORES (CSL_CORE_ID_MAX)
 
 /* ========================================================================== */
 /*                             Structure Definitions                          */
@@ -66,7 +67,25 @@ typedef struct
 typedef struct
 {
     uint32_t logIndex;
+    /* Index of the last log item */
+
     Bootloader_ProfileInfo info[BOOTLOADER_PROFILE_MAX_LOGS];
+    /* Array of bootloader profile information structs corresponding to each log item */
+
+    uint32_t appimageSize;
+    /* Size of the appimage being booted */
+
+    uint32_t bootMediaID;
+    /* ID of bootMedia used, defined in bootloader.h */
+
+    uint32_t bootMediaClk;
+    /* OSPI/QSPI/MMCSD clock frequency used in bootloader */
+
+    uint32_t numCores;
+    /* Number of cores present in the appimage */
+
+    uint8_t coresPresent[BOOTLOADER_PROFILE_MAX_CORES];
+    /* Array to hold IDs of the core present */
 
 } Bootloader_ProfileObject;
 
@@ -81,7 +100,11 @@ Bootloader_ProfileObject gProfileObj;
 /* ========================================================================== */
 void Bootloader_profileReset(void)
 {
-    gProfileObj.logIndex = 0U;
+    gProfileObj.logIndex     = 0U;
+    gProfileObj.numCores     = 0U;
+    gProfileObj.bootMediaClk = 0U;
+    gProfileObj.bootMediaID  = 0xFFFFFFFFU;
+
     CycleCounterP_reset();
 
     /* Add the 0th profile point */
@@ -108,6 +131,22 @@ void Bootloader_profileAddProfilePoint(char *pointName)
     }
 }
 
+void Bootloader_profileUpdateAppimageSize(uint32_t size)
+{
+    gProfileObj.appimageSize = size;
+}
+
+void Bootloader_profileUpdateMediaAndClk(uint32_t id, uint32_t clk)
+{
+    gProfileObj.bootMediaClk = clk;
+    gProfileObj.bootMediaID  = id;
+}
+
+void Bootloader_profileAddCore(uint32_t coreId)
+{
+    gProfileObj.coresPresent[gProfileObj.numCores++] = coreId;
+}
+
 void Bootloader_profilePrintProfileLog(void)
 {
     uint32_t cpuMHz = 0U;
@@ -117,6 +156,39 @@ void Bootloader_profilePrintProfileLog(void)
 
     /* Assumption: 0th profile point is SBL start and last profile point is SBL end.
     Print diffs for all the points in between and print (SBL end - SBL start) at the end as overall SBL time */
+
+    char *bootMediaName = NULL;
+
+    switch(gProfileObj.bootMediaID)
+    {
+        case BOOTLOADER_MEDIA_FLASH:
+            bootMediaName = "NOR SPI FLASH";
+            break;
+        case BOOTLOADER_MEDIA_EMMC:
+            bootMediaName = "eMMC";
+            break;
+        case BOOTLOADER_MEDIA_SD:
+            bootMediaName = "SD Card";
+            break;
+        default:
+            bootMediaName = "undefined";
+            break;
+    }
+    uint32_t clk = gProfileObj.bootMediaClk;
+    
+    DebugP_log("[BOOTLOADER_PROFILE] Boot Media       : %s \r\n", bootMediaName);
+    /* If boot media clock is not given don't print that information */
+    if(clk != 0)
+    {
+        DebugP_log("[BOOTLOADER_PROFILE] Boot Media Clock : %.3f MHz \r\n", (float)clk/1000000.0);
+    }
+    DebugP_log("[BOOTLOADER_PROFILE] Boot Image Size  : %d KB \r\n", gProfileObj.appimageSize/1024);
+    DebugP_log("[BOOTLOADER_PROFILE] Cores present    : \r\n");
+
+    for(i = 0; i < gProfileObj.numCores; i++)
+    {
+        DebugP_log("%s\r\n", SOC_getCoreName(gProfileObj.coresPresent[i]));
+    }
 
     for(i = 1; i < gProfileObj.logIndex - 1; i++)
     {

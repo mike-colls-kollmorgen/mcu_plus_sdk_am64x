@@ -208,7 +208,7 @@ static BaseType_t prvCreateNewMessageQueue( QueueListElement_t ** ppxMessageQueu
     BaseType_t xStatus = pdTRUE;
 
     /* Allocate space for a new queue element. */
-    *ppxMessageQueue = pvPortMalloc( sizeof( QueueListElement_t ) );
+    *ppxMessageQueue = (QueueListElement_t *) pvPortMalloc( sizeof( QueueListElement_t ) );
 
     /* Check that memory allocation succeeded. */
     if( *ppxMessageQueue == NULL )
@@ -233,7 +233,7 @@ static BaseType_t prvCreateNewMessageQueue( QueueListElement_t ** ppxMessageQueu
     if( xStatus == pdTRUE )
     {
         /* Allocate space for the queue name plus null-terminator. */
-        ( *ppxMessageQueue )->pcName = pvPortMalloc( xNameLength + 1 );
+        ( *ppxMessageQueue )->pcName = (char *) pvPortMalloc( xNameLength + 1 );
 
         /* Check that memory was successfully allocated for queue name. */
         if( ( *ppxMessageQueue )->pcName == NULL )
@@ -779,7 +779,7 @@ int mq_timedsend( mqd_t mqdes,
     if( iStatus == 0 )
     {
         xSendData.xDataSize = msg_len;
-        xSendData.pcData = pvPortMalloc( msg_len );
+        xSendData.pcData = (char *) pvPortMalloc( msg_len );
 
         /* Check that memory allocation succeeded. */
         if( xSendData.pcData == NULL )

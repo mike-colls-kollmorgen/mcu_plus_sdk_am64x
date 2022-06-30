@@ -132,6 +132,19 @@ typedef struct Mdio_Cfg_s
      *  share the MDIO.  This condition is not enforced in driver, so it's
      *  application's responsibility this requirement is met. */
     bool isMaster;
+
+    /*! Config to disable MDIO state machine on MDIO_open .
+     *  By default MDIO state machine is enabled on MDIO_open
+     *  Setting this flag, will cause MDIO to not enable MDIO state
+     *  machine on open. The MDIO state machine can be enabled at 
+     *  a later point of time via IOCTL. This option allows
+     *  Synchronizing externally managed PHY with the MDIO 
+     *  whereby external PHY initalization is done and then
+     *  MDIO state machine can be enabled so that any linkup
+     *  interrupts are not missed
+     */
+    bool disableStateMachineOnInit;
+
 } Mdio_Cfg;
 
 /* ========================================================================== */

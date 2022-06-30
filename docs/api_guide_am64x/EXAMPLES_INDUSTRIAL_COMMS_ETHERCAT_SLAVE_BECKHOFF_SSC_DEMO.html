@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,21 +108,21 @@ $(document).ready(function(){initNavTree('EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLA
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1359">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1585">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_BECKHOFF_SSC_DEMO_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1360">Performance Benchmarking</a><ul><li class="level2"><a href="#autotoc_md1361">Cycle Time</a></li>
-<li class="level2"><a href="#autotoc_md1362">Interrupt Processing Time</a></li>
+<li class="level1"><a href="#autotoc_md1586">Performance Benchmarking</a><ul><li class="level2"><a href="#autotoc_md1587">Cycle Time</a></li>
+<li class="level2"><a href="#autotoc_md1588">Interrupt Processing Time</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1363">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1364">Sample Output</a></li>
-<li class="level1"><a href="#autotoc_md1365">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1589">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1590">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1591">See Also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_industrial_comms_ethercat_slave_beckhoff_ssc_demo"></a></p>
-<h1><a class="anchor" id="autotoc_md1359"></a>
+<h1><a class="anchor" id="autotoc_md1585"></a>
 Introduction</h1>
-<p>This example is a EtherCAT Slave application based on EtherCAT Slave Stack Code (SSC) version 5.12 from Beckhoff.</p>
+<p>This example is a EtherCAT Slave application based on EtherCAT Slave Stack Code (SSC) version 5.13 from Beckhoff.</p>
 <p>The example does the below</p><ul>
 <li>Initializes the EtherCAT Slave stack</li>
 <li>Initializes the FWHAL, which kicks off the ESC</li>
@@ -146,13 +146,13 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/industrial_comms/ethercat_slave_beckhoff_ssc_demo   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1360"></a>
+<h1><a class="anchor" id="autotoc_md1586"></a>
 Performance Benchmarking</h1>
 <p>TwinCAT Master was used as the EtherCAT master for these tests.</p>
-<h2><a class="anchor" id="autotoc_md1361"></a>
+<h2><a class="anchor" id="autotoc_md1587"></a>
 Cycle Time</h2>
 <p>Lowest cycle time tested is <b>31.25 us(microseconds)</b> with Distributed Clock(DC) Synchronization mode.</p>
-<h2><a class="anchor" id="autotoc_md1362"></a>
+<h2><a class="anchor" id="autotoc_md1588"></a>
 Interrupt Processing Time</h2>
 <p>Following is the interrupt processing time for PDI and Sync ISRs with 50 us cycle time. The RxPDO size is 5 bytes and TxPDO size is 7 bytes in this example.</p>
 <table class="doxtable">
@@ -163,10 +163,10 @@ Interrupt Processing Time</h2>
 <tr>
 <td>DC mode with SYNC0 and SYNC1 enabled </td><td>2.7 </td><td>0.8 </td><td>2.6  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1363"></a>
+<h1><a class="anchor" id="autotoc_md1589"></a>
 Steps to Run the Example</h1>
 <ul>
-<li>To build this example, it is necessary to get the EtherCAT Slave Stack Code (SSC). Download EtherCAT stack version 5.12 from <a href="http://www.ethercat.org/">ETG website</a> and extract it to a local folder. Please refer to "Application Note ET9300 (EtherCAT Slave Stack Code)" for more details on SSC.</li>
+<li>To build this example, it is necessary to get the EtherCAT Slave Stack Code (SSC). Download EtherCAT stack version 5.13 from <a href="http://www.ethercat.org/">ETG website</a> and extract it to a local folder. Please refer to "Application Note ET9300 (EtherCAT Slave Stack Code)" for more details on SSC.</li>
 <li>Generate the patched EtherCAT Slave stack code source files using any one of the below mentioned methods:<ul>
 <li><b>Using the patch file</b><ul>
 <li>Copy the EtherCAT Slave Stack files to <code>{SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_sources/</code> folder.</li>
@@ -182,15 +182,20 @@ Steps to Run the Example</h1>
 </div><!-- fragment --></li>
 </ul>
 </li>
-<li><b>Using Beckhoff SSC Tool</b><ul>
-<li>Install SSC tool version 1.4.0.0. This configuration tool facilitates working with the EtherCAT Slave Stack Code (SSC), as it allows reducing the size of the EtherCAT slave stack code by removing unused code parts depending on the desired configuration. Objects should be defined in a .xlsx file. Please refer to <a href="https://download.beckhoff.com/download/document/io/ethercat-development-products/ethercat_slave_design_quick_guide.pdf">EtherCAT Slave Design - Quick Guide</a> for details.</li>
+<li><p class="startli"><b>Using Beckhoff SSC Tool</b></p><ul>
+<li>Install SSC tool version 1.5.3.0. This configuration tool facilitates working with the EtherCAT Slave Stack Code (SSC), as it allows reducing the size of the EtherCAT slave stack code by removing unused code parts depending on the desired configuration. Objects should be defined in a .xlsx file. Please refer to <a href="https://download.beckhoff.com/download/document/io/ethercat-development-products/ethercat_slave_design_quick_guide.pdf">EtherCAT Slave Design - Quick Guide</a> for details.</li>
 <li>Click on "Import" button and select TI_ESC_[SDK_VERSION].xml present in SoC specific folder inside <code>${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/patch</code> folder.</li>
 <li>Make sure "Custom" is selected in the dialog box and "TI [SOC] Sample \&lt;Texas Instruments Incorporated\&gt;" is selected from the list.</li>
 <li>Set DC_SUPPORTED to 1 if not set.</li>
 <li>Save the project.</li>
 <li>Click "Project-&gt;Create new Slave Files". This will generate the EtherCAT Source files specific to the the selected TI device.</li>
-<li>Copy the generated files to <code>${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_sources/</code>.</li>
+<li>Copy all the generated files except tiescappl.c, tiescappl.h and tiescapplObjects.h to <code>${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_sources/</code>.</li>
 </ul>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>For the SDK example, tiescappl.c and tiescappl.h files are used from "${SDK_INSTALL_PATH}/examples/industrial_comms/ethercat_slave_beckhoff_ssc_demo/" folder, and not from the SSC Tool generated files.</li>
+<li>If you want to modify the object dictionary, you can update the "${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/patch/am64x_am243x_am263x/tiescappl.xlsx" file and then the SSC tool will generate the application code accordingly.</li>
+</ul>
+</dd></dl>
 </li>
 </ul>
 </li>
@@ -200,8 +205,8 @@ Steps to Run the Example</h1>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>To test the application, one can use TwinCAT or any other compatible EtherCAT master. The steps to test the slave with TwinCAT are present in <a class="el" href="ETHERCAT_SLAVE_DEMO_TWINCAT.html">EtherCAT Slave Setup with TwinCAT</a>.</li>
 </ul>
-<dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run again, a CPU power-cycle is MUST</dd></dl>
-<h1><a class="anchor" id="autotoc_md1364"></a>
+<dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run the example again, EVM power-cycle is MUST.</dd></dl>
+<h1><a class="anchor" id="autotoc_md1590"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run:</p>
 <div class="fragment"><div class="line">EtherCAT Device</div>
@@ -210,7 +215,7 @@ Sample Output</h1>
 <div class="line">Firmware Version : 5.4.253</div>
 <div class="line">SYNC0 task started</div>
 <div class="line">SYNC1 task started</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1365"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1591"></a>
 See Also</h1>
 <p><a class="el" href="ETHERCAT_SLAVE_FWHAL.html">EtherCAT Slave FWHAL</a> </p>
 </div></div><!-- contents -->

@@ -34,6 +34,12 @@
 #ifndef INCLUDE_CDN_ERRNO_H
 #define INCLUDE_CDN_ERRNO_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #ifndef ERRNO_H_NOT_PRESENT
 #include <errno.h>
 #endif //ERRNO_H_NOT_PRESENT
@@ -161,5 +167,10 @@
 #define CDN_ENOTSUP         CDN_EOPNOTSUPP
 
 #define CDN_ECANCELED       126U      /* Cancelled */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //INCLUDE_CDN_ERRNO_H

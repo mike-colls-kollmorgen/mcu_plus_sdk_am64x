@@ -33,6 +33,12 @@
 #ifndef FLASH_NOR_OSPI_H_
 #define FLASH_NOR_OSPI_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/ospi.h>
 
 typedef struct {
@@ -87,5 +93,10 @@ extern Flash_Attrs gFlashNorOspiAttrs_MX25LM25645G;
 
 /* FLash specific externs */
 extern Flash_Fxns gFlashNorOspiFxns;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FLASH_NOR_OSPI_H_ */

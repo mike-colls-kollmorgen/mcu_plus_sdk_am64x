@@ -38,6 +38,12 @@
 #ifndef RED_HSR_H_
 #define RED_HSR_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -159,5 +165,10 @@ void       HsrSupFrameUpdateSeqNr(hsrPrpHandle *, RED_FRAME *pRedFrame);
 void       HsrSupFrameIncrementSeqNr(hsrPrpHandle *);
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_HSR_H_ */

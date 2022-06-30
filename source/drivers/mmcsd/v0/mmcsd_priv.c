@@ -61,12 +61,16 @@ int32_t MMCSD_parseCIDEmmc(MMCSD_EmmcDeviceData *data, uint32_t resp[4])
 
         /* Product name */
         data->productName[6] = '\0';
-        memcpy(data->productName, (void *)(tempResp) + 7, 6U);
+
+        /* Product name is bits 56:103 (48 bits, 6 bytes), to extract we can use a byte pointer and do memcpy */
+        uint8_t *pTempResp = (uint8_t *)&tempResp[0];
+        
+        memcpy(data->productName, pTempResp + 7, 6U);
 
         /* Manufacturing date */
         uint16_t monthCode = MMCSD_GET_BITFIELD(tempResp[0], 12, 15);
         uint16_t yearCode  = MMCSD_GET_BITFIELD(tempResp[0], 8, 11);
-        
+
         if((monthCode < 1U) || (monthCode > 12U))
         {
             monthCode = 1U;
@@ -84,7 +88,7 @@ int32_t MMCSD_parseCIDEmmc(MMCSD_EmmcDeviceData *data, uint32_t resp[4])
         {
             yearCode += 1997;
         }
-        
+
         snprintf(data->manuDate, 8, "%s%04u", gMonths[monthCode-1], yearCode);
         data->manuDate[8] = '\0';
     }
@@ -141,9 +145,9 @@ int32_t MMCSD_parseECSDEmmc(MMCSD_EmmcDeviceData *data, uint8_t ecsdData[512])
         uint32_t sdRev = (uint32_t)ecsdData[192];
         if(sdRev <= 4)
         {
-            uint16_t year = (data->manuDate[3]-'0')*1000 + 
-                            (data->manuDate[4]-'0')*100 + 
-                            (data->manuDate[5]-'0')*10 + 
+            uint16_t year = (data->manuDate[3]-'0')*1000 +
+                            (data->manuDate[4]-'0')*100 +
+                            (data->manuDate[5]-'0')*10 +
                             (data->manuDate[6]-'0');
             year += 16;
             uint32_t i = 4;
@@ -191,9 +195,9 @@ int32_t MMCSD_parseCIDSd(MMCSD_SdDeviceData *data, uint32_t resp[4])
         /* Manufacturing date */
         uint32_t monthCode = MMCSD_GET_BITFIELD(tempResp[0], 8, 11);
         uint16_t yearCode  = MMCSD_GET_BITFIELD(tempResp[0], 12, 19);
-        
+
         monthCode = ((monthCode > 11U) || (monthCode < 1U)) ? 1U : monthCode;
-        
+
         snprintf(data->manuDate, 8, "%s%04u", gMonths[monthCode-1], yearCode+2000U);
         data->manuDate[8] = '\0';
     }

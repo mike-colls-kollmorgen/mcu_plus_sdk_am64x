@@ -38,6 +38,12 @@
 #ifndef RED_MULTICASTTABLE_H_
 #define RED_MULTICASTTABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -89,5 +95,10 @@ RED_STATUS hsrPrp_multicast_filter_update_macid(PRUICSS_Handle
 RED_STATUS hsrPrp_multicast_filter_override_hashmask(PRUICSS_Handle
         pruicssHandle,
         uint8_t *mask);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_MULTICASTTABLE_H_ */

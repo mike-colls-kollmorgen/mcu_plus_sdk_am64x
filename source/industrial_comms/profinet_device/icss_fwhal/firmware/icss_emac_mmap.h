@@ -33,6 +33,12 @@
 #ifndef ICSS_EMAC_MMAP_H_
 #define ICSS_EMAC_MMAP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -336,5 +342,10 @@ ICSS_EMAC_FwDynamicMmap icss_emacFwDynamicCfg = {
     ICSS_EMAC_FW_EMAC_Q1_TX_CONTEXT_OFFSET,
     ICSS_EMAC_NUMBER_OF_QUEUES
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef ICSS_EMAC_MMAP_H_ */

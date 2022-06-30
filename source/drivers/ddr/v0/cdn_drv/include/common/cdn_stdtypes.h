@@ -34,6 +34,12 @@
 
 #ifndef INCLUDE_CDN_STDTYPES_H___
 #define	INCLUDE_CDN_STDTYPES_H___
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifdef __KERNEL__
 #include <linux/types.h>
 #else
@@ -42,5 +48,10 @@
 #include <stdbool.h>
 
 #endif /* __KERNEL__ */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif	/* INCLUDE_CDN_STDTYPES_H__ */
 

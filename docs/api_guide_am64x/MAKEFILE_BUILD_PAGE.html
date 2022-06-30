@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,14 +108,14 @@ $(document).ready(function(){initNavTree('MAKEFILE_BUILD_PAGE.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md174">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md175">Enabling &quot;make&quot; in Windows</a></li>
-<li class="level1"><a href="#autotoc_md176">Building Libraries with Makefiles</a></li>
+<ul><li class="level1"><a href="#autotoc_md228">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md229">Enabling &quot;make&quot; in Windows</a></li>
+<li class="level1"><a href="#autotoc_md230">Building Libraries with Makefiles</a></li>
 <li class="level1"><a href="#MAKEFILE_EXAMPLE_BUILD">Building examples with makefiles</a></li>
-<li class="level1"><a href="#autotoc_md177">Building System Examples with Makefiles</a></li>
-<li class="level1"><a href="#autotoc_md178">Building the Whole SDK with Makefiles</a></li>
-<li class="level1"><a href="#autotoc_md179">Load and Run Executables Built with Makefiles</a></li>
-<li class="level1"><a href="#autotoc_md180">Tips and Tricks when working with Makefiles</a></li>
+<li class="level1"><a href="#autotoc_md231">Building System Examples with Makefiles</a></li>
+<li class="level1"><a href="#autotoc_md232">Building the Whole SDK with Makefiles</a></li>
+<li class="level1"><a href="#autotoc_md233">Load and Run Executables Built with Makefiles</a></li>
+<li class="level1"><a href="#autotoc_md234">Tips and Tricks when working with Makefiles</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_makefile_build"></a></p>
@@ -124,10 +124,10 @@ $(document).ready(function(){initNavTree('MAKEFILE_BUILD_PAGE.html',''); initRes
 In Linux, use <code>make</code> instead of <code>gmake</code></dd>
 <dd>
 The screen shots shown on this page are for AM64x MCU+ SDK v7.3.0. You would see your specific SOC and SDK version that is installed. However the instructions and steps mentioned remain the same, unless mentioned otherwise.</dd></dl>
-<h1><a class="anchor" id="autotoc_md174"></a>
+<h1><a class="anchor" id="autotoc_md228"></a>
 Introduction</h1>
 <p>All SDK examples and libraries can be built using makefiles via command line. Using command line one can also open SysConfig GUI to configure the example. This section provides basic instructions and tips on using makefiles.</p>
-<h1><a class="anchor" id="autotoc_md175"></a>
+<h1><a class="anchor" id="autotoc_md229"></a>
 Enabling "make" in Windows</h1>
 <dl class="section attention"><dt>Attention</dt><dd>This step needs to be done once on a Windows host machine. Nothing needs to be done for Linux.</dd></dl>
 <ul>
@@ -139,7 +139,7 @@ Enabling "make" in Windows</h1>
 <div class="caption">
 Add Environment Variable</div></div>
 <ul>
-<li>Edit the "Path" variable and add the path to C:/ti/ccs1110/ccs/utils/bin in the "Path" variable.</li>
+<li>Edit the "Path" variable and add the path to C:/ti/ccs1120/ccs/utils/bin in the "Path" variable.</li>
 <li>Confirm that you are able to see gmake in Windows by doing below <div class="fragment"><div class="line">C:\ti&gt;gmake -v</div>
 </div><!-- fragment --></li>
 <li>The expected output is shown below <div class="fragment"><div class="line">GNU Make 4.1</div>
@@ -150,7 +150,7 @@ Add Environment Variable</div></div>
 <div class="line">There is NO WARRANTY, to the extent permitted by law.</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md176"></a>
+<h1><a class="anchor" id="autotoc_md230"></a>
 Building Libraries with Makefiles</h1>
 <dl class="section note"><dt>Note</dt><dd>CCS projects are not supported for libraries and if any library source file or header file is modified the libraries need to be rebuilt as shown below</dd></dl>
 <ul>
@@ -213,7 +213,7 @@ Building examples with makefiles</h1>
 </div><!-- fragment --></li>
 <li>Explore additional commands listed via <code>gmake -s help</code> for more options</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md177"></a>
+<h1><a class="anchor" id="autotoc_md231"></a>
 Building System Examples with Makefiles</h1>
 <ul>
 <li>Some examples, to run correctly, need multiple binaries on different CPUs to be build, loaded and run. Such examples are called "system" examples. One such example is inter-processor communication example, which shows multiple CPUs communicating among each other.</li>
@@ -233,7 +233,7 @@ Building System Examples with Makefiles</h1>
 <img src="syscfg_00.png" alt=""/>
 <div class="caption">
 SysConfig Multi-CPU View</div></div>
-<h1><a class="anchor" id="autotoc_md178"></a>
+<h1><a class="anchor" id="autotoc_md232"></a>
 Building the Whole SDK with Makefiles</h1>
 <ul>
 <li>The whole SDK can be built using makefiles by running below command, <div class="fragment"><div class="line">cd ${SDK_INSTALL_PATH}</div>
@@ -243,7 +243,7 @@ Building the Whole SDK with Makefiles</h1>
 <div class="line">gmake -s  clean PROFILE=release</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md179"></a>
+<h1><a class="anchor" id="autotoc_md233"></a>
 Load and Run Executables Built with Makefiles</h1>
 <ul>
 <li>The generated binary from makefile is located as the below path <div class="fragment"><div class="line">examples/{component or module}/{optional sub-module or sub-component}/</div>
@@ -259,7 +259,7 @@ Load and Run Executables Built with Makefiles</h1>
 <li>The same folder also has .map files which have more information about the binary size and memory section used, and so on.</li>
 <li>In case of "system" examples, one need to load the binaries for each CPU one by one in CCS and then run each CPU. Typically the order of load and run of different CPUs is not important.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md180"></a>
+<h1><a class="anchor" id="autotoc_md234"></a>
 Tips and Tricks when working with Makefiles</h1>
 <ul>
 <li>In general, the makefiles are written to be simple and use very basic GNU make syntax and options. You can simply open the makefile located within a example or library folder to see the different compile options, include paths, files, include directory, pre-processor defines etc that are used to build that example or library.</li>

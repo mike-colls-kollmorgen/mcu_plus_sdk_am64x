@@ -58,7 +58,9 @@ typedef struct SPI_SEepromHeader
 } SPI_SEepromHeader_t;
 
 #if !(defined FBTLPROVIDER) || (FBTLPROVIDER==0)
+#if (defined CONFIG_FLASH0)
 static Flash_Attrs*     flashAttribute_s    = NULL;
+#endif
 #endif
 
 /*! <!-- Description: -->
@@ -94,7 +96,9 @@ void EC_SLV_APP_EEP_initFlash(void* pContext_p)
     OSALUNREF_PARM(pContext_p);
 
 #if !(defined FBTLPROVIDER) || (FBTLPROVIDER==0)
+#if (defined CONFIG_FLASH0)
     flashAttribute_s = Flash_getAttrs(CONFIG_FLASH0);
+#endif
 #endif
 }
 
@@ -141,12 +145,14 @@ void EC_SLV_APP_EEP_writeEeprom(void *pContext_p, void* pEeprom_p, uint32_t leng
     SPI_SEepromHeader_t*    pageHead    = NULL;
 
 #if !(defined FBTLPROVIDER) || (FBTLPROVIDER==0)
+#if (defined CONFIG_FLASH0)
     if (NULL == flashAttribute_s)
     {
         return;
     }
 
     pageCount = (length_p + flashAttribute_s->blockSize - 1) / flashAttribute_s->blockSize;
+#endif
 #endif
 
     pageHead = (SPI_SEepromHeader_t*)OSAL_MEMORY_calloc(sizeof(SPI_SEepromHeader_t)+length_p, sizeof(uint8_t));
@@ -157,6 +163,7 @@ void EC_SLV_APP_EEP_writeEeprom(void *pContext_p, void* pEeprom_p, uint32_t leng
     offloader = (uint8_t*)pageHead;
 
 #if !(defined FBTLPROVIDER) || (FBTLPROVIDER==0)
+#if (defined CONFIG_FLASH0)
     for (idx = 0; idx < pageCount; ++idx)
     {
         Flash_offsetToBlkPage   (gFlashHandle[CONFIG_FLASH0],
@@ -167,6 +174,7 @@ void EC_SLV_APP_EEP_writeEeprom(void *pContext_p, void* pEeprom_p, uint32_t leng
     }
 
     Flash_write(gFlashHandle[CONFIG_FLASH0], offset, (uint8_t*)pageHead, sizeof(SPI_SEepromHeader_t)+length_p);
+#endif
 #endif
     OSAL_MEMORY_free(pageHead);
 }
@@ -213,6 +221,7 @@ bool EC_SLV_APP_EEP_loadEeprom(void* pContext_p, void* pEeprom_p, uint32_t* pLen
     SPI_SEepromHeader_t     pageProto   = {0};
     int32_t                 status      = SystemP_SUCCESS;
 #if !(defined FBTLPROVIDER) || (FBTLPROVIDER==0)
+#if (defined CONFIG_FLASH0)
     uint32_t                flashMagic  = (uint32_t)pContext_p;
 
     status = Flash_read(gFlashHandle[CONFIG_FLASH0], offset, (uint8_t*)&pageProto, sizeof(SPI_SEepromHeader_t));
@@ -236,6 +245,9 @@ bool EC_SLV_APP_EEP_loadEeprom(void* pContext_p, void* pEeprom_p, uint32_t* pLen
     {
         pLength_p[0] = pageProto.dataSize;
     }
+#else
+    goto Exit;
+#endif
 #else
     goto Exit;
 #endif

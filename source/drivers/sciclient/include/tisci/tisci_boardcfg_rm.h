@@ -54,6 +54,12 @@
 #ifndef TISCI_BOARD_CFG_RM_H
 #define TISCI_BOARD_CFG_RM_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #define TISCI_BOARDCFG_RM_HOST_CFG_MAGIC_NUM          (0x4C41U)
 #define TISCI_BOARDCFG_RM_RESASG_MAGIC_NUM            (0x7B25U)
@@ -267,6 +273,11 @@ const struct tisci_boardcfg_rm_resasg_entry *tisci_boardcfg_get_rm_resasg(void);
  *         invalid, SUCCESS if in the board data has been received and is valid.
  */
 int32_t tisci_boardcfg_get_rm_devgrp(devgrp_t *devgrp);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif          /* TISCI_BOARD_CFG_RM_H */
 

@@ -2021,11 +2021,11 @@ static void UART_writeDataPolling(UART_Object *object, UART_Attrs const *attrs)
     uint32_t numBytesWritten = 0U;
 
     numBytesWritten = UART_fifoWrite(attrs,
-                                     object->writeBuf,
+                                     (const uint8_t *) object->writeBuf,
                                      object->writeSizeRemaining);
 
     object->writeSizeRemaining -= numBytesWritten;
-    object->writeBuf           += numBytesWritten;
+    object->writeBuf           = (uint8_t *)object->writeBuf + numBytesWritten;
     object->writeCount         += numBytesWritten;
 
     return;
@@ -2157,11 +2157,11 @@ static void UART_readDataPolling(UART_Config      *config,
     uint32_t numBytesRead = 0U;
 
     numBytesRead = UART_fifoRead(config, attrs,
-                                 object->readBuf,
+                                 (uint8_t *) object->readBuf,
                                  object->readSizeRemaining);
 
     object->readSizeRemaining -= numBytesRead;
-    object->readBuf           += numBytesRead;
+    object->readBuf            = (uint8_t *)object->readBuf + numBytesRead;
     object->readCount         += numBytesRead;
 
     return;

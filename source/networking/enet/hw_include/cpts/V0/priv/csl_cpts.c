@@ -51,9 +51,12 @@
 #include <stdint.h>
 #include <csl_cpts.h>
 
-#if defined (SOC_AM273X) || defined (SOC_AWR294X) || defined(SOC_AM263X)
+#if defined (SOC_AM273X) || defined (SOC_AWR294X)
 #define CSL_CPTS_NUM_TS_GENF    (1U)
 #define CSL_CPTS_NUM_TS_ESTF    (1U)
+#elif defined(SOC_AM263X)
+#define CSL_CPTS_NUM_TS_GENF    (1U)
+#define CSL_CPTS_NUM_TS_ESTF    (2U)
 #else
 #define CSL_CPTS_NUM_TS_GENF    (sizeof(pCptsRegs->TS_GENF) / sizeof(CSL_cptsRegs_TS_GENF))
 #define CSL_CPTS_NUM_TS_ESTF    (sizeof(pCptsRegs->TS_ESTF) / sizeof(CSL_cptsRegs_TS_ESTF))

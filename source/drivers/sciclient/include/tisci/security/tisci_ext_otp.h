@@ -54,6 +54,12 @@
 #ifndef TISCI_EXT_OTP_H
 #define TISCI_EXT_OTP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request message for reading OTP MMR
@@ -178,6 +184,11 @@ struct tisci_msg_get_otp_row_lock_status_resp {
     uint8_t            hw_read_lock;
     uint8_t            row_soft_lock;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_EXT_OTP_H */
 

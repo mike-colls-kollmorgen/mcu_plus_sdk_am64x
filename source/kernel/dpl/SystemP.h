@@ -103,6 +103,10 @@ extern "C" {
  * This module contains APIs for device drivers for various peripherals supported in this SDK
  */
 
+
+/**
+ * \cond !SOC_AM62X
+ */
 /**
  * \defgroup BOARD_MODULE APIs for Board Specific Device Drivers
  *
@@ -114,3 +118,9 @@ extern "C" {
  *
  * This module contains APIs which are used by the Security drivers.
  */
+
+
+/**
+ * \endcond
+ */
+

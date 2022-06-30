@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,22 +108,22 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_SBL_EMMC_LINUX.html',
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1179">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1180">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1181">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1182">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1183">Flash the eMMC with the default linux image</a></li>
-<li class="level2"><a href="#autotoc_md1184">Create Linux Appimage</a></li>
-<li class="level2"><a href="#autotoc_md1185">Run the example</a></li>
+<ul><li class="level1"><a href="#autotoc_md1384">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1385">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1386">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1387">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1388">Flash the eMMC with the default linux image</a></li>
+<li class="level2"><a href="#autotoc_md1389">Create Linux Appimage</a></li>
+<li class="level2"><a href="#autotoc_md1390">Run the example</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1186">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1187">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1391">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1392">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_sbl_emmc_linux"></a> </p><dl class="section note"><dt>Note</dt><dd>SBL EMMC Linux boots from the boot partition 1 of eMMC and does not use a filesystem boot. The appimage is flashed to the offsets in eMMC as configured using syscfg. </dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>Care should be taken to ensure that the R5, M4 appimage and the Linux appimage flashed does NOT overwrite the Linux binaries in eMMC. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The load address of resource table for R5 and M4 cores must be consistant with the address in the Linux dts file.</dd></dl>
-<h1><a class="anchor" id="autotoc_md1179"></a>
+<h1><a class="anchor" id="autotoc_md1384"></a>
 Introduction</h1>
 <p>This is a bootloader example, which shows an example of booting Linux on A53 core and RTOS/NORTOS applications on R5 and M4 cores from eMMC.</p>
 <p>The SBL uses two appimages</p><ul>
@@ -132,7 +132,7 @@ Introduction</h1>
 </ul>
 <p>The bootloader does SOC initializations and parses the multicore appimage present at 0x800000 in eMMC boot partition 1, splits it into RPRCs for each core applicable. Each core is then initialized, RPRC image is loaded, entry points are set and the core is released from reset.</p>
 <p>For booting Linux, SBL parses the Linux appimage present at 0xA00000 in eMMC boot partition, splits it into individual linux binaries (ATF, OPTEE, SPL). SBL loads the Linux binaries, entry point is set to the start address of ATF and A53 core is released from reset.</p>
-<h1><a class="anchor" id="autotoc_md1180"></a>
+<h1><a class="anchor" id="autotoc_md1385"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -146,28 +146,28 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/boot/sbl_emmc_linux   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1181"></a>
+<h1><a class="anchor" id="autotoc_md1386"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1182"></a>
+<h2><a class="anchor" id="autotoc_md1387"></a>
 Build the example</h2>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li><b>When using makefiles to build</b>, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1183"></a>
+<h2><a class="anchor" id="autotoc_md1388"></a>
 Flash the eMMC with the default linux image</h2>
 <dl class="section note"><dt>Note</dt><dd>This needs to be the first step as later the tiboot3.bin at the starting of the bootpartition will be overwritten by <code>sbl_emmc_linux.tiimage</code> .</dd></dl>
 <ul>
 <li>For booting A53 with linux, eMMC needs to be flashed with the Linux image. Refer to <b>Processor SDK Linux</b> user guide on how to flash eMMC to boot Linux.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1184"></a>
+<h2><a class="anchor" id="autotoc_md1389"></a>
 Create Linux Appimage</h2>
 <ul>
 <li>Create a Linux Appimage containing the <b>Linux binaries (ATF, OPTEE, SPL)</b></li>
 <li>This can be done by running the makefile at {SDK_INSTALL_PATH}/tools/boot/linuxAppimageGen after setting the PSDK path in file <code>config.mak</code></li>
 <li>Refer <a class="el" href="TOOLS_BOOT.html#LINUX_APPIMAGE_GEN_TOOL">Linux Appimage Generator Tool</a> for more details</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1185"></a>
+<h2><a class="anchor" id="autotoc_md1390"></a>
 Run the example</h2>
 <ul>
 <li>This example is the SBL which needs to be flashed on the eMMC, along with sample application images for R5, M4 CPUs and Linux Appimage.</li>
@@ -184,10 +184,10 @@ Run the example</h2>
 <li>Boot the EVM in eMMC boot mode to boot Linux on A53 and RTOS/Baremetal application on R5 and M4 cores.</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>User might be required to set environmet variables from uBooot prompt to boot linux kernel from eMMC. Refer to <b>Processor SDK Linux</b> user guide for details.</dd></dl>
-<h1><a class="anchor" id="autotoc_md1186"></a>
+<h1><a class="anchor" id="autotoc_md1391"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_BOOTLOADER_PAGE.html">BOOTLOADER</a></p>
-<h1><a class="anchor" id="autotoc_md1187"></a>
+<h1><a class="anchor" id="autotoc_md1392"></a>
 Sample Output</h1>
 <p>After flashing and booting the EVM, you will see below output on the UART console (Complete log is not shown) </p><pre class="fragment">[BOOTLOADER PROFILE] SYSFW Load                       :      17592us
 [BOOTLOADER PROFILE] System_init                      :      18177us

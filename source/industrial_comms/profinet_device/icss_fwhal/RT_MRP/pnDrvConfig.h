@@ -33,6 +33,12 @@
 #ifndef PN_DRV_CONFIG_H_
 #define PN_DRV_CONFIG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
@@ -67,5 +73,10 @@
  *      Enable debugging in driver
  */
 //#define RTC_DEBUG
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PN_DRV_CONFIG_H_ */

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,24 +142,35 @@ $(document).ready(function(){initNavTree('tisci__sec__handover_8h_source.html','
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#ifndef TISCI_SEC_HANDOVER_H_</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define TISCI_SEC_HANDOVER_H_</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structtisci__msg__security__handover__req.html">   66</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__security__handover__req.html">tisci_msg_security_handover_req</a> {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__security__handover__req.html#aaf8f866069aba52b6932dc0b789ff6f3">hdr</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <a class="code" href="group__tisci__sec__handover.html#ga7f63e7a2c620e518ae6a841acf6c1fda">__attribute__</a>((__packed__));</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structtisci__msg__security__handover__resp.html">   77</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__security__handover__resp.html">tisci_msg_security_handover_resp</a> {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__security__handover__resp.html#a9af3235125a479b750efc14c93d8c026">hdr</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} <a class="code" href="group__tisci__sec__handover.html#ga7f63e7a2c620e518ae6a841acf6c1fda">__attribute__</a>((__packed__));</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structtisci__msg__security__handover__req.html">   72</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__security__handover__req.html">tisci_msg_security_handover_req</a> {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__security__handover__req.html#aaf8f866069aba52b6932dc0b789ff6f3">hdr</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;} <a class="code" href="group__tisci__sec__handover.html#ga7f63e7a2c620e518ae6a841acf6c1fda">__attribute__</a>((__packed__));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structtisci__msg__security__handover__resp.html">   83</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__security__handover__resp.html">tisci_msg_security_handover_resp</a> {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__security__handover__resp.html#a9af3235125a479b750efc14c93d8c026">hdr</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;} <a class="code" href="group__tisci__sec__handover.html#ga7f63e7a2c620e518ae6a841acf6c1fda">__attribute__</a>((__packed__));</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructtisci__msg__security__handover__req_html"><div class="ttname"><a href="structtisci__msg__security__handover__req.html">tisci_msg_security_handover_req</a></div><div class="ttdoc">This file contains:</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:66</div></div>
-<div class="ttc" id="astructtisci__msg__security__handover__resp_html"><div class="ttname"><a href="structtisci__msg__security__handover__resp.html">tisci_msg_security_handover_resp</a></div><div class="ttdoc">Response for security handover message.</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:77</div></div>
-<div class="ttc" id="astructtisci__header_html"><div class="ttname"><a href="structtisci__header.html">tisci_header</a></div><div class="ttdoc">Header that prefixes all TISCI messages.</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:89</div></div>
-<div class="ttc" id="astructtisci__msg__security__handover__req_html_aaf8f866069aba52b6932dc0b789ff6f3"><div class="ttname"><a href="structtisci__msg__security__handover__req.html#aaf8f866069aba52b6932dc0b789ff6f3">tisci_msg_security_handover_req::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:67</div></div>
-<div class="ttc" id="astructtisci__msg__security__handover__resp_html_a9af3235125a479b750efc14c93d8c026"><div class="ttname"><a href="structtisci__msg__security__handover__resp.html#a9af3235125a479b750efc14c93d8c026">tisci_msg_security_handover_resp::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:78</div></div>
+<div class="ttc" id="astructtisci__msg__security__handover__req_html"><div class="ttname"><a href="structtisci__msg__security__handover__req.html">tisci_msg_security_handover_req</a></div><div class="ttdoc">This file contains:</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:72</div></div>
+<div class="ttc" id="astructtisci__msg__security__handover__resp_html"><div class="ttname"><a href="structtisci__msg__security__handover__resp.html">tisci_msg_security_handover_resp</a></div><div class="ttdoc">Response for security handover message.</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:83</div></div>
+<div class="ttc" id="astructtisci__header_html"><div class="ttname"><a href="structtisci__header.html">tisci_header</a></div><div class="ttdoc">Header that prefixes all TISCI messages.</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:95</div></div>
+<div class="ttc" id="astructtisci__msg__security__handover__req_html_aaf8f866069aba52b6932dc0b789ff6f3"><div class="ttname"><a href="structtisci__msg__security__handover__req.html#aaf8f866069aba52b6932dc0b789ff6f3">tisci_msg_security_handover_req::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:73</div></div>
+<div class="ttc" id="astructtisci__msg__security__handover__resp_html_a9af3235125a479b750efc14c93d8c026"><div class="ttname"><a href="structtisci__msg__security__handover__resp.html#a9af3235125a479b750efc14c93d8c026">tisci_msg_security_handover_resp::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_sec_handover.h:84</div></div>
 <div class="ttc" id="agroup__tisci__sec__handover_html_ga7f63e7a2c620e518ae6a841acf6c1fda"><div class="ttname"><a href="group__tisci__sec__handover.html#ga7f63e7a2c620e518ae6a841acf6c1fda">__attribute__</a></div><div class="ttdeci">struct tisci_msg_security_handover_req __attribute__((__packed__))</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->

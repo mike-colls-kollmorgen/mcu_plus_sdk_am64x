@@ -33,7 +33,7 @@
 #include <kernel/dpl/DebugP.h>
 #include "ti_drivers_open_close.h"
 #include "ti_board_open_close.h"
-#include <drivers/ospi/ospi_sfdp.h>
+#include <board/flash/sfdp/nor_spi_sfdp.h>
 #include <string.h>
 
 /* Cypress flashes have hybrid sector configuration, this puts the first 256KB of the flash in
@@ -46,22 +46,22 @@ uint8_t gOspiTxBuf[APP_OSPI_DATA_SIZE];
 /* read buffer MUST be cache line aligned when using DMA, we aligned to 128B though 32B is enough */
 uint8_t gOspiRxBuf[APP_OSPI_DATA_SIZE] __attribute__((aligned(128U)));
 
-OSPI_SfdpHeader gSfdpHeader;
-OSPI_SfdpParamHeader gParamHeaders[OSPI_SFDP_NPH_MAX];
-OSPI_SfdpParamHeader *gBfptHeader;
+NorSpi_SfdpHeader gSfdpHeader;
+NorSpi_SfdpParamHeader gParamHeaders[NOR_SPI_SFDP_NPH_MAX];
+NorSpi_SfdpParamHeader *gBfptHeader;
 
-OSPI_SfdpBasicFlashParamTable gBfpt;
-OSPI_SfdpSectorMapParamTable gSmpt;
-OSPI_SfdpSCCRParamTable gSccr;
-OSPI_SfdpXspiProfile1ParamTable gXpt1;
-OSPI_Sfdp4ByteAddressingParamTable g4bait;
+NorSpi_SfdpBasicFlashParamTable gBfpt;
+NorSpi_SfdpSectorMapParamTable gSmpt;
+NorSpi_SfdpSCCRParamTable gSccr;
+NorSpi_SfdpProfile1ParamTable gXpt1;
+NorSpi_Sfdp4ByteAddressingParamTable g4bait;
 
-OSPI_GenericXspiDevDefines gXspiDevDefines;
+NorSpi_GenericDevDefines gNorSpiDevDefines;
 
 void ospi_flash_diag_test_fill_buffers();
 int32_t ospi_flash_diag_test_compare_buffers();
 int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle);
-void ospi_flash_diag_print_defines(OSPI_GenericXspiDevDefines *xspiDefines);
+void ospi_flash_diag_print_defines(NorSpi_GenericDevDefines *norSpiDefines);
 
 void ospi_flash_diag_main(void *args)
 {
@@ -77,8 +77,8 @@ void ospi_flash_diag_main(void *args)
     OSPI_Handle ospiHandle = OSPI_getHandle(CONFIG_OSPI0);
 
     /* Zero init the dev defines struct */
-    memset(&gXspiDevDefines, 0, sizeof(gXspiDevDefines));
-    
+    memset(&gNorSpiDevDefines, 0, sizeof(gNorSpiDevDefines));
+
     /* Initialize the flash device in 1s1s1s mode */
     OSPI_norFlashInit1s1s1s(ospiHandle);
 
@@ -90,12 +90,12 @@ void ospi_flash_diag_main(void *args)
         DebugP_log("[OSPI Flash Diagnostic Test] Flash Manufacturer ID : 0x%X\r\n", manfId);
         DebugP_log("[OSPI Flash Diagnostic Test] Flash Device ID       : 0x%X\r\n", deviceId);
 
-        gXspiDevDefines.XSPI_NOR_MANF_ID = manfId;
-        gXspiDevDefines.XSPI_NOR_DEVICE_ID = deviceId;
+        gNorSpiDevDefines.NOR_SPI_MANF_ID = manfId;
+        gNorSpiDevDefines.NOR_SPI_DEVICE_ID = deviceId;
     }
 
-    /* Fill buffers with known data, 
-     * find block number from offset, 
+    /* Fill buffers with known data,
+     * find block number from offset,
      * erase block, write the data, read back from a specific offset
      * and finally compare the results.
      */
@@ -163,7 +163,7 @@ int32_t ospi_flash_diag_test_compare_buffers()
         {
             status = SystemP_FAILURE;
             DebugP_logError("OSPI read data mismatch !!!\r\n");
-            break;    
+            break;
         }
     }
     return status;
@@ -175,19 +175,19 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
     uint32_t ptp = 0xFFFFFFFFU;
 
     /* Read the SFDP header */
-    status = OSPI_norFlashReadSfdp(handle, OSPI_SFDP_HEADER_START_OFFSET, (void *)&gSfdpHeader, sizeof(OSPI_SfdpHeader));
+    status = OSPI_norFlashReadSfdp(handle, NOR_SPI_SFDP_HEADER_START_OFFSET, (void *)&gSfdpHeader, sizeof(NorSpi_SfdpHeader));
 
     gBfptHeader = &gSfdpHeader.firstParamHeader;
 
     /* Check if the signature is read correctly */
-    if(gSfdpHeader.sfdpHeader.signature != OSPI_SFDP_SIGNATURE)
+    if(gSfdpHeader.sfdpHeader.signature != NOR_SPI_SFDP_SIGNATURE)
     {
-        DebugP_log("[OSPI Flash Diagnostic Test] Error in reading SFDP Table or SFDP not supported by Flash !!!\r\n");
+        DebugP_log("[QSPI Flash Diagnostic Test] Error in reading SFDP Table or SFDP not supported by Flash !!!\r\n");
     }
     else
     {
         /* Print SFDP basic information */
-        DebugP_log("[OSPI Flash Diagnostic Test] SFDP Information : \r\n");
+        DebugP_log("[QSPI Flash Diagnostic Test] SFDP Information : \r\n");
         DebugP_log("================================================\r\n");
         DebugP_log("                      SFDP                      \r\n");
         DebugP_log("================================================\r\n");
@@ -202,7 +202,7 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
 
         if(nph > 0)
         {
-            status = OSPI_norFlashReadSfdp(handle, OSPI_SFDP_SECOND_PARAM_HEADER_OFFSET, (void *)&gParamHeaders, nph * sizeof(OSPI_SfdpParamHeader));
+            status = OSPI_norFlashReadSfdp(handle, NOR_SPI_SFDP_SECOND_PARAM_HEADER_OFFSET, (void *)&gParamHeaders, nph * sizeof(NorSpi_SfdpParamHeader));
         }
 
         if(status == SystemP_SUCCESS)
@@ -213,17 +213,17 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
 
             for(i = 0; i < nph; i++)
             {
-                OSPI_SfdpParamHeader *paramHeader = &gParamHeaders[i];
+                NorSpi_SfdpParamHeader *paramHeader = &gParamHeaders[i];
 
                 uint32_t paramID = (uint32_t)((uint32_t)(paramHeader->paramIdMsb << 8U) | (uint32_t)(paramHeader->paramIdLsb));
 
-                if(paramID != OSPI_SFDP_BASIC_PARAM_TABLE_ID)
+                if(paramID != NOR_SPI_SFDP_BASIC_PARAM_TABLE_ID)
                 {
-                    char *paramName = OSPI_Sfdp_getParameterTableName(paramID);
+                    char *paramName = NorSpi_Sfdp_getParameterTableName(paramID);
 
                     if(paramName == NULL)
                     {
-                        DebugP_log("Unsupported Parameter Table type!!! - 0x%X\r\n", paramID);    
+                        DebugP_log("Unsupported Parameter Table type!!! - 0x%X\r\n", paramID);
                     }
                     else
                     {
@@ -233,8 +233,8 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
                 else
                 {
                     /* Update the gBfpt pointer to the latest version */
-                    if((paramHeader->paramTableMajorRev == OSPI_SFDP_JESD216_MAJOR) && 
-                        ((paramHeader->paramTableMinorRev > gBfptHeader->paramTableMinorRev) || 
+                    if((paramHeader->paramTableMajorRev == NOR_SPI_SFDP_JESD216_MAJOR) &&
+                        ((paramHeader->paramTableMinorRev > gBfptHeader->paramTableMinorRev) ||
                             ((paramHeader->paramTableMinorRev > gBfptHeader->paramTableMinorRev) &&
                                 (paramHeader->paramTableLength > gBfptHeader->paramTableLength))))
                     {
@@ -245,51 +245,55 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
         }
 
         /* Read the Basic Flash Parameter Table (BFPT) */
-        ptp = OSPI_Sfdp_getPtp(gBfptHeader);
+        ptp = NorSpi_Sfdp_getPtp(gBfptHeader);
 
         status = OSPI_norFlashReadSfdp(handle, ptp, (void *)&gBfpt, gBfptHeader->paramTableLength * sizeof(uint32_t));
 
         /* Parse BFPT */
         if(status == SystemP_SUCCESS)
         {
-            status = OSPI_Sfdp_parseBfpt(&gBfpt, &gXspiDevDefines, gBfptHeader->paramTableLength);
+            status = NorSpi_Sfdp_parseBfpt(&gBfpt, &gNorSpiDevDefines, gBfptHeader->paramTableLength);
         }
 
         /* Parse other parameter tables */
         for(i = 0; i < nph; i++)
         {
-            OSPI_SfdpParamHeader *paramHeader = &gParamHeaders[i];
+            NorSpi_SfdpParamHeader *paramHeader = &gParamHeaders[i];
 
             uint32_t paramID = (uint32_t)((uint32_t)(paramHeader->paramIdMsb << 8U) | (uint32_t)(paramHeader->paramIdLsb));
-            
-            ptp = OSPI_Sfdp_getPtp(paramHeader);
+
+            ptp = NorSpi_Sfdp_getPtp(paramHeader);
 
             switch(paramID)
             {
-                case OSPI_SFDP_XSPI_PROFILE_TABLE_ID:
+                case NOR_SPI_SFDP_PROFILE_TABLE_ID:
                     status = OSPI_norFlashReadSfdp(handle, ptp, (void *)&gXpt1, paramHeader->paramTableLength * sizeof(uint32_t));
-                    status = OSPI_Sfdp_parseXpt1(&gXpt1, &gXspiDevDefines, paramHeader->paramTableLength);
+                    status = NorSpi_Sfdp_parseXpt1(&gXpt1, &gNorSpiDevDefines, paramHeader->paramTableLength);
                     break;
 
-                case OSPI_SFDP_4BYTE_ADDR_INSTR_TABLE_ID:
+                case NOR_SPI_SFDP_4BYTE_ADDR_INSTR_TABLE_ID:
                     status = OSPI_norFlashReadSfdp(handle, ptp, (void *)&g4bait, paramHeader->paramTableLength * sizeof(uint32_t));
-                    status = OSPI_Sfdp_parse4bait(&g4bait, &gXspiDevDefines, paramHeader->paramTableLength);
+                    status = NorSpi_Sfdp_parse4bait(&g4bait, &gNorSpiDevDefines, paramHeader->paramTableLength);
                     break;
 
-                case OSPI_SFDP_SECTOR_MAP_TABLE_ID:
+                case NOR_SPI_SFDP_SECTOR_MAP_TABLE_ID:
                     status = OSPI_norFlashReadSfdp(handle, ptp, (void *)&gSmpt, paramHeader->paramTableLength * sizeof(uint32_t));
-                    status = OSPI_Sfdp_parseSmpt(&gSmpt, &gXspiDevDefines, paramHeader->paramTableLength);
+                    status = NorSpi_Sfdp_parseSmpt(&gSmpt, &gNorSpiDevDefines, paramHeader->paramTableLength);
                     break;
 
-                case OSPI_SFDP_SCCR_TABLE_ID:
+                case NOR_SPI_SFDP_SCCR_TABLE_ID:
                     status = OSPI_norFlashReadSfdp(handle, ptp, (void *)&gSccr, paramHeader->paramTableLength * sizeof(uint32_t));
-                    status = OSPI_Sfdp_parseSccr(&gSccr, &gXspiDevDefines, paramHeader->paramTableLength);
+                    status = NorSpi_Sfdp_parseSccr(&gSccr, &gNorSpiDevDefines, paramHeader->paramTableLength);
                     break;
 
                 default:
                     /* Parsing not yet supported */
                     DebugP_log("\r\n");
-                    DebugP_log("Parsing of %s table not yet supported. \r\n", OSPI_Sfdp_getParameterTableName(paramID));
+                    char *paramName = NorSpi_Sfdp_getParameterTableName(paramID);
+                    if(paramName != NULL)
+                    {
+                        DebugP_log("Parsing of %s table not yet supported. \r\n", paramName);
+                    }
                     break;
             }
         }
@@ -297,83 +301,83 @@ int32_t ospi_flash_diag_print_sfdp(OSPI_Handle handle)
         /* Print the final config */
         if(status == SystemP_SUCCESS)
         {
-            ospi_flash_diag_print_defines(&gXspiDevDefines);
+            ospi_flash_diag_print_defines(&gNorSpiDevDefines);
         }
     }
 
     return status;
 }
 
-void ospi_flash_diag_print_defines(OSPI_GenericXspiDevDefines *xspiDefines)
+void ospi_flash_diag_print_defines(NorSpi_GenericDevDefines *norSpiDefines)
 {
-    if(xspiDefines != NULL)
+    if(norSpiDefines != NULL)
     {
         DebugP_log("\r\n");
 
-        DebugP_log("Flash_NorXspiDevDefines gFlashNorXspiDeviceDefines_<part-number> = {\r\n");
+        DebugP_log("Flash_NorSpiDevDefines gFlashNorSpiDeviceDefines_<part-number> = {\r\n");
         DebugP_log("\r\n");
-        DebugP_log("    .XSPI_NOR_CMD_RSTEN = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_RSTEN);
-        DebugP_log("    .XSPI_NOR_CMD_RSTMEM = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_RSTMEM);
-        DebugP_log("    .XSPI_NOR_CMD_WREN = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_WREN);
-        DebugP_log("    .XSPI_NOR_CMD_WRREG = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_WRREG);
-        DebugP_log("    .XSPI_NOR_CMD_BULK_ERASE = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_BULK_ERASE);
-        DebugP_log("    .XSPI_NOR_CMD_SECTOR_ERASE_3B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_SECTOR_ERASE_3B);
-        DebugP_log("    .XSPI_NOR_CMD_SECTOR_ERASE_4B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_SECTOR_ERASE_4B);
-        DebugP_log("    .XSPI_NOR_CMD_BLOCK_ERASE_3B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_BLOCK_ERASE_3B);
-        DebugP_log("    .XSPI_NOR_CMD_BLOCK_ERASE_4B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_BLOCK_ERASE_4B);
-        DebugP_log("    .XSPI_NOR_CMD_PAGE_PROG_3B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_PAGE_PROG_3B);
-        DebugP_log("    .XSPI_NOR_CMD_PAGE_PROG_4B = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_PAGE_PROG_4B);
-        DebugP_log("    .XSPI_NOR_CMD_RDSR = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_RDSR);
-        DebugP_log("    .XSPI_NOR_CMD_RDREG = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_RDREG);
-        DebugP_log("    .XSPI_NOR_CMD_RDID = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_RDID);
-        DebugP_log("    .XSPI_NOR_CMD_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_READ);
-        DebugP_log("    .XSPI_NOR_CMD_888_SDR_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_888_SDR_READ);
-        DebugP_log("    .XSPI_NOR_CMD_888_DDR_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_888_DDR_READ);
-        DebugP_log("    .XSPI_NOR_CMD_444_SDR_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_444_SDR_READ);
-        DebugP_log("    .XSPI_NOR_CMD_444_DDR_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_444_DDR_READ);
-        DebugP_log("    .XSPI_NOR_CMD_114_READ = 0x%02X,\r\n", xspiDefines->XSPI_NOR_CMD_114_READ);
-        DebugP_log("    .XSPI_NOR_SR_WIP = %u,\r\n", xspiDefines->XSPI_NOR_SR_WIP);
-        DebugP_log("    .XSPI_NOR_SR_WEL = %u,\r\n", xspiDefines->XSPI_NOR_SR_WEL);
-        DebugP_log("    .XSPI_NOR_RDID_NUM_BYTES = %u,\r\n", xspiDefines->XSPI_NOR_RDID_NUM_BYTES);
-        DebugP_log("    .XSPI_NOR_MANF_ID = 0x%02X,\r\n", xspiDefines->XSPI_NOR_MANF_ID);
-        DebugP_log("    .XSPI_NOR_DEVICE_ID = 0x%03X,\r\n", xspiDefines->XSPI_NOR_DEVICE_ID);
-        DebugP_log("    .XSPI_NOR_114_READ_MODE_CLKS = %u,\r\n", xspiDefines->XSPI_NOR_114_READ_MODE_CLKS);
-        DebugP_log("    .XSPI_NOR_114_READ_DUMMY_CYCLES = %u,\r\n", xspiDefines->XSPI_NOR_114_READ_DUMMY_CYCLES);
-        DebugP_log("    .XSPI_NOR_444_READ_MODE_CLKS = %u,\r\n", xspiDefines->XSPI_NOR_444_READ_MODE_CLKS);
-        DebugP_log("    .XSPI_NOR_444_READ_DUMMY_CYCLES = %u,\r\n", xspiDefines->XSPI_NOR_444_READ_DUMMY_CYCLES);
-        DebugP_log("    .XSPI_NOR_444_READ_DUMMY_CYCLES_LC = 0x%02X,\r\n", xspiDefines->XSPI_NOR_444_READ_DUMMY_CYCLES_LC);
-        DebugP_log("    .XSPI_NOR_QUAD_CMD_READ_DUMMY_CYCLES = 0x%02X,\r\n", xspiDefines->XSPI_NOR_QUAD_CMD_READ_DUMMY_CYCLES);
-        DebugP_log("    .XSPI_NOR_OCTAL_READ_DUMMY_CYCLE = %u,\r\n", xspiDefines->XSPI_NOR_OCTAL_READ_DUMMY_CYCLE);
-        DebugP_log("    .XSPI_NOR_OCTAL_READ_DUMMY_CYCLE_LC = 0x%02X,\r\n", xspiDefines->XSPI_NOR_OCTAL_READ_DUMMY_CYCLE_LC);
-        DebugP_log("    .XSPI_NOR_OCTAL_DDR_RDSR_DUMMY_CYCLE = %u,\r\n", xspiDefines->XSPI_NOR_OCTAL_DDR_RDSR_DUMMY_CYCLE);
-        DebugP_log("    .XSPI_NOR_OCTAL_DDR_RDREG_ADDR_BYTES = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_DDR_RDREG_ADDR_BYTES);
-        DebugP_log("    .XSPI_NOR_OCTAL_DDR_WRREG_ADDR_BYTES = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_DDR_WRREG_ADDR_BYTES);
-        DebugP_log("    .XSPI_NOR_OCTAL_DDR_RDVREG_DUMMY_CYCLE = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_DDR_RDVREG_DUMMY_CYCLE);
-        DebugP_log("    .XSPI_NOR_OCTAL_DDR_RDNVREG_DUMMY_CYCLE = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_DDR_RDNVREG_DUMMY_CYCLE);
-        DebugP_log("    .XSPI_NOR_OCTAL_RDSFDP_DUMMY_CYCLE = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_RDSFDP_DUMMY_CYCLE);
-        DebugP_log("    .XSPI_NOR_OCTAL_RDSFDP_ADDR_TYPE = %u, \r\n", xspiDefines->XSPI_NOR_OCTAL_RDSFDP_ADDR_TYPE);
-        DebugP_log("    .XSPI_NOR_WRR_WRITE_TIMEOUT = %u,\r\n", xspiDefines->XSPI_NOR_WRR_WRITE_TIMEOUT);
-        DebugP_log("    .XSPI_NOR_BULK_ERASE_TIMEOUT = %u,\r\n", xspiDefines->XSPI_NOR_BULK_ERASE_TIMEOUT);
-        DebugP_log("    .XSPI_NOR_PAGE_PROG_TIMEOUT = %u,\r\n", xspiDefines->XSPI_NOR_PAGE_PROG_TIMEOUT);
-        DebugP_log("    .XSPI_NOR_VREG_OFFSET = 0x%X,\r\n", xspiDefines->XSPI_NOR_VREG_OFFSET);
-        DebugP_log("    .XSPI_NOR_NVREG_OFFSET = 0x%X,\r\n", xspiDefines->XSPI_NOR_NVREG_OFFSET);
-        DebugP_log("    .XSPI_NOR_QUAD_MODE_CFG_ADDR = 0x%X,\r\n", xspiDefines->XSPI_NOR_QUAD_MODE_CFG_ADDR);
-        DebugP_log("    .XSPI_NOR_QUAD_MODE_CFG_BIT_LOCATION = 0x%X,\r\n", xspiDefines->XSPI_NOR_QUAD_MODE_CFG_BIT_LOCATION);
-        DebugP_log("    .XSPI_NOR_DDR_OCTAL_MODE_CFG_ADDR = 0x%X,\r\n", xspiDefines->XSPI_NOR_DDR_OCTAL_MODE_CFG_ADDR);
-        DebugP_log("    .XSPI_NOR_DDR_OCTAL_MODE_CFG_BIT_LOCATION = 0x%X,\r\n", xspiDefines->XSPI_NOR_DDR_OCTAL_MODE_CFG_BIT_LOCATION);
-        DebugP_log("    .XSPI_NOR_DUMMY_CYCLE_CFG_ADDR = 0x%X,\r\n", xspiDefines->XSPI_NOR_DUMMY_CYCLE_CFG_ADDR);
-        DebugP_log("    .XSPI_NOR_FLASH_SIZE = %u,\r\n", xspiDefines->XSPI_NOR_FLASH_SIZE);
-        DebugP_log("    .XSPI_NOR_PAGE_SIZE = %u,\r\n", xspiDefines->XSPI_NOR_PAGE_SIZE);
-        DebugP_log("    .XSPI_NOR_BLOCK_SIZE = %u,\r\n", xspiDefines->XSPI_NOR_BLOCK_SIZE);
-        DebugP_log("    .XSPI_NOR_SECTOR_SIZE = %u,\r\n", xspiDefines->XSPI_NOR_SECTOR_SIZE);
-        DebugP_log("    .addrByteSupport = %u,\r\n", xspiDefines->addrByteSupport);
-        DebugP_log("    .dtrSupport = %u,\r\n", xspiDefines->addrByteSupport);
-        DebugP_log("    .qeType = %u,\r\n", xspiDefines->qeType);
-        DebugP_log("    .seq444Enable = { %u, %u, %u, %u, %u },\r\n", xspiDefines->seq444Enable[0], xspiDefines->seq444Enable[1], xspiDefines->seq444Enable[2], xspiDefines->seq444Enable[3], xspiDefines->seq444Enable[4] );
-        DebugP_log("    .seq444Disable = { %u, %u, %u, %u },\r\n", xspiDefines->seq444Disable[0], xspiDefines->seq444Disable[1], xspiDefines->seq444Disable[2], xspiDefines->seq444Disable[3]);
-        DebugP_log("    .oeType = %u,\r\n", xspiDefines->oeType);
-        DebugP_log("    .cmdExtType = %u,\r\n", xspiDefines->cmdExtType);
-        DebugP_log("    .byteOrder = %u,\r\n", xspiDefines->byteOrder);
+        DebugP_log("    .NOR_SPI_CMD_RSTEN = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_RSTEN);
+        DebugP_log("    .NOR_SPI_CMD_RSTMEM = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_RSTMEM);
+        DebugP_log("    .NOR_SPI_CMD_WREN = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_WREN);
+        DebugP_log("    .NOR_SPI_CMD_WRREG = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_WRREG);
+        DebugP_log("    .NOR_SPI_CMD_BULK_ERASE = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_BULK_ERASE);
+        DebugP_log("    .NOR_SPI_CMD_SECTOR_ERASE_3B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_SECTOR_ERASE_3B);
+        DebugP_log("    .NOR_SPI_CMD_SECTOR_ERASE_4B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_SECTOR_ERASE_4B);
+        DebugP_log("    .NOR_SPI_CMD_BLOCK_ERASE_3B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_BLOCK_ERASE_3B);
+        DebugP_log("    .NOR_SPI_CMD_BLOCK_ERASE_4B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_BLOCK_ERASE_4B);
+        DebugP_log("    .NOR_SPI_CMD_PAGE_PROG_3B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_PAGE_PROG_3B);
+        DebugP_log("    .NOR_SPI_CMD_PAGE_PROG_4B = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_PAGE_PROG_4B);
+        DebugP_log("    .NOR_SPI_CMD_RDSR = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_RDSR);
+        DebugP_log("    .NOR_SPI_CMD_RDREG = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_RDREG);
+        DebugP_log("    .NOR_SPI_CMD_RDID = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_RDID);
+        DebugP_log("    .NOR_SPI_CMD_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_READ);
+        DebugP_log("    .NOR_SPI_CMD_888_SDR_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_888_SDR_READ);
+        DebugP_log("    .NOR_SPI_CMD_888_DDR_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_888_DDR_READ);
+        DebugP_log("    .NOR_SPI_CMD_444_SDR_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_444_SDR_READ);
+        DebugP_log("    .NOR_SPI_CMD_444_DDR_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_444_DDR_READ);
+        DebugP_log("    .NOR_SPI_CMD_114_READ = 0x%02X,\r\n", norSpiDefines->NOR_SPI_CMD_114_READ);
+        DebugP_log("    .NOR_SPI_SR_WIP = %u,\r\n", norSpiDefines->NOR_SPI_SR_WIP);
+        DebugP_log("    .NOR_SPI_SR_WEL = %u,\r\n", norSpiDefines->NOR_SPI_SR_WEL);
+        DebugP_log("    .NOR_SPI_RDID_NUM_BYTES = %u,\r\n", norSpiDefines->NOR_SPI_RDID_NUM_BYTES);
+        DebugP_log("    .NOR_SPI_MANF_ID = 0x%02X,\r\n", norSpiDefines->NOR_SPI_MANF_ID);
+        DebugP_log("    .NOR_SPI_DEVICE_ID = 0x%03X,\r\n", norSpiDefines->NOR_SPI_DEVICE_ID);
+        DebugP_log("    .NOR_SPI_114_READ_MODE_CLKS = %u,\r\n", norSpiDefines->NOR_SPI_114_READ_MODE_CLKS);
+        DebugP_log("    .NOR_SPI_114_READ_DUMMY_CYCLES = %u,\r\n", norSpiDefines->NOR_SPI_114_READ_DUMMY_CYCLES);
+        DebugP_log("    .NOR_SPI_444_READ_MODE_CLKS = %u,\r\n", norSpiDefines->NOR_SPI_444_READ_MODE_CLKS);
+        DebugP_log("    .NOR_SPI_444_READ_DUMMY_CYCLES = %u,\r\n", norSpiDefines->NOR_SPI_444_READ_DUMMY_CYCLES);
+        DebugP_log("    .NOR_SPI_444_READ_DUMMY_CYCLES_LC = 0x%02X,\r\n", norSpiDefines->NOR_SPI_444_READ_DUMMY_CYCLES_LC);
+        DebugP_log("    .NOR_SPI_QUAD_CMD_READ_DUMMY_CYCLES = 0x%02X,\r\n", norSpiDefines->NOR_SPI_QUAD_CMD_READ_DUMMY_CYCLES);
+        DebugP_log("    .NOR_SPI_OCTAL_READ_DUMMY_CYCLE = %u,\r\n", norSpiDefines->NOR_SPI_OCTAL_READ_DUMMY_CYCLE);
+        DebugP_log("    .NOR_SPI_OCTAL_READ_DUMMY_CYCLE_LC = 0x%02X,\r\n", norSpiDefines->NOR_SPI_OCTAL_READ_DUMMY_CYCLE_LC);
+        DebugP_log("    .NOR_SPI_OCTAL_DDR_RDSR_DUMMY_CYCLE = %u,\r\n", norSpiDefines->NOR_SPI_OCTAL_DDR_RDSR_DUMMY_CYCLE);
+        DebugP_log("    .NOR_SPI_OCTAL_DDR_RDREG_ADDR_BYTES = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_DDR_RDREG_ADDR_BYTES);
+        DebugP_log("    .NOR_SPI_OCTAL_DDR_WRREG_ADDR_BYTES = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_DDR_WRREG_ADDR_BYTES);
+        DebugP_log("    .NOR_SPI_OCTAL_DDR_RDVREG_DUMMY_CYCLE = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_DDR_RDVREG_DUMMY_CYCLE);
+        DebugP_log("    .NOR_SPI_OCTAL_DDR_RDNVREG_DUMMY_CYCLE = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_DDR_RDNVREG_DUMMY_CYCLE);
+        DebugP_log("    .NOR_SPI_OCTAL_RDSFDP_DUMMY_CYCLE = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_RDSFDP_DUMMY_CYCLE);
+        DebugP_log("    .NOR_SPI_OCTAL_RDSFDP_ADDR_TYPE = %u, \r\n", norSpiDefines->NOR_SPI_OCTAL_RDSFDP_ADDR_TYPE);
+        DebugP_log("    .NOR_SPI_WRR_WRITE_TIMEOUT = %u,\r\n", norSpiDefines->NOR_SPI_WRR_WRITE_TIMEOUT);
+        DebugP_log("    .NOR_SPI_BULK_ERASE_TIMEOUT = %u,\r\n", norSpiDefines->NOR_SPI_BULK_ERASE_TIMEOUT);
+        DebugP_log("    .NOR_SPI_PAGE_PROG_TIMEOUT = %u,\r\n", norSpiDefines->NOR_SPI_PAGE_PROG_TIMEOUT);
+        DebugP_log("    .NOR_SPI_VREG_OFFSET = 0x%X,\r\n", norSpiDefines->NOR_SPI_VREG_OFFSET);
+        DebugP_log("    .NOR_SPI_NVREG_OFFSET = 0x%X,\r\n", norSpiDefines->NOR_SPI_NVREG_OFFSET);
+        DebugP_log("    .NOR_SPI_QUAD_MODE_CFG_ADDR = 0x%X,\r\n", norSpiDefines->NOR_SPI_QUAD_MODE_CFG_ADDR);
+        DebugP_log("    .NOR_SPI_QUAD_MODE_CFG_BIT_LOCATION = 0x%X,\r\n", norSpiDefines->NOR_SPI_QUAD_MODE_CFG_BIT_LOCATION);
+        DebugP_log("    .NOR_SPI_DDR_OCTAL_MODE_CFG_ADDR = 0x%X,\r\n", norSpiDefines->NOR_SPI_DDR_OCTAL_MODE_CFG_ADDR);
+        DebugP_log("    .NOR_SPI_DDR_OCTAL_MODE_CFG_BIT_LOCATION = 0x%X,\r\n", norSpiDefines->NOR_SPI_DDR_OCTAL_MODE_CFG_BIT_LOCATION);
+        DebugP_log("    .NOR_SPI_DUMMY_CYCLE_CFG_ADDR = 0x%X,\r\n", norSpiDefines->NOR_SPI_DUMMY_CYCLE_CFG_ADDR);
+        DebugP_log("    .NOR_SPI_FLASH_SIZE = %u,\r\n", norSpiDefines->NOR_SPI_FLASH_SIZE);
+        DebugP_log("    .NOR_SPI_PAGE_SIZE = %u,\r\n", norSpiDefines->NOR_SPI_PAGE_SIZE);
+        DebugP_log("    .NOR_SPI_BLOCK_SIZE = %u,\r\n", norSpiDefines->NOR_SPI_BLOCK_SIZE);
+        DebugP_log("    .NOR_SPI_SECTOR_SIZE = %u,\r\n", norSpiDefines->NOR_SPI_SECTOR_SIZE);
+        DebugP_log("    .addrByteSupport = %u,\r\n", norSpiDefines->addrByteSupport);
+        DebugP_log("    .dtrSupport = %u,\r\n", norSpiDefines->addrByteSupport);
+        DebugP_log("    .qeType = %u,\r\n", norSpiDefines->qeType);
+        DebugP_log("    .seq444Enable = { %u, %u, %u, %u, %u },\r\n", norSpiDefines->seq444Enable[0], norSpiDefines->seq444Enable[1], norSpiDefines->seq444Enable[2], norSpiDefines->seq444Enable[3], norSpiDefines->seq444Enable[4] );
+        DebugP_log("    .seq444Disable = { %u, %u, %u, %u },\r\n", norSpiDefines->seq444Disable[0], norSpiDefines->seq444Disable[1], norSpiDefines->seq444Disable[2], norSpiDefines->seq444Disable[3]);
+        DebugP_log("    .oeType = %u,\r\n", norSpiDefines->oeType);
+        DebugP_log("    .cmdExtType = %u,\r\n", norSpiDefines->cmdExtType);
+        DebugP_log("    .byteOrder = %u,\r\n", norSpiDefines->byteOrder);
         DebugP_log("};\r\n\r\n");
     }
 }

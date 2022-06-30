@@ -79,11 +79,12 @@
 /* ========================================================================== */
 
 #define ENET_CPDMA_VIRT2SOCADDR(ptr)   ((typeof(ptr))((uintptr_t)CSL_locToGlobAddr((uintptr_t)(ptr))))
-#define ENET_CPDMA_SOC2VIRTADDR(ptr)   ((typeof(ptr))(CSL_GlobTolocAddr((uint64_t)(uintptr_t)(ptr))))
+#define ENET_CPDMA_SOC2VIRTADDR(ptr)   ((typeof(ptr))(CSL_globToLocAddr((uint64_t)(uintptr_t)(ptr))))
 
 #define ENET_CPDMA_PRESCALER_PERIOD_US        (4U)
 #define ENET_CPDMA_SEC2PRESCALER_PERIOD_DIV_FACTOR ((1U * 1000U * 1000U) / ENET_CPDMA_PRESCALER_PERIOD_US)
 #define ENET_CPDMA_CONV_SEC2PRESCALER(x)      ((x)/ENET_CPDMA_SEC2PRESCALER_PERIOD_DIV_FACTOR)
+
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -172,8 +173,6 @@ static void EnetCpdma_enableChannel(EnetDma_Handle hEnetDma, uint32_t channel, u
     else
     {
         /* enable RX Dma channel for transfer here */
-        EnetCpdma_DescCh  *rxChan;
-        rxChan = &hEnetDma->rxCppi[channel];
         CSL_CPSW_enableCpdmaRxInt(hEnetDma->cpdmaRegs, channel);
         CSL_CPSW_enableWrRxInt(hEnetDma->cpswSsRegs, 0, channel);
         /* mark the channel as open */
@@ -322,7 +321,8 @@ static int32_t EnetCpdma_initTxChannel(EnetDma_Handle hEnetDma, EnetCpdma_ChInfo
         txChan->pDescWrite = pDesc;
         txChan->descFreeCount = chInfo->numBD;
         txChan->pDescTail     = NULL;
-
+        txChan->descHistory.descHistoryCount = 0U;
+        txChan->unackedCpDescCount = 0U;
         /* clear the teardown pending flag */
         hEnetDma->tdPending[ENET_CPDMA_DIR_TX][chInfo->chNum] = false;
         /* update the Bd allocation count */
@@ -396,6 +396,8 @@ static int32_t EnetCpdma_initRxChannel(EnetDma_Handle hEnetDma, EnetCpdma_ChInfo
             rxChan->pDescRead  = pDesc;
             rxChan->pDescWrite = pDesc;
             rxChan->pDescTail     = NULL;
+            rxChan->descHistory.descHistoryCount = 0U;
+            rxChan->unackedCpDescCount = 0U;
             rxChan->descFreeCount = chInfo->numBD;
 
             /* clear the teardown pending flag */
@@ -642,7 +644,7 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
             (pDescCh->descFreeCount > 0))
     {
         pPkt = (EnetCpdma_PktInfo *)EnetQueue_deq(&pDescCh->waitQueue);
-        DebugP_assert (pPkt != NULL);
+        Enet_assert (pPkt != NULL);
         /* Assign the pointer to "this" desc */
         pDescThis = pDescCh->pDescWrite;
         /* Move the write pointer and bump count */
@@ -671,8 +673,8 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
 
         pDescThis->pBuffer   = ENET_CPDMA_VIRT2SOCADDR(pPkt->bufPtr);
         pDescThis->bufOffLen = pPkt->bufPtrFilledLen;
-        pDescThis->pktFlgLen =   pPkt->txTotalPktLen 
-                               | ENET_CPDMA_DESC_PKT_FLAG_SOP 
+        pDescThis->pktFlgLen =   pPkt->txTotalPktLen
+                               | ENET_CPDMA_DESC_PKT_FLAG_SOP
                                | ENET_CPDMA_DESC_PKT_FLAG_OWNER;
         /* For directed packet case, port is specified, need to update TO_PORT_ENABLE and TO_PORT field in the desciptor */
         /* TODO: add range check */
@@ -687,20 +689,25 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
         {
             pDescThis->pktFlgLen |= ENET_CPDMA_DESC_PKT_FLAG_EOP;
             EnetOsal_descCacheWbInv(pDescCh->hEnetDma, pDescThis);
-            EnetOsal_cacheWbInv((void*)pPkt->bufPtr, pPkt->bufPtrFilledLen);
+            if (pPkt->disableCacheOps != true)
+            {
+                EnetOsal_cacheWbInv((void*)pPkt->bufPtr, pPkt->bufPtrFilledLen);
+            }
         }
         else
         {
             uint32_t i;
 
             EnetOsal_descCacheWbInv(pDescCh->hEnetDma, pDescThis);
-            EnetOsal_cacheWbInv((void*)pPkt->bufPtr, pPkt->bufPtrFilledLen);
-
+            if (pPkt->disableCacheOps != true)
+            {
+                EnetOsal_cacheWbInv((void*)pPkt->bufPtr, pPkt->bufPtrFilledLen);
+            }
             for (i = 0;i <  pPkt->sgList.numScatterSegments; i++)
             {
                 EnetCpdma_SGListEntry *list;
 
-                DebugP_assert(pDescCh->descFreeCount > 0);
+                Enet_assert(pDescCh->descFreeCount > 0);
                 list = &pPkt->sgList.list[i];
                 /* Assign the pointer to "this" desc */
                 pDescThis = pDescCh->pDescWrite;
@@ -716,7 +723,10 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
                 pDescCh->descFreeCount--;
                 pDescThis->pBuffer   = ENET_CPDMA_VIRT2SOCADDR(list->bufPtr);
                 pDescThis->bufOffLen = list->filledLen;
-                EnetOsal_cacheWbInv((void*)list->bufPtr, list->filledLen);
+                if (list->disableCacheOps != true)
+                {
+                    EnetOsal_cacheWbInv((void*)list->bufPtr, list->filledLen);
+                }
                 if (i ==  (pPkt->sgList.numScatterSegments - 1))
                 {
                     pDescThis->pktFlgLen = ENET_CPDMA_DESC_PKT_FLAG_EOP;
@@ -745,9 +755,9 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
         /* last descriptor in the chain should have pointer to next descriptor as NULL */
         if (pDescCh->pDescTail)
         {
-            DebugP_assert((pEndDesc != NULL) && (pStartDesc != NULL));
+            Enet_assert((pEndDesc != NULL) && (pStartDesc != NULL));
             EnetOsal_descCacheInv(pDescCh->hEnetDma , pDescCh->pDescTail);
-            DebugP_assert(pDescCh->pDescTail->pNext == NULL);
+            Enet_assert(pDescCh->pDescTail->pNext == NULL);
             pDescCh->pDescTail->pNext = ENET_CPDMA_VIRT2SOCADDR(pStartDesc);
             EnetOsal_descCacheWbInv(pDescCh->hEnetDma, pDescCh->pDescTail);
             pDescCh->pDescTail = pEndDesc;
@@ -785,33 +795,50 @@ static void EnetCpdma_enqueueTx( EnetCpdma_DescCh *pDescCh)
  *  @b Example
  *  @verbatim
         EnetCpdma_DescCh *pDescCh;
-        EnetCpdma_cppiDesc *pDescAck;
+        EnetCpdma_cppiDesc *pDescCp;
 
-        EnetCpdma_dequeueTx ( pDescCh, pDescAck );
+        EnetCpdma_dequeueTx ( pDescCh, pDescCp);
     @endverbatim
  * ============================================================================
  */
-static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
+static bool EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh, EnetCpdma_cppiDesc *pDescCp)
 {
     EnetCpdma_PktInfo *pPkt = NULL;
     volatile EnetCpdma_cppiDesc *pDesc;
-
+    bool matchFound = false;
+    volatile EnetCpdma_cppiDesc *pDescFirst = NULL;
+    volatile EnetCpdma_cppiDesc *pDescLast = NULL;
 
     while (EnetQueue_getQCount(&pDescCh->descQueue) > 0U)
     {
         pDesc = pDescCh->pDescRead;
-
         EnetOsal_descCacheInv(pDescCh->hEnetDma ,pDesc);
-        DebugP_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_SOP) != 0);
+        Enet_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_SOP) != 0);
         if ((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_OWNER)
         {
             break;
         }
         else
         {
+            if (pDescFirst == NULL)
+            {
+                pDescFirst = pDesc;
+            }
+            pDescLast = pDesc;
+            if (pDescCh->unackedCpDescFirst == NULL)
+            {
+                pDescCh->unackedCpDescFirst = pDesc;
+            }
+            pDescCh->unackedCpDescCount++;
+            if ((pDescCp != NULL) && (pDescCp == pDesc))
+            {
+                matchFound = true;
+                pDescCh->unackedCpDescCount = 0;
+                pDescCh->unackedCpDescFirst = NULL;
+            }
             /* we now own the packet meaning its been transferred to the port */
             pPkt = (EnetCpdma_PktInfo *)EnetQueue_deq(&pDescCh->descQueue);
-            DebugP_assert(pPkt != NULL);
+            Enet_assert(pPkt != NULL);
 
             if (pPkt->sgList.numScatterSegments == 0)
             {
@@ -829,7 +856,7 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
                 if (pDescCh->pDescTail == pDesc)
                 {
                     pDescCh->pDescTail = NULL;
-                    DebugP_assert(pDesc->pNext == NULL);
+                    Enet_assert(pDesc->pNext == NULL);
                 }
                 /* we have EOQ and we need to see if any packets chained to this one which will require re-start of transmitter */
                 if( pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOQ)
@@ -846,7 +873,7 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
                     if(pDesc->pNext)
                     {
                         /* pNext should point to the next Read pointer */
-                        DebugP_assert (pDescCh->pDescRead == (EnetCpdma_cppiDesc *)CSL_globToLocAddr((uint64_t)(uintptr_t)pDesc->pNext));
+                        Enet_assert (pDescCh->pDescRead == ENET_CPDMA_SOC2VIRTADDR(pDesc->pNext));
                     }
                 }
             }
@@ -865,18 +892,30 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
                 }
                 pDescCh->descFreeCount++;
 
-                DebugP_assert (pDescCh->pDescTail != pDesc);
+                Enet_assert (pDescCh->pDescTail != pDesc);
                 /* we have EOQ and we need to see if any packets chained to this one which will require re-start of transmitter */
-                DebugP_assert (( pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOQ) == 0);
-                DebugP_assert (pDesc->pNext != NULL);
+                Enet_assert (( pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOQ) == 0);
+                Enet_assert (pDesc->pNext != NULL);
 
                 for (i = 0; i < pPkt->sgList.numScatterSegments;i++)
                 {
                     pDesc = pDescCh->pDescRead;
 
+                    pDescLast = pDesc;
+                    if (pDescCh->unackedCpDescFirst == NULL)
+                    {
+                        pDescCh->unackedCpDescFirst = pDesc;
+                    }
+                    pDescCh->unackedCpDescCount++;
+                    if ((pDescCp != NULL) && (pDescCp == pDesc))
+                    {
+                        matchFound = true;
+                        pDescCh->unackedCpDescCount = 0;
+                        pDescCh->unackedCpDescFirst = NULL;
+                    }
                     EnetOsal_descCacheInv(pDescCh->hEnetDma ,pDesc);
-                    DebugP_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_SOP) == 0);
-                    DebugP_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_OWNER) == 0);
+                    Enet_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_SOP) == 0);
+                    Enet_assert(((pDesc->pktFlgLen) & ENET_CPDMA_DESC_PKT_FLAG_OWNER) == 0);
                     /* Move the read pointer */
                     if (pDescCh->pDescRead == pDescCh->pDescLast)
                     {
@@ -891,16 +930,16 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
                     if (pDescCh->pDescTail == pDesc)
                     {
                         pDescCh->pDescTail = NULL;
-                        DebugP_assert(pDesc->pNext == NULL);
+                        Enet_assert(pDesc->pNext == NULL);
                     }
                     if (i == (pPkt->sgList.numScatterSegments - 1))
                     {
-                        DebugP_assert(pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOP);
+                        Enet_assert(pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOP);
                     }
                     /* we have EOQ and we need to see if any packets chained to this one which will require re-start of transmitter */
                     if( pDesc->pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOQ)
                     {
-                        DebugP_assert(i == (pPkt->sgList.numScatterSegments - 1));
+                        Enet_assert(i == (pPkt->sgList.numScatterSegments - 1));
                         if(pDesc->pNext)
                         {
                             CSL_CPSW_setCpdmaTxHdrDescPtr(pDescCh->hEnetDma->cpdmaRegs, (uint32_t)pDesc->pNext,
@@ -913,7 +952,7 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
                         if(pDesc->pNext)
                         {
                             /* pNext should point to the next Read pointer */
-                            DebugP_assert (pDescCh->pDescRead == (EnetCpdma_cppiDesc *)CSL_globToLocAddr((uint64_t)(uintptr_t)pDesc->pNext));
+                            Enet_assert (pDescCh->pDescRead == ENET_CPDMA_SOC2VIRTADDR(pDesc->pNext));
                         }
                     }
                 }
@@ -921,6 +960,67 @@ static void EnetCpdma_dequeueTx(EnetCpdma_DescCh *pDescCh)
             EnetQueue_enq(&pDescCh->freeQueue, &pPkt->node);
         }
     }
+    if ((!matchFound) && (pDescCp != NULL) && (pDescCh->unackedCpDescCount > 0))
+    {
+        uint32_t matchIndex;
+
+        if ((pDescCp >= pDescCh->unackedCpDescFirst))
+        {
+            uint32_t unackedCpDescCount;
+
+            Enet_assert(pDescCp <= pDescCh->pDescLast);
+            if((pDescCh->unackedCpDescFirst + pDescCh->unackedCpDescCount) <= (pDescCh->pDescLast + 1))
+            {
+                unackedCpDescCount = pDescCh->unackedCpDescCount;
+            }
+            else
+            {
+                unackedCpDescCount = (pDescCh->pDescLast + 1) - pDescCh->unackedCpDescFirst;
+            }
+            if (pDescCp < (pDescCh->unackedCpDescFirst + unackedCpDescCount))
+            {
+                matchFound = true;
+                matchIndex = (pDescCp - pDescCh->unackedCpDescFirst);
+            }
+        }
+        else
+        {
+            volatile EnetCpdma_cppiDesc *pDescCpWrapped;
+
+            Enet_assert(pDescCp <= pDescCh->pDescLast);
+            Enet_assert(pDescCp >= pDescCh->pDescFirst);
+            pDescCpWrapped = ((pDescCh->pDescLast + 1) + (pDescCp - pDescCh->pDescFirst));
+            if (pDescCpWrapped < (pDescCh->unackedCpDescFirst + pDescCh->unackedCpDescCount))
+            {
+                matchFound = true;
+                matchIndex = (pDescCpWrapped - pDescCh->unackedCpDescFirst);
+            }
+        }
+        if (matchFound)
+        {
+            pDescCh->unackedCpDescCount -= (matchIndex + 1);
+            if (pDescCh->unackedCpDescCount)
+            {
+                pDescCh->unackedCpDescFirst = (pDescCp + 1);
+                if (pDescCh->unackedCpDescFirst == (pDescCh->pDescLast + 1))
+                {
+                    pDescCh->unackedCpDescFirst = pDescCh->pDescFirst;
+                }
+            }
+            else
+            {
+                pDescCh->unackedCpDescFirst = NULL;
+            }
+        }
+    }
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].listBegin = pDescFirst;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].listEnd = pDescLast;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].cpDesc = pDescCp;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].unackedCpDescCount = pDescCh->unackedCpDescCount;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].unackedCpDescFirst = pDescCh->unackedCpDescFirst;
+    pDescCh->descHistory.descHistoryCount++;
+
+    return matchFound;
 }
 
 /** =========================================================================
@@ -960,7 +1060,7 @@ void EnetCpdma_enqueueRx(EnetCpdma_DescCh *pDescCh)
     uint32_t              count;
 
     key = EnetOsal_disableAllIntr();
-    
+
     pStartPtr = pDescCh->pDescWrite;
     /* Fill RX Packets Until Full */
     while (((count = EnetQueue_getQCount(&pDescCh->freeQueue)) > 0U) &&
@@ -969,7 +1069,7 @@ void EnetCpdma_enqueueRx(EnetCpdma_DescCh *pDescCh)
         /* Get a new buffer from the free Queue */
         pPkt = (EnetCpdma_PktInfo *)EnetQueue_deq(&pDescCh->freeQueue);
 
-        DebugP_assert(pPkt != NULL);
+        Enet_assert(pPkt != NULL);
         /* Fill in the descriptor for this buffer */
         pDescThis = pDescCh->pDescWrite;
 
@@ -1009,9 +1109,9 @@ void EnetCpdma_enqueueRx(EnetCpdma_DescCh *pDescCh)
         /* last descriptor in the chain should have pointer to next descriptor as NULL */
         if (pDescCh->pDescTail)
         {
-            DebugP_assert((pDescThis != NULL) && (pStartPtr != NULL));
+            Enet_assert((pDescThis != NULL) && (pStartPtr != NULL));
             EnetOsal_descCacheInv(pDescCh->hEnetDma , pDescCh->pDescTail);
-            DebugP_assert(pDescCh->pDescTail->pNext == NULL);
+            Enet_assert(pDescCh->pDescTail->pNext == NULL);
             pDescCh->pDescTail->pNext = (EnetCpdma_cppiDesc *)(uintptr_t)CSL_locToGlobAddr((uintptr_t)pStartPtr);
             EnetOsal_descCacheWbInv(pDescCh->hEnetDma, pDescCh->pDescTail);
             pDescCh->pDescTail = pDescThis;
@@ -1057,12 +1157,15 @@ void EnetCpdma_enqueueRx(EnetCpdma_DescCh *pDescCh)
     @endverbatim
  * ============================================================================
  */
-void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
+bool EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh, EnetCpdma_cppiDesc *pDescCp)
 {
     EnetCpdma_PktInfo  *pPkt = NULL;
     EnetCpdma_cppiDesc *pDesc;
+    volatile EnetCpdma_cppiDesc *pDescFirst = NULL;
+    volatile EnetCpdma_cppiDesc *pDescLast = NULL;
     uint32_t pktFlgLen;
     uintptr_t key;
+    bool matchFound = false;
 
     key = EnetOsal_disableAllIntr();
     /*
@@ -1072,10 +1175,10 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
      * their pNext field.
     */
     /* TODO: error check only */
-    while (EnetQueue_getQCount(&pDescCh->descQueue) > 0U) 
+    while (EnetQueue_getQCount(&pDescCh->descQueue) > 0U)
     {
         pDesc = pDescCh->pDescRead;
-        
+
         EnetOsal_descCacheInv(pDescCh->hEnetDma ,pDesc);
         /* Get the status of this descriptor */
         pktFlgLen = pDesc->pktFlgLen;
@@ -1088,6 +1191,22 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
         /* Check the ownership of the packet */
         if ((pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_OWNER) == 0U)
         {
+            if (pDescFirst == NULL)
+            {
+                pDescFirst = pDesc;
+            }
+            pDescLast = pDesc;
+            if (pDescCh->unackedCpDescFirst == NULL)
+            {
+                pDescCh->unackedCpDescFirst = pDesc;
+            }
+            pDescCh->unackedCpDescCount++;
+            if ((pDescCp != NULL) && (pDescCp == pDesc))
+            {
+                matchFound = true;
+                pDescCh->unackedCpDescCount = 0;
+                pDescCh->unackedCpDescFirst = NULL;
+            }
             /* Move the read pointer and decrement count */
             if (pDescCh->pDescRead == pDescCh->pDescLast)
             {
@@ -1102,11 +1221,11 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
             if (pDescCh->pDescTail == pDesc)
             {
                 pDescCh->pDescTail = NULL;
-                DebugP_assert(pDesc->pNext == NULL);
+                Enet_assert(pDesc->pNext == NULL);
             }
             /* Recover the buffer and free it */
             pPkt = (EnetCpdma_PktInfo *)EnetQueue_deq(&pDescCh->descQueue);
-            DebugP_assert(pPkt != NULL);
+            Enet_assert(pPkt != NULL);
             /* Fill in the necessary packet header fields */
             pPkt->bufPtrFilledLen = pktFlgLen & 0xFFFFU;
             pPkt->rxPortNum = (Enet_MacPort)((pktFlgLen & ENET_CPDMA_DESC_PSINFO_FROM_PORT_MASK)
@@ -1118,7 +1237,7 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
             /* Acking Rx completion interrupt is done in Rx Isr. Dont do it here  */
             if (pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOQ)
             {
-                DebugP_assert((pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOP) != 0);
+                Enet_assert((pktFlgLen & ENET_CPDMA_DESC_PKT_FLAG_EOP) != 0);
                 if(pDesc->pNext)
                 {
                     CSL_CPSW_setCpdmaRxHdrDescPtr(pDescCh->hEnetDma->cpdmaRegs, (uint32_t)pDesc->pNext,
@@ -1131,7 +1250,7 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
                 if(pDesc->pNext)
                 {
                     /* pNext should point to the next Read pointer */
-                    DebugP_assert (pDescCh->pDescRead == (EnetCpdma_cppiDesc *)CSL_globToLocAddr((uint64_t)(uintptr_t)pDesc->pNext));
+                    Enet_assert(pDescCh->pDescRead == ENET_CPDMA_SOC2VIRTADDR(pDesc->pNext));
                 }
             }
         }
@@ -1140,7 +1259,67 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
             break;
         }
     }
+    if ((!matchFound) && (pDescCp != NULL) && (pDescCh->unackedCpDescCount > 0))
+    {
+        uint32_t matchIndex;
+
+        if ((pDescCp >= pDescCh->unackedCpDescFirst))
+        {
+            uint32_t unackedCpDescCount;
+
+            Enet_assert(pDescCp <= pDescCh->pDescLast);
+            if((pDescCh->unackedCpDescFirst + pDescCh->unackedCpDescCount) <= (pDescCh->pDescLast + 1))
+            {
+                unackedCpDescCount = pDescCh->unackedCpDescCount;
+            }
+            else
+            {
+                unackedCpDescCount = (pDescCh->pDescLast + 1) - pDescCh->unackedCpDescFirst;
+            }
+            if (pDescCp < (pDescCh->unackedCpDescFirst + unackedCpDescCount))
+            {
+                matchFound = true;
+                matchIndex = (pDescCp - pDescCh->unackedCpDescFirst);
+            }
+        }
+        else
+        {
+            volatile EnetCpdma_cppiDesc *pDescCpWrapped;
+
+            Enet_assert(pDescCp <= pDescCh->pDescLast);
+            Enet_assert(pDescCp >= pDescCh->pDescFirst);
+            pDescCpWrapped = ((pDescCh->pDescLast + 1) + (pDescCp - pDescCh->pDescFirst));
+            if (pDescCpWrapped < (pDescCh->unackedCpDescFirst + pDescCh->unackedCpDescCount))
+            {
+                matchFound = true;
+                matchIndex = (pDescCpWrapped - pDescCh->unackedCpDescFirst);
+            }
+        }
+        if (matchFound)
+        {
+            pDescCh->unackedCpDescCount -= (matchIndex + 1);
+            if (pDescCh->unackedCpDescCount)
+            {
+                pDescCh->unackedCpDescFirst = (pDescCp + 1);
+                if (pDescCh->unackedCpDescFirst == (pDescCh->pDescLast + 1))
+                {
+                    pDescCh->unackedCpDescFirst = pDescCh->pDescFirst;
+                }
+            }
+            else
+            {
+                pDescCh->unackedCpDescFirst = NULL;
+            }
+        }
+    }
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].listBegin = pDescFirst;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].listEnd = pDescLast;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].cpDesc = pDescCp;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].unackedCpDescCount = pDescCh->unackedCpDescCount;
+    pDescCh->descHistory.descEntry[pDescCh->descHistory.descHistoryCount % ENET_ARRAYSIZE(pDescCh->descHistory.descEntry)].unackedCpDescFirst = pDescCh->unackedCpDescFirst;
+    pDescCh->descHistory.descHistoryCount++;
     EnetOsal_restoreAllIntr(key);
+    return matchFound;
 }
 
 /**
@@ -1148,42 +1327,73 @@ void EnetCpdma_dequeueRx(EnetCpdma_DescCh *pDescCh)
  *  @n
  *     Common Processing function for both Rx and Rx Thresh interrupt
  *
- *  @param[in]  hCPswDma
+ *  @param[in]  hEnetDma
  *
  *  @retval
  *      ENET_SOK
  */
 int32_t EnetCpdma_rxIsrProc(EnetDma_Handle hEnetDma)
 {
-    int32_t retVal = ENET_SOK;
+    int32_t          retVal = ENET_SOK;
     uint32_t         desc;
-    uint32_t         channel = 0U;
-    EnetCpdma_DescCh  *rxChan = &hEnetDma->rxCppi[channel];
+    uint32_t         intFlags = 0U;
+    uint32_t         chNum = 0U;
 
-    /* TODO: assume channel 0 for now */
-    CSL_CPSW_getCpdmaRxCp(hEnetDma->cpdmaRegs, channel, &desc);
+	/* Validate our handle */
+    if (hEnetDma == NULL)
+    {
+        retVal = ENET_EBADARGS;
+    }
+	else
+	{
+		/* Read the Rx interrupt status from RX_STAT, assume core 0 for now*/
+        intFlags = CSL_CPSW_getRxIntStatus(hEnetDma->cpswSsRegs, 0);
+		intFlags = (uint32_t)(intFlags & 0xFFU);
 
-    if (desc == 0U)
-    {
-        /* False alarm, do nothing */
-    }
-    else if (desc == ENET_CPDMA_TEARDOWN_DESC)
-    {
-        /* Terdown is in progress */
-        /* ToDO: should we invoke EnetCpdma_dequeueRx */
-        CSL_CPSW_setCpdmaRxCp(hEnetDma->cpdmaRegs, channel, ENET_CPDMA_TEARDOWN_DESC);
-    }
-    else
-    {
-        EnetCpdma_dequeueRx(rxChan);
-        EnetCpdma_enqueueRx(rxChan);
-        CSL_CPSW_setCpdmaRxCp(hEnetDma->cpdmaRegs, channel, desc);
-    }
+		/* Look for receive interrupts from across all CPDMA Rx Channels */
+        while (0U != intFlags)
+        {
+            uint32_t chMask = (uint32_t)((uint32_t)0x00000001U << (uint32_t)chNum);
 
-    /* Invoke callback function */
-    if(NULL != rxChan->chInfo->notifyCb)
-    {
-        rxChan->chInfo->notifyCb(rxChan->chInfo->hCbArg);
+            if ( (uint32_t)0U != (uint32_t)(intFlags & chMask))
+            {
+                EnetCpdma_DescCh  *rxChan = &hEnetDma->rxCppi[chNum];
+
+                CSL_CPSW_getCpdmaRxCp(hEnetDma->cpdmaRegs, chNum, &desc);
+
+                if (desc == 0U)
+                {
+                    /* False alarm, do nothing */
+                }
+                else if (desc == ENET_CPDMA_TEARDOWN_DESC)
+                {
+                    /* Terdown is in progress */
+                    /* ToDO: should we invoke EnetCpdma_dequeueRx */
+                    CSL_CPSW_setCpdmaRxCp(hEnetDma->cpdmaRegs, chNum, ENET_CPDMA_TEARDOWN_DESC);
+                }
+                else
+                {
+                    EnetCpdma_cppiDesc * cpDesc;
+                    bool descMatch;
+
+                    cpDesc = ENET_CPDMA_SOC2VIRTADDR((EnetCpdma_cppiDesc *)desc);
+                    descMatch = EnetCpdma_dequeueRx(rxChan, cpDesc);
+                    Enet_assert(descMatch == true);
+					EnetCpdma_enqueueRx(rxChan);
+                    CSL_CPSW_setCpdmaRxCp(hEnetDma->cpdmaRegs, chNum, desc);
+                }
+
+                /* Invoke callback function */
+                if(NULL != rxChan->chInfo->notifyCb)
+                {
+                    rxChan->chInfo->notifyCb(rxChan->chInfo->hCbArg);
+                }
+			}
+
+            /* Clear the channel flag for the channel just handled */
+            intFlags &= ~chMask;
+            chNum++;
+		}
     }
 
     return (retVal);
@@ -1193,7 +1403,7 @@ int32_t EnetCpdma_rxIsrProc(EnetDma_Handle hEnetDma)
  *  @n
  *      CPSW CPDMA Receive Threshold ISR.
  *
- *  @param[in]  hCPswDma
+ *  @param[in]  hEnetDma
  *
  *  @retval
  *      ENET_SOK
@@ -1221,7 +1431,7 @@ int32_t EnetCpdma_rxThreshIsr(EnetDma_Handle hEnetDma)
  *  @n
  *      CPSW CPDMA Receive ISR.
  *
- *  @param[in]  hCPswDma
+ *  @param[in]  hEnetDma
  *
  *  @retval
  *      ENET_SOK
@@ -1248,16 +1458,17 @@ int32_t EnetCpdma_rxIsr(EnetDma_Handle hEnetDma)
  *  @n
  *      CPSW CPDMA Transmit ISR.
  *
- *  @param[in]  hCPswDma
+ *  @param[in]  hEnetDma
  *
  *  @retval
  *      ENET_SOK
  */
 int32_t EnetCpdma_txIsr(EnetDma_Handle hEnetDma)
 {
-    int32_t retVal = ENET_SOK;
+    int32_t          retVal = ENET_SOK;
     uint32_t         desc;
-    uint32_t         channel = 0U;
+    uint32_t         intFlags = 0U;
+    uint32_t         chNum = 0U;
 
     /* Validate our handle */
     if (hEnetDma == NULL)
@@ -1266,32 +1477,54 @@ int32_t EnetCpdma_txIsr(EnetDma_Handle hEnetDma)
     }
     else
     {
-        /* TODO: assume channel 0 for now */
-        EnetCpdma_DescCh  *txChan = &hEnetDma->txCppi[channel];
+		/* Read the Tx interrupt status from TX_STAT, assume core 0 for now */
+        intFlags = CSL_CPSW_getTxIntStatus(hEnetDma->cpswSsRegs, 0);
+		intFlags = (uint32_t)(intFlags & 0xFFU);
 
-        /* find out if interrupt happend */
-        CSL_CPSW_getCpdmaTxCp(hEnetDma->cpdmaRegs, channel, &desc);
-        /* this should only happen while teardown is in process */
-        if(desc == ENET_CPDMA_TEARDOWN_DESC)
+		/* Look for receive interrupts from across all CPDMA Tx Channels */
+        while (0U != intFlags)
         {
-            /* need to ack with acknowledge value */
-            CSL_CPSW_setCpdmaTxCp(hEnetDma->cpdmaRegs, channel, ENET_CPDMA_TEARDOWN_DESC);
-        }
-        else
-        {
-            EnetCpdma_dequeueTx(txChan);
-            EnetCpdma_enqueueTx(txChan);
-            /* Ack Tx completion interrupt */
-            CSL_CPSW_setCpdmaTxCp(hEnetDma->cpdmaRegs, channel, desc);
+            uint32_t chMask = (uint32_t)((uint32_t)0x00000001U << (uint32_t)chNum);
+
+            if ( (uint32_t)0U != (uint32_t)(intFlags & chMask))
+            {
+				EnetCpdma_DescCh  *txChan = &hEnetDma->txCppi[chNum];
+
+                /* find out if interrupt happend */
+                CSL_CPSW_getCpdmaTxCp(hEnetDma->cpdmaRegs, chNum, &desc);
+                /* this should only happen while teardown is in process */
+                if(desc == ENET_CPDMA_TEARDOWN_DESC)
+                {
+                    /* need to ack with acknowledge value */
+                    CSL_CPSW_setCpdmaTxCp(hEnetDma->cpdmaRegs, chNum, ENET_CPDMA_TEARDOWN_DESC);
+                }
+                else
+                {
+                    EnetCpdma_cppiDesc * cpDesc;
+                    bool descMatch;
+
+                    cpDesc = ENET_CPDMA_SOC2VIRTADDR(((EnetCpdma_cppiDesc *)desc));
+                    descMatch = EnetCpdma_dequeueTx(txChan, cpDesc);
+                    Enet_assert(descMatch == true);
+                    EnetCpdma_enqueueTx(txChan);
+                    /* Ack Tx completion interrupt */
+                    CSL_CPSW_setCpdmaTxCp(hEnetDma->cpdmaRegs, chNum, desc);
+                }
+
+                /* Invoke callback function */
+                if(NULL != txChan->chInfo->notifyCb)
+                {
+                    txChan->chInfo->notifyCb(txChan->chInfo->hCbArg);
+                }
+            }
+
+            /* Clear the channel flag for the channel just handled */
+            intFlags &= ~chMask;
+            chNum++;
         }
 
-        /* write the EOI register */
-        CSL_CPSW_setCpdmaTxEndOfIntVector(hEnetDma->cpdmaRegs);
-        /* Invoke callback function */
-        if(NULL != txChan->chInfo->notifyCb)
-        {
-            txChan->chInfo->notifyCb(txChan->chInfo->hCbArg);
-        }
+		/* write the EOI register */
+		CSL_CPSW_setCpdmaTxEndOfIntVector(hEnetDma->cpdmaRegs);
     }
 
     return (retVal);
@@ -1302,7 +1535,7 @@ int32_t EnetCpdma_txIsr(EnetDma_Handle hEnetDma)
  *  @n
  *      CPSW CPDMA Miscellaneous ISR.
  *
- *  @param[in]  hCPswDma
+ *  @param[in]  hEnetDma
  *  @param[in]  pStatusMask
  *
  *  @retval
@@ -1319,8 +1552,34 @@ int32_t EnetCpdma_miscIsr(EnetDma_Handle hEnetDma, uint32_t *pStatusMask)
     }
     else
     {
-        CSL_CPSW_setCpdmaMiscEndOfIntVector(hEnetDma->cpdmaRegs);
         *pStatusMask = CSL_CPSW_getWrMiscIntStatus(hEnetDma->cpswSsRegs, 0U);
+    }
+
+    return (retVal);
+}
+
+/**
+ *  @b EnetCpdma_ackMiscIsr
+ *  @n
+ *      CPSW CPDMA Miscellaneous ISR ACK.
+ *
+ *  @param[in]  hEnetDma
+ *
+ *  @retval
+ *      ENET_SOK
+ */
+int32_t EnetCpdma_ackMiscIsr(EnetDma_Handle hEnetDma)
+{
+    int32_t retVal = ENET_SOK;
+
+    /* Validate our handle */
+    if (hEnetDma == NULL)
+    {
+        retVal = ENET_EBADARGS;
+    }
+    else
+    {
+        CSL_CPSW_setCpdmaMiscEndOfIntVector(hEnetDma->cpdmaRegs);
     }
 
     return (retVal);
@@ -1406,6 +1665,7 @@ static int32_t EnetCpdma_checkTxChParams(EnetCpdma_OpenTxChPrms *pTxChPrms)
 void EnetCpdma_initParams(Enet_Type enetType, EnetDma_Cfg *pDmaConfig)
 {
     pDmaConfig->isCacheable                 = true;
+    pDmaConfig->enChOverrideFlag            = false;
     pDmaConfig->rxInterruptPerMSec          = 0U;
     pDmaConfig->txInterruptPerMSec          = 0U;
     pDmaConfig->rxChInitPrms.dmaPriority    = 0U;
@@ -1439,8 +1699,8 @@ EnetDma_Handle EnetDma_open(Enet_Type enetType,
         pEnetDmaObj->isCacheable = pDmaCfg->isCacheable;
 
         /* TODO: how to configure Rx and Tx channel count (from sOC) */
-        pEnetDmaObj->numTxChans = 1U;
-        pEnetDmaObj->numRxChans = 1U;
+        pEnetDmaObj->numTxChans = ENET_CFG_CPDMA_CPSW_MAX_TX_CH;
+        pEnetDmaObj->numRxChans = ENET_CFG_CPDMA_CPSW_MAX_RX_CH;
 
         /* Initialize memory manager module managing driver object memories */
         EnetCpdma_memMgrInit();
@@ -1471,16 +1731,13 @@ EnetDma_Handle EnetDma_open(Enet_Type enetType,
                                                            CSL_CPDMA_DMA_INTMASK_SET_HOST_ERR_INT_MASK_MASK);
         /* enable host,stats interrupt in cpsw_ss_s wrapper */
         /* TODO: should we enable CPTS/MDIO interrupt here */
-#ifdef SOC_AWR294X
-        /* On AWR294x enabling loopback causes a flood of interrupts if CPSW_MISC_INT_HOSTERR_MASK is enabled.
-         * Disable this until rootcaused
-         */
         CSL_CPSW_enableWrMiscInt(pEnetDmaObj->cpswSsRegs, 0,
-            CPSW_MISC_INT_STAT_OVERFLOW_MASK | CPSW_MISC_INT_CPTS_EVENT_MASK);
-#else
-        CSL_CPSW_enableWrMiscInt(pEnetDmaObj->cpswSsRegs, 0,
-            CPSW_MISC_INT_HOSTERR_MASK | CPSW_MISC_INT_STAT_OVERFLOW_MASK | CPSW_MISC_INT_CPTS_EVENT_MASK);
-#endif
+                                 CPSW_MISC_INT_MDIO_USERINT_MASK |
+                                 CPSW_MISC_INT_MDIO_LINKINT_MASK |
+                                 CPSW_MISC_INT_HOSTERR_MASK |
+                                 CPSW_MISC_INT_STAT_OVERFLOW_MASK |
+                                 CPSW_MISC_INT_CPTS_EVENT_MASK);
+
         if (pDmaCfg->rxInterruptPerMSec != 0U)
         {
             /* enable Interrupt Pacing Logic in the Wrapper */
@@ -1500,6 +1757,11 @@ EnetDma_Handle EnetDma_open(Enet_Type enetType,
             CSL_CPSW_setWrIntPrescaler(pEnetDmaObj->cpswSsRegs, ENET_CPDMA_CONV_SEC2PRESCALER(EnetSoc_getClkFreq(enetType,0U /* instId */,CPSW_CPPI_CLK)));
         }
 
+		/* Set the thost_ch_override bit if set by application and if soc supports override feature */
+		if((pDmaCfg->enChOverrideFlag == true) && (ENET_FEAT_IS_EN(pEnetDmaObj->features, ENET_CPDMA_CHANNEL_OVERRIDE)))
+		{
+			CSL_CPSW_enableCpdmaChOverride(pEnetDmaObj->cpdmaRegs);
+		}
     }
     return pEnetDmaObj;
 }
@@ -1551,7 +1813,11 @@ int32_t EnetDma_close(EnetDma_Handle hEnetDma)
 
         /* Disable host,stats interrupt in cpsw_3gss_s wrapper */
         CSL_CPSW_disableWrMiscInt(hEnetDma->cpswSsRegs, 0,
-                                  CPSW_MISC_INT_HOSTERR_MASK | CPSW_MISC_INT_STAT_OVERFLOW_MASK | CPSW_MISC_INT_CPTS_EVENT_MASK);
+                                  CPSW_MISC_INT_MDIO_USERINT_MASK |
+                                  CPSW_MISC_INT_MDIO_LINKINT_MASK |
+                                  CPSW_MISC_INT_HOSTERR_MASK |
+                                  CPSW_MISC_INT_STAT_OVERFLOW_MASK |
+                                  CPSW_MISC_INT_CPTS_EVENT_MASK);
 
         /* soft reset */
         CSL_CPSW_resetCpdma(hEnetDma->cpdmaRegs);
@@ -1913,7 +2179,7 @@ int32_t EnetDma_retrieveRxPktQ(EnetDma_RxChHandle hRxCh,
         if (ENET_SOK == retVal)
         {
             key = EnetOsal_disableAllIntr();
-            EnetCpdma_dequeueRx(pDescCh);
+            EnetCpdma_dequeueRx(pDescCh, NULL);
             EnetQueue_append(pRetrieveQ, &pDescCh->waitQueue);
             EnetQueue_initQ(&pDescCh->waitQueue);
             EnetOsal_restoreAllIntr(key);
@@ -1959,7 +2225,7 @@ int32_t EnetDma_retrieveRxPkt(EnetDma_RxChHandle hRxCh,
         if (ENET_SOK == retVal)
         {
             key = EnetOsal_disableAllIntr();
-            EnetCpdma_dequeueRx(pDescCh);
+            EnetCpdma_dequeueRx(pDescCh, NULL);
             *ppPkt = (EnetCpdma_PktInfo *)EnetQueue_deq(&pDescCh->waitQueue);
             EnetOsal_restoreAllIntr(key);
         }
@@ -2090,7 +2356,7 @@ int32_t EnetDma_retrieveTxPktQ(EnetDma_TxChHandle hTxCh,
 
         EnetQueue_initQ(pRetrieveQ);
         key = EnetOsal_disableAllIntr();
-        EnetCpdma_dequeueTx(pDescCh);
+        EnetCpdma_dequeueTx(pDescCh, NULL);
         EnetQueue_append(pRetrieveQ, &pDescCh->freeQueue);
         EnetQueue_initQ(&pDescCh->freeQueue);
         EnetOsal_restoreAllIntr(key);
@@ -2133,7 +2399,7 @@ int32_t EnetDma_retrieveTxPkt(EnetDma_TxChHandle hTxCh,
         pDescCh = &hTxCh->hEnetDma->txCppi[hTxCh->chInfo.chNum];
 
         key = EnetOsal_disableAllIntr();
-        EnetCpdma_dequeueTx(pDescCh);
+        EnetCpdma_dequeueTx(pDescCh, NULL);
         *ppPkt = (EnetDma_Pkt *)EnetQueue_deq(&pDescCh->freeQueue);
         EnetOsal_restoreAllIntr(key);
 
@@ -2242,13 +2508,14 @@ void EnetDma_initPktInfo(EnetDma_Pkt *pktInfo)
 {
     memset(&pktInfo->node, 0U, sizeof(pktInfo->node));
     pktInfo->bufPtr                = NULL;
-    pktInfo->bufPtrAllocLen        = 0U; 
+    pktInfo->bufPtrAllocLen        = 0U;
     pktInfo->bufPtrFilledLen       = 0U;
     pktInfo->txTotalPktLen         = 0U;
     pktInfo->appPriv               = NULL;
     pktInfo->tsInfo.enableHostTxTs = false;
     pktInfo->txPortNum             = ENET_MAC_PORT_INV;
     pktInfo->sgList.numScatterSegments = 0U;
+    pktInfo->disableCacheOps           = false;
     ENET_UTILS_SET_PKT_DRIVER_STATE(&pktInfo->pktState,
                                     (uint32_t)ENET_PKTSTATE_DMA_NOT_WITH_HW);
     return;

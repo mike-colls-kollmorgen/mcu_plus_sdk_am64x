@@ -196,16 +196,16 @@
 
 #define OSAL_WAITTIMER_INV                      0x000c000Cu     //!< wait timer not supported
 
-#define OSAL_ETH_STM_RESET			0x000d0001u     //!< Timeout at reset of Ethernet unit in STM32
-#define OSAL_ETH_SWITCH_RESET			0x000d0002u     //!< error at reset or initialization of switch
-#define OSAL_ETH_PHY_INIT			0x000d0003u     //!< error at initialization of PHY
-#define OSAL_ETH_LWIP_ASSERT			0x000d0004u     //!< assert in LwIP stack
-#define OSAL_ETH_OUT_OF_MEMORY			0x000d0005u     //!< malloc failed
-#define OSAL_ETH_DMA_CHAIN			0x000d0006u     //!< DMA chain problem
-#define OSAL_ETH_DUPLICATE_IP_ADDR		0x000d0007u     //!< Duplicate IP address detected
-#define OSAL_ETH_FRAME_TO_LONG   		0x000d0008u     //!< Frame to send is longer than frame buffer
-#define OSAL_ETH_OUT_OF_DESCR   		0x000d0009u     //!< Out of DMA descriptors
-#define OSAL_ETH_INVALID_PORT   		0x000d000au     //!< Invalid destination port
+#define OSAL_ETH_STM_RESET                      0x000d0001u     //!< Timeout at reset of Ethernet unit in STM32
+#define OSAL_ETH_SWITCH_RESET                   0x000d0002u     //!< error at reset or initialization of switch
+#define OSAL_ETH_PHY_INIT                       0x000d0003u     //!< error at initialization of PHY
+#define OSAL_ETH_LWIP_ASSERT                    0x000d0004u     //!< assert in LwIP stack
+#define OSAL_ETH_OUT_OF_MEMORY                  0x000d0005u     //!< malloc failed
+#define OSAL_ETH_DMA_CHAIN                      0x000d0006u     //!< DMA chain problem
+#define OSAL_ETH_DUPLICATE_IP_ADDR              0x000d0007u     //!< Duplicate IP address detected
+#define OSAL_ETH_FRAME_TO_LONG                  0x000d0008u     //!< Frame to send is longer than frame buffer
+#define OSAL_ETH_OUT_OF_DESCR                   0x000d0009u     //!< Out of DMA descriptors
+#define OSAL_ETH_INVALID_PORT                   0x000d000au     //!< Invalid destination port
 #define OSAL_ETH_PHY_SW_RESTART_FUNC            0x000d000bu     //!< softwareRestart Function not registered for an particular Phy
 #define OSAL_ETH_PHY_1GB_ADV_FUNC               0x000d000cu     //!< disable 1GBit Advertisment Function not registered for an particular Phy
 #define OSAL_ETH_PHY_RGMII_LL_FUNC              0x000d000du     //!< rgmiiLowLatencyEnable Function not registered for an particular Phy
@@ -231,16 +231,24 @@
 #define OSAL_ETH_PHY_GET_AUTO_NEG_FUNC          0x000d0021u     //!< getAutoNegotiation Function not registered for an particular Phy
 #define OSAL_ETH_PHY_SET_MDIX_MODE_FUNC         0x000d0022u     //!< setMdixMode Function not registered for an particular Phy
 #define OSAL_ETH_PHY_GET_MDIX_MODE_FUNC         0x000d0023u     //!< getMdixMode Function not registered for an particular Phy
+#define OSAL_ETH_PHY_GET_SPEED_DUPLEX_FUNC      0x000d0024u     //!< getSpeedDuplex Function not registered for an particular Phy
+#define OSAL_ETH_PHY_INVALID_PARAM              0x000d0025u     //!< parameter value is NULL or invalid
+#define OSAL_ETH_PHY_OPENFXN_FUNC               0x000d0026u     //!< openFxn Function not registered for an particular Phy
+#define OSAL_ETH_PHY_OPENFXN_FAILED             0x000d0027u     //!< openFxn Function reports failed status
+#define OSAL_ETH_PHY_COMMANDFXN_FUNC            0x000d0028u     //!< commandFxn Function not registered for an particular Phy
+#define OSAL_ETH_PHY_COMMANDFXN_FAILED          0x000d0029u     //!< commandFxn Function reports failed status
+#define OSAL_ETH_PHY_CLOSEFXN_FUNC              0x000d002au     //!< closeFxn Function not registered for an particular Phy
+#define OSAL_ETH_PHY_CLOSEFXN_FAILED            0x000d002bu     //!< closeFxn Function reports failed status
 
-#define OSAL_TINYFS_INIT			0x000e0000u     //!< error at initialization tiny flash file system on SPI flash
-#define OSAL_TINYFS_TIMEOUT			0x000e0001u     //!< timeout at write to SPI flash
-#define OSAL_TINYFS_UNSUPPORTED			0x000e0002u     //!< function is not supported
+#define OSAL_TINYFS_INIT                        0x000e0000u     //!< error at initialization tiny flash file system on SPI flash
+#define OSAL_TINYFS_TIMEOUT                     0x000e0001u     //!< timeout at write to SPI flash
+#define OSAL_TINYFS_UNSUPPORTED                 0x000e0002u     //!< function is not supported
 
-#define OSAL_MUTEX_MULTIPLE_WAIT		0x000f0001u     //!< mutex_get/wait is called more than once for the same mutex
-#define OSAL_MUTEX_MULTIPLE_PUT 		0x000f0002u     //!< mutex_put is called more than once for the same mutex
+#define OSAL_MUTEX_MULTIPLE_WAIT                0x000f0001u     //!< mutex_get/wait is called more than once for the same mutex
+#define OSAL_MUTEX_MULTIPLE_PUT                 0x000f0002u     //!< mutex_put is called more than once for the same mutex
 
-#define OSAL_SCHED_RUN_WRONG_CTX 		0x00100000u     //!< BSP_SCHED_run called in wrong context
-#define OSAL_SCHED_SLEEP_WRONG_CTX 		0x00100001u     //!< BSP_SCHED_sleep called in wrong context
+#define OSAL_SCHED_RUN_WRONG_CTX                0x00100000u     //!< BSP_SCHED_run called in wrong context
+#define OSAL_SCHED_SLEEP_WRONG_CTX              0x00100001u     //!< BSP_SCHED_sleep called in wrong context
 
 #define OSAL_OS_TOO_MUCH_WAIT_EVT               0x00110000u     //!< BSP OS Too much waiting task for an event
 #define OSAL_OS_CMD_QUEUE_FULL                  0x00110001u     //!< BSP OS command queue overflow
@@ -262,7 +270,7 @@
 #define OSAL_PN_PTCP_ASSERT1                    0x00140002u     //!< Profinet PTCP invalid parameter
 #define OSAL_PN_PTCP_NUM_OF_PORTS               0x00140003u     //!< Profinet PTCP switch default reached
 
-#define OSAL_KSZ8851_RESET			0x00150000u     //!< error at reset or initialization of ksz8851
+#define OSAL_KSZ8851_RESET                      0x00150000u     //!< error at reset or initialization of ksz8851
 
 #define OSAL_STARTUP_CRC                        0x00160000u     //!< CRC Error in Firmware detected
 #define OSAL_STARTUP_RAM                        0x00160001u     //!< RAM Error during startup detected
@@ -381,14 +389,14 @@
 #define OSAL_PRU_PN_GET_IO_FRAME_BUF            0x001c002du     //!< Buffer to short
 #define OSAL_PRU_PN_GET_IO_FRAME_ERR            0x001c002eu     //!< Error fetching IO-Frame
 #define OSAL_PRU_PN_GET_IO_FRAME_ERR2           0x001c002fu     //!< Error fetching IO-Frame
-#define OASL_PRU_PN_SWITCH_INVALID_PORT         0x001c0030u     //!< Invalid port used for sending
-#define OASL_PRU_PN_ERR_SWITCH_INVALID_PARAM    0x001c0031u     //!< Invalid queue used for sending (obsolete)
-#define OASL_PRU_PN_ERR_BADPACKET               0x001c0032u     //!< Packet to send has invalid length (obsolete)
-#define OASL_PRU_PN_ERR_TX_NO_LINK              0x001c0033u     //!< No link while sending (obsolete)
-#define OASL_PRU_PN_ERR_COLLISION_FAIL          0x001c0034u     //!< No space in collision queue (obsolete)
-#define OASL_PRU_PN_ERR_TX_OUT_OF_BD            0x001c0035u     //!< No space in queue (obsolete)
-#define OASL_PRU_PN_ERR_TRANSLATE               0x001c0036u     //!< Unknown Emac Error (obsolete)
-#define OASL_PRU_PN_PST_PORT_ERR                0x001c0037u     //!< Invalid Portnumber
+#define OSAL_PRU_PN_SWITCH_INVALID_PORT         0x001c0030u     //!< Invalid port used for sending
+#define OSAL_PRU_PN_ERR_SWITCH_INVALID_PARAM    0x001c0031u     //!< Invalid queue used for sending (obsolete)
+#define OSAL_PRU_PN_ERR_BADPACKET               0x001c0032u     //!< Packet to send has invalid length (obsolete)
+#define OSAL_PRU_PN_ERR_TX_NO_LINK              0x001c0033u     //!< No link while sending (obsolete)
+#define OSAL_PRU_PN_ERR_COLLISION_FAIL          0x001c0034u     //!< No space in collision queue (obsolete)
+#define OSAL_PRU_PN_ERR_TX_OUT_OF_BD            0x001c0035u     //!< No space in queue (obsolete)
+#define OSAL_PRU_PN_ERR_TRANSLATE               0x001c0036u     //!< Unknown Emac Error (obsolete)
+#define OSAL_PRU_PN_PST_PORT_ERR                0x001c0037u     //!< Invalid Portnumber
 #define OSAL_PRU_PN_REGISTER_PPM_INT_FAILED     0x001c0038u     //!< Interrupt registration failed
 #define OSAL_PRU_PN_REGISTER_CPM_INT_FAILED     0x001c0039u     //!< Interrupt registration failed
 #define OSAL_PRU_PN_REGISTER_DHT_INT_FAILED     0x001c003au     //!< Interrupt registration failed

@@ -181,7 +181,7 @@ int32_t Udma_flowFree(Udma_FlowHandle flowHandle)
 #endif
         }
 
-        flowHandleInt->drvHandle    = (Udma_DrvHandle) NULL_PTR;
+        flowHandleInt->drvHandle    = (Udma_DrvHandleInt) NULL_PTR;
         flowHandleInt->flowStart    = UDMA_FLOW_INVALID;
         flowHandleInt->flowCnt      = 0U;
         flowHandleInt->flowInitDone = UDMA_DEINIT_DONE;

@@ -62,7 +62,7 @@ SECTIONS
 
      GROUP {
         .data:   {} palign(8)
-    } > EXTRAHEAP
+    } > MSRAM
 
     GROUP {
         .bss:    {} palign(8) FILL(0x00000000)

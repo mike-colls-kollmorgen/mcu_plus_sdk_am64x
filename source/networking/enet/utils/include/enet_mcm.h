@@ -56,6 +56,7 @@
 #include <include/per/icssg.h>
 #endif
 #include <include/core/enet_dma.h>
+#include "enet_apputils.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,8 +65,6 @@ extern "C" {
 /* ========================================================================== */
 /*                                 Macros                                     */
 /* ========================================================================== */
-typedef void (*EnetMcm_setPortLinkCfg)(EnetPer_PortLinkCfg *linkArgs,
-                                       Enet_MacPort macPort);
 
 /* ========================================================================== */
 /*                         Structures and Enums                               */
@@ -76,26 +75,17 @@ typedef struct EnetMcm_InitConfig_s
 
     uint32_t instId;
 
-    void *perCfg;
-
-    EnetMcm_setPortLinkCfg setPortLinkCfg;
-
-    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
-
-    uint8_t numMacPorts;
-
     uint32_t periodicTaskPeriod;
 
     Enet_Print print;
-}EnetMcm_InitConfig;
 
-typedef struct EnetMcm_HandleInfo_s
-{
-    Enet_Handle hEnet;
 #if !(defined(SOC_AM273X) || defined(SOC_AWR294X) || defined (SOC_AM263X))
     Udma_DrvHandle hUdmaDrv;
 #endif
-} EnetMcm_HandleInfo;
+    uint32_t selfCoreId;
+}EnetMcm_InitConfig;
+
+typedef EnetApp_HandleInfo EnetMcm_HandleInfo;
 
 typedef struct EnetMcm_CmdIf_s
 {

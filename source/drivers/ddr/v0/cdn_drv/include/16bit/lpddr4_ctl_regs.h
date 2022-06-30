@@ -35,6 +35,12 @@
 #ifndef REG_LPDDR4_CTL_REGS_H_
 #define REG_LPDDR4_CTL_REGS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #include "lpddr4_ddr_controller_macros.h"
 #include "lpddr4_pi_macros.h"
@@ -1329,6 +1335,11 @@ typedef struct __attribute__((packed, aligned(4))) LPDDR4_CtlRegs_s {
     volatile uint32_t DENALI_PHY_1404;
     volatile uint32_t DENALI_PHY_1405;
 } LPDDR4_CtlRegs;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_LPDDR4_CTL_REGS_H_ */
 

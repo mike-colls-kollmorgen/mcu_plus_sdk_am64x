@@ -41,10 +41,12 @@
 /* ========================================================================== */
 #include "l2_cpsw_common.h"
 #include "l2_cpsw_dataflow.h"
+#include "ti_enet_config.h"
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
+
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -62,80 +64,8 @@
 /*                          Function Definitions                              */
 /* ========================================================================== */
 
-void EnetApp_createClock(void)
-{
-    TaskP_Params taskParams;
-    ClockP_Params clkParams;
-    int32_t status;
-    /* Create timer semaphore */
-    status = SemaphoreP_constructCounting(&gEnetApp.timerSemObj, 0, COUNTING_SEM_COUNT);
-    DebugP_assert(SystemP_SUCCESS == status);
 
-    /* Initialize the periodic tick task params */
-    TaskP_Params_init(&taskParams);
-    taskParams.priority       = 7U;
-    taskParams.stack          = gEnetAppTaskStackTick;
-    taskParams.stackSize      = sizeof(gEnetAppTaskStackTick);
-    taskParams.args           = (void*)&gEnetApp.timerSemObj;
-    taskParams.name           = "Periodic tick task";
-    taskParams.taskMain       = &EnetApp_tickTask;
-    /* Create periodic tick task */
-    EnetAppUtils_print("Create periodic tick task\r\n");
 
-    status = TaskP_construct(&gEnetApp.tickTaskObj, &taskParams);
-    DebugP_assert(SystemP_SUCCESS == status);
-
-    ClockP_Params_init(&clkParams);
-    clkParams.timeout    = ENETAPP_PERIODIC_TICK_MS;
-    clkParams.period    = ENETAPP_PERIODIC_TICK_MS;
-    clkParams.args       = (void*)&gEnetApp.timerSemObj;
-    clkParams.callback  = &EnetApp_timerCallback;
-
-    clkParams.start = FALSE;
-    /* Creating timer and setting timer callback function */
-    EnetAppUtils_print("Create periodic tick clock\r\n");
-    status = ClockP_construct(&gEnetApp.tickTimerObj, &clkParams);
-    DebugP_assert(SystemP_SUCCESS == status);
-
-}
-
-void EnetApp_deleteClock(void)
-{
-    /* Delete periodic tick timer */
-    EnetAppUtils_print("Delete periodic tick clock\r\n");
-    ClockP_destruct(&gEnetApp.tickTimerObj);
-    /* Delete periodic tick task */
-     TaskP_destruct(&gEnetApp.tickTaskObj);
-    /* Delete periodic tick timer */
-    SemaphoreP_destruct(&gEnetApp.timerSemObj);
-
-}
-
-void EnetApp_timerCallback(ClockP_Object *clkInst, void * arg)
-{
-    SemaphoreP_Object* hSem = (SemaphoreP_Object*)arg;
-
-    /* Tick! */
-    SemaphoreP_post(hSem);
-}
-
-void EnetApp_tickTask(void *args)
-{
-    SemaphoreP_Object* hSem = (SemaphoreP_Object*)args;
-    uint32_t i;
-
-    while (gEnetApp.run)
-    {
-        SemaphoreP_pend(hSem, SystemP_WAIT_FOREVER);
-
-        /* Periodic tick should be called from non-ISR context */
-        for (i = 0U; i < gEnetApp.numPerCtxts; i++)
-        {
-            Enet_periodicTick(gEnetApp.perCtxt[i].hEnet);
-        }
-    }
-    TaskP_exit();
-}
 
 void EnetApp_rxIsrFxn(void *appData)
 {
@@ -153,7 +83,7 @@ int32_t EnetApp_openDma(EnetApp_PerCtxt *perCtxt)
     /* Open the TX channel */
     EnetDma_initTxChParams(&txChCfg);
 
-    txChCfg.hUdmaDrv = gEnetApp.hMainUdmaDrv;
+    txChCfg.hUdmaDrv = perCtxt->hMainUdmaDrv;
     txChCfg.cbArg    = NULL;
     txChCfg.notifyCb = NULL;
     txChCfg.useGlobalEvt = true;
@@ -161,7 +91,7 @@ int32_t EnetApp_openDma(EnetApp_PerCtxt *perCtxt)
     EnetAppUtils_setCommonTxChPrms(&txChCfg);
 
     EnetAppUtils_openTxCh(perCtxt->hEnet,
-                          gEnetApp.coreKey,
+                          perCtxt->coreKey,
                           gEnetApp.coreId,
                           &perCtxt->txChNum,
                           &perCtxt->hTxCh,
@@ -171,7 +101,7 @@ int32_t EnetApp_openDma(EnetApp_PerCtxt *perCtxt)
 #if FIX_RM
         /* Free the channel number if open Tx channel failed */
         EnetAppUtils_freeTxCh(gEnetApp.hEnet,
-                              gEnetApp.coreKey,
+                              perCtxt->coreKey,
                               gEnetApp.coreId,
                               gEnetApp.txChNum);
 #endif
@@ -191,7 +121,7 @@ int32_t EnetApp_openDma(EnetApp_PerCtxt *perCtxt)
     {
         EnetDma_initRxChParams(&rxChCfg);
 
-        rxChCfg.hUdmaDrv = gEnetApp.hMainUdmaDrv;
+        rxChCfg.hUdmaDrv = perCtxt->hMainUdmaDrv;
         rxChCfg.notifyCb = EnetApp_rxIsrFxn;
         rxChCfg.cbArg    = perCtxt;
         rxChCfg.useGlobalEvt = true;
@@ -200,7 +130,7 @@ int32_t EnetApp_openDma(EnetApp_PerCtxt *perCtxt)
         EnetAppUtils_setCommonRxFlowPrms(&rxChCfg);
         EnetAppUtils_openRxFlowForChIdx(perCtxt->enetType,
                                         perCtxt->hEnet,
-                                        gEnetApp.coreKey,
+                                        perCtxt->coreKey,
                                         gEnetApp.coreId,
                                         true,
                                         0,
@@ -238,7 +168,7 @@ void EnetApp_closeDma(EnetApp_PerCtxt *perCtxt)
     /* Close Regular RX channel */
     EnetAppUtils_closeRxFlowForChIdx(perCtxt->enetType,
                                         perCtxt->hEnet,
-                                        gEnetApp.coreKey,
+                                        perCtxt->coreKey,
                                         gEnetApp.coreId,
                                         true,
                                         &fqPktInfoQ,
@@ -260,7 +190,7 @@ void EnetApp_closeDma(EnetApp_PerCtxt *perCtxt)
     EnetApp_retrieveFreeTxPkts(perCtxt);
 
     EnetAppUtils_closeTxCh(perCtxt->hEnet,
-                           gEnetApp.coreKey,
+                           perCtxt->coreKey,
                            gEnetApp.coreId,
                            &fqPktInfoQ,
                            &cqPktInfoQ,
@@ -279,7 +209,7 @@ void EnetApp_initTxFreePktQ(void)
     uint32_t i;
 
     /* Initialize TX EthPkts and queue them to txFreePktInfoQ */
-    for (i = 0U; i < ENET_MEM_NUM_TX_PKTS; i++)
+    for (i = 0U; i < ENET_SYSCFG_NUM_TX_PKT; i++)
     {
         pPktInfo = EnetMem_allocEthPkt(&gEnetApp,
                                        ENET_MEM_LARGE_POOL_PKT_SIZE,
@@ -304,7 +234,7 @@ void EnetApp_initRxReadyPktQ(EnetDma_RxChHandle hRxCh)
 
     EnetQueue_initQ(&rxFreeQ);
 
-    for (i = 0U; i < ENET_MEM_NUM_RX_PKTS; i++)
+    for (i = 0U; i < ENET_SYSCFG_NUM_RX_PKT; i++)
     {
         pPktInfo = EnetMem_allocEthPkt(&gEnetApp,
                                        ENET_MEM_LARGE_POOL_PKT_SIZE,
@@ -410,7 +340,6 @@ void EnetApp_rxTask(void *args)
     EnetDma_Pkt *txPktInfo;
     EthFrame *rxFrame;
     EthFrame *txFrame;
-    uint32_t reqTs;
     uint32_t totalRxCnt = 0U;
     int32_t status = ENET_SOK;
 
@@ -437,7 +366,6 @@ void EnetApp_rxTask(void *args)
         EnetAppUtils_print("%s: Received %u packets\r\n", perCtxt->name, EnetQueue_getQCount(&rxReadyQ));
 #endif
         totalRxCnt += EnetQueue_getQCount(&rxReadyQ);
-        reqTs = 0U;
 
         /* Consume the received packets and send them back */
         rxPktInfo = (EnetDma_Pkt *)EnetQueue_deq(&rxReadyQ);
@@ -512,9 +440,7 @@ void EnetApp_rxTask(void *args)
         }
     }
 
-#if DEBUG
     EnetAppUtils_print("%s: Received %u packets\r\n", perCtxt->name, totalRxCnt);
-#endif
 
     SemaphoreP_post(&perCtxt->rxDoneSemObj);
     TaskP_exit();

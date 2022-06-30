@@ -9,6 +9,7 @@ var annotated_dup =
     [ "EI_API_ADP_QOS_STR", "struct_e_i___a_p_i___a_d_p___q_o_s___s_t_r.html", "struct_e_i___a_p_i___a_d_p___q_o_s___s_t_r" ],
     [ "EI_API_ADP_SCmgrForwardCloseInfo", "struct_e_i___a_p_i___a_d_p___s_cmgr_forward_close_info.html", "struct_e_i___a_p_i___a_d_p___s_cmgr_forward_close_info" ],
     [ "EI_API_ADP_SCmgrForwardOpenInfo", "struct_e_i___a_p_i___a_d_p___s_cmgr_forward_open_info.html", "struct_e_i___a_p_i___a_d_p___s_cmgr_forward_open_info" ],
+    [ "EI_API_ADP_SEipStatus", "struct_e_i___a_p_i___a_d_p___s_eip_status.html", "struct_e_i___a_p_i___a_d_p___s_eip_status" ],
     [ "EI_API_ADP_SIntfConfBits", "struct_e_i___a_p_i___a_d_p___s_intf_conf_bits.html", "struct_e_i___a_p_i___a_d_p___s_intf_conf_bits" ],
     [ "EI_API_ADP_SMcastConfig", "struct_e_i___a_p_i___a_d_p___s_mcast_config.html", "struct_e_i___a_p_i___a_d_p___s_mcast_config" ],
     [ "EI_API_ADP_SModNetStatus", "struct_e_i___a_p_i___a_d_p___s_mod_net_status.html", "struct_e_i___a_p_i___a_d_p___s_mod_net_status" ],

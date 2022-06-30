@@ -217,8 +217,8 @@ void ECAP_APWM_captureConfig(uint32_t baseAddr, uint32_t compareVal,
 void ECAP_APWM_shadowCaptureConfig(uint32_t baseAddr, uint32_t compareVal,
                                  uint32_t periodVal)
 {
-    HW_WR_REG32((baseAddr + CSL_ECAP_CAP1),periodVal);
-    HW_WR_REG32((baseAddr + CSL_ECAP_CAP2),compareVal);
+    HW_WR_REG32((baseAddr + CSL_ECAP_CAP3),periodVal);
+    HW_WR_REG32((baseAddr + CSL_ECAP_CAP4),compareVal);
 }
 
 void ECAP_counterPhaseValConfig(uint32_t baseAddr, uint32_t cntPhaseVal)
@@ -270,7 +270,7 @@ void ECAP_captureInputSourceSelect(uint32_t baseAddr, uint8_t srcSelect)
 {
     uint8_t value = 0;
     uint32_t temp_addr = baseAddr + CSL_ECAP_ECCTL0;
-    /* Write 0 to select the input select as ECAPxINPUT[0] */ 
+    /* Write 0 to select the input select as ECAPxINPUT[0] */
     value = ((uint8_t)(srcSelect));
     HW_WR_REG16(temp_addr, value);
 }

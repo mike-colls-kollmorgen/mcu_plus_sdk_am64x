@@ -259,7 +259,6 @@ static int32_t UART_udmaConfigPdmaTx(UART_Object *obj,
 {
     int32_t             retVal;
     Udma_ChPdmaPrms     pdmaPrms;
-    Udma_DrvHandle      drvHandle;
     Udma_ChHandle       txChHandle;
     UART_DmaConfig     *dmaConfig;
     UartDma_UdmaArgs   *udmaArgs;
@@ -268,7 +267,6 @@ static int32_t UART_udmaConfigPdmaTx(UART_Object *obj,
     dmaHandle = obj->uartDmaHandle;
     dmaConfig = (UART_DmaConfig *)dmaHandle;
     udmaArgs = (UartDma_UdmaArgs *)dmaConfig->uartDmaArgs;
-    drvHandle   = udmaArgs->drvHandle;
     txChHandle  = udmaArgs->txChHandle;
 
     /* Config PDMA channel */
@@ -286,7 +284,7 @@ static int32_t UART_udmaConfigPdmaTx(UART_Object *obj,
     DebugP_assert(UDMA_SOK == retVal);
 
     /* Update host packet descriptor, length should be always in terms of total number of bytes */
-    UART_udmaHpdInit(txChHandle, udmaArgs->txHpdMem, obj->writeBuf, transaction->count);
+    UART_udmaHpdInit(txChHandle, (uint8_t *) udmaArgs->txHpdMem, obj->writeBuf, transaction->count);
 
     retVal = Udma_ringQueueRaw(
                  Udma_chGetFqRingHandle(txChHandle),
@@ -301,7 +299,6 @@ static int32_t UART_udmaConfigPdmaRx(UART_Object *obj,
 {
     int32_t             retVal;
     Udma_ChPdmaPrms     pdmaPrms;
-    Udma_DrvHandle      drvHandle;
     Udma_ChHandle       rxChHandle;
     UART_DmaConfig     *dmaConfig;
     UartDma_UdmaArgs   *udmaArgs;
@@ -310,7 +307,6 @@ static int32_t UART_udmaConfigPdmaRx(UART_Object *obj,
     dmaHandle = obj->uartDmaHandle;
     dmaConfig = (UART_DmaConfig *)dmaHandle;
     udmaArgs = (UartDma_UdmaArgs *)dmaConfig->uartDmaArgs;
-    drvHandle   = udmaArgs->drvHandle;
     rxChHandle  = udmaArgs->rxChHandle;
 
     /* Config PDMA channel */
@@ -328,7 +324,7 @@ static int32_t UART_udmaConfigPdmaRx(UART_Object *obj,
     DebugP_assert(UDMA_SOK == retVal);
 
     /* Update host packet descriptor, length should be always in terms of total number of bytes */
-    UART_udmaHpdInit(rxChHandle, udmaArgs->rxHpdMem, obj->readBuf, transaction->count);
+    UART_udmaHpdInit(rxChHandle, (uint8_t *) udmaArgs->rxHpdMem, obj->readBuf, transaction->count);
 
     /* Submit HPD to channel */
     retVal = Udma_ringQueueRaw(
@@ -346,7 +342,6 @@ static void UART_udmaHpdInit(Udma_ChHandle chHandle,
 {
     CSL_UdmapCppi5HMPD *pHpd = (CSL_UdmapCppi5HMPD *) pHpdMem;
     uint32_t descType = (uint32_t)CSL_UDMAP_CPPI5_PD_DESCINFO_DTYPE_VAL_HOST;
-    uint32_t cqRingNum = Udma_chGetCqRingNum(chHandle);
 
     /* Setup descriptor */
     CSL_udmapCppi5SetDescType(pHpd, descType);
@@ -358,13 +353,14 @@ static void UART_udmaHpdInit(Udma_ChHandle chHandle,
     CSL_udmapCppi5SetIds(pHpd, descType, 0x321, UDMA_DEFAULT_FLOW_ID);
     CSL_udmapCppi5SetSrcTag(pHpd, 0x0000);     /* Not used */
     CSL_udmapCppi5SetDstTag(pHpd, 0x0000);     /* Not used */
+    /* Return Policy descriptors are reserved in case of AM243X/Am64X */
     CSL_udmapCppi5SetReturnPolicy(
         pHpd,
         descType,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPOLICY_VAL_ENTIRE_PKT,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_EARLYRET_VAL_NO,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPUSHPOLICY_VAL_TO_TAIL,
-        cqRingNum);
+        0U,
+        0U,
+        0U,
+        0U);
     CSL_udmapCppi5LinkDesc(pHpd, 0U);
     CSL_udmapCppi5SetBufferAddr(pHpd, (uint64_t) Udma_defaultVirtToPhyFxn(destBuf, 0U, NULL));
     CSL_udmapCppi5SetBufferLen(pHpd, length);

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,31 +142,42 @@ $(document).ready(function(){initNavTree('tisci__rm__proxy_8h_source.html',''); 
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#ifndef RM_TISCI_PROXY_H</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define RM_TISCI_PROXY_H</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html">   81</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__proxy__cfg__req.html">tisci_msg_rm_proxy_cfg_req</a> {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a>    <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#ab2f74c7d711f71cd4c96adc74e7ae960">hdr</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">   83</a></span>&#160;    uint32_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">valid_params</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">   84</a></span>&#160;    uint16_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">nav_id</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="tisci__rm__proxy_8h.html#a7d6f1a51da42148425f611528917c541">   85</a></span>&#160;    uint16_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#a28af1fb84dc71d34508b5c91ee83ad07">index</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <a class="code" href="group__tisci__rm__proxy.html#ga0cb7a789c4a314b93ada722fec890026">__attribute__</a>((__packed__));</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__resp.html">   94</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__proxy__cfg__resp.html">tisci_msg_rm_proxy_cfg_resp</a> {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__rm__proxy__cfg__resp.html#a887526eab0c76b758b8fc7457bd9cd31">hdr</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <a class="code" href="group__tisci__rm__proxy.html#ga0cb7a789c4a314b93ada722fec890026">__attribute__</a>((__packed__));</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RM_TISCI_PROXY_H */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html">   87</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__proxy__cfg__req.html">tisci_msg_rm_proxy_cfg_req</a> {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a>    <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#ab2f74c7d711f71cd4c96adc74e7ae960">hdr</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">   89</a></span>&#160;    uint32_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">valid_params</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">   90</a></span>&#160;    uint16_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">nav_id</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="tisci__rm__proxy_8h.html#a7d6f1a51da42148425f611528917c541">   91</a></span>&#160;    uint16_t            <a class="code" href="structtisci__msg__rm__proxy__cfg__req.html#a28af1fb84dc71d34508b5c91ee83ad07">index</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <a class="code" href="group__tisci__rm__proxy.html#ga0cb7a789c4a314b93ada722fec890026">__attribute__</a>((__packed__));</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="structtisci__msg__rm__proxy__cfg__resp.html">  100</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__proxy__cfg__resp.html">tisci_msg_rm_proxy_cfg_resp</a> {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">struct </span><a class="code" href="structtisci__header.html">tisci_header</a> <a class="code" href="structtisci__msg__rm__proxy__cfg__resp.html#a887526eab0c76b758b8fc7457bd9cd31">hdr</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;} <a class="code" href="group__tisci__rm__proxy.html#ga0cb7a789c4a314b93ada722fec890026">__attribute__</a>((__packed__));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RM_TISCI_PROXY_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_ab2f74c7d711f71cd4c96adc74e7ae960"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#ab2f74c7d711f71cd4c96adc74e7ae960">tisci_msg_rm_proxy_cfg_req::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:82</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html">tisci_msg_rm_proxy_cfg_req</a></div><div class="ttdoc">This file contains:</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:81</div></div>
-<div class="ttc" id="astructtisci__header_html"><div class="ttname"><a href="structtisci__header.html">tisci_header</a></div><div class="ttdoc">Header that prefixes all TISCI messages.</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:89</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__resp_html_a887526eab0c76b758b8fc7457bd9cd31"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__resp.html#a887526eab0c76b758b8fc7457bd9cd31">tisci_msg_rm_proxy_cfg_resp::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:95</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_a28af1fb84dc71d34508b5c91ee83ad07"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#a28af1fb84dc71d34508b5c91ee83ad07">tisci_msg_rm_proxy_cfg_req::index</a></div><div class="ttdeci">uint16_t index</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:85</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_afb1ba94354480dbf846845b1eb32d5a2"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">tisci_msg_rm_proxy_cfg_req::valid_params</a></div><div class="ttdeci">uint32_t valid_params</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:83</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__resp_html"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__resp.html">tisci_msg_rm_proxy_cfg_resp</a></div><div class="ttdoc">Response to configuring a proxy.</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:94</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_ab2f74c7d711f71cd4c96adc74e7ae960"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#ab2f74c7d711f71cd4c96adc74e7ae960">tisci_msg_rm_proxy_cfg_req::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:88</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html">tisci_msg_rm_proxy_cfg_req</a></div><div class="ttdoc">This file contains:</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:87</div></div>
+<div class="ttc" id="astructtisci__header_html"><div class="ttname"><a href="structtisci__header.html">tisci_header</a></div><div class="ttdoc">Header that prefixes all TISCI messages.</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:95</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__resp_html_a887526eab0c76b758b8fc7457bd9cd31"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__resp.html#a887526eab0c76b758b8fc7457bd9cd31">tisci_msg_rm_proxy_cfg_resp::hdr</a></div><div class="ttdeci">struct tisci_header hdr</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:101</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_a28af1fb84dc71d34508b5c91ee83ad07"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#a28af1fb84dc71d34508b5c91ee83ad07">tisci_msg_rm_proxy_cfg_req::index</a></div><div class="ttdeci">uint16_t index</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:91</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_afb1ba94354480dbf846845b1eb32d5a2"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#afb1ba94354480dbf846845b1eb32d5a2">tisci_msg_rm_proxy_cfg_req::valid_params</a></div><div class="ttdeci">uint32_t valid_params</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:89</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__resp_html"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__resp.html">tisci_msg_rm_proxy_cfg_resp</a></div><div class="ttdoc">Response to configuring a proxy.</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:100</div></div>
 <div class="ttc" id="agroup__tisci__rm__proxy_html_ga0cb7a789c4a314b93ada722fec890026"><div class="ttname"><a href="group__tisci__rm__proxy.html#ga0cb7a789c4a314b93ada722fec890026">__attribute__</a></div><div class="ttdeci">struct tisci_msg_rm_proxy_cfg_req __attribute__((__packed__))</div></div>
-<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_ac4205d7618fd6ea31dd4c640c3cc78d8"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">tisci_msg_rm_proxy_cfg_req::nav_id</a></div><div class="ttdeci">uint16_t nav_id</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:84</div></div>
+<div class="ttc" id="astructtisci__msg__rm__proxy__cfg__req_html_ac4205d7618fd6ea31dd4c640c3cc78d8"><div class="ttname"><a href="structtisci__msg__rm__proxy__cfg__req.html#ac4205d7618fd6ea31dd4c640c3cc78d8">tisci_msg_rm_proxy_cfg_req::nav_id</a></div><div class="ttdeci">uint16_t nav_id</div><div class="ttdef"><b>Definition:</b> tisci_rm_proxy.h:90</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

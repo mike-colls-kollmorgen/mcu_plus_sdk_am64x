@@ -39,6 +39,12 @@
 #ifndef EIP29T2_FIRMWARE_H_
 #define EIP29T2_FIRMWARE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 /**
  * SA2UL PKA firmware version number
@@ -55,5 +61,10 @@
  * PKA firmware data
  */
 extern const uint32_t eip29t2_fw_image[EIP29T2_FW_IMAGE_LEN_WORDS];
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* EIP29T2_FIRMWARE_H_ */

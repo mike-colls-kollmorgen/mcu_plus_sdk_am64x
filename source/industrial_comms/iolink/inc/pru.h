@@ -8,7 +8,7 @@
 * KUNBUS GmbH
 *
 * \date
-* 2021-05-20
+* 2022-02-14
 *
 * \copyright
 * Copyright (c) 2021, KUNBUS GmbH<br /><br />
@@ -108,6 +108,9 @@
 /* No direct UART PRINT here */
 #define DISABLE_UART_PRINT
 
+/*! Size of the register properties array */
+#define PRU_SIZE_OF_REG_PROPERTIES          4096
+
 /*! <!-- Description: -->
  *
  *  \brief
@@ -192,8 +195,8 @@ typedef struct PRU_HOST_SInterface
 typedef struct  PRU_REG_SProperties
 {
     uint8_t                 reserved[1024];         /**< Reserved */
-    uint8_t                 reg_properties[4096];   /**< Register properties */
-} PRU_REG_SProperties_t;
+    uint8_t                 reg_properties[PRU_SIZE_OF_REG_PROPERTIES]; /**< Register properties */
+} OSAL_STRUCT_PACKED PRU_REG_SProperties_t;
 
 /*! <!-- Description: -->
  *

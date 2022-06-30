@@ -34,6 +34,11 @@
 #ifndef TI_FREERTOS_CONFIG_H
 #define TI_FREERTOS_CONFIG_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <kernel/dpl/DebugP.h>
 
 /*-----------------------------------------------------------
@@ -70,7 +75,7 @@
 #define configCPU_CLOCK_HZ                      (0) /* NOT USED in TI ports */
 #define configSYSTICK_CLOCK_HZ                  (0) /* NOT USED in TI ports */
 #define configTICK_RATE_HZ                      (1000)
-#define configMAX_PRIORITIES                    (16)
+#define configMAX_PRIORITIES                    (32)
 #define configMINIMAL_STACK_SIZE                (1024) /* in units of configSTACK_DEPTH_TYPE, not bytes */
 #define configMAX_TASK_NAME_LEN                 (32)
 #define configUSE_TRACE_FACILITY                (1)
@@ -168,5 +173,9 @@ uint32_t uiPortGetRunTimeCounterValue();
 #define INCLUDE_vSemaphoreDelete        (1)
 #define INCLUDE_xTimerPendFunctionCall  (1)
 #define INCLUDE_xTaskGetIdleTaskHandle  (1)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TI_FREERTOS_CONFIG_H */

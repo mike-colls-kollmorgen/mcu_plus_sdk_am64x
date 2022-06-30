@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,25 +108,25 @@ $(document).ready(function(){initNavTree('TOOLS_BOOT.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md888">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md889">Important files and folders</a></li>
-<li class="level1"><a href="#autotoc_md890">Out2RPRC</a></li>
-<li class="level1"><a href="#autotoc_md891">Multi-core Image Gen</a></li>
+<ul><li class="level1"><a href="#autotoc_md977">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md978">Important files and folders</a></li>
+<li class="level1"><a href="#autotoc_md979">Out2RPRC</a></li>
+<li class="level1"><a href="#autotoc_md980">Multi-core Image Gen</a></li>
 <li class="level1"><a href="#TOOLS_BOOT_SIGNING">Signing Scripts</a></li>
-<li class="level1"><a href="#autotoc_md892">XIP Image Generator Tool</a></li>
+<li class="level1"><a href="#autotoc_md981">XIP Image Generator Tool</a></li>
 <li class="level1"><a href="#UART_BOOTLOADER_PYTHON_SCRIPT">UART Bootloader Python Script</a></li>
 <li class="level1"><a href="#LINUX_APPIMAGE_GEN_TOOL">Linux Appimage Generator Tool</a></li>
-<li class="level1"><a href="#autotoc_md893">SoC ID parser Python Script</a></li>
+<li class="level1"><a href="#autotoc_md982">SoC ID parser Python Script</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_tools_tools_boot"></a></p>
 <dl class="section note"><dt>Note</dt><dd>To see the exact sequence of steps in which applications and secondary bootloader (SBL) are converted from compiler generated .out files to boot images, see the makefile <code>makefile_ccs_bootimage_gen</code> that is included in every example and secondary bootloader (SBL) CCS project.</dd>
 <dd>
 If you are using makefile based build, then see the file named <code>makefile</code> in the example folder.</dd></dl>
-<h1><a class="anchor" id="autotoc_md888"></a>
+<h1><a class="anchor" id="autotoc_md977"></a>
 Introduction</h1>
 <p>This section describes the various tools that are used to create boot images for all the SDK applications</p>
-<h1><a class="anchor" id="autotoc_md889"></a>
+<h1><a class="anchor" id="autotoc_md978"></a>
 Important files and folders</h1>
 <table class="doxtable">
 <tr>
@@ -148,7 +148,7 @@ Important files and folders</h1>
 <tr>
 <td>uart_uniflash.py </td><td>Python script used to flash SBL and applications to EVM flash using UART. See <a class="el" href="TOOLS_FLASH.html">Flashing Tools</a> for more details.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md890"></a>
+<h1><a class="anchor" id="autotoc_md979"></a>
 Out2RPRC</h1>
 <ul>
 <li>This tool converts the application executable (.out) into custom TI RPRC (.rprc) image - an image loadable by the secondary bootloader (SBL).</li>
@@ -168,7 +168,7 @@ RPRC File Format</div></div>
 <div class="line">${NODE} elf2rprc.js {input application executable file (.out)} </div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md891"></a>
+<h1><a class="anchor" id="autotoc_md980"></a>
 Multi-core Image Gen</h1>
 <ul>
 <li>This tool converts the RPRC files created for each CPU into a single combined multicore application image that can be booted by the secondary bootloader (SBL)</li>
@@ -236,7 +236,7 @@ Signing Scripts</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md892"></a>
+<h1><a class="anchor" id="autotoc_md981"></a>
 XIP Image Generator Tool</h1>
 <ul>
 <li>This tool, splits a input RPRC application file, into two RPRC files,<ul>
@@ -355,7 +355,7 @@ Linux Appimage Generator Tool</h1>
 </li>
 <li>The Linux appimage wil be generated at {SDK_INSTALL_PATH}/tools/boot/linuxAppimageGen after running the makefile</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md893"></a>
+<h1><a class="anchor" id="autotoc_md982"></a>
 SoC ID parser Python Script</h1>
 <ul>
 <li>Boot ROM reports SoC ID on UART console of the device when UART boot mode is selected. It reports on both GP and HS devices and it provides insights into device configuration which would be helpful for debugs.</li>

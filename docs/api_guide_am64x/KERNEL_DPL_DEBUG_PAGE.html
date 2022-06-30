@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,20 +108,20 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_DEBUG_PAGE.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md410">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md411">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md412">Important Usage Guidelines</a><ul><li class="level2"><a href="#autotoc_md413">Shared memory logging</a></li>
-<li class="level2"><a href="#autotoc_md414">UART logging</a></li>
-<li class="level2"><a href="#autotoc_md415">Memory logging</a></li>
-<li class="level2"><a href="#autotoc_md416">Other guidelines</a></li>
+<ul><li class="level1"><a href="#autotoc_md471">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md472">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md473">Important Usage Guidelines</a><ul><li class="level2"><a href="#autotoc_md474">Shared memory logging</a></li>
+<li class="level2"><a href="#autotoc_md475">UART logging</a></li>
+<li class="level2"><a href="#autotoc_md476">Memory logging</a></li>
+<li class="level2"><a href="#autotoc_md477">Other guidelines</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md417">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md418">API</a></li>
+<li class="level1"><a href="#autotoc_md478">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md479">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_DebugP"></a></p>
-<h1><a class="anchor" id="autotoc_md410"></a>
+<h1><a class="anchor" id="autotoc_md471"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to log strings to the selected console</li>
@@ -146,14 +146,14 @@ Features Supported</h1>
 </li>
 <li>APIs to read line as string and/or format input in scanf style from UART console.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md411"></a>
+<h1><a class="anchor" id="autotoc_md472"></a>
 Features NOT Supported</h1>
 <ul>
 <li>Log APIs should not be called from ISR context. When called in ISR the APIs have no effect.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md412"></a>
+<h1><a class="anchor" id="autotoc_md473"></a>
 Important Usage Guidelines</h1>
-<h2><a class="anchor" id="autotoc_md413"></a>
+<h2><a class="anchor" id="autotoc_md474"></a>
 Shared memory logging</h2>
 <ul>
 <li>The core on which the shared memory reader is enabled needs to run FreeRTOS since it needs task support.</li>
@@ -168,7 +168,7 @@ Shared memory logging</h2>
 <li>The memory used for logging is limited per core. If the writer is faster than reader, then the writer drops the characters to be printed.</li>
 <li>To change the size of the log buffer, change the value of <a class="el" href="group__KERNEL__DPL__DEBUG.html#ga339794276863c87430f83deb5a1e798c">DebugP_SHM_LOG_SIZE</a> in <code><a class="el" href="DebugP_8h.html">source/kernel/dpl/DebugP.h</a></code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md414"></a>
+<h2><a class="anchor" id="autotoc_md475"></a>
 UART logging</h2>
 <ul>
 <li>Make sure the selected UART driver is opened for the logs to be output to UART.<ul>
@@ -176,21 +176,21 @@ UART logging</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md415"></a>
+<h2><a class="anchor" id="autotoc_md476"></a>
 Memory logging</h2>
 <ul>
 <li>When log to memory is enabled, the log can be viewed via ROV (see <a class="el" href="ROV_INTRO_PAGE.html">Using SDK with Real-time Object View (ROV)</a>) in CCS</li>
 <li>The memory used for logging is limited. The writer is typically faster than the ROV reader, so here the writer will overwrite the older data, i.e the log will have the latest logs up to log buffer size.</li>
 <li>To change the size of the log buffer, change the value of <a class="el" href="group__KERNEL__DPL__DEBUG.html#ga5567d1d9d00dd9556c61e30dabb0f551">DebugP_MEM_LOG_SIZE</a> in <code><a class="el" href="DebugP_8h.html">source/kernel/dpl/DebugP.h</a></code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md416"></a>
+<h2><a class="anchor" id="autotoc_md477"></a>
 Other guidelines</h2>
 <ul>
 <li>Log and assert APIs should not be called from ISR context.</li>
 <li>The assert and logging APIs are task or thread safe, i.e they can be called from multiple tasks without the output getting mixed.</li>
 <li>The cores on which CCS or UART or shared memory writer is enabled can use either NORTOS or FreeRTOS.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md417"></a>
+<h1><a class="anchor" id="autotoc_md478"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="DebugP_8h.html">kernel/dpl/DebugP.h</a>&gt;</span></div>
@@ -211,7 +211,7 @@ Example Usage</h1>
 <div class="line">    value32 = 0;</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga5c767649af82b6ee94fd3918500eae87">DebugP_scanf</a>(<span class="stringliteral">&quot;%d&quot;</span>, &amp;value32);</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a>(<span class="stringliteral">&quot;32b value = %d\r\n&quot;</span>, value32);</div>
-</div><!-- fragment --><p> Example snippet to show linker command file placement of the shared memory log section generated via SysCfg,</p>
+</div><!-- fragment --><p>Example snippet to show linker command file placement of the shared memory log section generated via SysCfg,</p>
 <div class="fragment"><div class="line">SECTIONS</div>
 <div class="line">{</div>
 <div class="line">    /* this is used when Debug log&#39;s to shared memory are enabled, else this is not used */</div>
@@ -231,7 +231,7 @@ Example Usage</h1>
 <div class="line">     */</div>
 <div class="line">    LOG_SHM_MEM  : ORIGIN = 0x701D4000, LENGTH = 0x00004000</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md418"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md479"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__DEBUG.html">APIs for Debug log's and assert's</a> </p>
 </div></div><!-- contents -->

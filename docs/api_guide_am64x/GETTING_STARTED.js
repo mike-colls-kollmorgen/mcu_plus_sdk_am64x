@@ -9,61 +9,101 @@ var GETTING_STARTED =
       [ "Host PC Requirements", "SDK_DOWNLOAD_PAGE.html#autotoc_md10", null ],
       [ "Download and Install the SDK", "SDK_DOWNLOAD_PAGE.html#autotoc_md11", null ],
       [ "Download and Install Additional SDK Tools", "SDK_DOWNLOAD_PAGE.html#autotoc_md12", [
-        [ "SysConfig", "SDK_DOWNLOAD_PAGE.html#autotoc_md13", null ],
-        [ "GCC AARCH64 Compiler", "SDK_DOWNLOAD_PAGE.html#autotoc_md14", null ],
-        [ "GCC ARM (R5) Compiler", "SDK_DOWNLOAD_PAGE.html#autotoc_md15", null ],
+        [ "SysConfig", "SDK_DOWNLOAD_PAGE.html#autotoc_md13", [
+          [ "Discover SysConfig in CCS", "SDK_DOWNLOAD_PAGE.html#autotoc_md14", null ]
+        ] ],
+        [ "GCC AARCH64 Compiler", "SDK_DOWNLOAD_PAGE.html#autotoc_md15", null ],
+        [ "GCC ARM (R5) Compiler", "SDK_DOWNLOAD_PAGE.html#autotoc_md16", null ],
         [ "Python3", "SDK_DOWNLOAD_PAGE.html#INSTALL_PYTHON3", null ],
         [ "OpenSSL", "SDK_DOWNLOAD_PAGE.html#INSTALL_OPENSSL", null ],
+        [ "PRU-CGT", "SDK_DOWNLOAD_PAGE.html#INSTALL_PRU-CGT", null ],
         [ "Mono Runtime", "SDK_DOWNLOAD_PAGE.html#INSTALL_MONO", null ],
-        [ "Code Composer Studio (CCS)", "SDK_DOWNLOAD_PAGE.html#autotoc_md16", null ]
+        [ "Code Composer Studio (CCS)", "SDK_DOWNLOAD_PAGE.html#autotoc_md17", null ]
       ] ],
-      [ "Download and Install Additional SDK Tools (Optional)", "SDK_DOWNLOAD_PAGE.html#autotoc_md17", [
-        [ "TI CLANG Compiler Toolchain", "SDK_DOWNLOAD_PAGE.html#autotoc_md18", null ]
+      [ "Download and Install Additional SDK Tools (Optional)", "SDK_DOWNLOAD_PAGE.html#autotoc_md18", [
+        [ "TI CLANG Compiler Toolchain", "SDK_DOWNLOAD_PAGE.html#autotoc_md19", null ]
       ] ]
     ] ],
     [ "Download, Install and Setup CCS", "CCS_SETUP_PAGE.html", [
-      [ "Download CCS", "CCS_SETUP_PAGE.html#autotoc_md19", null ],
-      [ "Install CCS", "CCS_SETUP_PAGE.html#autotoc_md20", null ],
+      [ "Download CCS", "CCS_SETUP_PAGE.html#autotoc_md20", null ],
+      [ "Install CCS", "CCS_SETUP_PAGE.html#autotoc_md21", null ],
       [ "Check Packages as seen by CCS", "CCS_SETUP_PAGE.html#CCS_PACKAGE_CHECK", null ],
-      [ "Create Target Configuration", "CCS_SETUP_PAGE.html#CCS_NEW_TARGET_CONFIG", null ],
-      [ "Known Issues", "CCS_SETUP_PAGE.html#autotoc_md21", null ]
+      [ "Create Target Configuration", "CCS_SETUP_PAGE.html#CCS_NEW_TARGET_CONFIG", [
+        [ "AM64X-EVM", "CCS_SETUP_PAGE.html#autotoc_md22", null ],
+        [ "AM64X-SK", "CCS_SETUP_PAGE.html#autotoc_md23", null ]
+      ] ],
+      [ "Known Issues", "CCS_SETUP_PAGE.html#autotoc_md24", null ]
     ] ],
     [ "EVM Setup", "EVM_SETUP_PAGE.html", [
-      [ "AM64X EVM", "EVM_SETUP_PAGE.html#autotoc_md22", [
-        [ "Cable Connections", "EVM_SETUP_PAGE.html#EVM_CABLES", null ],
-        [ "Setup UART Terminal", "EVM_SETUP_PAGE.html#CCS_UART_TERMINAL", null ],
-        [ "Flash SOC Initialization Binary", "EVM_SETUP_PAGE.html#EVM_FLASH_SOC_INIT", null ],
-        [ "Additional Details", "EVM_SETUP_PAGE.html#autotoc_md23", [
-          [ "SOC Initialization", "EVM_SETUP_PAGE.html#EVM_SOC_INIT", [
-            [ "SOC Initialization Using SD BOOT", "EVM_SETUP_PAGE.html#EVM_SOC_INIT_SD_BOOT_MODE", null ],
-            [ "SOC Initialization Using CCS Scripting", "EVM_SETUP_PAGE.html#EVM_SOC_INIT_NOBOOT_MODE", null ]
+      [ "Cable Connections", "EVM_SETUP_PAGE.html#EVM_CABLES", [
+        [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md25", null ],
+        [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md26", null ]
+      ] ],
+      [ "Setup UART Terminal", "EVM_SETUP_PAGE.html#CCS_UART_TERMINAL", [
+        [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md27", null ],
+        [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md28", null ]
+      ] ],
+      [ "Flash SOC Initialization Binary", "EVM_SETUP_PAGE.html#EVM_FLASH_SOC_INIT", [
+        [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md29", null ],
+        [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md30", null ]
+      ] ],
+      [ "Additional Details", "EVM_SETUP_PAGE.html#autotoc_md31", [
+        [ "SOC Initialization", "EVM_SETUP_PAGE.html#EVM_SOC_INIT", [
+          [ "SOC Initialization Using SD BOOT", "EVM_SETUP_PAGE.html#EVM_SOC_INIT_SD_BOOT_MODE", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md32", null ],
+            [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md33", null ]
           ] ],
-          [ "BOOT MODE", "EVM_SETUP_PAGE.html#autotoc_md24", [
-            [ "UART BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_UART", null ],
-            [ "OSPI BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_OSPI", null ],
-            [ "SD BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_SD", null ],
-            [ "NOBOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_NOBOOT", null ],
-            [ "EMMC BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_EMMC", null ]
+          [ "SOC Initialization Using CCS Scripting", "EVM_SETUP_PAGE.html#EVM_SOC_INIT_NOBOOT_MODE", [
+            [ "Set Environment Variable", "EVM_SETUP_PAGE.html#autotoc_md34", null ],
+            [ "Run the SOC Initialization Script", "EVM_SETUP_PAGE.html#autotoc_md35", null ],
+            [ "DDR Initialization", "EVM_SETUP_PAGE.html#DDR_INIT", null ]
           ] ]
         ] ],
-        [ "Troubleshooting EVM issues", "EVM_SETUP_PAGE.html#TROUBLESHOOT_ISSUES", null ]
-      ] ]
+        [ "BOOT MODE", "EVM_SETUP_PAGE.html#autotoc_md36", [
+          [ "UART BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_UART", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md37", null ],
+            [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md38", null ]
+          ] ],
+          [ "OSPI BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_OSPI", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md39", null ],
+            [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md40", null ]
+          ] ],
+          [ "SD BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_SD", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md41", null ],
+            [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md42", null ]
+          ] ],
+          [ "NOBOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_NOBOOT", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md43", null ],
+            [ "AM64X-SK", "EVM_SETUP_PAGE.html#autotoc_md44", null ]
+          ] ],
+          [ "EMMC BOOT MODE", "EVM_SETUP_PAGE.html#BOOTMODE_EMMC", [
+            [ "AM64X-EVM", "EVM_SETUP_PAGE.html#autotoc_md45", null ]
+          ] ]
+        ] ]
+      ] ],
+      [ "Troubleshooting EVM issues", "EVM_SETUP_PAGE.html#TROUBLESHOOT_ISSUES", null ]
     ] ],
     [ "Build a Hello World example", "GETTING_STARTED_BUILD.html", [
-      [ "Using CCS projects", "GETTING_STARTED_BUILD.html#autotoc_md25", null ],
-      [ "Using makefiles", "GETTING_STARTED_BUILD.html#autotoc_md26", null ],
-      [ "Rebuilding libraries", "GETTING_STARTED_BUILD.html#autotoc_md27", null ]
+      [ "Using CCS projects", "GETTING_STARTED_BUILD.html#autotoc_md46", null ],
+      [ "Using makefiles", "GETTING_STARTED_BUILD.html#autotoc_md47", null ],
+      [ "Rebuilding libraries", "GETTING_STARTED_BUILD.html#autotoc_md48", null ]
     ] ],
     [ "CCS Launch, Load and Run", "CCS_LAUNCH_PAGE.html", [
       [ "Prerequisites", "CCS_LAUNCH_PAGE.html#PREREQUISITES", null ],
       [ "Launch CCS", "CCS_LAUNCH_PAGE.html#CCS_LAUNCH", null ],
       [ "Load and run example binaries", "CCS_LAUNCH_PAGE.html#CCS_LOAD_RUN", null ],
-      [ "Re-load and run example binaries", "CCS_LAUNCH_PAGE.html#autotoc_md28", null ]
+      [ "Re-load and run example binaries", "CCS_LAUNCH_PAGE.html#autotoc_md49", null ]
     ] ],
     [ "Flash a Hello World example", "GETTING_STARTED_FLASH.html", [
-      [ "Introduction", "GETTING_STARTED_FLASH.html#autotoc_md29", null ],
-      [ "Getting ready to flash the application", "GETTING_STARTED_FLASH.html#autotoc_md30", null ],
-      [ "Flashing the application", "GETTING_STARTED_FLASH.html#autotoc_md31", null ],
-      [ "Running the flashed application", "GETTING_STARTED_FLASH.html#autotoc_md32", null ]
+      [ "Introduction", "GETTING_STARTED_FLASH.html#autotoc_md50", null ],
+      [ "Getting ready to flash the application", "GETTING_STARTED_FLASH.html#autotoc_md51", null ],
+      [ "Flashing the application", "GETTING_STARTED_FLASH.html#autotoc_md52", [
+        [ "AM64X-EVM", "GETTING_STARTED_FLASH.html#autotoc_md53", null ],
+        [ "AM64X-SK", "GETTING_STARTED_FLASH.html#autotoc_md54", null ]
+      ] ],
+      [ "Running the flashed application", "GETTING_STARTED_FLASH.html#autotoc_md55", [
+        [ "AM64X-EVM", "GETTING_STARTED_FLASH.html#autotoc_md56", null ],
+        [ "AM64X-SK", "GETTING_STARTED_FLASH.html#autotoc_md57", null ]
+      ] ]
     ] ]
 ];

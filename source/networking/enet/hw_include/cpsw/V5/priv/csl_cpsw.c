@@ -61,6 +61,11 @@
 #define CSL_NUM_ALE_VLAN_MASK_MUX1_ENTRIES		(7U)
 #endif
 
+#define CPSW_EST_FETCH_COUNT_SHIFT                      (8U)
+#define CPSW_EST_FETCH_COUNT_MASK                       (0x003FFF00U)
+#define CPSW_EST_FETCH_ALLOW_SHIFT                      (0U)
+#define CPSW_EST_FETCH_ALLOW_MASK                       (0x000000FFU)
+
 /********************************************************************************
 ************************* Ethernet Switch (CPSW) Submodule **********************
 ********************************************************************************/
@@ -661,6 +666,7 @@ void CSL_CPSW_disablePortPassPriTag (CSL_Xge_cpswRegs *hCpswRegs,Uint32 portNum)
  *      XGE_CPSW_CONTROL_REG_P0_RX_PAD,
  *      XGE_CPSW_CONTROL_REG_P0_RX_PASS_CRC_ERR,
  *      XGE_CPSW_CONTROL_REG_EEE_ENABLE
+ *      XGE_CPSW_CONTROL_REG_EST_ENABLE
  *
  *
  *   @b Example
@@ -692,7 +698,7 @@ void CSL_CPSW_getCpswControlReg (CSL_Xge_cpswRegs *hCpswRegs,
     pControlRegInfo->p0RxPad        =   CSL_FEXT (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_P0_RX_PAD);
     pControlRegInfo->p0RxPassCrcErr =   CSL_FEXT (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_P0_RX_PASS_CRC_ERR);
     pControlRegInfo->eeeEnable      =   CSL_FEXT (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_EEE_ENABLE);
-
+    pControlRegInfo->estEnable      =   CSL_FEXT (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_EST_ENABLE);
 
     return;
 }
@@ -728,6 +734,7 @@ void CSL_CPSW_getCpswControlReg (CSL_Xge_cpswRegs *hCpswRegs,
  *      XGE_CPSW_CONTROL_REG_P0_RX_PAD,
  *      XGE_CPSW_CONTROL_REG_P0_RX_PASS_CRC_ERR,
  *      XGE_CPSW_CONTROL_REG_EEE_ENABLE
+ *      XGE_CPSW_CONTROL_REG_EST_ENABLE
  *
  *   @b Example
  *   @verbatim
@@ -760,6 +767,7 @@ void CSL_CPSW_setCpswControlReg (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_FINS (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_P0_RX_PAD, pControlRegInfo->p0RxPad);
     CSL_FINS (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_P0_RX_PASS_CRC_ERR, pControlRegInfo->p0RxPassCrcErr);
     CSL_FINS (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_EEE_ENABLE, pControlRegInfo->eeeEnable);
+    CSL_FINS (hCpswRegs->CONTROL_REG, XGE_CPSW_CONTROL_REG_EST_ENABLE, pControlRegInfo->estEnable);
 
     return;
 }
@@ -1140,6 +1148,7 @@ void CSL_CPSW_getPortControlReg (CSL_Xge_cpswRegs *hCpswRegs,
     } else
     {
 
+        pControlInfo->estPortEnable      =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_EST_PORT_EN);
         pControlInfo->dscpIpv4Enable     =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_DSCP_IPV4_EN);
         pControlInfo->dscpIpv6Enable     =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_DSCP_IPV6_EN);
         pControlInfo->txLpiClkstopEnable =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_TX_LPI_CLKSTOP_EN);
@@ -1177,6 +1186,7 @@ void CSL_CPSW_getPortControlReg (CSL_Xge_cpswRegs *hCpswRegs,
  *   @n XGE_CPSW_P0_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_P0_CONTROL_REG_DSCP_IPV6_EN,
  *
+ *      XGE_CPSW_PN_CONTROL_REG_EST_PORT_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV6_EN,
  *      XGE_CPSW_PN_CONTROL_REG_TX_LPI_CLKSTOP_EN,
@@ -1212,6 +1222,7 @@ void CSL_CPSW_setPortControlReg (CSL_Xge_cpswRegs *hCpswRegs,
     } else
     {
 
+        CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_EST_PORT_EN, pControlInfo->estPortEnable);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_DSCP_IPV4_EN, pControlInfo->dscpIpv4Enable);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_DSCP_IPV6_EN, pControlInfo->dscpIpv6Enable);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_CONTROL_REG, XGE_CPSW_PN_CONTROL_REG_TX_LPI_CLKSTOP_EN, pControlInfo->txLpiClkstopEnable);
@@ -1848,7 +1859,7 @@ void CSL_CPSW_setPortRxMaxLen (CSL_Xge_cpswRegs *hCpswRegs,
     {
         CSL_FINS (hCpswRegs->P0_RX_MAXLEN_REG, XGE_CPSW_P0_RX_MAXLEN_REG_RX_MAXLEN, rxMaxLen);
     }
-    else if (portNum <= 8)
+    else if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_RX_MAXLEN_REG, XGE_CPSW_PN_RX_MAXLEN_REG_RX_MAXLEN, rxMaxLen);
     }
@@ -1927,7 +1938,7 @@ void CSL_CPSW_getPortTxPriMapReg (
         pPortTxPriMap [6]   =   CSL_FEXT (hCpswRegs->P0_TX_PRI_MAP_REG, XGE_CPSW_P0_TX_PRI_MAP_REG_PRI6);
         pPortTxPriMap [7]   =   CSL_FEXT (hCpswRegs->P0_TX_PRI_MAP_REG, XGE_CPSW_P0_TX_PRI_MAP_REG_PRI7);
     }
-    else if (portNum <= 8)
+    else if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
     {
         pPortTxPriMap [0]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_TX_PRI_MAP_REG, XGE_CPSW_PN_TX_PRI_MAP_REG_PRI0);
         pPortTxPriMap [1]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_TX_PRI_MAP_REG, XGE_CPSW_PN_TX_PRI_MAP_REG_PRI1);
@@ -2015,7 +2026,7 @@ void CSL_CPSW_setPortTxPriMapReg (
         CSL_FINS (hCpswRegs->P0_TX_PRI_MAP_REG, XGE_CPSW_P0_TX_PRI_MAP_REG_PRI6, pPortTxPriMap [6]);
         CSL_FINS (hCpswRegs->P0_TX_PRI_MAP_REG, XGE_CPSW_P0_TX_PRI_MAP_REG_PRI7, pPortTxPriMap [7]);
     }
-    else if (portNum <= 8)
+    else if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_TX_PRI_MAP_REG, XGE_CPSW_PN_TX_PRI_MAP_REG_PRI0, pPortTxPriMap [0]);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_TX_PRI_MAP_REG, XGE_CPSW_PN_TX_PRI_MAP_REG_PRI1, pPortTxPriMap [1]);
@@ -2100,7 +2111,7 @@ void CSL_CPSW_getPortRxPriMapReg (CSL_Xge_cpswRegs *hCpswRegs,
         pPortRxPriMap [6]   =   CSL_FEXT (hCpswRegs->P0_RX_PRI_MAP_REG, XGE_CPSW_P0_RX_PRI_MAP_REG_PRI6);
         pPortRxPriMap [7]   =   CSL_FEXT (hCpswRegs->P0_RX_PRI_MAP_REG, XGE_CPSW_P0_RX_PRI_MAP_REG_PRI7);
     }
-    else if (portNum <= 8)
+    else if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
     {
         pPortRxPriMap [0]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_RX_PRI_MAP_REG, XGE_CPSW_PN_RX_PRI_MAP_REG_PRI0);
         pPortRxPriMap [1]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_RX_PRI_MAP_REG, XGE_CPSW_PN_RX_PRI_MAP_REG_PRI1);
@@ -2187,7 +2198,7 @@ void CSL_CPSW_setPortRxPriMapReg (CSL_Xge_cpswRegs *hCpswRegs,
         CSL_FINS (hCpswRegs->P0_RX_PRI_MAP_REG, XGE_CPSW_P0_RX_PRI_MAP_REG_PRI6, pPortRxPriMap [6]);
         CSL_FINS (hCpswRegs->P0_RX_PRI_MAP_REG, XGE_CPSW_P0_RX_PRI_MAP_REG_PRI7, pPortRxPriMap [7]);
     }
-    else if (portNum <= 8)
+    else if (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_RX_PRI_MAP_REG, XGE_CPSW_PN_RX_PRI_MAP_REG_PRI0, pPortRxPriMap [0]);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_RX_PRI_MAP_REG, XGE_CPSW_PN_RX_PRI_MAP_REG_PRI1, pPortRxPriMap [1]);
@@ -2900,7 +2911,7 @@ void CSL_CPSW_getPortMaxBlksReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32*                     pTxMaxBlks
 )
 {
-    if ((portNum >= 1) && (portNum <= 8))
+    if ((portNum >= 1) && (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         *pRxMaxBlks  =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_MAX_BLKS_REG, XGE_CPSW_PN_MAX_BLKS_REG_RX_MAX_BLKS);
         *pTxMaxBlks  =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_MAX_BLKS_REG, XGE_CPSW_PN_MAX_BLKS_REG_TX_MAX_BLKS);
@@ -2963,7 +2974,7 @@ void CSL_CPSW_setPortMaxBlksReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32                      txMaxBlks
 )
 {
-    if ((portNum >= 1) && (portNum <= 8))
+    if ((portNum >= 1) && (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_MAX_BLKS_REG, XGE_CPSW_PN_MAX_BLKS_REG_RX_MAX_BLKS, rxMaxBlks);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_MAX_BLKS_REG, XGE_CPSW_PN_MAX_BLKS_REG_TX_MAX_BLKS, txMaxBlks);
@@ -3020,7 +3031,7 @@ void CSL_CPSW_getPortMACAddress (CSL_Xge_cpswRegs *hCpswRegs,
     Uint8*                      pMacAddress
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         pMacAddress [0]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_SA_L_REG, XGE_CPSW_PN_SA_L_REG_MACSRCADDR_7_0);
         pMacAddress [1]   =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_SA_L_REG, XGE_CPSW_PN_SA_L_REG_MACSRCADDR_15_8);
@@ -3086,7 +3097,7 @@ void CSL_CPSW_setPortMACAddress (CSL_Xge_cpswRegs *hCpswRegs,
     Uint8*                      pMacAddress
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_SA_L_REG, XGE_CPSW_PN_SA_L_REG_MACSRCADDR_7_0,   pMacAddress [0]);
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_SA_L_REG, XGE_CPSW_PN_SA_L_REG_MACSRCADDR_15_8,  pMacAddress [1]);
@@ -3155,7 +3166,7 @@ void CSL_CPSW_getPortTimeSyncCntlReg (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_CPSW_TSCNTL*        pTimeSyncCntlCfg
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         pTimeSyncCntlCfg->tsRxAnnexDEnable          =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_TS_CTL_REG,
                                                                   XGE_CPSW_PN_TS_CTL_REG_TS_RX_ANNEX_D_EN);
@@ -3248,7 +3259,7 @@ void CSL_CPSW_setPortTimeSyncCntlReg (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_CPSW_TSCNTL*        pTimeSyncCntlCfg
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_TS_CTL_REG, XGE_CPSW_PN_TS_CTL_REG_TS_RX_ANNEX_D_EN,
                   pTimeSyncCntlCfg->tsRxAnnexDEnable);
@@ -3325,7 +3336,7 @@ void CSL_CPSW_getPortTimeSyncSeqIdReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32*                     pTsSeqIdOffset
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         *pTsLtype           =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_TS_SEQ_LTYPE_REG,
                                           XGE_CPSW_PN_TS_SEQ_LTYPE_REG_TS_LTYPE1);
@@ -3442,7 +3453,7 @@ void CSL_CPSW_setPortTimeSyncSeqIdReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32                      tsSeqIdOffset
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_TS_SEQ_LTYPE_REG,
                   XGE_CPSW_PN_TS_SEQ_LTYPE_REG_TS_LTYPE1, tsLtype);
@@ -3497,7 +3508,7 @@ void CSL_CPSW_getPortTimeSyncVlanLTypeReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32*                     pTsVlanLtype2
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         *pTsVlanLtype1  =   CSL_FEXT (hCpswRegs->ENETPORT[portNum-1].PN_TS_VLAN_LTYPE_REG,
                                       XGE_CPSW_PN_TS_VLAN_LTYPE_REG_TS_VLAN_LTYPE1);
@@ -3553,7 +3564,7 @@ void CSL_CPSW_setPortTimeSyncVlanLTypeReg (CSL_Xge_cpswRegs *hCpswRegs,
     Uint32                      tsVlanLtype2
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         CSL_FINS (hCpswRegs->ENETPORT[portNum-1].PN_TS_VLAN_LTYPE_REG,
                   XGE_CPSW_PN_TS_VLAN_LTYPE_REG_TS_VLAN_LTYPE1, tsVlanLtype1);
@@ -3640,7 +3651,7 @@ void CSL_CPSW_getPortTimeSyncConfig (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_CPSW_TSCONFIG*      pTimeSyncConfig
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         Uint32 value;
 
@@ -3816,7 +3827,7 @@ void CSL_CPSW_setPortTimeSyncConfig (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_CPSW_TSCONFIG*        pTimeSyncConfig
 )
 {
-    if ((portNum >= 1) &&  (portNum <= 8))
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
     {
         Uint32 value = 0;
 
@@ -3877,6 +3888,122 @@ void CSL_CPSW_setPortTimeSyncConfig (CSL_Xge_cpswRegs *hCpswRegs,
     return;
 }
 
+Uint8 CSL_CPSW_getEstTsDomain(CSL_Xge_cpswRegs   *hCpswRegs)
+{
+    return CSL_FEXT(hCpswRegs->EST_TS_DOMAIN_REG, XGE_CPSW_EST_TS_DOMAIN_REG_EST_TS_DOMAIN);
+}
+
+void CSL_CPSW_setEstTsDomain(CSL_Xge_cpswRegs    *hCpswRegs,
+                             Uint8                domain)
+{
+    CSL_FINS(hCpswRegs->EST_TS_DOMAIN_REG, XGE_CPSW_EST_TS_DOMAIN_REG_EST_TS_DOMAIN, domain);
+}
+
+void CSL_CPSW_getPortEstConfig(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               CSL_CPSW_EST_CONFIG *pEstConfig)
+{
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
+    {
+        pEstConfig->estOneBuf = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                         XGE_CPSW_PN_EST_CONTROL_REG_EST_ONEBUF);
+
+        pEstConfig->estBufSel = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                         XGE_CPSW_PN_EST_CONTROL_REG_EST_BUFSEL);
+
+        pEstConfig->estTsEnable = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                           XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_EN);
+
+        pEstConfig->estTsFirst = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                          XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_FIRST);
+
+        pEstConfig->estTsOnePri = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                           XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_ONEPRI);
+
+        pEstConfig->estTsPri = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                        XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_PRI);
+
+        pEstConfig->estFillEnable = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                             XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_EN);
+
+        /* FIXME: EstPremptComp field is not part of CSLR v4 */
+        //pEstConfig->estPremptComp = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+        //                                     XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL);
+
+        pEstConfig->estFillMargin = CSL_FEXT(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                                             XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_MARGIN);
+    }
+}
+
+void CSL_CPSW_setPortEstConfig(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               CSL_CPSW_EST_CONFIG *pEstConfig)
+{
+    if ((portNum >= 1) &&  (portNum <= CSL_ARRAYSIZE(hCpswRegs->ENETPORT)))
+    {
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_ONEBUF, pEstConfig->estOneBuf);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_BUFSEL, pEstConfig->estBufSel);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_EN, pEstConfig->estTsEnable);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_FIRST, pEstConfig->estTsFirst);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_ONEPRI, pEstConfig->estTsOnePri);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_PRI, pEstConfig->estTsPri);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_EN, pEstConfig->estFillEnable);
+
+        // FIXME: EstPremptComp field is not part of CSLR v4
+        //CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+        //         XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL, pEstConfig->estPremptComp);
+
+        CSL_FINS(hCpswRegs->ENETPORT[portNum-1].PN_EST_CONTROL_REG,
+                 XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_MARGIN, pEstConfig->estFillMargin);
+    }
+}
+
+void CSL_CPSW_writeEstFetchCmd(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               Uint32              index,
+                               Uint32              fetchCount,
+                               Uint8               fetchAllow)
+{
+    Uint32 fetchVal;
+
+    if ((portNum >= 1) && (portNum <= CSL_ARRAYSIZE(hCpswRegs->CPSW_NU_EST)))
+    {
+        fetchVal = (((fetchCount << CPSW_EST_FETCH_COUNT_SHIFT) & CPSW_EST_FETCH_COUNT_MASK) |
+                    ((fetchAllow << CPSW_EST_FETCH_ALLOW_SHIFT) & CPSW_EST_FETCH_ALLOW_MASK));
+
+        CSL_REG_WR(&hCpswRegs->CPSW_NU_EST[portNum-1].FETCH_LOC[index], fetchVal);
+    }
+}
+
+void CSL_CPSW_readEstFetchCmd(CSL_Xge_cpswRegs    *hCpswRegs,
+                              Uint32              portNum,
+                              Uint32              index,
+                              Uint32              *fetchCount,
+                              Uint8               *fetchAllow)
+{
+    Uint32 fetchVal;
+
+    if ((portNum >= 1) && (portNum <= CSL_ARRAYSIZE(hCpswRegs->CPSW_NU_EST)))
+    {
+        fetchVal = CSL_REG_RD(&hCpswRegs->CPSW_NU_EST[portNum-1].FETCH_LOC[index]);
+
+        *fetchCount = (fetchVal & CPSW_EST_FETCH_COUNT_MASK) >> CPSW_EST_FETCH_COUNT_SHIFT;
+        *fetchAllow = (fetchVal & CPSW_EST_FETCH_ALLOW_MASK) >> CPSW_EST_FETCH_ALLOW_SHIFT;
+    }
+}
 
 
 /********************************************************************************
@@ -7245,8 +7372,8 @@ void CSL_CPSW_getAlePolicerEntry
 
     hCpswAleRegs->POLICETBLCTL    =   aleTblCtrlVal;
 
+    memset(pPolCfg, 0, sizeof(*pPolCfg));
 
-    pPolCfg->validBitmap = 0;
     /* Read the Policer Entry configuration */
     value  =  hCpswAleRegs->POLICECFG0;
 
@@ -7801,6 +7928,16 @@ void CSL_CPSW_setAleOAMLpbkControl(CSL_AleRegs *hCpswAleRegs,
 void CSL_CPSW_getAleStatusNumPolicers(CSL_AleRegs *hCpswAleRegs,Uint32* pNumPolicers)
 {
     *pNumPolicers     =   CSL_FEXT(hCpswAleRegs->ALE_STATUS, ALE_ALE_STATUS_POLCNTDIV8) << 3;
+
+    if (*pNumPolicers == 0U) {
+        /* On some SOCs like AWR294x/TPR12 the number of policers is less than 8 so ALE_ALE_STATUS_POLCNTDIV8 returns 0.
+	    TO determine correct number of policers, set the POLICTBLCTL POL TBL IDX to 0x3 and read back. It will return number of actual policers are bits more than supported policer indexes will be tied to 0.We read the default value of POLICTBLCTL POL TBL IDX, set it to 0x3 then update the number of policers and set back the default value of POLICTBLCTL POL TBL IDX. */
+	    Uint32 value = 0U;
+	    value = CSL_FEXT (hCpswAleRegs->POLICETBLCTL, ALE_POLICETBLCTL_POL_TBL_IDX);
+	    CSL_FINS (hCpswAleRegs->POLICETBLCTL ,ALE_POLICETBLCTL_POL_TBL_IDX, 0x3U);
+        *pNumPolicers = CSL_FEXT(hCpswAleRegs->POLICETBLCTL, ALE_POLICETBLCTL_POL_TBL_IDX);
+	    CSL_FINS (hCpswAleRegs->POLICETBLCTL ,ALE_POLICETBLCTL_POL_TBL_IDX, value);
+    }
 }
 
 void CSL_CPSW_setCppiPriCirEir(CSL_Xge_cpswRegs *hCpswRegs,Uint32 pri, Uint32 cir, Uint32 eir)

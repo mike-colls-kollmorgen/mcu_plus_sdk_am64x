@@ -54,6 +54,12 @@
 #ifndef TISCI_FIREWALL_H_
 #define TISCI_FIREWALL_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request for a change owner operation
@@ -205,6 +211,11 @@ struct tisci_msg_fwl_get_firewall_region_resp {
     uint64_t        start_address;
     uint64_t        end_address;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

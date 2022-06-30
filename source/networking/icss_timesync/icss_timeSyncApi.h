@@ -247,11 +247,6 @@ typedef struct
 } ExtendedTimestamp;
 
 /**
- * \brief Transmit callback function
- */
-typedef void (*TimeSync_txCallBack_t)(uint32_t arg, uint32_t arg2);
-
-/**
  * \brief Sync loss callback function.
  * Call cross module functions in case of loss of synchronization
  */
@@ -353,16 +348,10 @@ typedef struct
 {
     /**List of 802.1AS-rev domainNumbers*/
     uint8_t domainNumber[TS_NUM_DOMAINS];
-    /**SYNCIN input - latch0/latch1 - 0/1*/
-    uint8_t syncIn_latchInput;
-    /**SYNCIN input type - positive edge/negative edge - 0/1*/
-    uint8_t syncIn_latchTrigger;
     /**SYNCOUT sync0 start time*/
     uint32_t syncOut_sync0Start;
     /**SYNCOUT sync0 pulse width*/
     uint32_t syncOut_sync0PWidth;
-    /**Tx callback function*/
-    TimeSync_txCallBack_t  timeSynctxCallBackfn;
     /*Synchronization loss callback function*/
     TimeSync_SyncLossCallBack_t timeSyncSyncLossCallBackfn;
     /*PTP stack reset callback function*/
@@ -404,20 +393,9 @@ typedef struct
     /**Which type of Measurement scheme. E2E or P2P*/
     delayType type;
 
-    /**Set to 1 if device is master, else set to 0*/
-    uint8_t isMaster;
-
     /**PTP Frame Tx Interrupt number*/
     uint32_t  txIntNum;
 
-    /**PTP Frame Latch Interrupt number*/
-    uint8_t  latchIntNum;
-
-    /**Process the incoming time of day output and synchronize to the latch input
-     * This is not a dynamic variable, it must be configured at the start*/
-    uint8_t  process_TOD_and_sync_2_1PPS;
-
-    /*TODO: Review ICSS_EMAC_MAX_PORTS_PER_INSTANCE -> ICSS_EMAC_MAX_PORTS_PER_INSTANCE*/
     /**Delay asymmetry correction value for both ports*/
     uint16_t asymmetryCorrection[ICSS_EMAC_MAX_PORTS_PER_INSTANCE];
 
@@ -683,25 +661,6 @@ typedef struct
 } timeSync_SyntInfo_t;
 
 /**
- * \brief Parameters required for doing Time of Day synchronization
- */
-typedef struct
-{
-    /**Latch timestamp in nanoseconds*/
-    uint32_t latch_Ts_NS;
-
-    /**Latch timestamp in seconds*/
-    uint64_t latch_Ts_Sec;
-
-    /**Time of day timestamp in nanoseconds*/
-    uint32_t ToD_Ts_NS;
-
-    /**Time of day timestamp in seconds*/
-    uint64_t ToD_Ts_Sec;
-
-} timeSync_ToD_Param_t;
-
-/**
  * \brief Parameters required for calculating Nighbor Rate Ratio
  */
 typedef struct
@@ -909,11 +868,6 @@ typedef struct TimeSync_ParamsHandle_s
      */
     TaskP_Object timeSync_backgroundTask;
 
-    /**Task is used to synchronize with the 1PPS output
-     * via the latch interrupt
-     */
-    TaskP_Object timeSync_latchSyncTask;
-
     /**Event handle for indicating that a Tx Timestamp interrupt
      * has been generated and needs to be serviced. index 0 contains
      * handle for Port 1.
@@ -950,21 +904,7 @@ typedef struct TimeSync_ParamsHandle_s
     /*Semaphore for sending Delay Request frames*/
     SemaphoreP_Object delayReqTxSemObject;
 
-    /*-----------------Master tasks, semaphores and events----------------*/
-    /*TODO: Review this*/
-    /*Handle for DMTimer which posts the semaphore which in turn sends Sync frames*/
-    uint32_t timeSync_syncTxTimerHandle;
-    /**Actual PTP Task handle which sends Sync frames*/
-    TaskP_Object timeSync_syncTxTask;
-    /**PTP Task for sending Announce frames*/
-    TaskP_Object timeSync_announceTxTask;
-    /*Semaphore for sending Sync frames as master*/
-    SemaphoreP_Object syncTxSemObject;
-    /*Semaphore for synchronizing to 1PPS out*/
-    SemaphoreP_Object latch_sync_SemObject;
-    /*TODO: Review this*/
     HwiP_Object timeSync_txTSIsrObject;
-    HwiP_Object timeSync_latchIsrObject;
 
     /*Number of sync frames missed*/
     uint32_t numSyncMissed;
@@ -989,9 +929,6 @@ typedef struct TimeSync_ParamsHandle_s
     /**Data for Syntonization*/
     timeSync_SyntInfo_t *tsSyntInfo;
 
-    /**Parameters for doing time of day synchronization*/
-    timeSync_ToD_Param_t *tsToDParams;
-
     /**Data for calculating NRR on both ports*/
     timeSync_NrrInfo_t *tsNrrInfo[ICSS_EMAC_MAX_PORTS_PER_INSTANCE];
 
@@ -1007,9 +944,6 @@ typedef struct TimeSync_ParamsHandle_s
     uint32_t txTSTaskP2Stack[TASK_STACK_SIZE/sizeof(uint32_t)]          __attribute__((aligned(32)));
     uint32_t NRT_TaskStack[TASK_STACK_SIZE/sizeof(uint32_t)]            __attribute__((aligned(32)));
     uint32_t backgroundTaskStack[TASK_STACK_SIZE/sizeof(uint32_t)]      __attribute__((aligned(32)));
-    uint32_t latchSyncTaskStack[TASK_STACK_SIZE/sizeof(uint32_t)]       __attribute__((aligned(32)));
-    uint32_t syncTxTaskStack[TASK_STACK_SIZE/sizeof(uint32_t)]          __attribute__((aligned(32)));
-    uint32_t announceTxTaskStack[TASK_STACK_SIZE/sizeof(uint32_t)]      __attribute__((aligned(32)));
 
 } TimeSync_ParamsHandle;
 

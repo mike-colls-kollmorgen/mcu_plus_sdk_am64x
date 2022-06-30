@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,24 +108,24 @@ $(document).ready(function(){initNavTree('DRIVERS_UART_PAGE.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md637">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md638">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md639">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md640">Usage Overview</a><ul><li class="level2"><a href="#autotoc_md641">API Sequence</a></li>
-<li class="level2"><a href="#autotoc_md642">Initializing the UART Driver</a></li>
-<li class="level2"><a href="#autotoc_md643">Opening the UART Driver</a></li>
-<li class="level2"><a href="#autotoc_md644">UART Write Mode</a></li>
-<li class="level2"><a href="#autotoc_md645">UART Read Mode</a></li>
+<ul><li class="level1"><a href="#autotoc_md714">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md715">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md716">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md717">Usage Overview</a><ul><li class="level2"><a href="#autotoc_md718">API Sequence</a></li>
+<li class="level2"><a href="#autotoc_md719">Initializing the UART Driver</a></li>
+<li class="level2"><a href="#autotoc_md720">Opening the UART Driver</a></li>
+<li class="level2"><a href="#autotoc_md721">UART Write Mode</a></li>
+<li class="level2"><a href="#autotoc_md722">UART Read Mode</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md646">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md647">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md648">API</a></li>
+<li class="level1"><a href="#autotoc_md723">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md724">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md725">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_uart"></a></p>
 <p>UART is used to translate the data between the chip and a serial port. The UART driver provides API to perform read and write to any of the UART peripherals on the board, with the multiple modes of operation.</p>
-<h1><a class="anchor" id="autotoc_md637"></a>
+<h1><a class="anchor" id="autotoc_md714"></a>
 Features Supported</h1>
 <ul>
 <li>Write and Read mode of operation</li>
@@ -135,7 +135,7 @@ Features Supported</h1>
 <li>Write and Read Cancel mode of operation</li>
 <li>For low latency direct register read/write API, refer <a class="el" href="EXAMPLES_DRIVERS_UART_ECHO_LOW_LATENCY_INTERRUPT.html">UART Echo Low Latency Interrupt</a> and <a class="el" href="EXAMPLES_DRIVERS_UART_ECHO_LOW_LATENCY_POLLING.html">UART Echo Low Latency Polling</a> example.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md638"></a>
+<h1><a class="anchor" id="autotoc_md715"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure below parameters apart from common configuration like Clock,MPU,RAT and others.</p><ul>
@@ -155,16 +155,16 @@ SysConfig Features</h1>
 </li>
 <li>In case of DMA mode, please configure UDMA instance to <code>PKTDMA_0</code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md639"></a>
+<h1><a class="anchor" id="autotoc_md716"></a>
 Features NOT Supported</h1>
 <ul>
 <li><a class="el" href="group__DRV__UART__MODULE.html#ga1b64d34e7816aec0224528707619fef8" title="Unblock/callback when no new data comes in.">UART_READ_RETURN_MODE_PARTIAL</a> is not supported in DMA mode of operation</li>
 <li>MODEM control functions</li>
 <li>IrDA(Infrared Data Association) and CIR(Consumer Infrared) features</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md640"></a>
+<h1><a class="anchor" id="autotoc_md717"></a>
 Usage Overview</h1>
-<h2><a class="anchor" id="autotoc_md641"></a>
+<h2><a class="anchor" id="autotoc_md718"></a>
 API Sequence</h2>
 <p>To use the UART driver to send data or receive, the application calls the following APIs:</p>
 <ul>
@@ -176,32 +176,32 @@ API Sequence</h2>
 <li><a class="el" href="group__DRV__UART__MODULE.html#ga6b49b65f3db709c408dc4db23a68895d" title="Function to close a UART peripheral specified by the UART handle.">UART_close()</a>: De-initialize the UART instance.</li>
 <li><a class="el" href="group__DRV__UART__MODULE.html#gaf62535cad4a810b92a9061eb66b510e3" title="This function de-initializes the UART module.">UART_deinit()</a>: De-Initialize the UART driver.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md642"></a>
+<h2><a class="anchor" id="autotoc_md719"></a>
 Initializing the UART Driver</h2>
 <p><a class="el" href="group__DRV__UART__MODULE.html#gab60a36f7295d704926120d22f806dcd1" title="This function initializes the UART module.">UART_init()</a> must be called before any other UART APIs. This function iterates through the elements of the UART_config[] array, calling the element's device implementation UART initialization function. Please note that initializing UART driver is taken care by the SysConfig generated code.</p>
-<h2><a class="anchor" id="autotoc_md643"></a>
+<h2><a class="anchor" id="autotoc_md720"></a>
 Opening the UART Driver</h2>
 <p>After initializing the UART driver by calling <a class="el" href="group__DRV__UART__MODULE.html#gab60a36f7295d704926120d22f806dcd1" title="This function initializes the UART module.">UART_init()</a>, the application can open a UART instance by calling <a class="el" href="group__DRV__UART__MODULE.html#gab540e9ef2a649eeff29085cfa653d097" title="This function opens a given UART peripheral.">UART_open()</a>. Please note that opening UART driver is taken care by the SysConfig generated code. This function takes an index into the UART_config[] array, and the UART parameters data structure. The UART instance is specified by the index of the UART in UART_config[]. Calling <a class="el" href="group__DRV__UART__MODULE.html#gab540e9ef2a649eeff29085cfa653d097" title="This function opens a given UART peripheral.">UART_open()</a> second time with the same index previously passed to <a class="el" href="group__DRV__UART__MODULE.html#gab540e9ef2a649eeff29085cfa653d097" title="This function opens a given UART peripheral.">UART_open()</a> will result in an error. You can, though, re-use the index if the instance is closed via <a class="el" href="group__DRV__UART__MODULE.html#ga6b49b65f3db709c408dc4db23a68895d" title="Function to close a UART peripheral specified by the UART handle.">UART_close()</a>.</p>
 <p>If no <a class="el" href="group__DRV__UART__MODULE.html#ga811065c407cbf7b7553140a6d91887fc" title="Function to initialize the UART_Params struct to its defaults.">UART_Params_init</a> structure is passed to <a class="el" href="group__DRV__UART__MODULE.html#gab540e9ef2a649eeff29085cfa653d097" title="This function opens a given UART peripheral.">UART_open()</a>, default values are used. If the open call is successful, it returns a non-NULL value.</p>
-<h2><a class="anchor" id="autotoc_md644"></a>
+<h2><a class="anchor" id="autotoc_md721"></a>
 UART Write Mode</h2>
 <p>The UART driver supports two transfer modes of operation: interrupt and polling mode. In polling mode a task's code execution is blocked until a UART transaction has completed or a timeout has occurred.</p>
 <p>In interrupt mode, again there are two modes blocking and callback. The transfer mode is determined by the <a class="el" href="structUART__Params.html#a97ea411b44f489cd71e8d6d17545abf3">UART_Params.writeMode</a> parameter. The UART driver defaults to blocking mode, if the application does not set it. Once a UART driver is opened, the only way to change the operation mode is to close and re-open the UART instance with the new write mode.</p>
 <p>In blocking mode, a task's code execution is blocked until a UART transaction has completed or a timeout has occurred. This ensures that only one UART transfer operates at a given time. Other tasks requesting UART transfers while a transfer is currently taking place will receive an error as return value. If a timeout occurs the transfer is cancelled, the task is unblocked &amp; will receive an error as return value. The transaction count field will have the number of bytes transferred successfully before the timeout.</p>
 <p>In callback mode, a UART transaction functions asynchronously, which means that it does not block code execution. After a UART transaction has been completed, the UART driver calls a user-provided callback function. Callback mode is supported in the execution context of tasks and hardware interrupt routines.</p>
-<h2><a class="anchor" id="autotoc_md645"></a>
+<h2><a class="anchor" id="autotoc_md722"></a>
 UART Read Mode</h2>
 <p>The UART driver supports two read modes of operation: interrupt and polling mode. In polling mode a task's code execution is blocked until a UART transaction has completed or a timeout has occurred.</p>
 <p>In interrupt mode, again there are two modes blocking and callback. The read mode is determined by the <a class="el" href="structUART__Params.html#af54dd52a99d0a545eb9d94afeb282ebe">UART_Params.readMode</a> parameter. The UART driver defaults to blocking mode, if the application does not set it. Once a UART driver is opened, the only way to change the operation mode is to close and re-open the UART instance with the new read mode.</p>
 <p>In blocking mode, a task's code execution is blocked until a UART transaction has completed or a timeout has occurred. This ensures that only one UART read completes at a given time. Other tasks requesting UART read while a read is currently taking place will receive an error as return value. If a timeout occurs the read is cancelled, the task is unblocked &amp; will receive an error as return value. The transaction count field will have the number of bytes read successfully before the timeout.</p>
 <p>In callback mode, a UART transaction functions asynchronously, which means that it does not block code execution. After a UART transaction has been completed, the UART driver calls a user-provided callback function. Callback mode is supported in the execution context of tasks and hardware interrupt routines.</p>
 <p>There is an additional <a class="el" href="structUART__Params.html#a1850d733c08f9bd92a45c8289d88a830">UART_Params.readReturnMode</a> parameter. <a class="el" href="group__DRV__UART__MODULE.html#ga1750bdbfd3930cacf9ca48e5a153f3c2" title="Unblock/callback when buffer is full.">UART_READ_RETURN_MODE_FULL</a> unblocks or performs a callback when the read buffer has been filled with the number of bytes passed to <a class="el" href="group__DRV__UART__MODULE.html#gab0f66688faa39bad28c36465ac88c538" title="Function to perform UART read operation.">UART_read()</a>. <a class="el" href="group__DRV__UART__MODULE.html#ga1b64d34e7816aec0224528707619fef8" title="Unblock/callback when no new data comes in.">UART_READ_RETURN_MODE_PARTIAL</a> unblocks or performs a callback whenever a read timeout error occurs on the UART peripheral. The read timeout occurs if the read FIFO is non-empty and no new data has been received for a specific number of clock cycles w.r.o device/baudrate dependent. This mode can be used when the exact number of bytes to be read is not known.</p>
-<h1><a class="anchor" id="autotoc_md646"></a>
+<h1><a class="anchor" id="autotoc_md723"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>In case of DMA mode, as R5F core is not Cache Coherent, Cache Writeback is required if R5F writes to the buffers. And before reading the buffers, application needs to invalidate those. Please refer <a class="el" href="EXAMPLES_DRIVERS_UART_ECHO_DMA.html">UART Echo DMA</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md647"></a>
+<h1><a class="anchor" id="autotoc_md724"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="uart_8h.html">drivers/uart.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Instance Open Example </p><div class="fragment"><div class="line">    <a class="code" href="structUART__Params.html">UART_Params</a>         params;</div>
@@ -315,7 +315,7 @@ Example Usage</h1>
 <div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(gNumBytesRead == transaction.<a class="code" href="structUART__Transaction.html#a32842a6d05bd3dc31d31a8502da5e190">count</a>);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md648"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md725"></a>
 API</h1>
 <p><a class="el" href="group__DRV__UART__MODULE.html">APIs for UART</a> </p>
 </div></div><!-- contents -->

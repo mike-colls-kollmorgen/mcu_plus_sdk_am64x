@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -51,8 +51,8 @@
 
 #define APP_MCSPI_MSGSIZE       (100U)
 
-uint8_t gMcspiTxBuffer[APP_MCSPI_MSGSIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
-uint8_t gMcspiRxBuffer[APP_MCSPI_MSGSIZE] __attribute__((aligned(UDMA_CACHELINE_ALIGNMENT)));
+uint8_t gMcspiTxBuffer[APP_MCSPI_MSGSIZE] __attribute__((aligned(CacheP_CACHELINE_ALIGNMENT)));
+uint8_t gMcspiRxBuffer[APP_MCSPI_MSGSIZE] __attribute__((aligned(CacheP_CACHELINE_ALIGNMENT)));
 
 void *mcspi_loopback_dma_main(void *args)
 {
@@ -94,7 +94,7 @@ void *mcspi_loopback_dma_main(void *args)
     }
     else
     {
-        
+
         /* Invalidate cache */
         CacheP_inv(&gMcspiRxBuffer[0U], sizeof(gMcspiRxBuffer), CacheP_TYPE_ALLD);
         /* Compare data */

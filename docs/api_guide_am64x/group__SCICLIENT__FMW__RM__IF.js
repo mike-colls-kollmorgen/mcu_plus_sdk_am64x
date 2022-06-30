@@ -20,5 +20,6 @@ var group__SCICLIENT__FMW__RM__IF =
     [ "Sciclient_rmPsilUnpair", "group__SCICLIENT__FMW__RM__IF.html#ga9fc12e754141c4feab4f67bc4ee37b19", null ],
     [ "Sciclient_rmPsilRead", "group__SCICLIENT__FMW__RM__IF.html#gaf990696b7042e830f1a1790522416f31", null ],
     [ "Sciclient_rmPsilWrite", "group__SCICLIENT__FMW__RM__IF.html#ga670dd383a0badd5c8f8bd7d2275464ea", null ],
-    [ "Sciclient_rmSetProxyCfg", "group__SCICLIENT__FMW__RM__IF.html#gac1598ff1fc7d1379d9ae84edb950184d", null ]
+    [ "Sciclient_rmSetProxyCfg", "group__SCICLIENT__FMW__RM__IF.html#gac1598ff1fc7d1379d9ae84edb950184d", null ],
+    [ "Sciclient_rmIrOutpIsFree", "group__SCICLIENT__FMW__RM__IF.html#ga7ee1d653406e3c9f84bc0e7738a25c99", null ]
 ];

@@ -33,6 +33,12 @@
 #ifndef _ICSS_TIMESYNC_MM_H_
 #define _ICSS_TIMESYNC_MM_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define GPTP_BASE_ADDR_OFFSET                            0x8
 
 #define RX_SYNC_TIMESTAMP_OFFSET_P1                      ( GPTP_BASE_ADDR_OFFSET + 0 )                  //12 bytes
@@ -83,5 +89,10 @@
 #define PTP_PREV_TX_TIMESTAMP_P2                         ( PTP_PREV_TX_TIMESTAMP_P1 + 8 )               //8 bytes
 #define PTP_CLK_IDENTITY_OFFSET                          ( PTP_PREV_TX_TIMESTAMP_P2 + 8 )               //8 byte
 #define PTP_SCRATCH_MEM                                  ( PTP_CLK_IDENTITY_OFFSET + 8 )                //8 byte
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _ICSS_TIMESYNC_MM_H_ */

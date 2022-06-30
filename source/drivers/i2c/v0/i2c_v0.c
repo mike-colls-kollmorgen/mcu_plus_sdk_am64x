@@ -740,7 +740,7 @@ void I2C_hwiFxnMaster(I2C_Handle handle)
                 if ((stat & I2C_INT_RECV_READY) != 0U)
                 {
                     /* Save the received data */
-                    if (object->readBufIdx > 0U)
+                    if (object->readBufIdx != NULL)
                     {
                         *(object->readBufIdx) = I2CMasterDataGet(object->baseAddr);
                         object->readBufIdx++;

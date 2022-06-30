@@ -73,20 +73,35 @@ typedef void (*PRU_IPC_CallbackFxn)(void *args);
 /*                         Structure Declarations                             */
 /* ========================================================================== */
 
+/**
+ * \anchor   Config_Mem_Struct
+ * \name PRU_IPC Pru Config Memory (DRAM) Offsets
+ * @{
+ */
+typedef struct {
+    uint16_t blockId;
+    uint8_t  dataSize;
+    uint8_t  noOfBuffers;
+    uint16_t blockSize;
+    uint16_t noOfBlocks;
+    uint32_t bufferAddrs;
+} Config_Mem_Struct;
+/** @} */
+
 typedef struct PRU_IPC_Attrs_s {
     uint16_t  dataSize;          /**< Size of 1 data packet in bytes */
     uint16_t  blockSize;         /**< Size of each Block in terms of data packets */
     uint16_t  noOfBlocks;        /**< Total Blocks per Buffer */
     uint16_t  noOfBuffers;       /**< Total Buffers to reserve for shared memory */
     uint32_t  *bufferAddrs;      /**< Buffers' base addresses */
-    uint32_t  configMemAddr;     /**< PRU Mem Address where Configurables' Info for IPC will be stored */
+    Config_Mem_Struct *config;   /**< PRU Mem Address where Configurables' Info for IPC will be stored */
     uint32_t  enableRxInt;       /**< Enable interrupt on Receiving Data */
     uint32_t  pruEvtoutNum;      /**< Event number for the interrupt triggered by this instance */
     uint32_t  sysEventNum;       /**< System event number, used to clear interrupt */
     uint32_t  r5fIntrNum;        /**< Interrupt number on R5F side */
     uint32_t  enableTxInt;       /**< Enable interrupt to PRU core */
     uint32_t  txEventNum;        /**< Event number for the interrupt sent to PRU */
-    uint32_t  blockSizeBytes;     /**< blockSize * dataSize */
+    uint32_t  blockSizeBytes;    /**< blockSize * dataSize */
 } PRU_IPC_Attrs;
 
 typedef struct PRU_IPC_Params_s {
@@ -163,7 +178,7 @@ uint16_t PRU_IPC_getBlockId(PRU_IPC_Handle handle);
  *
  *  \param[in]  handle  #PRU_IPC_Handle returned from #PRU_IPC_open()
  *  \param[in,out]  container  To store the data read from the configured shared memory,
- *                  type: 2D Array - int(size)_t container[BUFFERS][BLOCKSIZE]
+ *                  type: 2D Array - int32_t container[BUFFERS][BLOCKSIZE]
  *
  *  \return     #SystemP_SUCCESS in case of success, #SystemP_FAILURE otherwise
  */
@@ -174,7 +189,7 @@ int32_t PRU_IPC_getData(PRU_IPC_Handle handle, void *container);
  *
  *  \param[in]  handle  #PRU_IPC_Handle returned from #PRU_IPC_open()
  *  \param[in]  container  To write the data to the configured shared memory
- *                  type: 2D Array - int(size)_t container[BUFFERS][BLOCKSIZE]
+ *                  type: 2D Array - int32_t container[BUFFERS][BLOCKSIZE]
  *
  *  \return     #SystemP_SUCCESS in case of success, #SystemP_FAILURE otherwise
  */

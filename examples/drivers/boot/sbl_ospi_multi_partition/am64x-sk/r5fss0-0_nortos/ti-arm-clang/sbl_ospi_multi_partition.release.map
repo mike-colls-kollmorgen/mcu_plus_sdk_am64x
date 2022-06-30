@@ -1,0 +1,1258 @@
+******************************************************************************
+            TI ARM Clang Linker Unix v1.3.1                    
+******************************************************************************
+>> Linked Mon Jun 20 12:48:53 2022
+
+OUTPUT FILE NAME:   <sbl_ospi_multi_partition.release.out>
+ENTRY POINT SYMBOL: "_vectors_sbl"  address: 70000000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  R5F_VECS              00000000   00000040  00000000  00000040  RWIX
+  R5F_TCMA              00000040   00007fc0  00000000  00007fc0  RWIX
+  R5F_TCMB0             41010000   00008000  00000000  00008000  RWIX
+  MSRAM_VECS            70000000   00000100  00000040  000000c0  RWIX
+  MSRAM_0               70000100   0004ff00  000099c0  00046540  RWIX
+  MSRAM_1               70050000   00030000  000066f0  00029910  RWIX
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+70000000    70000000    00000040   00000040    r-x
+  70000000    70000000    00000040   00000040    r-x .vectors
+70000100    70000100    00006760   00006760    r-x
+  70000100    70000100    00005820   00005820    r-x .text
+  70005920    70005920    00000770   00000770    r-x .text.hwi
+  70006090    70006090    00000460   00000460    r-x .text.cache
+  700064f0    700064f0    00000240   00000240    r-x .text.mpu
+  70006730    70006730    00000130   00000130    r-x .text.boot
+70006860    70006860    00002270   00002270    rw-
+  70006860    70006860    00002270   00002270    rw- .data
+70008ad0    70008ad0    00000ff0   00000ff0    r--
+  70008ad0    70008ad0    00000ff0   00000ff0    r-- .rodata
+70050000    70050000    000052f0   00000000    rw-
+  70050000    70050000    00004000   00000000    rw- .stack
+  70054000    70054000    000012f0   00000000    rw- .bss
+700552f0    700552f0    00001400   00000000    r--
+  700552f0    700552f0    00001000   00000000    r-- .irqstack
+  700562f0    700562f0    00000100   00000000    r-- .fiqstack
+  700563f0    700563f0    00000100   00000000    r-- .svcstack
+  700564f0    700564f0    00000100   00000000    r-- .abortstack
+  700565f0    700565f0    00000100   00000000    r-- .undefinedstack
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.vectors   0    70000000    00000040     
+                  70000000    00000040     nortos.am64x.r5f.ti-arm-clang.release.lib : HwiP_armv7r_vectors_nortos_sbl_asm.obj (.vectors)
+
+.text      0    70000100    00005820     
+                  70000100    0000055e     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text._vsnprintf)
+                  7000065e    00000002     --HOLE-- [fill = 0]
+                  70000660    000003d8     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_v0.obj (.text.UART_open)
+                  70000a38    00000008     libc.a : exit.c.obj (.text:abort)
+                  70000a40    00000376     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.text.Sciclient_service)
+                  70000db6    00000002     --HOLE-- [fill = 0]
+                  70000db8    00000004     libclang_rt.builtins.a : aeabi_memcpy.S.obj (.text)
+                  70000dbc    00000004     --HOLE-- [fill = 0]
+                  70000dc0    00000350     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text._ftoa)
+                  70001110    000002e8                                               : printf.obj (.text._etoa)
+                  700013f8    00000008                                               : HwiP_armv7r_asm.obj (.tramp.HwiP_restore.1)
+                  70001400    000002ba     drivers.am64x.r5f.ti-arm-clang.release.lib : ddr.obj (.text.DDR_init)
+                  700016ba    00000006     --HOLE-- [fill = 0]
+                  700016c0    00000226                                                : bootloader_soc.obj (.text.Bootloader_socCpuResetRelease)
+                  700018e6    00000002     --HOLE-- [fill = 0]
+                  700018e8    00000008     nortos.am64x.r5f.ti-arm-clang.release.lib : HwiP_armv7r_asm.obj (.tramp.HwiP_enable.1)
+                  700018f0    0000021a     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_v0.obj (.text.UART_masterIsr)
+                  70001b0a    00000006     --HOLE-- [fill = 0]
+                  70001b10    000001ec                                                : bootloader_soc.obj (.text.Bootloader_socCpuPowerOnResetR5f)
+                  70001cfc    00000004     --HOLE-- [fill = 0]
+                  70001d00    000001de                                                : uart_v0.obj (.text.UART_write)
+                  70001ede    00000002     --HOLE-- [fill = 0]
+                  70001ee0    000001d0                                                : uart_v0.obj (.text.UART_fifoConfig)
+                  700020b0    000001cc     nortos.am64x.r5f.ti-arm-clang.release.lib : TimerP.obj (.text.TimerP_setup)
+                  7000227c    00000004     --HOLE-- [fill = 0]
+                  70002280    00000146                                               : printf.obj (.text._ntoa_format)
+                  700023c6    0000000a     --HOLE-- [fill = 0]
+                  700023d0    00000144     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_v0.obj (.text.UART_close)
+                  70002514    0000000c     --HOLE-- [fill = 0]
+                  70002520    0000012c                                                : soc.obj (.text.SOC_moduleSetClockFrequency)
+                  7000264c    00000004     --HOLE-- [fill = 0]
+                  70002650    00000124                                                : lpddr4_16bit.obj (.text.LPDDR4_CheckCtlInterrupt)
+                  70002774    0000000c     --HOLE-- [fill = 0]
+                  70002780    00000118                                                : bootloader_soc.obj (.text.Bootloader_socCpuPowerOnResetM4f)
+                  70002898    00000008     --HOLE-- [fill = 0]
+                  700028a0    00000118                                                : lpddr4_16bit.obj (.text.LPDDR4_AckCtlInterrupt)
+                  700029b8    00000118     libclang_rt.builtins.a : udivmoddi4.S.obj (.text)
+                  70002ad0    00000114     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socCpuResetReleaseSelf)
+                  70002be4    0000000c     --HOLE-- [fill = 0]
+                  70002bf0    000000fc     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos_r5.obj (.text.ClockP_init)
+                  70002cec    00000004     --HOLE-- [fill = 0]
+                  70002cf0    000000e0     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader.obj (.text.Bootloader_verifyMulticoreImage)
+                  70002dd0    000000d6                                                : bootloader.obj (.text.Bootloader_rprcImageLoad)
+                  70002ea6    0000000a     --HOLE-- [fill = 0]
+                  70002eb0    000000c8                                                : sciclient.obj (.text.Sciclient_getVersionCheck)
+                  70002f78    00000008     --HOLE-- [fill = 0]
+                  70002f80    000000c2                                                : bootloader.obj (.text.Bootloader_parseMultiCoreAppImage)
+                  70003042    0000000e     --HOLE-- [fill = 0]
+                  70003050    000000bc     main.obj (.text.main)
+                  7000310c    00000004     --HOLE-- [fill = 0]
+                  70003110    000000b6     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_v0.obj (.text.UART_divisorLatchWrite)
+                  700031c6    0000000a     --HOLE-- [fill = 0]
+                  700031d0    000000b2                                                : uart_v0.obj (.text.UART_flushTxFifo)
+                  70003282    0000000e     --HOLE-- [fill = 0]
+                  70003290    000000a8                                                : bootloader.obj (.text.Bootloader_loadSelfCpu)
+                  70003338    00000008     --HOLE-- [fill = 0]
+                  70003340    000000a8                                                : pinmux.obj (.text.Pinmux_config)
+                  700033e8    00000008     --HOLE-- [fill = 0]
+                  700033f0    000000a4                                                : uart_v0.obj (.text.UART_procLineStatusErr)
+                  70003494    0000000c     --HOLE-- [fill = 0]
+                  700034a0    000000a2     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text._ntoa_long_long)
+                  70003542    0000000e     --HOLE-- [fill = 0]
+                  70003550    0000009e     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient_pm.obj (.text.Sciclient_pmQueryModuleClkFreq)
+                  700035ee    00000002     --HOLE-- [fill = 0]
+                  700035f0    00000098                                                : sciclient.obj (.text.Sciclient_init)
+                  70003688    00000008     --HOLE-- [fill = 0]
+                  70003690    00000094                                                : bootloader.obj (.text.Bootloader_getMsgLen)
+                  70003724    0000000c     --HOLE-- [fill = 0]
+                  70003730    00000094                                                : sciclient.obj (.text.Sciclient_sendMessage)
+                  700037c4    0000000c     --HOLE-- [fill = 0]
+                  700037d0    00000094     nortos.am64x.r5f.ti-arm-clang.release.lib : SemaphoreP_nortos.obj (.text.SemaphoreP_pend)
+                  70003864    0000000c     --HOLE-- [fill = 0]
+                  70003870    00000094     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_v0.obj (.text.UART_init)
+                  70003904    0000000c     --HOLE-- [fill = 0]
+                  70003910    00000092     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text._ntoa_long)
+                  700039a2    0000000e     --HOLE-- [fill = 0]
+                  700039b0    0000008c     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient_pm.obj (.text.Sciclient_pmSetModuleClkFreq)
+                  70003a3c    00000004     --HOLE-- [fill = 0]
+                  70003a40    0000008a     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text._out_rev)
+                  70003aca    00000006     --HOLE-- [fill = 0]
+                  70003ad0    00000080     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient_procboot.obj (.text.Sciclient_procBootWaitProcessorState)
+                  70003b50    0000007a                                                : bootloader_soc.obj (.text.Bootloader_socCpuSetClock)
+                  70003bca    00000006     --HOLE-- [fill = 0]
+                  70003bd0    0000007a                                                : sciclient_pm.obj (.text.Sciclient_pmGetModuleClkNumParent)
+                  70003c4a    00000006     --HOLE-- [fill = 0]
+                  70003c50    00000078                                                : bootloader_soc.obj (.text.Bootloader_socCpuSetEntryPoint)
+                  70003cc8    00000008     --HOLE-- [fill = 0]
+                  70003cd0    00000072                                                : bootloader_soc.obj (.text.Bootloader_socCpuPowerOnResetA53)
+                  70003d42    0000000e     --HOLE-- [fill = 0]
+                  70003d50    00000070                                                : bootloader_soc.obj (.text.Bootloader_socMemInitCpu)
+                  70003dc0    00000070                                                : soc.obj (.text.SOC_moduleClockEnable)
+                  70003e30    0000006e                                                : lpddr4.obj (.text.LPDDR4_Start)
+                  70003e9e    00000002     --HOLE-- [fill = 0]
+                  70003ea0    0000006e                                                : sciclient_pm.obj (.text.Sciclient_pmGetModuleState)
+                  70003f0e    00000002     --HOLE-- [fill = 0]
+                  70003f10    0000006c     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_timerTickIsr)
+                  70003f7c    00000004     --HOLE-- [fill = 0]
+                  70003f80    0000006a     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socCpuGetClock)
+                  70003fea    00000006     --HOLE-- [fill = 0]
+                  70003ff0    0000006a                                                : uart_v0.obj (.text.UART_writeCancelNoCB)
+                  7000405a    00000006     --HOLE-- [fill = 0]
+                  70004060    00000068     nortos.am64x.r5f.ti-arm-clang.release.lib : AddrTranslateP.obj (.text.AddrTranslateP_getLocalAddr)
+                  700040c8    00000008     --HOLE-- [fill = 0]
+                  700040d0    00000066     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socCpuRelease)
+                  70004136    0000000a     --HOLE-- [fill = 0]
+                  70004140    00000066                                                : sciclient_pm.obj (.text.Sciclient_pmGetModuleClkFreq)
+                  700041a6    0000000a     --HOLE-- [fill = 0]
+                  700041b0    00000066                                                : sciclient_pm.obj (.text.Sciclient_pmGetModuleClkParent)
+                  70004216    0000000a     --HOLE-- [fill = 0]
+                  70004220    00000064                                                : bootloader_soc.obj (.text.Bootloader_socCpuRequest)
+                  70004284    0000000c     --HOLE-- [fill = 0]
+                  70004290    00000064                                                : sciclient_pm.obj (.text.Sciclient_pmModuleGetClkStatus)
+                  700042f4    0000000c     --HOLE-- [fill = 0]
+                  70004300    00000060                                                : sciclient_pm.obj (.text.Sciclient_pmSetModuleClkParent)
+                  70004360    00000060                                                : sciclient.obj (.text.Sciclient_waitForBootNotification)
+                  700043c0    0000005e                                                : sciclient_pm.obj (.text.Sciclient_pmModuleClkRequest)
+                  7000441e    00000002     --HOLE-- [fill = 0]
+                  70004420    0000005c                                                : bootloader.obj (.text.Bootloader_runCpu)
+                  7000447c    00000004     --HOLE-- [fill = 0]
+                  70004480    0000005c     nortos.am64x.r5f.ti-arm-clang.release.lib : DebugP_log.obj (.text._DebugP_assert)
+                  700044dc    0000005c     libc.a : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
+                  70004538    00000008     --HOLE-- [fill = 0]
+                  70004540    00000058     drivers.am64x.r5f.ti-arm-clang.release.lib : lpddr4.obj (.text.LPDDR4_ReadReg)
+                  70004598    00000008     --HOLE-- [fill = 0]
+                  700045a0    00000058                                                : sciclient_procboot.obj (.text.Sciclient_procBootSetSequenceCtrl)
+                  700045f8    00000008     --HOLE-- [fill = 0]
+                  70004600    00000058                                                : uart_dma.obj (.text.UART_dmaDisableChannel)
+                  70004658    00000008     --HOLE-- [fill = 0]
+                  70004660    00000054     main.obj (.text.App_bootCpu)
+                  700046b4    0000000c     --HOLE-- [fill = 0]
+                  700046c0    00000054     main.obj (.text.App_bootLoadSelfCpu)
+                  70004714    0000000c     --HOLE-- [fill = 0]
+                  70004720    00000054     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_dma.obj (.text.UART_dmaClose)
+                  70004774    0000000c     --HOLE-- [fill = 0]
+                  70004780    00000052                                                : sciclient_pm.obj (.text.Sciclient_pmSetModuleState)
+                  700047d2    0000000e     --HOLE-- [fill = 0]
+                  700047e0    00000050                                                : bootloader.obj (.text.Bootloader_findSeq)
+                  70004830    00000050                                                : sciclient_procboot.obj (.text.Sciclient_procBootReleaseProcessor)
+                  70004880    0000004e                                                : sciclient_soc_priv.obj (.text.Sciclient_getContext)
+                  700048ce    00000002     --HOLE-- [fill = 0]
+                  700048d0    0000004c                                                : bootloader_soc.obj (.text.Bootloader_socTranslateSectionAddr)
+                  7000491c    00000004     --HOLE-- [fill = 0]
+                  70004920    0000004c     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_addToList)
+                  7000496c    00000004     --HOLE-- [fill = 0]
+                  70004970    0000004c                                               : ClockP_nortos.obj (.text.ClockP_getTimeUsec)
+                  700049bc    00000004     --HOLE-- [fill = 0]
+                  700049c0    0000004c     ti_drivers_open_close.obj (.text.Drivers_uartOpen)
+                  70004a0c    00000004     --HOLE-- [fill = 0]
+                  70004a10    0000004a     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_construct)
+                  70004a5a    00000006     --HOLE-- [fill = 0]
+                  70004a60    00000046     ti_dpl_config.obj (.text.Dpl_init)
+                  70004aa6    0000000a     --HOLE-- [fill = 0]
+                  70004ab0    00000046     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient_pm.obj (.text.Sciclient_pmSetModuleRst_flags)
+                  70004af6    0000000a     --HOLE-- [fill = 0]
+                  70004b00    00000046                                                : sciclient_procboot.obj (.text.Sciclient_procBootGetProcessorState)
+                  70004b46    0000000a     --HOLE-- [fill = 0]
+                  70004b50    00000044     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_stop)
+                  70004b94    0000000c     --HOLE-- [fill = 0]
+                  70004ba0    00000044     drivers.am64x.r5f.ti-arm-clang.release.lib : lpddr4.obj (.text.LPDDR4_WritePhyIndepConfig)
+                  70004be4    0000000c     --HOLE-- [fill = 0]
+                  70004bf0    00000044                                                : sciclient_pm.obj (.text.Sciclient_pmSetModuleRst)
+                  70004c34    0000000c     --HOLE-- [fill = 0]
+                  70004c40    00000044                                                : sciclient_procboot.obj (.text.Sciclient_procBootRequestProcessor)
+                  70004c84    0000000c     --HOLE-- [fill = 0]
+                  70004c90    00000042                                                : ddr_soc.obj (.text.DDR_socEnableVttRegulator)
+                  70004cd2    0000000e     --HOLE-- [fill = 0]
+                  70004ce0    00000042                                                : lpddr4.obj (.text.LPDDR4_WritePhyConfig)
+                  70004d22    0000000e     --HOLE-- [fill = 0]
+                  70004d30    00000042                                                : sciclient_procboot.obj (.text.Sciclient_procBootAuthAndStart)
+                  70004d72    0000000e     --HOLE-- [fill = 0]
+                  70004d80    00000040                                                : bootloader.obj (.text.Bootloader_loadCpu)
+                  70004dc0    00000040     nortos.am64x.r5f.ti-arm-clang.release.lib : SemaphoreP_nortos.obj (.text.SemaphoreP_constructBinary)
+                  70004e00    0000003e     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader.obj (.text.Bootloader_open)
+                  70004e3e    00000002     --HOLE-- [fill = 0]
+                  70004e40    0000003e                                                : lpddr4.obj (.text.LPDDR4_WriteCtlConfig)
+                  70004e7e    00000002     --HOLE-- [fill = 0]
+                  70004e80    0000003e                                                : soc.obj (.text.SOC_controlModuleUnlockMMR)
+                  70004ebe    00000002     --HOLE-- [fill = 0]
+                  70004ec0    0000003e                                                : sciclient_procboot.obj (.text.Sciclient_procBootSetProcessorCfg)
+                  70004efe    00000002     --HOLE-- [fill = 0]
+                  70004f00    0000003c     nortos.am64x.r5f.ti-arm-clang.release.lib : SemaphoreP_nortos.obj (.text.SemaphoreP_constructMutex)
+                  70004f3c    00000004     --HOLE-- [fill = 0]
+                  70004f40    0000003a                                               : ClockP_nortos.obj (.text.ClockP_destruct)
+                  70004f7a    00000006     --HOLE-- [fill = 0]
+                  70004f80    0000003a                                               : DebugP_uartLogWriter.obj (.text.DebugP_uartLogWriterPutChar)
+                  70004fba    00000006     --HOLE-- [fill = 0]
+                  70004fc0    0000003a     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_dma.obj (.text.UART_dmaOpen)
+                  70004ffa    00000006     --HOLE-- [fill = 0]
+                  70005000    00000038                                                : bootloader.obj (.text.Bootloader_getX509CertLen)
+                  70005038    00000008     --HOLE-- [fill = 0]
+                  70005040    00000038     ti_power_clock_config.obj (.text.Module_clockSetFrequency)
+                  70005078    00000008     --HOLE-- [fill = 0]
+                  70005080    00000038     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.text.Sciclient_getCurrentContext)
+                  700050b8    00000008     --HOLE-- [fill = 0]
+                  700050c0    00000038     nortos.am64x.r5f.ti-arm-clang.release.lib : DebugP_nortos.obj (.text._DebugP_logZone)
+                  700050f8    00000008     --HOLE-- [fill = 0]
+                  70005100    00000034                                               : ClockP_nortos.obj (.text.ClockP_start)
+                  70005134    0000000c     --HOLE-- [fill = 0]
+                  70005140    00000034     drivers.am64x.r5f.ti-arm-clang.release.lib : lpddr4_16bit.obj (.text.LPDDR4_EnablePIInitiator)
+                  70005174    0000000c     --HOLE-- [fill = 0]
+                  70005180    00000034                                                : lpddr4.obj (.text.LPDDR4_PollCtlIrq)
+                  700051b4    0000000c     --HOLE-- [fill = 0]
+                  700051c0    00000032                                                : bootloader.obj (.text.Bootloader_BootImageInfo_init)
+                  700051f2    0000000e     --HOLE-- [fill = 0]
+                  70005200    00000032     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_usleep)
+                  70005232    0000000e     --HOLE-- [fill = 0]
+                  70005240    00000032                                               : SemaphoreP_nortos.obj (.text.SemaphoreP_post)
+                  70005272    0000000e     --HOLE-- [fill = 0]
+                  70005280    00000032     ti_drivers_config.obj (.text.System_init)
+                  700052b2    0000000e     --HOLE-- [fill = 0]
+                  700052c0    00000030     ti_power_clock_config.obj (.text.Module_clockDisable)
+                  700052f0    00000030     ti_power_clock_config.obj (.text.Module_clockEnable)
+                  70005320    0000002e     drivers.am64x.r5f.ti-arm-clang.release.lib : ddr.obj (.text.DDR_setFreq)
+                  7000534e    00000002     --HOLE-- [fill = 0]
+                  70005350    0000002e                                                : uart_v0.obj (.text.UART_getHandle)
+                  7000537e    00000002     --HOLE-- [fill = 0]
+                  70005380    0000002a                                                : bootloader_soc.obj (.text.Bootloader_socIsAuthRequired)
+                  700053aa    00000006     --HOLE-- [fill = 0]
+                  700053b0    0000002a                                                : bootloader_mem.obj (.text.Mem_imgRead)
+                  700053da    00000006     --HOLE-- [fill = 0]
+                  700053e0    0000002a                                                : soc.obj (.text.SOC_controlModuleLockMMR)
+                  7000540a    00000006     --HOLE-- [fill = 0]
+                  70005410    00000028                                                : bootloader_soc.obj (.text.Bootloader_socCpuPowerOnReset)
+                  70005438    00000008     --HOLE-- [fill = 0]
+                  70005440    00000028     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_sleepTicks)
+                  70005468    00000024     libclang_rt.builtins.a : aeabi_uldivmod.S.obj (.text)
+                  7000548c    00000004     --HOLE-- [fill = 0]
+                  70005490    00000022     ti_pinmux_config.obj (.text.Pinmux_init)
+                  700054b2    0000000e     --HOLE-- [fill = 0]
+                  700054c0    00000020     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socGetCoreName)
+                  700054e0    00000020                                                : bootloader_soc.obj (.text.Bootloader_socRprcToCslCoreId)
+                  70005500    00000020     nortos.am64x.r5f.ti-arm-clang.release.lib : DebugP_log.obj (.text.DebugP_logZoneEnable)
+                  70005520    00000020     ti_drivers_config.obj (.text.System_deinit)
+                  70005540    00000020     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.text.vprintf_)
+                  70005560    0000001e                                               : TimerP.obj (.text.TimerP_Params_init)
+                  7000557e    00000002     --HOLE-- [fill = 0]
+                  70005580    0000001c     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socCpuGetClkDefault)
+                  7000559c    00000004     --HOLE-- [fill = 0]
+                  700055a0    0000001c     nortos.am64x.r5f.ti-arm-clang.release.lib : boot_armv7r.obj (.text._system_pre_init)
+                  700055bc    0000001c     libsysbm.a : memcpy32.S.obj (.text:TI_memcpy_small)
+                  700055d8    0000001c     libclang_rt.builtins.a : aeabi_memset.S.obj (.text)
+                  700055f4    0000000c     --HOLE-- [fill = 0]
+                  70005600    0000001a     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_mem.obj (.text.Mem_imgOpen)
+                  7000561a    00000006     --HOLE-- [fill = 0]
+                  70005620    0000001a                                                : uart_v0.obj (.text.UART_deinit)
+                  7000563a    00000006     --HOLE-- [fill = 0]
+                  70005640    0000001a                                                : uart_dma.obj (.text.UART_writeInterruptDma)
+                  7000565a    00000006     --HOLE-- [fill = 0]
+                  70005660    00000018                                                : bootloader_soc.obj (.text.Bootloader_socAuthImage)
+                  70005678    00000008     --HOLE-- [fill = 0]
+                  70005680    00000018     ti_drivers_open_close.obj (.text.Drivers_close)
+                  70005698    00000008     --HOLE-- [fill = 0]
+                  700056a0    00000018     drivers.am64x.r5f.ti-arm-clang.release.lib : lpddr4.obj (.text.LPDDR4_Init)
+                  700056b8    00000008     --HOLE-- [fill = 0]
+                  700056c0    00000018                                                : sciclient_soc_priv.obj (.text.Sciclient_getDevId)
+                  700056d8    00000018     libsysbm.a : memset32.S.obj (.text:TI_memset_small)
+                  700056f0    00000016     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader.obj (.text.Bootloader_bootCpu)
+                  70005706    0000000a     --HOLE-- [fill = 0]
+                  70005710    00000010                                                : bootloader.obj (.text.Bootloader_close)
+                  70005720    00000010                                                : lpddr4.obj (.text.LPDDR4_Probe)
+                  70005730    00000010     nortos.am64x.r5f.ti-arm-clang.release.lib : TimerP.obj (.text.TimerP_clearOverflowInt)
+                  70005740    0000000e     ti_power_clock_config.obj (.text.PowerClock_init)
+                  7000574e    00000002     --HOLE-- [fill = 0]
+                  70005750    0000000c     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader.obj (.text.Bootloader_Params_init)
+                  7000575c    00000004     --HOLE-- [fill = 0]
+                  70005760    0000000c     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_getTicks)
+                  7000576c    00000004     --HOLE-- [fill = 0]
+                  70005770    0000000c                                               : DebugP_uartLogWriter.obj (.text.DebugP_uartSetDrvIndex)
+                  7000577c    00000004     --HOLE-- [fill = 0]
+                  70005780    0000000a     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socGetSBLMem)
+                  7000578a    00000006     --HOLE-- [fill = 0]
+                  70005790    0000000a                                                : csl_sec_proxy.obj (.text.CSL_secProxyGetDataAddr)
+                  7000579a    00000006     --HOLE-- [fill = 0]
+                  700057a0    0000000a     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_Params_init)
+                  700057aa    00000006     --HOLE-- [fill = 0]
+                  700057b0    0000000a                                               : ClockP_nortos.obj (.text.ClockP_isActive)
+                  700057ba    00000006     --HOLE-- [fill = 0]
+                  700057c0    0000000a                                               : TimerP.obj (.text.TimerP_start)
+                  700057ca    00000006     --HOLE-- [fill = 0]
+                  700057d0    0000000a                                               : printf.obj (.text._out_char)
+                  700057da    00000006     --HOLE-- [fill = 0]
+                  700057e0    00000004     ti_board_open_close.obj (.text.Board_driversOpen)
+                  700057e4    0000000c     --HOLE-- [fill = 0]
+                  700057f0    00000004     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.text.Bootloader_socWaitForFWBoot)
+                  700057f4    0000000c     --HOLE-- [fill = 0]
+                  70005800    00000004                                                : lpddr4.obj (.text.CPS_UncachedRead32)
+                  70005804    0000000c     --HOLE-- [fill = 0]
+                  70005810    00000004                                                : lpddr4.obj (.text.CPS_UncachedWrite32)
+                  70005814    0000000c     --HOLE-- [fill = 0]
+                  70005820    00000004     nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos_r5.obj (.text.ClockP_getTimerCount)
+                  70005824    0000000c     --HOLE-- [fill = 0]
+                  70005830    00000004                                               : ClockP_nortos_r5.obj (.text.ClockP_timerClearOverflowInt)
+                  70005834    0000000c     --HOLE-- [fill = 0]
+                  70005840    00000004     ti_drivers_open_close.obj (.text.Drivers_open)
+                  70005844    0000000c     --HOLE-- [fill = 0]
+                  70005850    00000004     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_mem.obj (.text.Mem_imgGetCurOffset)
+                  70005854    0000000c     --HOLE-- [fill = 0]
+                  70005860    00000004                                                : bootloader_mem.obj (.text.Mem_imgSeek)
+                  70005864    0000000c     --HOLE-- [fill = 0]
+                  70005870    00000004     ti_power_clock_config.obj (.text.PowerClock_deinit)
+                  70005874    0000000c     --HOLE-- [fill = 0]
+                  70005880    00000004     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.text.Sciclient_deinit)
+                  70005884    0000000c     --HOLE-- [fill = 0]
+                  70005890    00000004     nortos.am64x.r5f.ti-arm-clang.release.lib : TimerP.obj (.text.TimerP_getCount)
+                  70005894    0000000c     --HOLE-- [fill = 0]
+                  700058a0    00000004                                               : TimerP.obj (.text.TimerP_getReloadCount)
+                  700058a4    0000000c     --HOLE-- [fill = 0]
+                  700058b0    00000004     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_ldiv0)
+                  700058b4    0000000c     --HOLE-- [fill = 0]
+                  700058c0    00000004     ti_dpl_config.obj (.text.putchar_)
+                  700058c4    0000000c     --HOLE-- [fill = 0]
+                  700058d0    00000002     ti_dpl_config.obj (.text.Dpl_deinit)
+                  700058d2    0000000e     --HOLE-- [fill = 0]
+                  700058e0    00000002     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_mem.obj (.text.Mem_imgClose)
+                  700058e2    0000000e     --HOLE-- [fill = 0]
+                  700058f0    00000002     nortos.am64x.r5f.ti-arm-clang.release.lib : SemaphoreP_nortos.obj (.text.SemaphoreP_destruct)
+                  700058f2    0000000e     --HOLE-- [fill = 0]
+                  70005900    00000002                                               : TaskP_nortos.obj (.text.TaskP_yield)
+                  70005902    0000000e     --HOLE-- [fill = 0]
+                  70005910    00000002                                               : printf.obj (.text._out_null)
+                  70005912    0000000e     --HOLE-- [fill = 0]
+
+.text.hwi 
+*          0    70005920    00000770     
+                  70005920    00000442     nortos.am64x.r5f.ti-arm-clang.release.lib : HwiP_armv7r_vim.obj (.text.hwi)
+                  70005d62    00000002     --HOLE-- [fill = 0]
+                  70005d64    00000008                                               : HwiP_armv7r_asm.obj (.tramp.HwiP_enableFIQ.1)
+                  70005d6c    00000004     --HOLE-- [fill = 0]
+                  70005d70    0000022e                                               : HwiP_armv7r_handlers_nortos.obj (.text.hwi)
+                  70005f9e    00000002     --HOLE-- [fill = 0]
+                  70005fa0    00000078                                               : HwiP_armv7r_handlers_nortos_asm.obj (.text.hwi)
+                  70006018    00000070                                               : HwiP_armv7r_asm.obj (.text.hwi)
+                  70006088    00000008     --HOLE-- [fill = 0]
+
+.text.cache 
+*          0    70006090    00000460     
+                  70006090    00000340     nortos.am64x.r5f.ti-arm-clang.release.lib : CacheP_armv7r_asm.obj (.text.cache)
+                  700063d0    00000106                                               : CacheP_armv7r.obj (.text.cache)
+                  700064d6    00000002     --HOLE-- [fill = 0]
+                  700064d8    00000008                                               : CacheP_armv7r_asm.obj (.tramp.CacheP_invL1d.1)
+                  700064e0    00000008                                               : HwiP_armv7r_asm.obj (.tramp.HwiP_restore.2)
+                  700064e8    00000008                                               : CacheP_armv7r_asm.obj (.tramp.CacheP_enableL1p.1)
+
+.text.mpu 
+*          0    700064f0    00000240     
+                  700064f0    000001b4     nortos.am64x.r5f.ti-arm-clang.release.lib : MpuP_armv7r.obj (.text.mpu)
+                  700066a4    00000078                                               : MpuP_armv7r_asm.obj (.text.mpu)
+                  7000671c    00000008                                               : MpuP_armv7r_asm.obj (.tramp.MpuP_isEnableAsm.1)
+                  70006724    00000008                                               : HwiP_armv7r_asm.obj (.tramp.HwiP_restore.3)
+                  7000672c    00000004     --HOLE-- [fill = 0]
+
+.text.boot 
+*          0    70006730    00000130     
+                  70006730    000000fc     nortos.am64x.r5f.ti-arm-clang.release.lib : boot_armv7r_asm.obj (.text.boot)
+                  7000682c    00000004     --HOLE-- [fill = 0]
+                  70006830    0000001e                                               : DebugP_log.obj (.text.boot)
+                  7000684e    00000002     --HOLE-- [fill = 0]
+                  70006850    0000000e     ti_dpl_config.obj (.text.boot)
+                  7000685e    00000002     --HOLE-- [fill = 0]
+
+.data      0    70006860    00002270     
+                  70006860    000007ec     ti_drivers_config.obj (.data.DDRSS_phyReg)
+                  7000704c    0000069c     ti_drivers_config.obj (.data.DDRSS_ctlReg)
+                  700076e8    00000564     ti_drivers_config.obj (.data.DDRSS_phyIndepReg)
+                  70007c4c    000003f6     ti_drivers_config.obj (.data.DDRSS_phyRegNum)
+                  70008042    0000034e     ti_drivers_config.obj (.data.DDRSS_ctlRegNum)
+                  70008390    000002b2     ti_drivers_config.obj (.data.DDRSS_phyIndepRegNum)
+                  70008642    00000001     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.data.gSecHeaderSizeWords)
+                  70008643    00000001     --HOLE-- [fill = 0]
+                  70008644    000000c4                                                : bootloader_soc.obj (.data.gAddrTranslateInfo)
+                  70008708    000000a8                                                : bootloader_soc.obj (.data.gCoreBootInfo)
+                  700087b0    0000009c                                                : uart_v0.obj (.data.gUartDrvObj)
+                  7000884c    00000078     ti_drivers_config.obj (.data.gBootloaderConfig)
+                  700088c4    00000054     ti_drivers_open_close.obj (.data.gUartParams)
+                  70008918    00000050     ti_dpl_config.obj (.data.gMpuRegionConfig)
+                  70008968    00000030     ti_drivers_config.obj (.data.gDdrParams)
+                  70008998    00000020     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient_soc_priv.obj (.data.gSciclientSecProxyCfg)
+                  700089b8    00000018     ti_pinmux_config.obj (.data.gPinMuxMainDomainCfg)
+                  700089d0    00000018     ti_power_clock_config.obj (.data.gSocModulesClockFrequency)
+                  700089e8    00000014     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_mem.obj (.data.gBootloaderMemFxns)
+                  700089fc    00000014     ti_dpl_config.obj (.data.gClockConfig)
+                  70008a10    00000014     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.data.gResMemSection)
+                  70008a24    00000010     ti_power_clock_config.obj (.data.gSocModules)
+                  70008a34    00000004     ti_drivers_config.obj (.data.gBootloaderConfigNum)
+                  70008a38    0000000c     nortos.am64x.r5f.ti-arm-clang.release.lib : AddrTranslateP.obj (.data.gAddrTranslateConfig)
+                  70008a44    0000000c     ti_dpl_config.obj (.data.gMpuConfig)
+                  70008a50    00000008     ti_drivers_config.obj (.data.gBootloader0Args)
+                  70008a58    00000008     ti_drivers_config.obj (.data.gBootloader1Args)
+                  70008a60    00000008     ti_drivers_config.obj (.data.gBootloader2Args)
+                  70008a68    00000008     ti_drivers_config.obj (.data.gBootloader3Args)
+                  70008a70    00000008     ti_drivers_config.obj (.data.gBootloader4Args)
+                  70008a78    00000008     ti_drivers_config.obj (.data.gBootloader5Args)
+                  70008a80    00000008     ti_dpl_config.obj (.data.gCacheConfig)
+                  70008a88    00000008     ti_pinmux_config.obj (.data.gPinMuxMcuDomainCfg)
+                  70008a90    00000008     ti_drivers_config.obj (.data.gUartAttrs)
+                  70008a98    00000008     ti_drivers_config.obj (.data.gUartConfig)
+                  70008aa0    00000004     nortos.am64x.r5f.ti-arm-clang.release.lib : CacheP_armv7r.obj (.data.gCacheL1dCacheLineSize)
+                  70008aa4    00000004                                               : CacheP_armv7r.obj (.data.gCacheL1pCacheLineSize)
+                  70008aa8    00000004                                               : DebugP_log.obj (.data.gDebugLogZone)
+                  70008aac    00000004                                               : DebugP_uartLogWriter.obj (.data.gDebugP_uartDrvIndex)
+                  70008ab0    00000004     ti_dpl_config.obj (.data.gHwiConfig)
+                  70008ab4    00000004     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.data.gSciclientHandle.0)
+                  70008ab8    00000004                                                : sciclient.obj (.data.gSciclientHandle.2)
+                  70008abc    00000004                                                : sciclient.obj (.data.gSciclientHandle.3)
+                  70008ac0    00000004                                                : sciclient.obj (.data.gSciclientHandle.4)
+                  70008ac4    00000004                                                : sciclient.obj (.data.gSciclientHandle.5)
+                  70008ac8    00000004     ti_drivers_config.obj (.data.gUartConfigNum)
+                  70008acc    00000004     ti_drivers_config.obj (.data.gUartDmaConfigNum)
+
+.rodata    0    70008ad0    00000ff0     
+                  70008ad0    0000043b     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.rodata.str1.1)
+                  70008f0b    000001a2                                                : ddr.obj (.rodata.str1.1)
+                  700090ad    00000136                                                : bootloader.obj (.rodata.str1.1)
+                  700091e3    00000135                                                : uart_v0.obj (.rodata.str1.1)
+                  70009318    00000132                                                : lpddr4_16bit.obj (.rodata.CtlIntMap)
+                  7000944a    00000002     --HOLE-- [fill = 0]
+                  7000944c    0000012c                                                : sciclient_fmwSecureProxyMap.obj (.rodata.gSciclientMap)
+                  70009578    00000103     nortos.am64x.r5f.ti-arm-clang.release.lib : TimerP.obj (.rodata.str1.1)
+                  7000967b    000000ac                                               : ClockP_nortos_r5.obj (.rodata.str1.1)
+                  70009727    000000a9     drivers.am64x.r5f.ti-arm-clang.release.lib : sciclient.obj (.rodata.str1.1)
+                  700097d0    00000077     main.obj (.rodata.str1.1)
+                  70009847    0000006b     nortos.am64x.r5f.ti-arm-clang.release.lib : SemaphoreP_nortos.obj (.rodata.str1.1)
+                  700098b2    0000005a                                               : ClockP_nortos.obj (.rodata.str1.1)
+                  7000990c    00000004     --HOLE-- [fill = 0]
+                  70009910    00000050                                               : printf.obj (.rodata._ftoa.pow10)
+                  70009960    0000004b     drivers.am64x.r5f.ti-arm-clang.release.lib : uart_dma.obj (.rodata.str1.1)
+                  700099ab    00000001     --HOLE-- [fill = 0]
+                  700099ac    00000048                                                : bootloader_soc.obj (.rodata.gSOC_r5fVectors)
+                  700099f4    00000046     ti_drivers_open_close.obj (.rodata.str1.1)
+                  70009a3a    0000002d     nortos.am64x.r5f.ti-arm-clang.release.lib : DebugP_log.obj (.rodata.str1.1)
+                  70009a67    00000001     --HOLE-- [fill = 0]
+                  70009a68    0000001c     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader_soc.obj (.rodata..L__const.Bootloader_socRprcToCslCoreId.rprcCoreIds)
+                  70009a84    00000018                                                : sciclient_soc_priv.obj (.rodata..Lswitch.table.Sciclient_getDevId)
+                  70009a9c    00000012     nortos.am64x.r5f.ti-arm-clang.release.lib : printf.obj (.rodata.str1.1)
+                  70009aae    0000000b     drivers.am64x.r5f.ti-arm-clang.release.lib : bootloader.obj (.rodata..L__const.Bootloader_getMsgLen.boot_seq_oid)
+                  70009ab9    00000007     --HOLE-- [fill = 0]
+
+.bss       0    70054000    000012f0     UNINITIALIZED
+                  70054000    00001008     (.common:gHwiCtrl)
+                  70055008    00000280     ti_drivers_config.obj (.bss.gUartObjects)
+                  70055288    00000038     (.common:gClockCtrl)
+                  700552c0    00000014     drivers.am64x.r5f.ti-arm-clang.release.lib : ddr.obj (.bss.gLpddrPd)
+                  700552d4    00000010                                                : ddr.obj (.bss.gLpddrCfg)
+                  700552e4    00000004     nortos.am64x.r5f.ti-arm-clang.release.lib : HwiP_armv7r_vim.obj (.bss.gdummy)
+                  700552e8    00000004     (.common:gUartHandle)
+                  700552ec    00000004     --HOLE--
+
+.stack     0    70050000    00004000     UNINITIALIZED
+                  70050000    00000004     nortos.am64x.r5f.ti-arm-clang.release.lib : boot_armv7r_asm.obj (.stack)
+                  70050004    00003ffc     --HOLE--
+
+.irqstack 
+*          0    700552f0    00001000     UNINITIALIZED
+                  700552f0    00001000     --HOLE--
+
+.fiqstack 
+*          0    700562f0    00000100     UNINITIALIZED
+                  700562f0    00000100     --HOLE--
+
+.svcstack 
+*          0    700563f0    00000100     UNINITIALIZED
+                  700563f0    00000100     --HOLE--
+
+.abortstack 
+*          0    700564f0    00000100     UNINITIALIZED
+                  700564f0    00000100     --HOLE--
+
+.undefinedstack 
+*          0    700565f0    00000100     UNINITIALIZED
+                  700565f0    00000100     --HOLE--
+
+__llvm_prf_cnts 
+*          0    70050000    00000000     UNINITIALIZED
+
+MODULE SUMMARY
+
+       Module                                   code    ro data   rw data
+       ------                                   ----    -------   -------
+    obj/release/
+       ti_drivers_config.obj                    82      0         8534   
+       main.obj                                 356     119       0      
+       ti_drivers_open_close.obj                104     70        88     
+       ti_dpl_config.obj                        90      0         124    
+       ti_power_clock_config.obj                170     0         40     
+       ti_pinmux_config.obj                     34      0         32     
+       ti_board_open_close.obj                  4       0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   840     189       8818   
+                                                                         
+    /home/gtbldadm/nightlybuilds/repo_manifests/scripts/jenkins/mcu_plus_sdk_am64x_08_03_00_18/source/drivers/lib/drivers.am64x.r5f.ti-arm-clang.release.lib
+       bootloader_soc.obj                       2662    1183      384    
+       uart_v0.obj                              3638    309       156    
+       sciclient.obj                            1542    169       21     
+       bootloader.obj                           1402    321       0      
+       sciclient_pm.obj                         1244    0         0      
+       ddr.obj                                  744     418       36     
+       lpddr4_16bit.obj                         624     306       0      
+       sciclient_procboot.obj                   562     0         0      
+       soc.obj                                  516     0         0      
+       lpddr4.obj                               494     0         0      
+       uart_dma.obj                             256     75        0      
+       sciclient_fmwSecureProxyMap.obj          0       300       0      
+       pinmux.obj                               168     0         0      
+       sciclient_soc_priv.obj                   102     24        32     
+       bootloader_mem.obj                       78      0         20     
+       ddr_soc.obj                              66      0         0      
+       csl_sec_proxy.obj                        10      0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   14108   3105      649    
+                                                                         
+    /home/gtbldadm/nightlybuilds/repo_manifests/scripts/jenkins/mcu_plus_sdk_am64x_08_03_00_18/source/kernel/nortos/lib/nortos.am64x.r5f.ti-arm-clang.release.lib
+       HwiP_armv7r_vim.obj                      1090    0         4108   
+       printf.obj                               3782    98        0      
+       CacheP_armv7r_asm.obj                    848     0         0      
+       TimerP.obj                               524     259       0      
+       ClockP_nortos.obj                        634     90        56     
+       HwiP_armv7r_handlers_nortos.obj          558     0         0      
+       MpuP_armv7r.obj                          436     0         0      
+       ClockP_nortos_r5.obj                     260     172       0      
+       SemaphoreP_nortos.obj                    324     107       0      
+       CacheP_armv7r.obj                        262     0         8      
+       boot_armv7r_asm.obj                      252     0         0      
+       DebugP_log.obj                           154     45        4      
+       HwiP_armv7r_asm.obj                      152     0         0      
+       MpuP_armv7r_asm.obj                      128     0         0      
+       HwiP_armv7r_handlers_nortos_asm.obj      120     0         0      
+       AddrTranslateP.obj                       104     0         12     
+       DebugP_uartLogWriter.obj                 70      0         4      
+       HwiP_armv7r_vectors_nortos_sbl_asm.obj   64      0         0      
+       DebugP_nortos.obj                        56      0         0      
+       boot_armv7r.obj                          28      0         0      
+       TaskP_nortos.obj                         2       0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   9848    771       4192   
+                                                                         
+    /home/gtbldadm/ti/ccs1120/ccs/tools/compiler/ti-cgt-armllvm_1.3.1.LTS/lib/armv7r-ti-none-eabihf/c/libc.a
+       autoinit.c.obj                           92      0         0      
+       exit.c.obj                               8       0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   100     0         0      
+                                                                         
+    /home/gtbldadm/ti/ccs1120/ccs/tools/compiler/ti-cgt-armllvm_1.3.1.LTS/lib/armv7r-ti-none-eabihf/c/libsysbm.a
+       memcpy32.S.obj                           28      0         0      
+       memset32.S.obj                           24      0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   52      0         0      
+                                                                         
+    /home/gtbldadm/ti/ccs1120/ccs/tools/compiler/ti-cgt-armllvm_1.3.1.LTS/lib/clang/12.0.1/lib/armv7r-ti-none-eabihf/libclang_rt.builtins.a
+       udivmoddi4.S.obj                         280     0         0      
+       aeabi_uldivmod.S.obj                     36      0         0      
+       aeabi_memset.S.obj                       28      0         0      
+       aeabi_div0.c.obj                         4       0         0      
+       aeabi_memcpy.S.obj                       4       0         0      
+    +--+----------------------------------------+-------+---------+---------+
+       Total:                                   352     0         0      
+                                                                         
+       Stack:                                   0       0         16384  
+    +--+----------------------------------------+-------+---------+---------+
+       Grand Total:                             25300   4065      30043  
+
+VENEERS
+
+callee name               veneer name
+   callee addr  veneer addr  call addr  call info
+--------------  -----------  ---------  ----------------
+HwiP_restore              $Ven$TA$L$PI$$HwiP_restore
+   70006058     700013f8     70004b90   nortos.am64x.r5f.ti-arm-clang.release.lib : ClockP_nortos.obj (.text.ClockP_stop)
+                             70004f76                                             : ClockP_nortos.obj (.text.ClockP_destruct)
+                             70005130                                             : ClockP_nortos.obj (.text.ClockP_start)
+                             7000526e                                             : SemaphoreP_nortos.obj (.text.SemaphoreP_post)
+HwiP_enable               $Ven$TA$L$PI$$HwiP_enable
+   70006038     700018e8     70004aa2   ti_dpl_config.obj (.text.Dpl_init)
+HwiP_enableFIQ            $Ven$TA$L$PI$$HwiP_enableFIQ
+   70006048     70005d64     70005d48   nortos.am64x.r5f.ti-arm-clang.release.lib : HwiP_armv7r_vim.obj (.text.hwi)
+CacheP_invL1d             $Ven$TA$L$PI$$CacheP_invL1d
+   70006100     700064d8     700064d2   nortos.am64x.r5f.ti-arm-clang.release.lib : CacheP_armv7r.obj (.text.cache)
+HwiP_restore              $Ven$TA$L$PI$$HwiP_restore
+   70006058     700064e0     70006486   nortos.am64x.r5f.ti-arm-clang.release.lib : CacheP_armv7r.obj (.text.cache)
+CacheP_enableL1p          $Ven$TA$L$PI$$CacheP_enableL1p
+   700060e8     700064e8     70006440   nortos.am64x.r5f.ti-arm-clang.release.lib : CacheP_armv7r.obj (.text.cache)
+                             700064ac                                             : CacheP_armv7r.obj (.text.cache)
+MpuP_isEnableAsm          $Ven$TA$L$PI$$MpuP_isEnableAsm
+   700066f4     7000671c     70006630   nortos.am64x.r5f.ti-arm-clang.release.lib : MpuP_armv7r.obj (.text.mpu)
+HwiP_restore              $Ven$TA$L$PI$$HwiP_restore
+   70006058     70006724     700065ea   nortos.am64x.r5f.ti-arm-clang.release.lib : MpuP_armv7r.obj (.text.mpu)
+                             7000661c                                             : MpuP_armv7r.obj (.text.mpu)
+
+[8 trampolines]
+[13 trampoline calls]
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                                
+-------   ----                                
+70004061  AddrTranslateP_getLocalAddr         
+70004661  App_bootCpu                         
+700046c1  App_bootLoadSelfCpu                 
+700057e1  Board_driversOpen                   
+700051c1  Bootloader_BootImageInfo_init       
+70005751  Bootloader_Params_init              
+700056f1  Bootloader_bootCpu                  
+70005711  Bootloader_close                    
+700047e1  Bootloader_findSeq                  
+70003691  Bootloader_getMsgLen                
+70005001  Bootloader_getX509CertLen           
+70004d81  Bootloader_loadCpu                  
+70003291  Bootloader_loadSelfCpu              
+70004e01  Bootloader_open                     
+70002f81  Bootloader_parseMultiCoreAppImage   
+70002dd1  Bootloader_rprcImageLoad            
+70004421  Bootloader_runCpu                   
+70005661  Bootloader_socAuthImage             
+70005581  Bootloader_socCpuGetClkDefault      
+70003f81  Bootloader_socCpuGetClock           
+70005411  Bootloader_socCpuPowerOnReset       
+70003cd1  Bootloader_socCpuPowerOnResetA53    
+70002781  Bootloader_socCpuPowerOnResetM4f    
+70001b11  Bootloader_socCpuPowerOnResetR5f    
+700040d1  Bootloader_socCpuRelease            
+70004221  Bootloader_socCpuRequest            
+700016c1  Bootloader_socCpuResetRelease       
+70002ad1  Bootloader_socCpuResetReleaseSelf   
+70003b51  Bootloader_socCpuSetClock           
+70003c51  Bootloader_socCpuSetEntryPoint      
+700054c1  Bootloader_socGetCoreName           
+70005781  Bootloader_socGetSBLMem             
+70005381  Bootloader_socIsAuthRequired        
+70003d51  Bootloader_socMemInitCpu            
+700054e1  Bootloader_socRprcToCslCoreId       
+700048d1  Bootloader_socTranslateSectionAddr  
+700057f1  Bootloader_socWaitForFWBoot         
+70002cf1  Bootloader_verifyMulticoreImage     
+70000a38  C$$EXIT                             
+70005801  CPS_UncachedRead32                  
+70005811  CPS_UncachedWrite32                 
+70005791  CSL_secProxyGetDataAddr             
+700063a0  CacheP_configForceWrThru            
+70006451  CacheP_disable                      
+70006090  CacheP_disableL1d                   
+700060b8  CacheP_disableL1p                   
+70006491  CacheP_enable                       
+700060d0  CacheP_enableL1d                    
+700060e8  CacheP_enableL1p                    
+70006394  CacheP_getCacheLevelInfo            
+7000635c  CacheP_getEnabled                   
+700063d1  CacheP_init                         
+700064b1  CacheP_inv                          
+70006100  CacheP_invL1d                       
+70006174  CacheP_invL1dAll                    
+70006138  CacheP_invL1p                       
+7000617c  CacheP_invL1pAll                    
+700063c0  CacheP_setDLFO                      
+70006184  CacheP_wb                           
+700061fc  CacheP_wbAll                        
+700061c0  CacheP_wbInv                        
+700062a4  CacheP_wbInvAll                     
+700062bc  CacheP_wbInvAllAsm                  
+700057a1  ClockP_Params_init                  
+70004a11  ClockP_construct                    
+70004f41  ClockP_destruct                     
+70005761  ClockP_getTicks                     
+70004971  ClockP_getTimeUsec                  
+70005821  ClockP_getTimerCount                
+70002bf1  ClockP_init                         
+700057b1  ClockP_isActive                     
+70005101  ClockP_start                        
+70004b51  ClockP_stop                         
+70005831  ClockP_timerClearOverflowInt        
+70003f11  ClockP_timerTickIsr                 
+70005201  ClockP_usleep                       
+7000704c  DDRSS_ctlReg                        
+70008042  DDRSS_ctlRegNum                     
+700076e8  DDRSS_phyIndepReg                   
+70008390  DDRSS_phyIndepRegNum                
+70006860  DDRSS_phyReg                        
+70007c4c  DDRSS_phyRegNum                     
+70001401  DDR_init                            
+70004c91  DDR_socEnableVttRegulator           
+70005501  DebugP_logZoneEnable                
+70004f81  DebugP_uartLogWriterPutChar         
+70005771  DebugP_uartSetDrvIndex              
+700058d1  Dpl_deinit                          
+70004a61  Dpl_init                            
+70005681  Drivers_close                       
+70005841  Drivers_open                        
+700049c1  Drivers_uartOpen                    
+70005a41  HwiP_Params_init                    
+700059f1  HwiP_clearInt                       
+70005a61  HwiP_construct                      
+70005f71  HwiP_data_abort_handler             
+70005bb1  HwiP_destruct                       
+70006018  HwiP_disable                        
+70006028  HwiP_disableFIQ                     
+70005951  HwiP_disableInt                     
+70006070  HwiP_disableVIC                     
+70006038  HwiP_enable                         
+70006048  HwiP_enableFIQ                      
+70005921  HwiP_enableInt                      
+70006060  HwiP_enableVIC                      
+70005e01  HwiP_fiq_handler                    
+70006080  HwiP_getCPSR                        
+70005d51  HwiP_inISR                          
+70005c81  HwiP_init                           
+70005fa0  HwiP_irq_handler                    
+70005d71  HwiP_irq_handler_c                  
+70005a11  HwiP_post                           
+70005f41  HwiP_prefetch_abort_handler         
+70005eb1  HwiP_reserved_handler               
+70006058  HwiP_restore                        
+70005991  HwiP_restoreInt                     
+70005f11  HwiP_svc_handler                    
+70005ee1  HwiP_undefined_handler              
+700028a1  LPDDR4_AckCtlInterrupt              
+70002651  LPDDR4_CheckCtlInterrupt            
+70005141  LPDDR4_EnablePIInitiator            
+700056a1  LPDDR4_Init                         
+70005181  LPDDR4_PollCtlIrq                   
+70005721  LPDDR4_Probe                        
+70004541  LPDDR4_ReadReg                      
+70003e31  LPDDR4_Start                        
+70004e41  LPDDR4_WriteCtlConfig               
+70004ce1  LPDDR4_WritePhyConfig               
+70004ba1  LPDDR4_WritePhyIndepConfig          
+700052c1  Module_clockDisable                 
+700052f1  Module_clockEnable                  
+70005041  Module_clockSetFrequency            
+700064f1  MpuP_RegionAttrs_init               
+700065f1  MpuP_disable                        
+700066a4  MpuP_disableAsm                     
+700066bc  MpuP_disableBRAsm                   
+700065b1  MpuP_enable                         
+700066cc  MpuP_enableAsm                      
+700066e4  MpuP_enableBRAsm                    
+70006641  MpuP_init                           
+70006631  MpuP_isEnable                       
+700066f4  MpuP_isEnableAsm                    
+70006501  MpuP_setRegion                      
+70006708  MpuP_setRegionAsm                   
+70003341  Pinmux_config                       
+70005491  Pinmux_init                         
+70005871  PowerClock_deinit                   
+70005741  PowerClock_init                     
+700053e1  SOC_controlModuleLockMMR            
+70004e81  SOC_controlModuleUnlockMMR          
+70003dc1  SOC_moduleClockEnable               
+70002521  SOC_moduleSetClockFrequency         
+70005881  Sciclient_deinit                    
+70004881  Sciclient_getContext                
+70005081  Sciclient_getCurrentContext         
+700056c1  Sciclient_getDevId                  
+70002eb1  Sciclient_getVersionCheck           
+700035f1  Sciclient_init                      
+70004141  Sciclient_pmGetModuleClkFreq        
+70003bd1  Sciclient_pmGetModuleClkNumParent   
+700041b1  Sciclient_pmGetModuleClkParent      
+70003ea1  Sciclient_pmGetModuleState          
+700043c1  Sciclient_pmModuleClkRequest        
+70004291  Sciclient_pmModuleGetClkStatus      
+70003551  Sciclient_pmQueryModuleClkFreq      
+700039b1  Sciclient_pmSetModuleClkFreq        
+70004301  Sciclient_pmSetModuleClkParent      
+70004bf1  Sciclient_pmSetModuleRst            
+70004ab1  Sciclient_pmSetModuleRst_flags      
+70004781  Sciclient_pmSetModuleState          
+70004d31  Sciclient_procBootAuthAndStart      
+70004b01  Sciclient_procBootGetProcessorState 
+70004831  Sciclient_procBootReleaseProcessor  
+70004c41  Sciclient_procBootRequestProcessor  
+70004ec1  Sciclient_procBootSetProcessorCfg   
+700045a1  Sciclient_procBootSetSequenceCtrl   
+70003ad1  Sciclient_procBootWaitProcessorState
+70000a41  Sciclient_service                   
+70004361  Sciclient_waitForBootNotification   
+70004dc1  SemaphoreP_constructBinary          
+70004f01  SemaphoreP_constructMutex           
+700058f1  SemaphoreP_destruct                 
+700037d1  SemaphoreP_pend                     
+70005241  SemaphoreP_post                     
+70005521  System_deinit                       
+70005281  System_init                         
+700055bc  TI_memcpy_small                     
+700056d8  TI_memset_small                     
+70005901  TaskP_yield                         
+70005561  TimerP_Params_init                  
+70005731  TimerP_clearOverflowInt             
+70005891  TimerP_getCount                     
+700058a1  TimerP_getReloadCount               
+700020b1  TimerP_setup                        
+700057c1  TimerP_start                        
+700023d1  UART_close                          
+70005621  UART_deinit                         
+70004721  UART_dmaClose                       
+70004601  UART_dmaDisableChannel              
+70004fc1  UART_dmaOpen                        
+700031d1  UART_flushTxFifo                    
+70005351  UART_getHandle                      
+70003871  UART_init                           
+70000661  UART_open                           
+70001d01  UART_write                          
+70005641  UART_writeInterruptDma              
+70004481  _DebugP_assert                      
+70006831  _DebugP_assertNoLog                 
+700050c1  _DebugP_logZone                     
+700565f0  __ABORT_STACK_END                   
+00000100  __ABORT_STACK_SIZE                  
+700564f0  __ABORT_STACK_START                 
+700552f0  __BSS_END                           
+70054000  __BSS_START                         
+700563f0  __FIQ_STACK_END                     
+00000100  __FIQ_STACK_SIZE                    
+700562f0  __FIQ_STACK_START                   
+700562f0  __IRQ_STACK_END                     
+00001000  __IRQ_STACK_SIZE                    
+700552f0  __IRQ_STACK_START                   
+70054000  __STACK_END                         
+00004000  __STACK_SIZE                        
+700564f0  __SVC_STACK_END                     
+00000100  __SVC_STACK_SIZE                    
+700563f0  __SVC_STACK_START                   
+UNDEFED   __TI_CINIT_Base                     
+UNDEFED   __TI_CINIT_Limit                    
+UNDEFED   __TI_Handler_Table_Base             
+UNDEFED   __TI_Handler_Table_Limit            
+700044dc  __TI_auto_init_nobinit_nopinit      
+ffffffff  __TI_pprof_out_hndl                 
+ffffffff  __TI_prof_data_size                 
+ffffffff  __TI_prof_data_start                
+70000000  __TI_static_base__                  
+700566f0  __UNDEFINED_STACK_END               
+00000100  __UNDEFINED_STACK_SIZE              
+700565f0  __UNDEFINED_STACK_START             
+700058b0  __aeabi_ldiv0                       
+700055e8  __aeabi_memclr                      
+700055e8  __aeabi_memclr4                     
+700055e8  __aeabi_memclr8                     
+70000db8  __aeabi_memcpy                      
+70000db8  __aeabi_memcpy4                     
+70000db8  __aeabi_memcpy8                     
+700055d8  __aeabi_memset                      
+700055d8  __aeabi_memset4                     
+700055d8  __aeabi_memset8                     
+70005468  __aeabi_uldivmod                    
+ffffffff  __binit__                           
+70006851  __mpu_init                          
+70050000  __stack                             
+70050000  __start___llvm_prf_cnts             
+70050000  __stop___llvm_prf_cnts              
+700029b8  __udivmoddi4                        
+70006754  _c_int00                            
+70006730  _c_int00_sbl                        
+UNDEFED   _system_post_cinit                  
+700055a1  _system_pre_init                    
+70000000  _vectors_sbl                        
+70000a38  abort                               
+ffffffff  binit                               
+70008a38  gAddrTranslateConfig                
+70008644  gAddrTranslateInfo                  
+70008a50  gBootloader0Args                    
+70008a58  gBootloader1Args                    
+70008a60  gBootloader2Args                    
+70008a68  gBootloader3Args                    
+70008a70  gBootloader4Args                    
+70008a78  gBootloader5Args                    
+7000884c  gBootloaderConfig                   
+70008a34  gBootloaderConfigNum                
+700089e8  gBootloaderMemFxns                  
+70008a80  gCacheConfig                        
+70008aa0  gCacheL1dCacheLineSize              
+70008aa4  gCacheL1pCacheLineSize              
+700089fc  gClockConfig                        
+70055288  gClockCtrl                          
+70008708  gCoreBootInfo                       
+70008aa8  gDebugLogZone                       
+70008aac  gDebugP_uartDrvIndex                
+70008ab0  gHwiConfig                          
+70054000  gHwiCtrl                            
+70008a44  gMpuConfig                          
+70008918  gMpuRegionConfig                    
+70008a10  gResMemSection                      
+700099ac  gSOC_r5fVectors                     
+7000944c  gSciclientMap                       
+70008998  gSciclientSecProxyCfg               
+70008a24  gSocModules                         
+700089d0  gSocModulesClockFrequency           
+70008a98  gUartConfig                         
+70008ac8  gUartConfigNum                      
+70006860  gUartDmaConfig                      
+70008acc  gUartDmaConfigNum                   
+700552e8  gUartHandle                         
+700088c4  gUartParams                         
+70003051  main                                
+700058c1  putchar_                            
+70005541  vprintf_                            
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                                
+-------   ----                                
+00000100  __ABORT_STACK_SIZE                  
+00000100  __FIQ_STACK_SIZE                    
+00000100  __SVC_STACK_SIZE                    
+00000100  __UNDEFINED_STACK_SIZE              
+00001000  __IRQ_STACK_SIZE                    
+00004000  __STACK_SIZE                        
+70000000  __TI_static_base__                  
+70000000  _vectors_sbl                        
+70000661  UART_open                           
+70000a38  C$$EXIT                             
+70000a38  abort                               
+70000a41  Sciclient_service                   
+70000db8  __aeabi_memcpy                      
+70000db8  __aeabi_memcpy4                     
+70000db8  __aeabi_memcpy8                     
+70001401  DDR_init                            
+700016c1  Bootloader_socCpuResetRelease       
+70001b11  Bootloader_socCpuPowerOnResetR5f    
+70001d01  UART_write                          
+700020b1  TimerP_setup                        
+700023d1  UART_close                          
+70002521  SOC_moduleSetClockFrequency         
+70002651  LPDDR4_CheckCtlInterrupt            
+70002781  Bootloader_socCpuPowerOnResetM4f    
+700028a1  LPDDR4_AckCtlInterrupt              
+700029b8  __udivmoddi4                        
+70002ad1  Bootloader_socCpuResetReleaseSelf   
+70002bf1  ClockP_init                         
+70002cf1  Bootloader_verifyMulticoreImage     
+70002dd1  Bootloader_rprcImageLoad            
+70002eb1  Sciclient_getVersionCheck           
+70002f81  Bootloader_parseMultiCoreAppImage   
+70003051  main                                
+700031d1  UART_flushTxFifo                    
+70003291  Bootloader_loadSelfCpu              
+70003341  Pinmux_config                       
+70003551  Sciclient_pmQueryModuleClkFreq      
+700035f1  Sciclient_init                      
+70003691  Bootloader_getMsgLen                
+700037d1  SemaphoreP_pend                     
+70003871  UART_init                           
+700039b1  Sciclient_pmSetModuleClkFreq        
+70003ad1  Sciclient_procBootWaitProcessorState
+70003b51  Bootloader_socCpuSetClock           
+70003bd1  Sciclient_pmGetModuleClkNumParent   
+70003c51  Bootloader_socCpuSetEntryPoint      
+70003cd1  Bootloader_socCpuPowerOnResetA53    
+70003d51  Bootloader_socMemInitCpu            
+70003dc1  SOC_moduleClockEnable               
+70003e31  LPDDR4_Start                        
+70003ea1  Sciclient_pmGetModuleState          
+70003f11  ClockP_timerTickIsr                 
+70003f81  Bootloader_socCpuGetClock           
+70004061  AddrTranslateP_getLocalAddr         
+700040d1  Bootloader_socCpuRelease            
+70004141  Sciclient_pmGetModuleClkFreq        
+700041b1  Sciclient_pmGetModuleClkParent      
+70004221  Bootloader_socCpuRequest            
+70004291  Sciclient_pmModuleGetClkStatus      
+70004301  Sciclient_pmSetModuleClkParent      
+70004361  Sciclient_waitForBootNotification   
+700043c1  Sciclient_pmModuleClkRequest        
+70004421  Bootloader_runCpu                   
+70004481  _DebugP_assert                      
+700044dc  __TI_auto_init_nobinit_nopinit      
+70004541  LPDDR4_ReadReg                      
+700045a1  Sciclient_procBootSetSequenceCtrl   
+70004601  UART_dmaDisableChannel              
+70004661  App_bootCpu                         
+700046c1  App_bootLoadSelfCpu                 
+70004721  UART_dmaClose                       
+70004781  Sciclient_pmSetModuleState          
+700047e1  Bootloader_findSeq                  
+70004831  Sciclient_procBootReleaseProcessor  
+70004881  Sciclient_getContext                
+700048d1  Bootloader_socTranslateSectionAddr  
+70004971  ClockP_getTimeUsec                  
+700049c1  Drivers_uartOpen                    
+70004a11  ClockP_construct                    
+70004a61  Dpl_init                            
+70004ab1  Sciclient_pmSetModuleRst_flags      
+70004b01  Sciclient_procBootGetProcessorState 
+70004b51  ClockP_stop                         
+70004ba1  LPDDR4_WritePhyIndepConfig          
+70004bf1  Sciclient_pmSetModuleRst            
+70004c41  Sciclient_procBootRequestProcessor  
+70004c91  DDR_socEnableVttRegulator           
+70004ce1  LPDDR4_WritePhyConfig               
+70004d31  Sciclient_procBootAuthAndStart      
+70004d81  Bootloader_loadCpu                  
+70004dc1  SemaphoreP_constructBinary          
+70004e01  Bootloader_open                     
+70004e41  LPDDR4_WriteCtlConfig               
+70004e81  SOC_controlModuleUnlockMMR          
+70004ec1  Sciclient_procBootSetProcessorCfg   
+70004f01  SemaphoreP_constructMutex           
+70004f41  ClockP_destruct                     
+70004f81  DebugP_uartLogWriterPutChar         
+70004fc1  UART_dmaOpen                        
+70005001  Bootloader_getX509CertLen           
+70005041  Module_clockSetFrequency            
+70005081  Sciclient_getCurrentContext         
+700050c1  _DebugP_logZone                     
+70005101  ClockP_start                        
+70005141  LPDDR4_EnablePIInitiator            
+70005181  LPDDR4_PollCtlIrq                   
+700051c1  Bootloader_BootImageInfo_init       
+70005201  ClockP_usleep                       
+70005241  SemaphoreP_post                     
+70005281  System_init                         
+700052c1  Module_clockDisable                 
+700052f1  Module_clockEnable                  
+70005351  UART_getHandle                      
+70005381  Bootloader_socIsAuthRequired        
+700053e1  SOC_controlModuleLockMMR            
+70005411  Bootloader_socCpuPowerOnReset       
+70005468  __aeabi_uldivmod                    
+70005491  Pinmux_init                         
+700054c1  Bootloader_socGetCoreName           
+700054e1  Bootloader_socRprcToCslCoreId       
+70005501  DebugP_logZoneEnable                
+70005521  System_deinit                       
+70005541  vprintf_                            
+70005561  TimerP_Params_init                  
+70005581  Bootloader_socCpuGetClkDefault      
+700055a1  _system_pre_init                    
+700055bc  TI_memcpy_small                     
+700055d8  __aeabi_memset                      
+700055d8  __aeabi_memset4                     
+700055d8  __aeabi_memset8                     
+700055e8  __aeabi_memclr                      
+700055e8  __aeabi_memclr4                     
+700055e8  __aeabi_memclr8                     
+70005621  UART_deinit                         
+70005641  UART_writeInterruptDma              
+70005661  Bootloader_socAuthImage             
+70005681  Drivers_close                       
+700056a1  LPDDR4_Init                         
+700056c1  Sciclient_getDevId                  
+700056d8  TI_memset_small                     
+700056f1  Bootloader_bootCpu                  
+70005711  Bootloader_close                    
+70005721  LPDDR4_Probe                        
+70005731  TimerP_clearOverflowInt             
+70005741  PowerClock_init                     
+70005751  Bootloader_Params_init              
+70005761  ClockP_getTicks                     
+70005771  DebugP_uartSetDrvIndex              
+70005781  Bootloader_socGetSBLMem             
+70005791  CSL_secProxyGetDataAddr             
+700057a1  ClockP_Params_init                  
+700057b1  ClockP_isActive                     
+700057c1  TimerP_start                        
+700057e1  Board_driversOpen                   
+700057f1  Bootloader_socWaitForFWBoot         
+70005801  CPS_UncachedRead32                  
+70005811  CPS_UncachedWrite32                 
+70005821  ClockP_getTimerCount                
+70005831  ClockP_timerClearOverflowInt        
+70005841  Drivers_open                        
+70005871  PowerClock_deinit                   
+70005881  Sciclient_deinit                    
+70005891  TimerP_getCount                     
+700058a1  TimerP_getReloadCount               
+700058b0  __aeabi_ldiv0                       
+700058c1  putchar_                            
+700058d1  Dpl_deinit                          
+700058f1  SemaphoreP_destruct                 
+70005901  TaskP_yield                         
+70005921  HwiP_enableInt                      
+70005951  HwiP_disableInt                     
+70005991  HwiP_restoreInt                     
+700059f1  HwiP_clearInt                       
+70005a11  HwiP_post                           
+70005a41  HwiP_Params_init                    
+70005a61  HwiP_construct                      
+70005bb1  HwiP_destruct                       
+70005c81  HwiP_init                           
+70005d51  HwiP_inISR                          
+70005d71  HwiP_irq_handler_c                  
+70005e01  HwiP_fiq_handler                    
+70005eb1  HwiP_reserved_handler               
+70005ee1  HwiP_undefined_handler              
+70005f11  HwiP_svc_handler                    
+70005f41  HwiP_prefetch_abort_handler         
+70005f71  HwiP_data_abort_handler             
+70005fa0  HwiP_irq_handler                    
+70006018  HwiP_disable                        
+70006028  HwiP_disableFIQ                     
+70006038  HwiP_enable                         
+70006048  HwiP_enableFIQ                      
+70006058  HwiP_restore                        
+70006060  HwiP_enableVIC                      
+70006070  HwiP_disableVIC                     
+70006080  HwiP_getCPSR                        
+70006090  CacheP_disableL1d                   
+700060b8  CacheP_disableL1p                   
+700060d0  CacheP_enableL1d                    
+700060e8  CacheP_enableL1p                    
+70006100  CacheP_invL1d                       
+70006138  CacheP_invL1p                       
+70006174  CacheP_invL1dAll                    
+7000617c  CacheP_invL1pAll                    
+70006184  CacheP_wb                           
+700061c0  CacheP_wbInv                        
+700061fc  CacheP_wbAll                        
+700062a4  CacheP_wbInvAll                     
+700062bc  CacheP_wbInvAllAsm                  
+7000635c  CacheP_getEnabled                   
+70006394  CacheP_getCacheLevelInfo            
+700063a0  CacheP_configForceWrThru            
+700063c0  CacheP_setDLFO                      
+700063d1  CacheP_init                         
+70006451  CacheP_disable                      
+70006491  CacheP_enable                       
+700064b1  CacheP_inv                          
+700064f1  MpuP_RegionAttrs_init               
+70006501  MpuP_setRegion                      
+700065b1  MpuP_enable                         
+700065f1  MpuP_disable                        
+70006631  MpuP_isEnable                       
+70006641  MpuP_init                           
+700066a4  MpuP_disableAsm                     
+700066bc  MpuP_disableBRAsm                   
+700066cc  MpuP_enableAsm                      
+700066e4  MpuP_enableBRAsm                    
+700066f4  MpuP_isEnableAsm                    
+70006708  MpuP_setRegionAsm                   
+70006730  _c_int00_sbl                        
+70006754  _c_int00                            
+70006831  _DebugP_assertNoLog                 
+70006851  __mpu_init                          
+70006860  DDRSS_phyReg                        
+70006860  gUartDmaConfig                      
+7000704c  DDRSS_ctlReg                        
+700076e8  DDRSS_phyIndepReg                   
+70007c4c  DDRSS_phyRegNum                     
+70008042  DDRSS_ctlRegNum                     
+70008390  DDRSS_phyIndepRegNum                
+70008644  gAddrTranslateInfo                  
+70008708  gCoreBootInfo                       
+7000884c  gBootloaderConfig                   
+700088c4  gUartParams                         
+70008918  gMpuRegionConfig                    
+70008998  gSciclientSecProxyCfg               
+700089d0  gSocModulesClockFrequency           
+700089e8  gBootloaderMemFxns                  
+700089fc  gClockConfig                        
+70008a10  gResMemSection                      
+70008a24  gSocModules                         
+70008a34  gBootloaderConfigNum                
+70008a38  gAddrTranslateConfig                
+70008a44  gMpuConfig                          
+70008a50  gBootloader0Args                    
+70008a58  gBootloader1Args                    
+70008a60  gBootloader2Args                    
+70008a68  gBootloader3Args                    
+70008a70  gBootloader4Args                    
+70008a78  gBootloader5Args                    
+70008a80  gCacheConfig                        
+70008a98  gUartConfig                         
+70008aa0  gCacheL1dCacheLineSize              
+70008aa4  gCacheL1pCacheLineSize              
+70008aa8  gDebugLogZone                       
+70008aac  gDebugP_uartDrvIndex                
+70008ab0  gHwiConfig                          
+70008ac8  gUartConfigNum                      
+70008acc  gUartDmaConfigNum                   
+7000944c  gSciclientMap                       
+700099ac  gSOC_r5fVectors                     
+70050000  __stack                             
+70050000  __start___llvm_prf_cnts             
+70050000  __stop___llvm_prf_cnts              
+70054000  __BSS_START                         
+70054000  __STACK_END                         
+70054000  gHwiCtrl                            
+70055288  gClockCtrl                          
+700552e8  gUartHandle                         
+700552f0  __BSS_END                           
+700552f0  __IRQ_STACK_START                   
+700562f0  __FIQ_STACK_START                   
+700562f0  __IRQ_STACK_END                     
+700563f0  __FIQ_STACK_END                     
+700563f0  __SVC_STACK_START                   
+700564f0  __ABORT_STACK_START                 
+700564f0  __SVC_STACK_END                     
+700565f0  __ABORT_STACK_END                   
+700565f0  __UNDEFINED_STACK_START             
+700566f0  __UNDEFINED_STACK_END               
+ffffffff  __TI_pprof_out_hndl                 
+ffffffff  __TI_prof_data_size                 
+ffffffff  __TI_prof_data_start                
+ffffffff  __binit__                           
+ffffffff  binit                               
+UNDEFED   __TI_CINIT_Base                     
+UNDEFED   __TI_CINIT_Limit                    
+UNDEFED   __TI_Handler_Table_Base             
+UNDEFED   __TI_Handler_Table_Limit            
+UNDEFED   _system_post_cinit                  
+
+[299 symbols]

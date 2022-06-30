@@ -35,6 +35,7 @@
         .type   _vectors,%function
         .section ".vectors","ax",%progbits
         .arm
+        .align 2
 _vectors:
         LDR pc, reset_addr          // Reset
         LDR pc, undefined_addr      // Undefined Instruction

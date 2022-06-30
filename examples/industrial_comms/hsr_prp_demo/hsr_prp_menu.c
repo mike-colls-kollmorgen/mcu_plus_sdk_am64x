@@ -466,44 +466,35 @@ void printPTPStatus(TimeSync_ParamsHandle_t timeSyncHandle)
                 (int)timeSyncHandle->tsRunTimeVar->pathDelay[1]);
         DebugP_log(pBuf);
 
-        if(timeSyncHandle->timeSyncConfig.isMaster)
-        {
-            DebugP_log("\n\r\n\r--------DUT configured as Master---------");
-        }
+        DebugP_log("\n\r\n\r--------DUT configured as Slave---------");
 
-        else
-        {
-            DebugP_log("\n\r\n\r--------DUT configured as Slave---------");
+        TimeSync_getCurrentTime(timeSyncHandle, &nanoseconds, &seconds);
 
-            TimeSync_getCurrentTime(timeSyncHandle, &nanoseconds, &seconds);
-
-            DebugP_log("\n\r*********PTP/1588 Params********");
-            sprintf(pBuf, "\n\rClock Drift :\t\t\t\t%d ns",
-                    (int)timeSyncHandle->tsRunTimeVar->clockDrift);
-            DebugP_log(pBuf);
-            sprintf(pBuf, "\n\rCurr offset :\t\t\t\t%d ns",
-                    (int)timeSyncHandle->tsRunTimeVar->currOffset);
-            DebugP_log(pBuf);
+        DebugP_log("\n\r*********PTP/1588 Params********");
+        sprintf(pBuf, "\n\rClock Drift :\t\t\t\t%d ns",
+                (int)timeSyncHandle->tsRunTimeVar->clockDrift);
+        DebugP_log(pBuf);
+        sprintf(pBuf, "\n\rCurr offset :\t\t\t\t%d ns",
+                (int)timeSyncHandle->tsRunTimeVar->currOffset);
+        DebugP_log(pBuf);
 #ifdef PTP_TESTING
-            sprintf(pBuf, "\n\rMin offset :\t\t\t\t%d ns",
-                    (int)min_offset);
-            DebugP_log(pBuf);
-            sprintf(pBuf, "\n\rMax offset :\t\t\t\t%d ns",
-                    (int)max_offset);
-            DebugP_log(pBuf);
-            sprintf(pBuf, "\n\rNum Sync Missed :\t\t\t%d",
-                    (int)(int)timeSyncHandle->numSyncMissed);
-            DebugP_log(pBuf);
+        sprintf(pBuf, "\n\rMin offset :\t\t\t\t%d ns",
+                (int)min_offset);
+        DebugP_log(pBuf);
+        sprintf(pBuf, "\n\rMax offset :\t\t\t\t%d ns",
+                (int)max_offset);
+        DebugP_log(pBuf);
+        sprintf(pBuf, "\n\rNum Sync Missed :\t\t\t%d",
+                (int)(int)timeSyncHandle->numSyncMissed);
+        DebugP_log(pBuf);
 #endif /*PTP_TESTING*/
-            sprintf(pBuf, "\n\rUTC Offset (Seconds field) :\t\t%ld seconds",
-                    (long int)seconds);
-            DebugP_log(pBuf);
-            sprintf(pBuf, "\n\rMaster connected on Port :\t\t%d",
-                    (int)timeSyncHandle->tsRunTimeVar->syncPortNum);
-            DebugP_log(pBuf);
-            DebugP_log("\n\r*******************************");
-
-        }
+        sprintf(pBuf, "\n\rUTC Offset (Seconds field) :\t\t%ld seconds",
+                (long int)seconds);
+        DebugP_log(pBuf);
+        sprintf(pBuf, "\n\rMaster connected on Port :\t\t%d",
+                (int)timeSyncHandle->tsRunTimeVar->syncPortNum);
+        DebugP_log(pBuf);
+        DebugP_log("\n\r*******************************");
 
     }
 

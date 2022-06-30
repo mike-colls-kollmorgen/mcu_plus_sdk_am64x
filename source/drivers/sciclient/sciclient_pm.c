@@ -129,7 +129,7 @@ int32_t Sciclient_pmGetModuleState(uint32_t  moduleId,
     int32_t retVal = SystemP_SUCCESS;
 
     struct tisci_msg_get_device_req request;
-    struct tisci_msg_get_device_resp response = {0};
+    struct tisci_msg_get_device_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam;
 
     Sciclient_RespPrm_t respParam;
@@ -205,7 +205,7 @@ int32_t Sciclient_pmModuleClkRequest(uint32_t moduleId,
     if(clockId > (uint32_t)(255U))
     {
         request.clk = (uint8_t)(255U);
-        request.clk32 = clockId;    
+        request.clk32 = clockId;
     }
     else
     {
@@ -256,7 +256,7 @@ int32_t Sciclient_pmModuleGetClkStatus(uint32_t  moduleId,
         request.clk    = (uint8_t) clockId;
     }
 
-    struct tisci_msg_get_clock_resp response = {0};
+    struct tisci_msg_get_clock_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam ;
     reqParam.messageType    = (uint16_t) TISCI_MSG_GET_CLOCK;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;
@@ -360,7 +360,7 @@ int32_t Sciclient_pmGetModuleClkParent(uint32_t  moduleId,
         request.clk    = (uint8_t) clockId;
     }
 
-    struct tisci_msg_get_clock_parent_resp response = {0};
+    struct tisci_msg_get_clock_parent_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam;
     reqParam.messageType    = (uint16_t) TISCI_MSG_GET_CLOCK_PARENT;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;
@@ -394,7 +394,7 @@ int32_t Sciclient_pmGetModuleClkNumParent(uint32_t  moduleId,
 {
     int32_t retVal = SystemP_SUCCESS;
 
-    struct tisci_msg_get_num_clock_parents_req request = {0};
+    struct tisci_msg_get_num_clock_parents_req request = {{0}};
     request.device = (uint32_t) moduleId;
 
     /* If clockId is larger than 8-bit max, we use clk32 to specify the
@@ -409,7 +409,7 @@ int32_t Sciclient_pmGetModuleClkNumParent(uint32_t  moduleId,
         request.clk    = (uint8_t) clockId;
     }
 
-    struct tisci_msg_get_num_clock_parents_resp response = {0};
+    struct tisci_msg_get_num_clock_parents_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam ;
     reqParam.messageType    = (uint16_t) TISCI_MSG_GET_NUM_CLOCK_PARENTS;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;
@@ -520,7 +520,7 @@ int32_t Sciclient_pmQueryModuleClkFreq(uint32_t moduleId,
         request.clk    = (uint8_t) clockId;
     }
 
-    struct tisci_msg_query_freq_resp response = {0};
+    struct tisci_msg_query_freq_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam ;
     reqParam.messageType    = (uint16_t) TISCI_MSG_QUERY_FREQ;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;
@@ -569,7 +569,7 @@ int32_t Sciclient_pmGetModuleClkFreq(uint32_t  moduleId,
         request.clk    = (uint8_t) clockId;
     }
 
-    struct tisci_msg_get_freq_resp response = {0};
+    struct tisci_msg_get_freq_resp response = {{0}};
     Sciclient_ReqPrm_t reqParam ;
     reqParam.messageType    = (uint16_t) TISCI_MSG_GET_FREQ;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;
@@ -655,7 +655,7 @@ int32_t Sciclient_pmGetWakeupReason(uint8_t   mode[32],
 {
     int32_t retVal = SystemP_SUCCESS;
 
-    struct tisci_msg_wake_reason_resp response = {0};
+    struct tisci_msg_wake_reason_resp response = {{0}};
     struct tisci_msg_wake_reason_req request = {0};
     Sciclient_ReqPrm_t reqParam ;
     reqParam.messageType    = (uint16_t) TISCI_MSG_WAKE_REASON;
@@ -717,7 +717,7 @@ int32_t Sciclient_pmDeviceReset(uint32_t timeout)
     int32_t retVal = SystemP_SUCCESS;
 
     Sciclient_ReqPrm_t reqParam ;
-    struct tisci_msg_sys_reset_req request = {0};
+    struct tisci_msg_sys_reset_req request = {{0}};
     struct tisci_msg_sys_reset_resp response = {0};
     reqParam.messageType    = (uint16_t) TISCI_MSG_SYS_RESET;
     reqParam.flags          = (uint32_t) TISCI_MSG_FLAG_AOP;

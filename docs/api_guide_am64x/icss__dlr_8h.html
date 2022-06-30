@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -182,7 +182,7 @@ Macros</h2></td></tr>
 <tr class="separator:a7a62203178a40827c60300dcb37016e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbdbaf4b2cf5ef400ae7329d8cef9421"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__dlr_8h.html#abbdbaf4b2cf5ef400ae7329d8cef9421">DEFAULT_BEACON_TIMEOUT_VARIABLE</a>&#160;&#160;&#160;(<a class="el" href="icss__dlr_8h.html#a7a62203178a40827c60300dcb37016e2">DEFAULT_BEACON_INTERVAL_VARIABLE</a> * 4) /*in microseconds*/</td></tr>
 <tr class="separator:abbdbaf4b2cf5ef400ae7329d8cef9421"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18c9761892dee5470a4d6c5817ce994b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__dlr_8h.html#a18c9761892dee5470a4d6c5817ce994b">DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL</a>&#160;&#160;&#160;200 /*in milliseconds*/</td></tr>
+<tr class="memitem:a18c9761892dee5470a4d6c5817ce994b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__dlr_8h.html#a18c9761892dee5470a4d6c5817ce994b">DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL</a>&#160;&#160;&#160;100 /*in milliseconds*/</td></tr>
 <tr class="separator:a18c9761892dee5470a4d6c5817ce994b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3108b5a523900c3e8257f272c65465e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__dlr_8h.html#a3108b5a523900c3e8257f272c65465e6">DEFAULT_DLR_PERIODIC_INTERVAL</a>&#160;&#160;&#160;100 /*in milliseconds*/</td></tr>
 <tr class="separator:a3108b5a523900c3e8257f272c65465e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -628,11 +628,10 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL&#160;&#160;&#160;200 /*in milliseconds*/</td>
+          <td class="memname">#define DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL&#160;&#160;&#160;100 /*in milliseconds*/</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The actual time is 100ms but since system tick period is half, this is twice of what it should be </p>
 
 </div>
 </div>
@@ -647,7 +646,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The actual time is 100ms but since system tick period is half, this is twice of what it should be </p>
 
 </div>
 </div>

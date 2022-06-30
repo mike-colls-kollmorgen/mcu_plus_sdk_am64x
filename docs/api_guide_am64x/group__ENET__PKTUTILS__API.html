@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -154,7 +154,7 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga5f6d53afa5d50af051958d03949fca95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__PKTUTILS__API.html#ga5f6d53afa5d50af051958d03949fca95">ENET_UTILS_GET_STATE</a>(<a class="el" href="tisci__pm__device_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>,  mask,  bitshift)</td></tr>
+<tr class="memitem:ga5f6d53afa5d50af051958d03949fca95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__PKTUTILS__API.html#ga5f6d53afa5d50af051958d03949fca95">ENET_UTILS_GET_STATE</a>(<a class="el" href="tisci__pm__device_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>,  mask,  bitshift)&#160;&#160;&#160;((*(<a class="el" href="tisci__pm__device_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>) &amp; (mask)) &gt;&gt; (bitshift))</td></tr>
 <tr class="separator:ga5f6d53afa5d50af051958d03949fca95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga388e93e4d0215b2caac2deb39adb3042"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__PKTUTILS__API.html#ga388e93e4d0215b2caac2deb39adb3042">ENET_UTILS_SET_STATE</a>(<a class="el" href="tisci__pm__device_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>,  mask,  bitshift,  <a class="el" href="tisci__otp__revision_8h.html#ae7f66047e6e39ba2bb6af8b95f00d1dd">value</a>)</td></tr>
 <tr class="separator:ga388e93e4d0215b2caac2deb39adb3042"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,13 +219,11 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td>&#160;&#160;&#160;((*(<a class="el" href="tisci__pm__device_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>) &amp; (mask)) &gt;&gt; (bitshift))</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">                                                             ({<span class="keywordflow">while</span> (<span class="keyword">false</span>) {; } \</div>
-<div class="line">                                                             })</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <a id="ga388e93e4d0215b2caac2deb39adb3042"></a>
@@ -265,8 +263,10 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">                                                             ({<span class="keywordflow">while</span> (<span class="keyword">false</span>) {; } \</div>
-<div class="line">                                                             })</div>
+<b>Value:</b><div class="fragment"><div class="line">    ({                                                     \</div>
+<div class="line">         *(<a class="code" href="tisci__pm__clock_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>) &amp;= ~(mask);                              \</div>
+<div class="line">         *(<a class="code" href="tisci__pm__clock_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a>) |= ((<a class="code" href="tisci__otp__revision_8h.html#ae7f66047e6e39ba2bb6af8b95f00d1dd">value</a>) &lt;&lt; (bitshift));              \</div>
+<div class="line">     })</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -835,18 +835,18 @@ Macros</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gabba7313b15bd4830a66100382aa4f0ee"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gabba7313b15bd4830a66100382aa4f0ee">ENET_UTILS_APP_STATE_MASK</a></div><div class="ttdeci">#define ENET_UTILS_APP_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:84</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga5f6d53afa5d50af051958d03949fca95"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga5f6d53afa5d50af051958d03949fca95">ENET_UTILS_GET_STATE</a></div><div class="ttdeci">#define ENET_UTILS_GET_STATE(state, mask, bitshift)</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:72</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gae76f9706cbcecb9bfff98fcae2fa8522"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gae76f9706cbcecb9bfff98fcae2fa8522">ENET_UTILS_DRIVER_STATE_MASK</a></div><div class="ttdeci">#define ENET_UTILS_DRIVER_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:78</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gabba7313b15bd4830a66100382aa4f0ee"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gabba7313b15bd4830a66100382aa4f0ee">ENET_UTILS_APP_STATE_MASK</a></div><div class="ttdeci">#define ENET_UTILS_APP_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:77</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga5f6d53afa5d50af051958d03949fca95"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga5f6d53afa5d50af051958d03949fca95">ENET_UTILS_GET_STATE</a></div><div class="ttdeci">#define ENET_UTILS_GET_STATE(state, mask, bitshift)</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:64</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gae76f9706cbcecb9bfff98fcae2fa8522"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gae76f9706cbcecb9bfff98fcae2fa8522">ENET_UTILS_DRIVER_STATE_MASK</a></div><div class="ttdeci">#define ENET_UTILS_DRIVER_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:71</div></div>
 <div class="ttc" id="atisci__pm__clock_8h_html_a0b57aa10271a66f3dc936bba1d2f3830"><div class="ttname"><a href="tisci__pm__clock_8h.html#a0b57aa10271a66f3dc936bba1d2f3830">state</a></div><div class="ttdeci">uint8_t state</div><div class="ttdef"><b>Definition:</b> tisci_pm_clock.h:3</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gab094332d00f3f3aa9a0d8a01f24c2426"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gab094332d00f3f3aa9a0d8a01f24c2426">ENET_DMA_MEMMGR_DESCSTATE_MASK</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_DESCSTATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:120</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga388e93e4d0215b2caac2deb39adb3042"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga388e93e4d0215b2caac2deb39adb3042">ENET_UTILS_SET_STATE</a></div><div class="ttdeci">#define ENET_UTILS_SET_STATE(state, mask, bitshift, value)</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:74</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gaa7db80ae4efbe2b9b68b10827c69a3c5"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gaa7db80ae4efbe2b9b68b10827c69a3c5">ENET_UTILS_APP_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_UTILS_APP_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:85</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gab094332d00f3f3aa9a0d8a01f24c2426"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gab094332d00f3f3aa9a0d8a01f24c2426">ENET_DMA_MEMMGR_DESCSTATE_MASK</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_DESCSTATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:113</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga388e93e4d0215b2caac2deb39adb3042"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga388e93e4d0215b2caac2deb39adb3042">ENET_UTILS_SET_STATE</a></div><div class="ttdeci">#define ENET_UTILS_SET_STATE(state, mask, bitshift, value)</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:65</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gaa7db80ae4efbe2b9b68b10827c69a3c5"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gaa7db80ae4efbe2b9b68b10827c69a3c5">ENET_UTILS_APP_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_UTILS_APP_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:78</div></div>
 <div class="ttc" id="atisci__otp__revision_8h_html_ae7f66047e6e39ba2bb6af8b95f00d1dd"><div class="ttname"><a href="tisci__otp__revision_8h.html#ae7f66047e6e39ba2bb6af8b95f00d1dd">value</a></div><div class="ttdeci">uint32_t value</div><div class="ttdef"><b>Definition:</b> tisci_otp_revision.h:2</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gace56a38a1a5764ddc1fd3816d651a55c"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gace56a38a1a5764ddc1fd3816d651a55c">ENET_DMA_MEMMGR_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:82</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga423c8f6856b9a31a4c8b693cc79fa02b"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga423c8f6856b9a31a4c8b693cc79fa02b">ENET_DMA_MEMMGR_DESCSTATE_SHIFT</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_DESCSTATE_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:121</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga24b974548c701f28b51016b745547ad7"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga24b974548c701f28b51016b745547ad7">ENET_DMA_MEMMGR_STATE_MASK</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:81</div></div>
-<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga92cf0f6b7165d5242e1b5a855a8f202f"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga92cf0f6b7165d5242e1b5a855a8f202f">ENET_UTILS_DRIVER_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_UTILS_DRIVER_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:79</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_gace56a38a1a5764ddc1fd3816d651a55c"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#gace56a38a1a5764ddc1fd3816d651a55c">ENET_DMA_MEMMGR_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:75</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga423c8f6856b9a31a4c8b693cc79fa02b"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga423c8f6856b9a31a4c8b693cc79fa02b">ENET_DMA_MEMMGR_DESCSTATE_SHIFT</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_DESCSTATE_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:114</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga24b974548c701f28b51016b745547ad7"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga24b974548c701f28b51016b745547ad7">ENET_DMA_MEMMGR_STATE_MASK</a></div><div class="ttdeci">#define ENET_DMA_MEMMGR_STATE_MASK</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:74</div></div>
+<div class="ttc" id="agroup__ENET__PKTUTILS__API_html_ga92cf0f6b7165d5242e1b5a855a8f202f"><div class="ttname"><a href="group__ENET__PKTUTILS__API.html#ga92cf0f6b7165d5242e1b5a855a8f202f">ENET_UTILS_DRIVER_STATE_BIT_SHIFT</a></div><div class="ttdeci">#define ENET_UTILS_DRIVER_STATE_BIT_SHIFT</div><div class="ttdef"><b>Definition:</b> enet_dma_pktutils.h:72</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

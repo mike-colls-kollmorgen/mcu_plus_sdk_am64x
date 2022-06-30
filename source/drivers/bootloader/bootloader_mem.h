@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_MEM_H
 #define BOOTLOADER_MEM_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  * \brief Arguments to be passed to driver implementation callbacks when boot media is SOC memory
  */
@@ -44,5 +50,10 @@ typedef struct Bootloader_MemArgs_s
 } Bootloader_MemArgs;
 
 extern Bootloader_Fxns gBootloaderMemFxns;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* BOOTLOADER_MEM_H */

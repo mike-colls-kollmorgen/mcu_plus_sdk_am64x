@@ -38,6 +38,7 @@
  *
  */
 
+#include <ecSlvApi.h>
 #include <ESL_phyLibTlk110.h>
 
 #define APPL_TLK110_MLED_100                        0u
@@ -144,9 +145,7 @@
  *  <!-- Parameters and return values: -->
  *
  *  \param[in]  pPhyLibCtxt_p	Context of External PhyLib.
- *  \param[in]  phyIdx_p        Phy number (0,1)
  *  \param[in]  phyId_p         Phy ID read from hardware
- *  \param[in]  phyAddr_p       Phy address
  *  \param[in]  pPhyLibDesc_p   External PhyLib Hooks
  *  \return     0 on success and Phy detected, error code otherwise
  *
@@ -155,14 +154,11 @@
  *  \ingroup APPPHYLIB
  *
  * */
-int16_t EC_SLV_APP_TLK110_phyLibDetect(void* pPhyLibCtxt_p, uint8_t phyIdx_p, uint32_t phyId_p
-                                      ,uint8_t phyAddr_p, EC_API_SLV_SPhyDescriptor_t* pPhyLibDesc_p)
+int16_t EC_SLV_APP_TLK110_phyLibDetect(void* pPhyLibCtxt_p, uint32_t phyId_p, CUST_PHY_SPhyDescriptor_t *pPhyLibDesc_p)
 {
     int16_t     retVal  = -6; /* uknown phy */
 
     OSALUNREF_PARM(pPhyLibCtxt_p);
-    OSALUNREF_PARM(phyIdx_p);      /* currently we do not care about instance Index */
-    OSALUNREF_PARM(phyAddr_p);     /* we do not need to remember our address here */
 
     /* exact TLK110, uper word is TLK105 also */
     if (phyId_p == 0x2000A211)
@@ -170,21 +166,21 @@ int16_t EC_SLV_APP_TLK110_phyLibDetect(void* pPhyLibCtxt_p, uint8_t phyIdx_p, ui
         OSAL_printf("TLK110 detected\r\n");
         pPhyLibDesc_p->softwareReset                = EC_SLV_APP_TLK110_softwareReset;
         pPhyLibDesc_p->softwareRestart              = NULL;
-        pPhyLibDesc_p->enablePhyAutoMDIX            = EC_SLV_APP_TLK110_enablePhyAutoMDIX;
+        pPhyLibDesc_p->enableAutoMDIX               = EC_SLV_APP_TLK110_enableAutoMDIX;
         pPhyLibDesc_p->setMiiMode                   = EC_SLV_APP_TLK110_setMIIMode;
-        pPhyLibDesc_p->setPowerMode                 = EC_SLV_APP_TLK110_powerMode;
+        pPhyLibDesc_p->setPowerMode                 = EC_SLV_APP_TLK110_setPowerMode;
         pPhyLibDesc_p->getPowerMode                 = NULL;
-        pPhyLibDesc_p->mLEDConfig                   = EC_SLV_APP_TLK110_mLEDConfig;
-        pPhyLibDesc_p->extFDEnable                  = EC_SLV_APP_TLK110_extFDEnable;
-        pPhyLibDesc_p->oDDNibbleDetEnable           = EC_SLV_APP_TLK110_oDDNibbleDetEnable;
-        pPhyLibDesc_p->rxErrIdleEnable              = EC_SLV_APP_TLK110_rxErrIdleEnable;
-        pPhyLibDesc_p->ledConfig                    = EC_SLV_APP_TLK110_ledConfig;
-        pPhyLibDesc_p->ledBlinkConfig               = EC_SLV_APP_TLK110_ledBlinkConfig;
-        pPhyLibDesc_p->fastLinkDownDetEnable        = EC_SLV_APP_TLK110_fastLinkDownDetEnable;
-        pPhyLibDesc_p->fastRXDVDetEnable            = EC_SLV_APP_TLK110_fastRXDVDetEnable;
-        pPhyLibDesc_p->swStrapConfigDone            = EC_SLV_APP_TLK110_swStrapConfigDone;
+        pPhyLibDesc_p->configMLED                   = EC_SLV_APP_TLK110_configMLED;
+        pPhyLibDesc_p->enableExtFD                  = EC_SLV_APP_TLK110_enableExtFD;
+        pPhyLibDesc_p->enableODDNibbleDet           = EC_SLV_APP_TLK110_enableODDNibbleDet;
+        pPhyLibDesc_p->enableRxErrIdle              = EC_SLV_APP_TLK110_enableRxErrIdle;
+        pPhyLibDesc_p->configLed                    = EC_SLV_APP_TLK110_configLed;
+        pPhyLibDesc_p->configLedBlink               = EC_SLV_APP_TLK110_configLedBlink;
+        pPhyLibDesc_p->enableFastLinkDownDet        = EC_SLV_APP_TLK110_enableFastLinkDownDet;
+        pPhyLibDesc_p->enableFastRXDVDet            = EC_SLV_APP_TLK110_enableFastRXDVDet;
+        pPhyLibDesc_p->configSwStrapDone            = EC_SLV_APP_TLK110_configSwStrapDone;
         pPhyLibDesc_p->setLinkConfig                = NULL;
-        pPhyLibDesc_p->getAutonegotiation           = NULL;
+        pPhyLibDesc_p->getAutoNegotiation           = NULL;
         pPhyLibDesc_p->setMdixMode                  = NULL;
         pPhyLibDesc_p->getMdixMode                  = NULL;
         pPhyLibDesc_p->disable1GbAdver              = NULL;
@@ -207,19 +203,17 @@ int16_t EC_SLV_APP_TLK110_phyLibDetect(void* pPhyLibCtxt_p, uint8_t phyIdx_p, ui
  *
  *  \param[in]  pAppCtxt_p      application context
  *  \param[in]  pStackCtxt_p    stack context
- *  \param[in]  phyAddr_p       phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_softwareReset(void* pAppCtxt_p, void* pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_softwareReset(void* pAppCtxt_p, void* pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_VENDOR_PHYRCR_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_VENDOR_PHYRCR_SWRESET;
@@ -242,19 +236,17 @@ void EC_SLV_APP_TLK110_softwareReset(void* pAppCtxt_p, void* pStackCtxt_p, uint3
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_enablePhyAutoMDIX(void* pAppCtxt_p, void* pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableAutoMDIX(void* pAppCtxt_p, void* pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, TLKPHY_PHYCR_REG, &phyRegVal);
     phyRegVal |= TLKPHY_AUTOMDIX_ENABLE;
@@ -270,19 +262,17 @@ void EC_SLV_APP_TLK110_enablePhyAutoMDIX(void* pAppCtxt_p, void* pStackCtxt_p, u
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_setMIIMode(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_setMIIMode(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegWrite(pStackCtxt_p, APPL_TLK110_VENDOR_RBR_REG, phyRegVal);
 }
@@ -296,21 +286,18 @@ void EC_SLV_APP_TLK110_setMIIMode(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
- *phyAddr_p
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_mLEDConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_configMLED(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal      = 0;
     uint16_t mode           = APPL_TLK110_MLED_100;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     OSAL_printf("TLK110 set MLED\r\n");
 
@@ -360,19 +347,17 @@ void EC_SLV_APP_TLK110_mLEDConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_extFDEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableExtFD(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR2_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_EXT_FD_ENABLE;
@@ -388,19 +373,17 @@ void EC_SLV_APP_TLK110_extFDEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_oDDNibbleDetEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableODDNibbleDet(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR2_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_ODDNIBBLE_DET_ENABLE;
@@ -416,19 +399,17 @@ void EC_SLV_APP_TLK110_oDDNibbleDetEnable(void *pAppCtxt_p, void *pStackCtxt_p, 
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_rxErrIdleEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableRxErrIdle(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR2_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_RXERROR_IDLE_ENABLE;
@@ -444,20 +425,18 @@ void EC_SLV_APP_TLK110_rxErrIdleEnable(void *pAppCtxt_p, void *pStackCtxt_p, uin
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_ledConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_configLed(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal      = 0;
     uint16_t mode           = APPL_TLK110_LED_CFG_MODE2;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_VENDOR_PHYCR_REG, &phyRegVal);
 
@@ -484,20 +463,18 @@ void EC_SLV_APP_TLK110_ledConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t 
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_ledBlinkConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_configLedBlink(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal      = 0;
     uint16_t value          = APPL_TLK110_LED_BLINK_100;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_VENDOR_LEDCR_REG, &phyRegVal);
 
@@ -535,20 +512,18 @@ void EC_SLV_APP_TLK110_ledBlinkConfig(void *pAppCtxt_p, void *pStackCtxt_p, uint
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_fastLinkDownDetEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableFastLinkDownDet(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t phyRegVal      = 0;
     uint16_t value          = APPL_TLK110_FAST_LINKDOWN_SIGENERGY | APPL_TLK110_FAST_LINKDOWN_RXERR;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR3_REG, &phyRegVal);
     phyRegVal |= value;
@@ -564,19 +539,17 @@ void EC_SLV_APP_TLK110_fastLinkDownDetEnable(void *pAppCtxt_p, void *pStackCtxt_
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_fastRXDVDetEnable(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_enableFastRXDVDet(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR1_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_FASTRXDV_DET_ENABLE;
@@ -592,19 +565,17 @@ void EC_SLV_APP_TLK110_fastRXDVDetEnable(void *pAppCtxt_p, void *pStackCtxt_p, u
  *
  *  \param[in]  pAppCtxt_p         application context
  *  \param[in]  pStackCtxt_p       stack context
- *  \param[in]  phyAddr_p         phy address
  *
  *  <!-- Group: -->
  *
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_swStrapConfigDone(void *pAppCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p)
+void EC_SLV_APP_TLK110_configSwStrapDone(void *pAppCtxt_p, void *pStackCtxt_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pAppCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
 
     EC_API_SLV_phyRegRead(pStackCtxt_p, APPL_TLK110_CR1_REG, &phyRegVal);
     phyRegVal |= APPL_TLK110_SWSTRAP_CONFIG_DONE;
@@ -619,7 +590,6 @@ void EC_SLV_APP_TLK110_swStrapConfigDone(void *pAppCtxt_p, void *pStackCtxt_p, u
  *  <!-- Parameters and return values: -->
  *
  *  \param[in]  pCtxt_p             phyDescriptor context
- *  \param[in]  phyAddr_p           phy address
  *  \param[in]  powerDown_p         False = Normal Operation - True = Power Down
  *
  *  <!-- Group: -->
@@ -627,12 +597,12 @@ void EC_SLV_APP_TLK110_swStrapConfigDone(void *pAppCtxt_p, void *pStackCtxt_p, u
  *  \ingroup APPPHYLIB
  *
  * */
-void EC_SLV_APP_TLK110_powerMode(void* pCtxt_p, void *pStackCtxt_p, uint32_t phyAddr_p, bool powerDown_p)
+void EC_SLV_APP_TLK110_setPowerMode(void* pCtxt_p, void *pStackCtxt_p, bool powerDown_p)
 {
     uint16_t    phyRegVal   = 0;
 
     OSALUNREF_PARM(pCtxt_p);
-    OSALUNREF_PARM(phyAddr_p);
+
     if(powerDown_p)
     {
         //Power Down mode

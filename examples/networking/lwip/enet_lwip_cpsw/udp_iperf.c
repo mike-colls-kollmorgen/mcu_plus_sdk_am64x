@@ -33,6 +33,7 @@
 /** Connection handle for a UDP Server session */
 
 #include "udp_iperf.h"
+#include <kernel/dpl/CacheP.h>
 
 static void udp_send_perf_traffic(int sock, u64_t test_duration_ms, char *snd_buf, u32_t snd_size, const struct sockaddr_in *from);
 
@@ -61,6 +62,10 @@ const char udperf_kLabel[] =
 
 
 #define UDP_IPERF_ENABLE_UDPLITE            (0)
+
+#define UDP_TX_TIME_CHECK_PACKET_COUNT (50 * 1000)
+#define UDP_TX_NUM_BUFS                (192U)
+#define UDP_IPERF_R5F_CACHE_LINE_SIZE  (32)
 
 void print_app_header(void)
 {
@@ -184,7 +189,7 @@ static void udp_recv_perf_traffic(int sock)
 	u32_t drop_datagrams = 0;
 	s32_t recv_id;
 	int count;
-	char recv_buf[UTILS_ALIGN(UDP_RECV_BUFSIZE,32)] __attribute__ ((aligned(32)));
+	char recv_buf[UTILS_ALIGN(UDP_RECV_BUFSIZE,UDP_IPERF_R5F_CACHE_LINE_SIZE)] __attribute__ ((aligned(UDP_IPERF_R5F_CACHE_LINE_SIZE)));
 	struct sockaddr_in from;
 	socklen_t fromlen = sizeof(from);
 
@@ -219,7 +224,9 @@ static void udp_recv_perf_traffic(int sock)
 		if (recv_id < 0) {
 			u64_t now = sys_now();
 			u64_t diff_ms = now - udp_server_stats.start_time;
-			/* Send Ack */
+
+            /* Send Ack */
+            CacheP_wbInv(recv_buf, count, CacheP_TYPE_ALLD);
 			if (sendto(sock, recv_buf, count, 0,
 				(struct sockaddr *)&from, fromlen) < 0) {
 			    DebugP_log("Error in write\r\n\r");
@@ -279,11 +286,8 @@ static void udp_recv_perf_traffic(int sock)
 	}
 }
 
-#define UDP_TX_TIME_CHECK_PACKET_COUNT (50 * 1000)
-#define UDP_TX_NUM_BUFS  (192)
-#define UDP_IPERF_R5F_CACHE_LINE_SIZE  (32)
 
-char snd_buf_array[UDP_TX_NUM_BUFS][UTILS_ALIGN(UDP_RECV_BUFSIZE,UDP_IPERF_R5F_CACHE_LINE_SIZE)] 
+char snd_buf_array[UDP_TX_NUM_BUFS][UTILS_ALIGN(UDP_RECV_BUFSIZE,UDP_IPERF_R5F_CACHE_LINE_SIZE)]
 __attribute__ ((aligned(UDP_IPERF_R5F_CACHE_LINE_SIZE),
                 section(".bss:UDP_IPERF_SND_BUF")));
 
@@ -306,6 +310,7 @@ static void udp_send_perf_traffic(int sock, u64_t test_duration_ms, char *snd_bu
     for (i = 0; i <  UDP_TX_NUM_BUFS; i++)
     {
         memcpy(&snd_buf_array[i][0], snd_buf, snd_size);
+        CacheP_wbInv(&snd_buf_array[i][0], snd_size, CacheP_TYPE_ALLD);
     }
 	while (flag) {
         snd_id++;
@@ -313,7 +318,7 @@ static void udp_send_perf_traffic(int sock, u64_t test_duration_ms, char *snd_bu
         if ((snd_id % UDP_TX_TIME_CHECK_PACKET_COUNT) == 0)
         {
             u64_t now  = sys_now();
-            
+
             diff_ms = now - start_time;
             if (diff_ms >= test_duration_ms)
             {
@@ -322,6 +327,7 @@ static void udp_send_perf_traffic(int sock, u64_t test_duration_ms, char *snd_bu
             }
         }
         *((int *)snd_buf) = htonl(snd_id);
+        CacheP_wbInv(snd_buf, UDP_IPERF_R5F_CACHE_LINE_SIZE, CacheP_TYPE_ALLD);
         do {
             count = lwip_sendto(sock, snd_buf, snd_size, 0,
                    (struct sockaddr *)&to, tolen);

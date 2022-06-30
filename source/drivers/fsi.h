@@ -46,6 +46,12 @@ extern "C"
 #include <drivers/fsi/v0/fsi_rx.h>
 #endif
 
+#if defined (DRV_VERSION_FSI_V1)
+#include <drivers/fsi/v1/fsi.h>
+#include <drivers/fsi/v1/fsi_tx.h>
+#include <drivers/fsi/v1/fsi_rx.h>
+#endif
+
 #ifdef __cplusplus
 }
 #endif

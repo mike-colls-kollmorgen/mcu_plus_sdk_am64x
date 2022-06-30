@@ -54,6 +54,12 @@
 #ifndef TISCI_SEC_HANDOVER_H_
 #define TISCI_SEC_HANDOVER_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request for security handover message
@@ -77,6 +83,11 @@ struct tisci_msg_security_handover_req {
 struct tisci_msg_security_handover_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

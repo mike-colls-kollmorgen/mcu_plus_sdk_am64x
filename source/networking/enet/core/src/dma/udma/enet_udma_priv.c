@@ -51,6 +51,8 @@
 #include <include/mod/cpsw_ale.h>
 #include <include/core/enet_rm.h>
 #include <include/core/enet_dma.h>
+#include <src/per/firmware/icssg/fw_mem_map.h>
+#include <hw_include/cslr_icss.h>
 
 #include <priv/per/enet_hostport_udma.h>
 #include <drivers/sciclient.h>
@@ -134,8 +136,8 @@ typedef struct EnetUdma_TdCqRingObjMem_s
      *  to avoid cache operations on other memory regions while cache invalidating after
      *  popping from the ring. Only allocating single element i.e. ENET_UDMA_TDCQ_RING_ELE_CNT of 1,
      *  as it stores the return status */
-    uint64_t tdCqRingMemObj [ENET_UTILS_ALIGN(ENET_UDMA_TDCQ_RING_ELE_CNT, ENETDMA_CACHELINE_ALIGNMENT)]
-    __attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT)));
+    uint64_t tdCqRingMemObj [ENET_UTILS_ALIGN(ENET_UDMA_TDCQ_RING_ELE_CNT, UDMA_CACHELINE_ALIGNMENT)]
+    __attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT)));
 } EnetUdma_TdCqRingObjMem;
 
 /**
@@ -165,28 +167,28 @@ typedef struct EnetUdma_MemMgrObj_s
 
 /* RX flow object memories */
 static EnetUdma_RxFlowObjMem gEnetUdmaRxFlowObjMem[ENET_CFG_RX_FLOWS_NUM]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 
 /* Tx channel object memories */
 static EnetUdma_TxChObjMem gEnetUdmaTxChObjMem[ENET_CFG_TX_CHANNELS_NUM]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 
 /* Ring monitor object memories */
 static EnetUdma_RingMonObjMem gEnetUdmaRinMonObjMem[ENET_CFG_RING_MON_NUM]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 #if (UDMA_SOC_CFG_UDMAP_PRESENT == 1)
 static uint8_t gRsvdFlowRingMemFQ[ENET_UDMA_RSVDFLOW_RX_PKTS_NUM][ENET_UDMA_RING_MEM_SIZE]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 #endif
 
 static uint8_t gRsvdFlowRingMemCQ[ENET_UDMA_RSVDFLOW_RX_PKTS_NUM][ENET_UDMA_RING_MEM_SIZE]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 
 #if (UDMA_SOC_CFG_UDMAP_PRESENT == 1)
 /* Teardown Cq ring object memories */
 static EnetUdma_TdCqRingObjMem gEnetUdmaTdCqRingObjMem[ENET_CFG_TX_CHANNELS_NUM +
                                                        ENET_UDMA_RX_CH_NUM]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT), section(".bss:ENET_DMA_OBJ_MEM")));
 #endif
 /* Cpsw mem utils driver object */
 static EnetUdma_MemMgrObj gEnetUdmaMemMgrObj = {.clientCnt = 0U};
@@ -429,6 +431,8 @@ int32_t EnetUdma_submitPkts(EnetPer_Handle hPer,
     bool isExposedRing;
     uint64_t *ringMemPtr = NULL, *currRingMemPtr = NULL;
     uint32_t ringWrIdx = 0U, ringMemEleCnt = 0U;
+    uint32_t tosIndex, i;
+    uint8_t dscpIPv4En, tosVal;
 
     isExposedRing = (Udma_ringGetMode(hUdmaRing) == TISCI_MSG_VALUE_RM_RING_MODE_RING);
 #if defined(SOC_AM64X) || defined(SOC_AM243X)
@@ -453,6 +457,11 @@ int32_t EnetUdma_submitPkts(EnetPer_Handle hPer,
             EnetUdma_CpswHpdDesc *pHpdDesc = (EnetUdma_CpswHpdDesc *)pDmaDesc;
             CSL_UdmapCppi5HMPD *pHostDesc = &pHpdDesc->hostDesc;
 
+            /* Set pktLen for rx to allocated buffer len before submiting packet */
+            if (ENET_UDMA_DIR_RX == transferDir)
+            {
+                dmaPkt->userBufLen = dmaPkt->orgBufLen;
+            }
             pDmaDesc->dmaPkt = dmaPkt;
             EnetDma_checkPktState(&pDmaDesc->dmaPkt->pktState,
                                     ENET_PKTSTATE_MODULE_DRIVER,
@@ -516,6 +525,82 @@ int32_t EnetUdma_submitPkts(EnetPer_Handle hPer,
                 else
                 {
                     ENETUDMA_CPPIPSI_SET_TSEN(*tsInfo, 0U);
+                }
+
+                if (Enet_isIcssFamily(hPer->enetType))
+                {
+                    uintptr_t baseAddr = (uintptr_t)hPer->virtAddr;
+
+                    if (hPer->enetType == ENET_ICSSG_DUALMAC)
+                    {
+                        if ((hPer->instId == 0) || (hPer->instId == 2))
+                        {
+                            baseAddr += CSL_ICSS_G_DRAM0_SLV_RAM_REGS_BASE;
+                        }
+                        else
+                        {
+                            /*DRAM1*/
+                            baseAddr += CSL_ICSS_G_DRAM1_SLV_RAM_REGS_BASE;
+                        }
+                    }
+                    else
+                    {
+                        /* In switch mode expecting both ports have same dscp priorities
+                           If in case of undirected traffic dscp priorities are taken from
+                           Port1
+                        */
+                        /*DRAM0*/
+                        baseAddr += CSL_ICSS_G_DRAM0_SLV_RAM_REGS_BASE;
+                        if (dmaPkt->txPortNum == ENET_MAC_PORT_2)
+                        {
+                            /*DRAM1*/
+                            baseAddr += CSL_ICSS_G_DRAM1_SLV_RAM_REGS_BASE;
+                        }
+                    }
+                    baseAddr = baseAddr + DSCP_ENABLE_DISABLE_STATUS;
+                    dscpIPv4En = CSL_REG8_RD(baseAddr);
+                    if (dscpIPv4En == 1)
+                    {
+                        dmaPkt->txPktTc = 0;
+                        /*check for Vlan tagging*/
+                        if ((dmaPkt->bufPtr[12] == 0x81U) && (dmaPkt->bufPtr[13] == 0x00U))
+                        {
+                            /*Check for ipv4 ethertype*/
+                            if ((dmaPkt->bufPtr[16] == 0x08U) && (dmaPkt->bufPtr[17] == 0x00U))
+                            {
+                                /* upper 6 bits has the dscp index */
+                                tosIndex = ((dmaPkt->bufPtr[19] >> 2) & 0x3f);
+
+                                for (i = 0; i < ENET_PRI_NUM; i++)
+                                {
+                                    tosVal = CSL_REG8_RD(baseAddr + (i+1));
+                                    if(tosVal == tosIndex)
+                                    {
+                                        break;
+                                    }
+                                }
+                                dmaPkt->txPktTc = i;
+                            }
+                        }
+                        else
+                        {
+                            dmaPkt->txPktTc = 0;
+                            if ((dmaPkt->bufPtr[12] == 0x08U) && (dmaPkt->bufPtr[13] == 0x00U))
+                            {
+                                /* upper 6 bits has the dscp index */
+                                tosIndex = ((dmaPkt->bufPtr[15] >> 2) & 0x3f);
+                                for (i = 0; i < ENET_PRI_NUM; i++)
+                                {
+                                    tosVal = CSL_REG8_RD(baseAddr + (i+1));
+                                    if(tosVal == tosIndex)
+                                    {
+                                        break;
+                                    }
+                                }
+                                dmaPkt->txPktTc = i;
+                            }
+                        }
+                    }
                 }
 
                 if (dmaPkt->txPortNum != ENET_MAC_PORT_INV)
@@ -764,13 +849,13 @@ int32_t EnetUdma_allocRing(Udma_DrvHandle hUdmaDrv,
 
         pRingPrms->ringMem = pRingAllocInfo->ringMemAllocFxn(pRingAllocInfo->cbArg,
                                              pRingPrms->elemCnt,
-                                             ENETDMA_CACHELINE_ALIGNMENT);
+                                             UDMA_CACHELINE_ALIGNMENT);
         if (pRingPrms->ringMem == NULL)
         {
             ENETTRACE_ERR("[Enet UDMA Error] RX ring memory allocation failed !!\n");
             retVal = UDMA_EALLOC;
         }
-        else if (!ENET_UTILS_IS_ALIGNED(pRingPrms->ringMem, ENETDMA_CACHELINE_ALIGNMENT))
+        else if (!ENET_UTILS_IS_ALIGNED(pRingPrms->ringMem, UDMA_CACHELINE_ALIGNMENT))
         {
             ENETTRACE_ERR("[Enet UDMA] TX fq ring memory not aligned!!\n");
             freeMem = true;
@@ -1941,7 +2026,7 @@ void *EnetUdma_memMgrAllocTdCqRingMemObj(void)
     if (pTdCqRingMemObj != NULL)
     {
         pTdCqRingMem = (void *)&pTdCqRingMemObj->tdCqRingMemObj[0U];
-        Enet_assert(ENET_UTILS_IS_ALIGNED(pTdCqRingMem, ENETDMA_CACHELINE_ALIGNMENT));
+        Enet_assert(ENET_UTILS_IS_ALIGNED(pTdCqRingMem, UDMA_CACHELINE_ALIGNMENT));
         memset(pTdCqRingMem, 0U, sizeof(uint64_t));
     }
 
@@ -1960,7 +2045,7 @@ void EnetUdma_memMgrFreeTdCqRingMemObj(void *pTdCqRingMem)
 #endif
 
     pTdCqRingMemObj = container_of((const uint64_t (*)[ENET_UTILS_ALIGN(ENET_UDMA_TDCQ_RING_ELE_CNT,
-                                                                        ENETDMA_CACHELINE_ALIGNMENT)]) pTdCqRingMem,
+                                                                        UDMA_CACHELINE_ALIGNMENT)]) pTdCqRingMem,
                                    EnetUdma_TdCqRingObjMem,
                                    tdCqRingMemObj);
     EnetQueue_enq(&gEnetUdmaMemMgrObj.tdCqRingObjMemQ, &pTdCqRingMemObj->node);

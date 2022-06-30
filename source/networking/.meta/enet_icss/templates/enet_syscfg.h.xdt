@@ -1,0 +1,43 @@
+%%{
+    let module = system.modules["/networking/enet_icss/enet_icss"];
+%%}
+% let instance = module.$instances[0];
+
+/* ========================================================================== */
+/*                           Macros & Typedefs                                */
+/* ========================================================================== */
+
+#define ENET_SYSCFG_ICSSG0_ENABLED               (`Number((instance.instance === "ICSSG0"))`U)
+#define ENET_SYSCFG_ICSSG1_ENABLED               (`Number((instance.instance === "ICSSG1"))`U)
+#define ENET_SYSCFG_NUM_TX_PKT                   (`instance.TxPacketsCount`U)
+#define ENET_SYSCFG_NUM_RX_PKT                   (`instance.RxPacketsCount`U)
+#define ENET_SYSCFG_PKT_POOL_ENABLE              (`Number(instance.PktPoolEnable)`U)
+#define ENET_SYSCFG_QOS_LEVEL                    (`instance.QoS`U)
+#define ENET_SYSCFG_PREMPTION_ENABLE             (`Number(instance.PremptionEnable)`U)
+#define ENET_SYSCFG_ENABLE_GIGABIT               (`Number(instance.GigabitSupportEnable)`U)
+#define ENET_SYSCFG_DUAL_MAC                     (`Number(instance.mode == "DUAL MAC")`U)
+#define ENET_SYSCFG_DUALMAC_PORT1_ENABLED        (`Number((instance.dualMacPortSelected == 'ENET_MAC_PORT_1') && (instance.mode == "DUAL MAC"))`U)
+#define ENET_SYSCFG_DUALMAC_PORT2_ENABLED        (`Number((instance.dualMacPortSelected == 'ENET_MAC_PORT_2') && (instance.mode == "DUAL MAC"))`U)
+#define ENET_SYSCFG_MAX_MAC_PORTS                (`Number((module.getMacPortInfo(instance)).numMacPorts)`U)
+#define ENET_SYSCFG_ENABLE_EXTPHY                (`Number((instance.ExternalPhyMgmtEnable == true))`U)
+
+/*! \brief Number of external mac ports. */
+#define ENET_SYSCFG_NUM_EXT_MAC_PORTS       (3U)
+
+/*! \brief Number of host buffer pools required for Dual-MAC. */
+#define ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG        (ENET_SYSCFG_QOS_LEVEL)
+#define ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG         (ENET_SYSCFG_NUM_EXT_MAC_PORTS * ENET_SYSCFG_QOS_LEVEL)
+
+/* ========================================================================== */
+/*                         Structure Declarations                             */
+/* ========================================================================== */
+
+/* ========================================================================== */
+/*                          Function Declarations                             */
+/* ========================================================================== */
+
+/* ========================================================================== */
+/*                       Static Function Definitions                          */
+/* ========================================================================== */
+
+/* None */

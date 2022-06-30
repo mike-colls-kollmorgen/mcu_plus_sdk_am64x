@@ -192,6 +192,8 @@ typedef struct {
     /**  Energy Efficient Ethernet enable */
     Uint32      eeeEnable;
 
+    /**  Enhanced Scheduled Traffic enable (EST) */
+    Uint32      estEnable;
 } CSL_CPSW_CONTROL;
 
 /** @brief  CPSW_THRU_RATE register
@@ -1042,6 +1044,9 @@ typedef struct {
  *  Holds CPSW Port Control contents.
  */
 typedef struct {
+    /** EST Port Enable */
+    Uint32      estPortEnable;
+
     /**  Eneregy Efficient Etherent (EEE) Transmit LPI clockstop enable
          for EMAC port only
          1: The GMII or RGMII transmit clock is stopped in the EEE
@@ -1684,6 +1689,74 @@ typedef struct {
 } CSL_CPGMAC_SL_FIFOSTATUS;
 
 
+/** @brief
+ *
+ *  Holds the Enet_Pn_EST_Control register contents
+ */
+typedef struct {
+    /** EST fill margin.
+     *  Sets the fill margin (in bytes) required to ensure that the Ethernet
+     *  wire is clear so that the timed EST express packet can egress at the
+     *  correct required time.  Setting this value too high will put an
+     *  unnecessary gap on the wire.  Setting this value too low will cause
+     *  the timed express packet to egress at a time later than intended.
+     */
+    Uint32 estFillMargin;
+
+    /** EST Prempt Comparison Value.
+     *  When the count in a zero allow is less than or equal to this value in
+     *  bytes (times 8), prempt packets are cleared from the wire. This is the
+     *  prempt clear margin value.
+     */
+    Uint32 estPremptComp;
+
+    /** EST Fill Enable.
+     *  Enable EST fill mode.
+     */
+    Uint32 estFillEnable;
+
+    /** EST Timestamp Express Priority.
+     *  Selects the express priority that timestamp(s) will be generated on
+     *  when PN_EST_TS_ONEPRI is set.
+     */
+    Uint32 estTsPri;
+
+    /** EST Timestamp One Express Priority.
+     *  When set, timestamp only enabled packets on the express priority
+     *  selected by PN_EST_TS_PRI.  When cleared to zero, express packet
+     *  selection for timestamp is independent of priority.
+     */
+    Uint32 estTsOnePri;
+
+    /** EST Timestamp First Express Packet only.
+     *  Generate a timestamp only on the first selected express packet in each
+     *  EST time interval when express timestamps are enabled.
+     *  (If PN_EST_TS_ONEPRI is also set then the timestamp is generated only
+     *  on the first packet on PN_EST_TS_PRI).
+     */
+    Uint32 estTsFirst;
+
+    /** EST Timestamp Enable.
+     *  Enable express timestamps (when EST_EN and PN_EST_PORT_EN are set).
+     */
+    Uint32 estTsEnable;
+
+    /** EST Buffer Select.
+     *  If PN_EST_ONEBUF is cleared, this bit selects the upper (when set) or
+     *  the lower (when cleared) 64-word fetch buffer.  The actual fetch buffer
+     *  used changes only at the start of the EST time interval and can be read
+     *  in the PN_FIFO_STATUS register PN_EST_BUFACT bit.
+     */
+    Uint32 estBufSel;
+
+    /** EST One Fetch Buffer.
+     *  When set indicates that all 128 fetch words are used in one buffer.
+     *  When cleared, indicates that the 128 fetch words are split into two 64-word
+     *  fetch buffers.  The pn_est_bufsel selects the buffer to be used when
+     *  PN_EST_ONEBUF is cleared to zero.
+     */
+    Uint32 estOneBuf;
+} CSL_CPSW_EST_CONFIG;
 
 /**
 @}
@@ -2552,6 +2625,7 @@ void CSL_CPSW_disableSoftIdle (CSL_Xge_cpswRegs *hCpswRegs);
  *   @n XGE_CPSW_P0_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_P0_CONTROL_REG_DSCP_IPV6_EN,
  *
+ *      XGE_CPSW_PN_CONTROL_REG_EST_PORT_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV6_EN,
  *      XGE_CPSW_PN_CONTROL_REG_TX_LPI_CLKSTOP_EN,
@@ -2604,6 +2678,7 @@ void CSL_CPSW_getPortControlReg (CSL_Xge_cpswRegs *hCpswRegs,
  *   @n XGE_CPSW_P0_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_P0_CONTROL_REG_DSCP_IPV6_EN,
  *
+ *      XGE_CPSW_PN_CONTROL_REG_EST_PORT_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV4_EN,
  *      XGE_CPSW_PN_CONTROL_REG_DSCP_IPV6_EN,
  *      XGE_CPSW_PN_CONTROL_REG_TX_LPI_CLKSTOP_EN,
@@ -4633,7 +4708,273 @@ void CSL_CPSW_setPortTimeSyncConfig (CSL_Xge_cpswRegs *hCpswRegs,
     CSL_CPSW_TSCONFIG*        pTimeSyncConfig
 );
 
+/** ============================================================================
+ *   @n@b CSL_CPSW_getEstTsDomain
+ *
+ *   @b Description
+ *   @n This function retrieves the value used as the domain in the CPTS EST
+ *      timestamp events.
+ *
+ *   @b Arguments
+ *   @n  None
+ *
+ *   <b> Return Value </b>
+ *   @n  Current EST timestmap domain.
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Reads
+ *   @n XGE_CPSW_EST_TS_DOMAIN_REG_EST_TS_DOMAIN
+ *
+ *   @b Example
+ *   @verbatim
+ *      Uint8              domain;
 
+        domain = CSL_CPSW_getEstTsDomain();
+
+     @endverbatim
+ */
+Uint8 CSL_CPSW_getEstTsDomain(CSL_Xge_cpswRegs   *hCpswRegs);
+
+/** ============================================================================
+ *   @n@b CSL_CPSW_setEstTsDomain
+ *
+ *   @b Description
+ *   @n This function writes the value used as the domain in the CPTS EST
+ *      timestamp events.
+ *
+ *   @b Arguments
+     @verbatim
+        domain              Domain to be used in CPTS EST timestamp events.
+ *   @endverbatim
+ *
+ *   <b> Return Value </b>
+ *   @n  None
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Writes
+ *   @n XGE_CPSW_EST_TS_DOMAIN_REG_EST_TS_DOMAIN
+ *
+ *   @b Example
+ *   @verbatim
+ *      Uint8              domain;
+
+        domain = 0;
+        CSL_CPSW_setEstTsDomain(domain);
+
+     @endverbatim
+ */
+void CSL_CPSW_setEstTsDomain(CSL_Xge_cpswRegs    *hCpswRegs,
+                             Uint8                domain);
+
+
+/** ============================================================================
+ *   @n@b CSL_CPSW_getPortEstConfig
+ *
+ *   @b Description
+ *   @n This function retrieves the contents of EST control register
+ *      corresponding to the CPSW port number specified per user configuration.
+ *
+ *   @b Arguments
+     @verbatim
+        portNum                 CPSW port number for which the registers must be
+                                read.
+        pEstConfig              CSL_CPSW_EST_CONFIG containing settings for
+                                port's EST control register.
+ *   @endverbatim
+ *
+ *   <b> Return Value </b>
+ *   @n  None
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Reads
+ *   @n CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_ONEBUF
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_BUFSEL
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_EN
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_FIRST
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_ONEPRI
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_PRI
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_EN
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_MARGIN
+ *   @b Example
+ *   @verbatim
+ *      Uint32              portNum;
+        CSL_CPSW_EST_CONFIG estConfig;
+
+        portNum = 1;
+
+        CSL_CPSW_getEstConfig(portNum, &estConfig);
+
+     @endverbatim
+ */
+void CSL_CPSW_getPortEstConfig(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               CSL_CPSW_EST_CONFIG *pEstConfig);
+
+/** ============================================================================
+ *   @n@b CSL_CPSW_setPortEstConfig
+ *
+ *   @b Description
+ *   @n This function sets up the contents of EST control register corresponding
+ *      to the CPSW port number specified per user configuration.
+ *
+ *   @b Arguments
+     @verbatim
+        portNum                 CPSW port number for which the registers must be
+                                configured.
+        pEstConfig              CSL_CPSW_EST_CONFIG containing settings for
+                                port's EST control register.
+ *   @endverbatim
+ *
+ *   <b> Return Value </b>
+ *   @n  None
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Writes
+ *   @n CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_ONEBUF
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_BUFSEL
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_EN
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_FIRST
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_ONEPRI
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_TS_PRI
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_EN
+        CSL_XGE_CPSW_PN_EST_CONTROL_REG_EST_FILL_MARGIN
+ *   @b Example
+ *   @verbatim
+ *      Uint32              portNum;
+        CSL_CPSW_EST_CONFIG estConfig;
+
+        portNum = 1;
+
+        estConfig.estOneBuf = 1;
+        estConfig.estBufSel = 1;
+        ...
+
+        CSL_CPSW_setEstConfig(portNum, &estConfig);
+
+     @endverbatim
+ */
+void CSL_CPSW_setPortEstConfig(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               CSL_CPSW_EST_CONFIG *pEstConfig);
+
+/** ============================================================================
+ *   @n@b CSL_CPSW_writeEstFetchCmd
+ *
+ *   @b Description
+ *   @n This function writes an EST command comprised of fetch count (EST time
+ *      interval) and fetch allow (gate mask) values to CPSW EST buffer.
+ *
+ *   @b Arguments
+     @verbatim
+        portNum                 CPSW port number for which the registers must be
+                                configured.
+        index                   EST buffer entry index (0 to 127).
+        fetchCount              Fetch time in Ethernet wireside clocks.
+        fetchAllow              8-bit gate mask.
+ *   @endverbatim
+ *
+ *   <b> Return Value </b>
+ *   @n  None
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Writes
+ *   @n CSL_XGE_CPSW_CPSW_NU_EST_FETCH_LOC
+ *
+ *   @b Example
+ *   @verbatim
+ *      Uint32              portNum;
+        Uint32              fetchCount;
+        Uint8               fetchAllow;
+
+        portNum = 1;
+        index   = 0;
+        fetchCount = 64;
+        fetchAllow = 0xC0;
+
+        CSL_CPSW_writeEstFetchCmd(portNum, index, fetchCount, fetchAllow);
+
+     @endverbatim
+ */
+void CSL_CPSW_writeEstFetchCmd(CSL_Xge_cpswRegs    *hCpswRegs,
+                               Uint32              portNum,
+                               Uint32              index,
+                               Uint32              fetchCount,
+                               Uint8               fetchAllow);
+
+/** ============================================================================
+ *   @n@b CSL_CPSW_readEstFetchCmd
+ *
+ *   @b Description
+ *   @n This function read the EST command comprised of fetch count (EST time
+ *      interval) and fetch allow (gate mask) values from CPSW EST buffer.
+ *
+ *   @b Arguments
+     @verbatim
+        portNum                 CPSW port number for which the registers must be
+                                configured.
+        index                   EST buffer entry index (0 to 127).
+        fetchCount              Fetch time in wireside clocks to be populated
+                                from EST buffer.
+        fetchAllow              8-bit gate mask tobe populated from EST buffer
+                                value.
+ *   @endverbatim
+ *
+ *   <b> Return Value </b>
+ *   @n  None
+ *
+ *   <b> Pre Condition </b>
+ *   @n  None
+ *
+ *   <b> Post Condition </b>
+ *   @n  None
+ *
+ *   @b Reads
+ *   @n CSL_XGE_CPSW_CPSW_NU_EST_FETCH_LOC
+ *
+ *   @b Example
+ *   @verbatim
+ *      Uint32              portNum;
+        Uint32              index;
+        Uint32              fetchCount;
+        Uint8               fetchAllow;
+
+        portNum = 1;
+        index   = 0;
+
+        CSL_CPSW_readEstFetchCmd(portNum, index, &fetchCount, &fetchAllow);
+
+     @endverbatim
+ */
+void CSL_CPSW_readEstFetchCmd(CSL_Xge_cpswRegs    *hCpswRegs,
+                              Uint32              portNum,
+                              Uint32              index,
+                              Uint32              *fetchCount,
+                              Uint8               *fetchAllow);
 
 
 /********************************************************************************

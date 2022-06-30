@@ -548,7 +548,7 @@ int32_t UART_write(UART_Handle handle, UART_Transaction *trans)
                      {
                          trans->status = UART_TRANSFER_STATUS_TIMEOUT;
                          /* Cancel the DMA without posting the semaphore */
-                         UART_writeCancelNoCB(handle, object, attrs);
+                         UART_writeCancelNoCB(&handle, object, attrs);
                          status = SystemP_FAILURE;
                      }
                  }
@@ -675,7 +675,7 @@ int32_t UART_read(UART_Handle handle, UART_Transaction *trans)
                     {
                         trans->status = UART_TRANSFER_STATUS_TIMEOUT;
                         /* Cancel the DMA without posting the semaphore */
-                        UART_readCancelNoCB(handle, object, attrs);
+                        UART_readCancelNoCB(&handle, object, attrs);
                         status = SystemP_FAILURE;
                     }
                     trans->count = (uint32_t)(object->readCount);
@@ -734,7 +734,7 @@ int32_t UART_writeCancel(UART_Handle handle, UART_Transaction *trans)
 
     if(SystemP_SUCCESS == status)
     {
-        if (UART_writeCancelNoCB(handle, object, attrs) == (Bool)TRUE)
+        if (UART_writeCancelNoCB(&handle, object, attrs) == (Bool)TRUE)
         {
             object->writeTrans->status = UART_TRANSFER_STATUS_CANCELLED;
             /*
@@ -792,7 +792,7 @@ int32_t UART_readCancel(UART_Handle handle, UART_Transaction *trans)
 
     if(SystemP_SUCCESS == status)
     {
-        if (UART_readCancelNoCB(handle, object, attrs) == (Bool)TRUE)
+        if (UART_readCancelNoCB(&handle, object, attrs) == (Bool)TRUE)
         {
             object->readTrans->status = UART_TRANSFER_STATUS_CANCELLED;
             if (object->prms.readMode == UART_TRANSFER_MODE_CALLBACK)
@@ -2053,11 +2053,11 @@ static void UART_writeDataPolling(UART_Object *object, UART_Attrs const *attrs)
     uint32_t numBytesWritten = 0U;
 
     numBytesWritten = UART_fifoWrite(attrs,
-                                     object->writeBuf,
+                                     (const uint8_t *) object->writeBuf,
                                      object->writeSizeRemaining);
 
     object->writeSizeRemaining -= numBytesWritten;
-    object->writeBuf           += numBytesWritten;
+    object->writeBuf           = (const uint8_t *) object->writeBuf + numBytesWritten;
     object->writeCount         += numBytesWritten;
 
     return;
@@ -2189,11 +2189,11 @@ static void UART_readDataPolling(UART_Config      *config,
     uint32_t numBytesRead = 0U;
 
     numBytesRead = UART_fifoRead(config, attrs,
-                                 object->readBuf,
+                                 (uint8_t *) object->readBuf,
                                  object->readSizeRemaining);
 
     object->readSizeRemaining -= numBytesRead;
-    object->readBuf           += numBytesRead;
+    object->readBuf           = (uint8_t *) object->readBuf + numBytesRead;
     object->readCount         += numBytesRead;
 
     return;

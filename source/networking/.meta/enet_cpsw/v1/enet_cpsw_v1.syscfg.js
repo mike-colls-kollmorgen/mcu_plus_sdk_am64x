@@ -1,6 +1,7 @@
 
 let common = system.getScript("/common");
 let pinmux = system.getScript("/drivers/pinmux/pinmux");
+let device = common.getDeviceName();
 
 function getInterfaceName(inst, peripheralName)
 {
@@ -207,11 +208,69 @@ function getClockFrequencies(inst) {
     return instConfig[0].clockFrequencies;
 }
 
+function getDmaInterface(instance) {
+    let cpswInstInfo = getCpswInstInfo(instance);
+    return cpswInstInfo.dmaIf;
+}
+
+function getCpswInstInfo(instance) {
+    const cpswInstInfoMap = new Map(
+                               [
+                                 ['awr294x',{enetType: 'ENET_CPSW_2G', numMacPorts: '1', instId: '0', dmaIf:'ENET_SOC_HOSTPORT_DMA_TYPE_CPDMA', macPortList:['ENET_MAC_PORT_1']}],
+                                 ['am273x', {enetType: 'ENET_CPSW_2G', numMacPorts: '1', instId: '0', dmaIf:'ENET_SOC_HOSTPORT_DMA_TYPE_CPDMA', macPortList:['ENET_MAC_PORT_1']}],
+                                 ['am263x',{enetType: 'ENET_CPSW_3G', numMacPorts: '2', instId: '0', dmaIf:'ENET_SOC_HOSTPORT_DMA_TYPE_CPDMA', macPortList:['ENET_MAC_PORT_1', 'ENET_MAC_PORT_2']}],
+                                 ['am243x',{enetType: 'ENET_CPSW_3G', numMacPorts: '2', instId: '0', dmaIf:'ENET_SOC_HOSTPORT_DMA_TYPE_UDMA', macPortList:['ENET_MAC_PORT_1', 'ENET_MAC_PORT_2']}],
+                                 ['am64x',{enetType: 'ENET_CPSW_3G', numMacPorts: '2', instId: '0', dmaIf:'ENET_SOC_HOSTPORT_DMA_TYPE_UDMA', macPortList:['ENET_MAC_PORT_1', 'ENET_MAC_PORT_2']}],
+                               ],
+                             );
+    return cpswInstInfoMap.get(common.getSocName());
+}
+
+function getBoardConfigTemplateInfo() {
+    const boardConfigTemplate = new Map(
+                               [
+                                 ['am64x',{Cfile: "/networking/enet_cpsw/templates/am64x_am243x/enet_board_cfg.c.xdt",
+                                  Header: "/networking/enet_cpsw/templates/am64x_am243x/enet_board_cfg.h.xdt"}],
+                                 ['am243x',{Cfile: "/networking/enet_cpsw/templates/am64x_am243x/enet_board_cfg.c.xdt",
+                                  Header: "/networking/enet_cpsw/templates/am64x_am243x/enet_board_cfg.h.xdt"}],
+                                 ['awr294x',{Cfile: "/networking/enet_cpsw/templates/awr294x/enet_board_cfg.c.xdt",
+                                  Header: "/networking/enet_cpsw/templates/awr294x/enet_board_cfg.h.xdt"}],
+                                 ['am273x', {Cfile: "/networking/enet_cpsw/templates/am273x/enet_board_cfg.c.xdt",
+                                 Header: "/networking/enet_cpsw/templates/am273x/enet_board_cfg.h.xdt"}],
+                                 ['am263x',{Cfile: "/networking/enet_cpsw/templates/am263x/enet_board_cfg.c.xdt",
+                                 Header: "/networking/enet_cpsw/templates/am263x/enet_board_cfg.h.xdt"}],
+                               ],
+                             );
+    return boardConfigTemplate.get(common.getSocName());
+}
+
+let boardConfigInfo = getBoardConfigTemplateInfo();
+
+function getPhyMask(instance) {
+    let cpswInstInfo = getCpswInstInfo(instance);
+    let phyMask = '(' + '0';
+
+    for (var i in cpswInstInfo.macPortList)
+    {
+        if (cpswInstInfo.macPortList[i] == 'ENET_MAC_PORT_1')
+        {
+            phyMask += ' | ' + '(1 << ' + instance.phyAddr1 + ' )';
+        }
+        if (cpswInstInfo.macPortList[i] == 'ENET_MAC_PORT_2')
+        {
+            phyMask += ' | ' + '(1 << ' + instance.phyAddr2 + ' )';
+        }
+    }
+    phyMask += ')';
+    return phyMask;
+}
+
 let enet_cpsw_module_name = "/networking/enet_cpsw/enet_cpsw";
 
 let enet_cpsw_module = {
 
     displayName: "Enet (CPSW)",
+	longDescription: "Driver for Common Port SWitch (CPSW). Support MAC, which is used in auto and industrial Ethernet to run TCP/IP, AVB etc. applications.",
     templates: {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: enet_cpsw_module_name,
@@ -229,18 +288,35 @@ let enet_cpsw_module = {
         "/board/board/board_open_close.h.xdt": {
             board_open_close_config: "/networking/enet_cpsw/templates/cpsw_board_config.h.xdt",
         },
-        "/drivers/system/system_config.c.xdt": {
-            driver_config: "/networking/enet_cpsw/templates/enet_app_memutils_cfg.c.xdt",
+        "/board/board/board_config.h.xdt": {
+            board_config: boardConfigInfo.Header,
+            moduleName: enet_cpsw_module_name,
+        },
+        "/board/board/board_config.c.xdt": {
+            board_config: boardConfigInfo.Cfile,
+            moduleName: enet_cpsw_module_name,
+        },
+        "/networking/common/enet_config.c.xdt": {
+            enet_mem_config: "/networking/enet_cpsw/templates/enet_app_memutils_cfg_cpdma.c.xdt",
+            enet_syscfg_info: "/networking/enet_cpsw/templates/enet_app_syscfg_info.c.xdt",
+            moduleName: enet_cpsw_module_name,
+        },
+        "/networking/common/enet_config.h.xdt": {
+            enet_config: "/networking/enet_cpsw/templates/enet_syscfg.h.xdt",
+            moduleName: enet_cpsw_module_name,
+        },
+        "/networking/common/enet_open.c.xdt": {
+            enet_open: "/networking/enet_cpsw/templates/enet_init.c.xdt",
+            enet_init_config: "/networking/enet_cpsw/templates/enet_app_cpsw_cfg.c.xdt",
+            moduleName: enet_cpsw_module_name,
+        },
+        "/networking/common/enet_open.h.xdt": {
+            enet_open: "/networking/enet_cpsw/templates/enet_init.h.xdt",
             moduleName: enet_cpsw_module_name,
         },
     },
     defaultInstanceName: "CONFIG_ENET_CPSW",
     config: [
-        {
-            name: "mode",
-            displayName: "EMAC Mode",
-            default: "SWITCH",
-        },
         {
             name: "phyToMacInterfaceMode",
             displayName: "RMII/RGMII",
@@ -262,7 +338,7 @@ let enet_cpsw_module = {
         },
         {
             name: "PktPoolEnable",
-            description: "Flag to enable allocation of Pkt pool. Not required for LWIP Based examples",
+            description: "Flag to enable packet allocation from enet utils library. It should be disabled to avoid utils memory wastage, in case aplication allots packet via other mechanism. (Ex- Lwip pools)",
             displayName: "Pkt Pool Flag",
             default: true,
         },
@@ -270,19 +346,39 @@ let enet_cpsw_module = {
             name: "TxPacketsCount",
             description: "No of Tx packets required for DMA channel",
             displayName: "Number of Tx Packets",
-            default: 0,
+            default: 16,
         },
         {
             name: "RxPacketsCount",
             description: "No of Rx packets required for DMA channel",
             displayName: "Number of Rx Packets",
-            default: 0,
+            default: 32,
         },
         {
-            name: "RingsTypes",
-            description: "Number of Rings required for DMA Channel",
-            displayName: "Number of Rings Types",
-            default: 0,
+            name: "McmEnable",
+            description: "Flag to enable multi-client manager. Required for multi-core, multiple Enet client use cases",
+            displayName: "Mcm Enable",
+            default: false,
+        },
+        {
+            name: "ExternalPhyMgmtEnable",
+            description: "Flag to enable phy management in application. The enet driver internal phy functions including phy state machine is bypassed in this mode",
+            displayName: "External Phy Management Enable",
+            default: false,
+        },
+        {
+            name: "AppLinkUpPortMask",
+            description: "Application config to determine which macPorts should be polled for linkup to indicate link is up.Applicable in multi port scenario only",
+            displayName: "AppLinkUpPortMask Config",
+            default: "ANY_PORT",
+            options: [
+                {
+                    name: "ALL_PORTS",
+                },
+                {
+                    name: "ANY_PORT",
+                },
+            ],
         },
     ],
     moduleStatic: {
@@ -298,6 +394,10 @@ let enet_cpsw_module = {
     getPeripheralPinNames,
     getClockEnableIds,
     getClockFrequencies,
+    getDmaInterface,
+    getCpswInstInfo,
+    getPhyMask,
+    getBoardConfigTemplateInfo,
 };
 
 exports = enet_cpsw_module;

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,16 @@ $(document).ready(function(){initNavTree('DRIVERS_PRU_IPC.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md978">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md979">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md980">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md981">Usage Guidelines</a><ul><li class="level2"><a href="#autotoc_md982">Add PRU IPC using SysConfig</a></li>
+<ul><li class="level1"><a href="#autotoc_md1067">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md1068">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md1069">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md1070">Usage Guidelines</a><ul><li class="level2"><a href="#autotoc_md1071">Add PRU IPC using SysConfig</a></li>
 <li class="level2"><a href="#DRIVERS_PRU_IPC_LINKER">Update linker command file</a></li>
-<li class="level2"><a href="#autotoc_md983">Update MPU for the CPU</a></li>
+<li class="level2"><a href="#autotoc_md1072">Update MPU for the CPU</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md984">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md985">API</a></li>
+<li class="level1"><a href="#autotoc_md1073">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md1074">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_pru_io_pru_ipc"></a></p>
@@ -126,16 +126,16 @@ $(document).ready(function(){initNavTree('DRIVERS_PRU_IPC.html',''); initResizab
 <p> <style>div.image img[src="pru_ipc_arch.png"]{width:65%}</style> </p><div class="image">
 <img src="pru_ipc_arch.png" alt=""/>
 </div>
- <h1><a class="anchor" id="autotoc_md978"></a>
+ <h1><a class="anchor" id="autotoc_md1067"></a>
 Features Supported</h1>
 <ul>
 <li>Configurables: number of buffers, number of blocks, block size, data size</li>
 <li>Interrupt option after a block of data is sent by PRU</li>
-<li>Configurable shared memory location where the buffers will be placed</li>
+<li>Configurable shared memory location where the buffers will be placed - by specifying it in linker file</li>
 <li>Optional interrupt to PRU after a block of data is sent by R5F</li>
 <li>Custom interrupt mapping through ICSS INTC module</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md979"></a>
+<h1><a class="anchor" id="autotoc_md1068"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig is used for configuring all the PRU IPC options mentioned above, through PRU IPC module under PRU IO.</p>
@@ -146,14 +146,14 @@ SysConfig Features</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md980"></a>
+<h1><a class="anchor" id="autotoc_md1069"></a>
 Features NOT Supported</h1>
 <ul>
 <li>Currently only PRU cores are supported (not RTU PRU and TX PRU cores)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md981"></a>
+<h1><a class="anchor" id="autotoc_md1070"></a>
 Usage Guidelines</h1>
-<h2><a class="anchor" id="autotoc_md982"></a>
+<h2><a class="anchor" id="autotoc_md1071"></a>
 Add PRU IPC using SysConfig</h2>
 <ul>
 <li>Add a PRU IPC instance using SysConfig, by selecting <code>PRU IPC</code> under <code>PRU IO</code> in the left pane in SysConfig</li>
@@ -167,7 +167,7 @@ Update linker command file</h2>
 <p> <style>div.image img[src="pru_ipc_linker.png"]{width:80%}</style> </p><div class="image">
 <img src="pru_ipc_linker.png" alt=""/>
 </div>
-<h2><a class="anchor" id="autotoc_md983"></a>
+<h2><a class="anchor" id="autotoc_md1072"></a>
 Update MPU for the CPU</h2>
 <ul>
 <li>The shared memory section (described in the above section) which was put in the linker command file needs to be mapped as <code>Cached+Sharable</code> for the CPU.</li>
@@ -178,8 +178,9 @@ Update MPU for the CPU</h2>
 </li>
 </ul>
 <p>These APIs are for the R5F side. Please also look into the PRU side macros available for usage in PRU firmware.</p>
-<h1><a class="anchor" id="autotoc_md984"></a>
+<h1><a class="anchor" id="autotoc_md1073"></a>
 Example Usage</h1>
+<p>The PRU IPC is being used in PRU-ADC interfacing examples in which PRU transfers the samples to R5F (to TCM). There, Number of channels correspond to number of buffers and packet size correspond to sample size.</p>
 <p>Initialize PRU IPC Instance </p><div class="fragment"><div class="line">    <span class="comment">/* ----------------------------------------------------------------- */</span></div>
 <div class="line">    <span class="comment">/* Initialize IPC between r5f and PRU cores                          */</span></div>
 <div class="line">    <span class="comment">/* ----------------------------------------------------------------- */</span></div>
@@ -194,7 +195,10 @@ Example Usage</h1>
 <div class="line">    <a class="code" href="group__DRV__PRU__IPC__MODULE.html#ga231deb3038ddf9b6092656081bf13825">PRU_IPC_getData</a>(gPruIpc0Handle, samples);</div>
 <div class="line">    <span class="comment">/* Send Data to PRU core */</span></div>
 <div class="line">    <a class="code" href="group__DRV__PRU__IPC__MODULE.html#gad2fc60554f7494a5b55b10162ee6c540">PRU_IPC_sendData</a>(gPruIpc0Handle, samples);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md985"></a>
+</div><!-- fragment --><p>Usage on PRU Firmware Side: </p><div class="fragment"><div class="line">m_pru_ipc_init      R0.b0           ; Initializes PRU IPC paramenters, use R0.b0 register only</div>
+<div class="line">ldi                 R1.b0, &amp;R3      ; Starting memory address of registers to send</div>
+<div class="line">m_pru_ipc_send      R1.b0, R3, R0.b0, PRU_IPC_RX_INTR_ENABLE, PRU_IPC_RX_EVENT  ; Send data to shared memory</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1074"></a>
 API</h1>
 <p><a class="el" href="group__DRV__PRU__IPC__MODULE.html">APIs for PRU IPC: R5F-PRU communication</a> </p>
 </div></div><!-- contents -->
@@ -203,8 +207,8 @@ API</h1>
 <div class="ttc" id="agroup__DRV__PRU__IPC__MODULE_html_gad2fc60554f7494a5b55b10162ee6c540"><div class="ttname"><a href="group__DRV__PRU__IPC__MODULE.html#gad2fc60554f7494a5b55b10162ee6c540">PRU_IPC_sendData</a></div><div class="ttdeci">int32_t PRU_IPC_sendData(PRU_IPC_Handle handle, void *container)</div><div class="ttdoc">Send/Write data to the configured shared memory (generates interrupt to PRU if it is enabled)</div></div>
 <div class="ttc" id="agroup__DRV__PRU__IPC__MODULE_html_ga231deb3038ddf9b6092656081bf13825"><div class="ttname"><a href="group__DRV__PRU__IPC__MODULE.html#ga231deb3038ddf9b6092656081bf13825">PRU_IPC_getData</a></div><div class="ttdeci">int32_t PRU_IPC_getData(PRU_IPC_Handle handle, void *container)</div><div class="ttdoc">Reads the data from the configured shared memory.</div></div>
 <div class="ttc" id="agroup__DRV__PRU__IPC__MODULE_html_gaf8db5f54464b6defa5878970ba4a8e89"><div class="ttname"><a href="group__DRV__PRU__IPC__MODULE.html#gaf8db5f54464b6defa5878970ba4a8e89">PRU_IPC_open</a></div><div class="ttdeci">PRU_IPC_Handle PRU_IPC_open(uint32_t idx, PRU_IPC_Params *params)</div><div class="ttdoc">To initialize and configure PRU_IPC instance.</div></div>
-<div class="ttc" id="astructPRU__IPC__Params_html"><div class="ttname"><a href="structPRU__IPC__Params.html">PRU_IPC_Params</a></div><div class="ttdef"><b>Definition:</b> pru_ipc.h:92</div></div>
-<div class="ttc" id="astructPRU__IPC__Params_html_ac13215b71f32f013bc1cf0cc326a2766"><div class="ttname"><a href="structPRU__IPC__Params.html#ac13215b71f32f013bc1cf0cc326a2766">PRU_IPC_Params::pruicssHandle</a></div><div class="ttdeci">PRUICSS_Handle pruicssHandle</div><div class="ttdef"><b>Definition:</b> pru_ipc.h:94</div></div>
+<div class="ttc" id="astructPRU__IPC__Params_html"><div class="ttname"><a href="structPRU__IPC__Params.html">PRU_IPC_Params</a></div><div class="ttdef"><b>Definition:</b> pru_ipc.h:107</div></div>
+<div class="ttc" id="astructPRU__IPC__Params_html_ac13215b71f32f013bc1cf0cc326a2766"><div class="ttname"><a href="structPRU__IPC__Params.html#ac13215b71f32f013bc1cf0cc326a2766">PRU_IPC_Params::pruicssHandle</a></div><div class="ttdeci">PRUICSS_Handle pruicssHandle</div><div class="ttdef"><b>Definition:</b> pru_ipc.h:109</div></div>
 <div class="ttc" id="agroup__KERNEL__DPL__DEBUG_html_ga552e9055ca7eab5fe6c224c6cd5a9d4c"><div class="ttname"><a href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a></div><div class="ttdeci">#define DebugP_assert(expression)</div><div class="ttdoc">Function to call for assert check.</div><div class="ttdef"><b>Definition:</b> DebugP.h:159</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->

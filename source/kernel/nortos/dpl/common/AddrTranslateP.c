@@ -47,18 +47,20 @@ static void AddrTranslateP_setRegion(uint32_t ratBaseAddr, uint16_t regionNum,
         uint64_t systemAddr, uint32_t localAddr,
         uint32_t size, uint32_t enable)
 {
+    uint32_t systemAddrL, systemAddrH;
     if(size > AddrTranslateP_RegionSize_4G)
     {
         size = AddrTranslateP_RegionSize_4G;
     }
-    systemAddr = systemAddr & ~( (uint32_t)( ((uint64_t)1 << size) - 1) );
+    systemAddrL = (uint32_t)(systemAddr & ~( (uint32_t)( ((uint64_t)1 << size) - 1) ));
+    systemAddrH = (uint32_t)((systemAddr >> 32 ) & 0xFFFF);
     localAddr = localAddr   & ~( (uint32_t)( ((uint64_t)1 << size) - 1) );
 
     /* disable RAT region first */
     *RAT_CTRL(ratBaseAddr, regionNum) = 0;
     *RAT_BASE(ratBaseAddr, regionNum) = localAddr;
-    *RAT_TRANS_L(ratBaseAddr, regionNum) = (uint32_t)(systemAddr & 0xFFFFFFFF);
-    *RAT_TRANS_H(ratBaseAddr, regionNum) = (uint32_t)((systemAddr >> 32 ) & 0xFFFF);
+    *RAT_TRANS_L(ratBaseAddr, regionNum) = systemAddrL;
+    *RAT_TRANS_H(ratBaseAddr, regionNum) = systemAddrH;
     /* set size and enable the region */
     *RAT_CTRL(ratBaseAddr, regionNum) = ((enable & 0x1) << 31u) | (size & 0x3F);
 }

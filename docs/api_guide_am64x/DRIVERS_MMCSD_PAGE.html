@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,17 @@ $(document).ready(function(){initNavTree('DRIVERS_MMCSD_PAGE.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md594">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md595">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md596">Features not Supported</a></li>
-<li class="level1"><a href="#autotoc_md597">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md598">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md662">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md663">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md664">Features not Supported</a></li>
+<li class="level1"><a href="#autotoc_md665">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md666">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_mmcsd"></a></p>
+<dl class="section note"><dt>Note</dt><dd>EMMC Flash card is not available in AM64xSK board.</dd></dl>
 <p>Multi-Media Card Secure Digital (MMCSD) peripheral is a driver which provides an interface with storage devices which follows MMC/SD/SDIO protocol. The driver supports single bit, four bit and eight bit data lines to communicate with the connected media. The MMCSD controller provides accessibility to external MMC/SD/SDIO devices using a programmed IO method or DMA data transfer method. There are two MMCSD modules inside the SOC - MMCSD0 and MMCSD1.</p>
-<h1><a class="anchor" id="autotoc_md594"></a>
+<h1><a class="anchor" id="autotoc_md662"></a>
 Features Supported</h1>
 <ul>
 <li>Integrated DMA Controller supporting SD Advanced DMA - SDMA, ADMA2 and ADMA3</li>
@@ -125,16 +126,16 @@ Features Supported</h1>
 <li>MMCSD0 supports eMMC 5.1, and also backward compatible withe earlier eMMC standards</li>
 <li>MMCSD1 supports SD card HC 4.10 and SD Physical Layer v3.01, SDIO v3.00</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md595"></a>
+<h1><a class="anchor" id="autotoc_md663"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
-<h1><a class="anchor" id="autotoc_md596"></a>
+<h1><a class="anchor" id="autotoc_md664"></a>
 Features not Supported</h1>
 <ul>
 <li>MMCSD0 does not support SD card, SDIO and voltages 3.3V, 3.0V, 1.2V and HS400 DDR</li>
 <li>MMCSD1 does not support MMC card, UHS-II SD card and SDR104</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md597"></a>
+<h1><a class="anchor" id="autotoc_md665"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="mmcsd_8h.html">drivers/mmcsd.h</a>&gt;</span></div>
@@ -144,7 +145,7 @@ Example Usage</h1>
 <div class="line">    gMmcsdHandle = <a class="code" href="group__DRV__MMCSD__MODULE.html#gad5f98ef137b21134e08ef8be86dd0652">MMCSD_open</a>(0, &amp;mmcsdParams);</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(gMmcsdHandle != NULL);</div>
 </div><!-- fragment --><p> Instance Close Example </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__MMCSD__MODULE.html#ga2a14bd2ef488ca43506e7f93706a7682">MMCSD_close</a>(gMmcsdHandle);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md598"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md666"></a>
 API</h1>
 <p><a class="el" href="group__DRV__MMCSD__MODULE.html">APIs for MMCSD</a> </p>
 </div></div><!-- contents -->

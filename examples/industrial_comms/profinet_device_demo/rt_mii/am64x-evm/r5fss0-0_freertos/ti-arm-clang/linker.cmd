@@ -73,6 +73,7 @@ SECTIONS
         .bss:    {} palign(8)   /* This is where uninitialized globals go */
         RUN_START(__BSS_START)
         RUN_END(__BSS_END)
+        .threadstack:  {} palign(8) FILL(0x00000000)
         .sysmem: {} palign(8)   /* This is where the malloc heap goes */
         .stack:  {} palign(8)   /* This is where the main() stack goes */
     } > MSRAM

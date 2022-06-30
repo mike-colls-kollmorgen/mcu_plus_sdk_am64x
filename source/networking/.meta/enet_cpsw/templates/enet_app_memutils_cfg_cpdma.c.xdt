@@ -1,0 +1,115 @@
+%%{
+    let module = system.modules["/networking/enet_cpsw/enet_cpsw"];
+%%}
+% let instance = module.$instances[0];
+/*
+ * Enet DMA memory allocation utility functions.
+ */
+
+/* ========================================================================== */
+/*                             Include Files                                  */
+/* ========================================================================== */
+
+#include <string.h>
+
+#include <enet.h>
+#include <include/core/enet_utils.h>
+
+#include <include/core/enet_dma.h>
+
+#include "enet_appmemutils.h"
+#include "enet_appmemutils_cfg.h"
+#include "enet_apputils.h"
+
+#include "ti_enet_config.h"
+
+#include <drivers/hw_include/cslr_soc.h>
+#include <networking/enet/hw_include/csl_cpswitch.h>
+#include <networking/enet/core/src/dma/cpdma/enet_cpdma_priv.h>
+
+/* ========================================================================== */
+/*                         Structure Declarations                             */
+/* ========================================================================== */
+
+% if (instance.PktPoolEnable == true){
+/* Eth packet info memory Q - large pool */
+static EnetDma_Pkt gAppPktInfoMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))];
+
+/* Eth packet large pool memories */
+static uint8_t gEthPktMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))][ENET_MEM_LARGE_POOL_PKT_SIZE]
+__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
+                section(".bss:ENET_DMA_PKT_MEMPOOL")));
+static EnetMem_AppPktInfoMem gAppPktInfoContainerMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))];
+% }
+
+static const EnetMem_Cfg gEthMemCfg =
+{
+% if (instance.PktPoolEnable == true){
+    .pktBufPool =
+    {
+        [ENET_MEM_POOLIDX_LARGE] =
+        {
+            .pktSize     = ENET_MEM_LARGE_POOL_PKT_SIZE,
+            .numPkts     = (((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM)),
+            .pktInfoMem  = gAppPktInfoMem_LargePool,
+            .pktInfoSize = sizeof(gAppPktInfoMem_LargePool),
+            .pktBufMem   = &gEthPktMem_LargePool[0][0],
+            .pktBufSize  = sizeof(gEthPktMem_LargePool),
+            .pktInfoContainerMem = gAppPktInfoContainerMem_LargePool,
+            .pktInfoContainerSize = sizeof(gAppPktInfoContainerMem_LargePool),
+        },
+    },
+% } else {
+    .pktBufPool =
+    {
+        [ENET_MEM_POOLIDX_LARGE] =
+        {
+            .pktSize     = 0,
+            .numPkts     = 0,
+            .pktInfoMem  = NULL,
+            .pktInfoSize = 0,
+            .pktBufMem   = NULL,
+            .pktBufSize  = 0,
+            .pktInfoContainerMem = NULL,
+            .pktInfoContainerSize = 0,
+        },
+    },
+% }
+};
+
+const EnetMem_Cfg * EnetMem_getCfg(void)
+{
+    return &gEthMemCfg;
+}
+
+/* TODO: can be passed as configuration parameters  */
+/* Reserved Memory for CPPI descriptors */
+#define CPSW_CPPI_DESC_NUM_DESC                      (512)
+
+static  EnetCpdma_cppiDesc gCpswDescMem[CPSW_CPPI_DESC_NUM_DESC]
+__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
+                section(".bss:ENET_CPPI_DESC")));
+
+void EnetSoc_getCppiDescInfo(Enet_Type enetType,
+                             uint32_t instId,
+                             uintptr_t *descStartAddr,
+                             uint32_t *size)
+{
+    *descStartAddr = (uintptr_t)gCpswDescMem;
+    *size = sizeof(gCpswDescMem);
+}
+
+
+void EnetAppUtils_setCommonRxChPrms(EnetCpdma_OpenRxChPrms *pRxChPrms)
+{
+    pRxChPrms->numRxPkts           = ENET_SYSCFG_NUM_RX_PKT;
+}
+
+void EnetAppUtils_setCommonTxChPrms(EnetCpdma_OpenTxChPrms *pTxChPrms)
+{
+    pTxChPrms->numTxPkts           = ENET_SYSCFG_NUM_TX_PKT;
+}

@@ -126,6 +126,8 @@ int main()
 
 
     Bootloader_socWaitForFWBoot();
+    Bootloader_socOpenFirewalls();
+
 
     System_init();
     Drivers_open();

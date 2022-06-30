@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,29 +108,29 @@ $(document).ready(function(){initNavTree('PRP_FWHAL.html',''); initResizable(); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md775">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md776">Data Sheet</a><ul><li class="level2"><a href="#autotoc_md777">Features Supported</a></li>
-<li class="level2"><a href="#autotoc_md778">Known Issues</a></li>
+<ul><li class="level1"><a href="#autotoc_md860">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md861">Data Sheet</a><ul><li class="level2"><a href="#autotoc_md862">Features Supported</a></li>
+<li class="level2"><a href="#autotoc_md863">Known Issues</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md779">Important Files and Directory Structure</a></li>
-<li class="level1"><a href="#autotoc_md780">Terms and Abbreviations</a></li>
-<li class="level1"><a href="#autotoc_md781">API Documentation</a></li>
-<li class="level1"><a href="#autotoc_md782">Procedure to kick-off the PRP</a></li>
-<li class="level1"><a href="#autotoc_md783">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md784">Interface with ICSS-EMAC</a></li>
-<li class="level2"><a href="#autotoc_md785">Callbacks from ICSS EMAC</a></li>
+<li class="level1"><a href="#autotoc_md864">Important Files and Directory Structure</a></li>
+<li class="level1"><a href="#autotoc_md865">Terms and Abbreviations</a></li>
+<li class="level1"><a href="#autotoc_md866">API Documentation</a></li>
+<li class="level1"><a href="#autotoc_md867">Procedure to kick-off the PRP</a></li>
+<li class="level1"><a href="#autotoc_md868">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md869">Interface with ICSS-EMAC</a></li>
+<li class="level2"><a href="#autotoc_md870">Callbacks from ICSS EMAC</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md786">Interrupts</a><ul><li class="level2"><a href="#autotoc_md787">Tasks</a></li>
-<li class="level2"><a href="#autotoc_md788">Semaphores</a></li>
-<li class="level2"><a href="#autotoc_md789">Clocks</a></li>
+<li class="level1"><a href="#autotoc_md871">Interrupts</a><ul><li class="level2"><a href="#autotoc_md872">Tasks</a></li>
+<li class="level2"><a href="#autotoc_md873">Semaphores</a></li>
+<li class="level2"><a href="#autotoc_md874">Clocks</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md790">See also</a></li>
+<li class="level1"><a href="#autotoc_md875">See also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_industrial_comms_hsr_prp"></a></p>
-<h1><a class="anchor" id="autotoc_md775"></a>
+<h1><a class="anchor" id="autotoc_md860"></a>
 Introduction</h1>
 <p>This software is designed for the TI SoCs with PRU-ICSS IP to enable customers add PRP(Parallel Redundancy Protocol) Dual Attached Node support to their system. It implements PRP functionality and provides PRP FPGA like functionality integrated into TI SoCs.</p>
 <p>PRP is Ethernet based communication technology commonly deployed in smart grid substation for low cost, easy to maintain and interoperable common network infrastructure with built-in redundancy. They exist as a LRE(Link Redundancy Entity) between the MAC and Network layer above providing a transparent view of the MAC below to the application. Every packet is duplicated by the PRP FWHAL on it's way out and only a single copy of the duplicates arriving is forwarded to Host.</p>
@@ -138,10 +138,10 @@ Introduction</h1>
 <img src="PRP_Software_Architecture.png" alt=""/>
 <div class="caption">
 Software Architecture</div></div>
-<p>PRP firmware for PRU-ICSS is a black box product maintained by TI. PRP FWHAL(Firmware and Hardware Abstraction Layer) allows loading and run PRP firmware and acts as an interface with the firmware. Firmware is based on 200 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</p>
-<h1><a class="anchor" id="autotoc_md776"></a>
+<p>PRP firmware for PRU-ICSS is a black box product maintained by TI. PRP FWHAL(Firmware and Hardware Abstraction Layer) allows loading and running PRP firmware and acts as an interface with the firmware. Firmware is based on 200 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</p>
+<h1><a class="anchor" id="autotoc_md861"></a>
 Data Sheet</h1>
-<h2><a class="anchor" id="autotoc_md777"></a>
+<h2><a class="anchor" id="autotoc_md862"></a>
 Features Supported</h2>
 <table class="doxtable">
 <tr>
@@ -181,7 +181,7 @@ Features Supported</h2>
 <tr>
 <td>Interrupt for Link loss detection </td><td>Link loss detection, Callback APIs to perform tasks related to change in network topology </td><td>Yes  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md778"></a>
+<h2><a class="anchor" id="autotoc_md863"></a>
 Known Issues</h2>
 <table class="doxtable">
 <tr>
@@ -191,8 +191,13 @@ Known Issues</h2>
 <p class="intertd">Add following code in source/networking/lwip/lwip-config/am64x/lwippools.h file : LWIP_MALLOC_MEMPOOL(100, 256) LWIP_MALLOC_MEMPOOL(50, 512) LWIP_MALLOC_MEMPOOL(50, 1024) LWIP_MALLOC_MEMPOOL(50, 1792).</p>
 <p class="endtd"></p>
 </td></tr>
+<tr>
+<td>MCUSDK-4379 </td><td>Low Tx side throughput seen when tested using iperf application </td><td><p class="starttd"></p>
+<p class="intertd">Replace mcu_plus_sdk\source\networking\lwip\lwip-config\am64x\lwipopts.h and mcu_plus_sdk\source\networking\lwip\lwip-config\am64x\lwippools.h from MCU PLUS SDK 8.2.0 release and rebuild lwip_freertos, lwip-contrib and icss_emac_lwip_if libraries.</p>
+<p class="endtd"></p>
+</td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md779"></a>
+<h1><a class="anchor" id="autotoc_md864"></a>
 Important Files and Directory Structure</h1>
 <table class="doxtable">
 <tr>
@@ -212,7 +217,7 @@ Important Files and Directory Structure</h1>
 <tr>
 <td>icss_fwhal/*.h </td><td>FWHAL interface files  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md780"></a>
+<h1><a class="anchor" id="autotoc_md865"></a>
 Terms and Abbreviations</h1>
 <table class="doxtable">
 <tr>
@@ -230,10 +235,10 @@ Terms and Abbreviations</h1>
 <tr>
 <td>DL </td><td>Datalink Layer  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md781"></a>
+<h1><a class="anchor" id="autotoc_md866"></a>
 API Documentation</h1>
 <p>Please see <a class="el" href="group__INDUSTRIAL__COMMS__HSR__PRP__FWHAL__MODULE.html">APIs for HSR/PRP FWHAL</a> for API documentation.</p>
-<h1><a class="anchor" id="autotoc_md782"></a>
+<h1><a class="anchor" id="autotoc_md867"></a>
 Procedure to kick-off the PRP</h1>
 <ul>
 <li>Initialize ICSS-EMAC to work as a switch</li>
@@ -243,14 +248,14 @@ Procedure to kick-off the PRP</h1>
 <li>Start firmware</li>
 <li>Handle the events as needed.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md783"></a>
+<h1><a class="anchor" id="autotoc_md868"></a>
 Integration with ICSS-EMAC</h1>
 <p>TI PRP solution uses the ICSS-EMAC as it's base switch layer. The PRU Firmware is customized for PRP functionalities, and is not same as a standard switch firmware. All the traffic to Host is handled by PRP LRE (Link redundancy entity). The NRT(non-real time) traffic is passed to the LwIP stack while the Real time traffic goes to the registered callback.</p>
-<h2><a class="anchor" id="autotoc_md784"></a>
+<h2><a class="anchor" id="autotoc_md869"></a>
 Interface with ICSS-EMAC</h2>
 <p>PRP packets are standard ethernet frames and all protocol specific data is embedded in TCP/IP payload. On a standard ICSS-EMAC Switch driver, of the 4 queues, two queues are dedicated to each receiving port, that is packet from <a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga58baf4f1ee5d93fe30767c932284c018">ICSS_EMAC_QUEUE1</a>, <a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga37efc82fa7a7db969ac8f602b2ec779a">ICSS_EMAC_QUEUE3</a> go to RT callback and packets from <a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga0c21f82b0c954e3cb36519c9f521b780">ICSS_EMAC_QUEUE2</a>, <a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga5b6a99a438eb9bfde971daa0cdbfc045">ICSS_EMAC_QUEUE4</a> go to NRT callback. We need to set "RT/NRT Priority Separation Queue" to (QUEUE 2) in SysConfig for ICSS-EMAC.</p>
 <p>The packets are forwarded to based on the priority of the packet which is decided by the queue number (refer to <a class="el" href="ICSS_EMAC_DESIGN.html#ICSS_EMAC_DESIGN_QOS">Quality of Service and Queues</a>). The driver decides to forward high priority packets to the <code>rxRTCallBack</code> and the rest are forwarded to LwIP stack, done by <code>rxNRTCallBack</code>.</p>
-<h2><a class="anchor" id="autotoc_md785"></a>
+<h2><a class="anchor" id="autotoc_md870"></a>
 Callbacks from ICSS EMAC</h2>
 <p>PRP FWHAL provides custom Rx and Tx functions to be used for PRP application. This needs to be configured while initializing ICSS EMAC driver. The custom Rx and Tx functions override the default Rx and Tx functions (<a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6a5967f060e14a11d20eea9cd8b66e5f">ICSS_EMAC_rxPktGet</a> and <a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga49a2a061f6f24145004053b005f6e1a5">ICSS_EMAC_txPacket</a> respectively) provided by ICSS-EMAC driver.</p>
 <table class="doxtable">
@@ -265,7 +270,7 @@ Callbacks from ICSS EMAC</h2>
 <tr>
 <td>Rx NRT </td><td>This callback is used to send all the non real-time packets to lwIP stack. </td><td><code>Lwip2Emac_serviceRx</code>  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md786"></a>
+<h1><a class="anchor" id="autotoc_md871"></a>
 Interrupts</h1>
 <p>PRP firmware generates the following interrupts.</p>
 <p>PRP implementation uses following interrupts mapped to Host Interrupt Controller. 8 Host Interrupts (Host Interrupts 2 through 9) are exported from the PRU_ICSSG internal INTC for signaling the device level interrupt controllers. PRU_EVTOUT0 to PRU_EVTOUT7 correspond to these eight interrupts in the following table. Please check <a class="el" href="DRIVERS_PRUICSS_PAGE.html#PRUICSS_INTC">PRUICSS Interrupt Controller</a> section for more details.</p>
@@ -279,28 +284,28 @@ Interrupts</h1>
 <tr>
 <td>Link Status </td><td>PRU_ICSS_EVTOUT6 </td><td>Interrupt is raised when the Link on MII0/MII1 port comes up or goes down  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md787"></a>
+<h2><a class="anchor" id="autotoc_md872"></a>
 Tasks</h2>
 <p>The PRP FWHAL uses following tasks</p>
 <ul>
 <li><code>RedLifeCheckTask</code> : Check for Link up, prepare a supervision frame and then send them periodically. This is done by waiting on a semaphore redLifeCheckSemaphore which is in turn posted by a Timer. The task initialization is done inside <a class="el" href="group__COMMON__API.html#ga66d8a0367d75143939efb6beadb0c3e1">RedLifeCheckTaskCreate</a>.</li>
 <li><code>RedNodetableRefresh</code> : Increments the <code>timeLastSeenX</code> values by 1 every 10 ms and delete a node table entry if it reaches <code>NODE_FORGET_TIME</code>. The task initialization is done inside <a class="el" href="group__COMMON__API.html#ga66d8a0367d75143939efb6beadb0c3e1">RedLifeCheckTaskCreate</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md788"></a>
+<h2><a class="anchor" id="autotoc_md873"></a>
 Semaphores</h2>
 <p>The PRP FWHAL uses following semaphores</p>
 <ul>
 <li>redLifeCheckSemaphore : redLifeCheckSemaphore to gate the sending of supervision frames. A timer interrupt upon expiry posts the semaphore thus enabling periodic transmission of supervision frames.Semaphore created in <a class="el" href="group__COMMON__API.html#ga66d8a0367d75143939efb6beadb0c3e1">RedLifeCheckTaskCreate</a>.</li>
 <li>nodesTableSemaphore : nodesTableSemaphore to gate the increments of <code>timeLastSeenX</code> values by 1 every 10 ms and delete a node table entry if it reaches <code>NODE_FORGET_TIME</code>. Semaphore created in <a class="el" href="group__COMMON__API.html#ga66d8a0367d75143939efb6beadb0c3e1">RedLifeCheckTaskCreate</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md789"></a>
+<h2><a class="anchor" id="autotoc_md874"></a>
 Clocks</h2>
 <p>The PRP FWHAL uses following clocks</p>
 <ul>
 <li>redPruCheckTimer : This timer is used to periodically check and clear bits in Firmware implementation. ISR is <code>RedPruCheckTimerHandler</code>. Period is specified by <code>RED_PRU_CHECK_TIMER_PERIOD</code> (microseconds).</li>
 <li>redLifeCheckTimer : This timer is used to send supervision frames periodically. ISR is <code>RedLifeCheckTimerHandler</code> where it posts a semaphore redLifeCheckSemaphore to indicate to a waiting task to send supervision frames. Period is specified by <code>RED_LIFE_CHECK_TIMER_PERIOD</code> (microseconds).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md790"></a>
+<h1><a class="anchor" id="autotoc_md875"></a>
 See also</h1>
 <ul>
 <li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_PRP_DEMOS.html">PRP Demo</a> </li>

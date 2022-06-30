@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -147,11 +147,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialization routine for Ethernet/IP driver functions. </p>
-<pre class="fragment">    This API does the following functionalities
-        Register the Real Time Rx Call back
-        Enable Storm prevention
+<pre class="fragment">    This API does the following functionalities:
+        Loads the firmware on PRU0 and PRU1 cores
         Call DLR init API
-        Call PTP init API
+        Call TimeSync(PTP) init API
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">icssEipHandle</td><td>[in] EIP handle </td></tr>

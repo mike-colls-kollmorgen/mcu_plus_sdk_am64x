@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PROFINET Device
-   &#160;<span id="projectnumber">v2.00.01</span>
+   &#160;<span id="projectnumber">v2.01.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -126,6 +126,86 @@ Redistributions in binary form must reproduce the above copyright notice, this l
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
 </ol>
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h1><a class="anchor" id="version_release20100"></a>
+Release Version 2.01.00</h1>
+<p><b>New Features:</b> </p><ul>
+<li>
+[PNCG-855] Migrate PN Stack to MCU + SDK 8.03.00.05 <ul>
+<li>
+Migrate to MCU + SDK 8.03.00.05, CCS 11.2.0 and Sysconfig 1.12.0 </li>
+</ul>
+</li>
+<li>
+[PN-49] Adjust task priorities to 32 tasks<br  />
+ Currently the PROFINET Stack Command Queue priorities can not be configured. Please adapt your application and Sysconfig accordingly.<br  />
+ The default task priorities are as follows: <table class="doxtable">
+<tr>
+<th>Context </th><th>Task </th><th>old FreeRtos Priority </th><th>new FreeRtos Priority  </th></tr>
+<tr>
+<td rowspan="3">ICSS EMAC Driver </td><td>Link Task </td><td>14 </td><td>29  </td></tr>
+<tr>
+<td>RX Task </td><td>13 </td><td>28  </td></tr>
+<tr>
+<td>TX Task </td><td>13 </td><td>28  </td></tr>
+<tr>
+<td rowspan="3">PROFINET Stack </td><td>Command Queue High </td><td>14 </td><td>27  </td></tr>
+<tr>
+<td>Command Queue Normal </td><td>12 </td><td>25  </td></tr>
+<tr>
+<td>Command Queue Low </td><td>8 </td><td>16  </td></tr>
+<tr>
+<td rowspan="2">Example Application </td><td>Main Task </td><td>8 </td><td>8  </td></tr>
+<tr>
+<td>LED Task<br  />
+ </td><td>1 </td><td>1  </td></tr>
+</table>
+</li>
+</ul>
+<h1><a class="anchor" id="version_release20003"></a>
+Release Version 2.00.03</h1>
+<p><b>New Features:</b> </p><ul>
+<li>
+[PNCG-328] Custom Phy interface provided by stack. <ul>
+<li>
+For evaluation hardware, an example implementation is provided for DP83869. </li>
+</ul>
+</li>
+<li>
+[PNCG-628] license check introduced for F-Type processors. <ul>
+<li>
+PROFINET stack now runs without time limitation on F-Type processors. </li>
+<li>
+D- and E-Type processors can run a 1-hour limited evaluation application. </li>
+</ul>
+</li>
+<li>
+[PNCG-651] Stack version can be readback via API. </li>
+</ul>
+<p><b>Fixed Issues:</b> </p><ul>
+<li>
+[PNCG-472] Certification Test Fail - AM243x Netload - "DCP ident" no response. <ul>
+<li>
+Frame Receive Mechanism has been overloaded due to high network traffic, the Queuing Mechanism has been improved to handle more frames per trigger. </li>
+</ul>
+</li>
+<li>
+[PNCG-658] Stack - AM243x LP variant gets wrong PHY addresses. </li>
+<li>
+[PNCG-445] [PNCG-448] [PNCG-502] Fixing errors in the LLDP protocol for the NON PROFINET Topology Discovery Check. </li>
+<li>
+[PNCG-727] Wrong texts and typos in Doxygen page Abbreviations and Definitions. </li>
+<li>
+Fix linker.cmd for AM243x-LP and AM243x-EVM </li>
+</ul>
+<h1><a class="anchor" id="version_release20002"></a>
+Release Version 2.00.02</h1>
+<p><b>New Features:</b> </p><ul>
+<li>
+Added new chip based license verification. <br  />
+ An unlimited period is available on licensed chips.<br  />
+ An evaluation period of 1 hour is available on unlicensed chips.<br  />
+ For details, see <a href="https://www.ti.com/lit/gpn/AM6442?keyMatch=SPRSP56">AM64x Sitara&trade; Processors datasheet </a> , chapter 10.1.2 Device Naming Convention, Field Parameter f.  </li>
+</ul>
 <h1><a class="anchor" id="version_release20001"></a>
 Release Version 2.00.01</h1>
 <p><b>New Features:</b> </p><ul>

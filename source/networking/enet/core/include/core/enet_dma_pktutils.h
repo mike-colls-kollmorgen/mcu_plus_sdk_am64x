@@ -61,19 +61,12 @@ extern "C" {
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-#if (ENET_CFG_DEV_ERROR == 1)
 #define ENET_UTILS_GET_STATE(state, mask, bitshift)    ((*(state) & (mask)) >> (bitshift))
 #define ENET_UTILS_SET_STATE(state, mask, bitshift, value) \
     ({                                                     \
          *(state) &= ~(mask);                              \
          *(state) |= ((value) << (bitshift));              \
      })
-#else
-#define ENET_UTILS_GET_STATE(state, mask, bitshift)         ({while (false) {; } \
-                                                             })
-#define ENET_UTILS_SET_STATE(state, mask, bitshift, value)  ({while (false) {; } \
-                                                             })
-#endif
 
 #define ENET_UTILS_DRIVER_STATE_MASK            (0x000000FFU)
 #define ENET_UTILS_DRIVER_STATE_BIT_SHIFT       (0U)
@@ -265,10 +258,8 @@ static inline void EnetDma_checkDescState(uint32_t *pStateVar,
                               EnetDma_DescStateMemMgr expectedState,
                               EnetDma_DescStateMemMgr newState)
 {
-#if (ENET_CFG_DEV_ERROR == 1)
     Enet_assert(ENET_UTILS_GET_DESC_MEMMGR_STATE(pStateVar) == expectedState);
     ENET_UTILS_SET_DESC_MEMMGR_STATE(pStateVar, newState);
-#endif
 }
 
 static inline void EnetDma_checkPktState(uint32_t *pStateVar,
@@ -276,7 +267,6 @@ static inline void EnetDma_checkPktState(uint32_t *pStateVar,
                              uint32_t expectedState,
                              uint32_t newState)
 {
-#if (ENET_CFG_DEV_ERROR == 1)
     switch (module)
     {
         case ENET_PKTSTATE_MODULE_APP:
@@ -297,7 +287,6 @@ static inline void EnetDma_checkPktState(uint32_t *pStateVar,
         default:
             break;
     }
-#endif
 }
 
 #ifdef __cplusplus

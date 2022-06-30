@@ -40,6 +40,17 @@
 #ifndef CUSB_CH9_OBJ_IF_H
 #define CUSB_CH9_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cusb_ch9_if.h"
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSB_CH9_OBJ_IF_H */

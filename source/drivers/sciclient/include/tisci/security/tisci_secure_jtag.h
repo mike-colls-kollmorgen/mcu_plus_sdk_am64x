@@ -53,6 +53,12 @@
 #ifndef TISCI_SECURE_JTAG_H_
 #define TISCI_SECURE_JTAG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request to provide the SOC UID via TISCI_MSG_OPEN_DEBUG_FWLS
@@ -74,6 +80,11 @@ struct tisci_msg_open_debug_fwls_req {
 struct tisci_msg_open_debug_fwls_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 /** @} */

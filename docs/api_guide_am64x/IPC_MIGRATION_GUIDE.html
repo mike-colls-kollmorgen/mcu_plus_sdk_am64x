@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('IPC_MIGRATION_GUIDE.html',''); initRes
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md314"></a>
+<h1><a class="anchor" id="autotoc_md370"></a>
 API changes</h1>
 <p>There are changes in functions names, structure names and macro names. The changes in function names are listed below.</p>
 <table class="doxtable">
@@ -183,21 +183,21 @@ API changes</h1>
 <tr>
 <td>NONE </td><td><a class="el" href="group__DRV__IPC__RPMESSAGE__MODULE.html#gacfb174282fa8ab0f20812df2f1d7ef69">RPMessage_unblock</a>, <a class="el" href="group__DRV__IPC__RPMESSAGE__MODULE.html#ga3f5a806cd00de417cf067f324e221ef8">RPMessage_getLocalEndPt</a> </td><td>These APIs can be useful when writing applications using IPC rpmsg API.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md315"></a>
+<h1><a class="anchor" id="autotoc_md371"></a>
 Important Notes</h1>
-<h2><a class="anchor" id="autotoc_md316"></a>
+<h2><a class="anchor" id="autotoc_md372"></a>
 Migration from IPC LLD API</h2>
 <ul>
 <li>In MCU+ SDK use the <a class="el" href="DRIVERS_IPC_RPMESSAGE_PAGE.html">IPC RPMessage</a> to get equivalent features of IPC LLD.</li>
 <li>MCU+ SDK implements the same rpmsg protocol as IPC LLD. Only the APIs are lot more simplified and enable low memory footprint applications vs PDK.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md317"></a>
+<h2><a class="anchor" id="autotoc_md373"></a>
 Migration from Mailbox LLD API</h2>
 <ul>
 <li>To get equivalent features of mailbox LLD, create one rpmsg end point (equivalent to channel in mailbox LLD) and then use rpmsg APIs to send and receive message packets.</li>
 <li>Unlike mailbox LLD, when using <a class="el" href="DRIVERS_IPC_RPMESSAGE_PAGE.html">IPC RPMessage</a>, one can send a new message even if previous message is not yet read. This is possible when number of message buffers is configured as <code>&gt; 1</code>. In order to not allow sending of new message until previous message is read, set the number of message buffers to <code>1</code> during module initialization</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md318"></a>
+<h1><a class="anchor" id="autotoc_md374"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_IPC_NOTIFY_PAGE.html">IPC Notify</a>, <a class="el" href="DRIVERS_IPC_RPMESSAGE_PAGE.html">IPC RPMessage</a>, <a class="el" href="IPC_GUIDE.html">Understanding inter-processor communication (IPC)</a> </p>
 </div></div><!-- contents -->

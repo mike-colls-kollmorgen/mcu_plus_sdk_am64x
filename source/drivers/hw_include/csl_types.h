@@ -40,6 +40,12 @@
 #ifndef CSL_TYPES_H
 #define CSL_TYPES_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  \anchor CSL_Type_t
  *  \name CSL Types
@@ -88,11 +94,16 @@ typedef int32_t CSL_ErrType_t;
 
 /** \brief Define NULL if not defined */
 #ifndef NULL
-#define NULL            ((void*)0)
+#define NULL            (0)
 #endif
 
 #ifndef NULL_PTR
 #define NULL_PTR ((void *)0)
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* CSL_TYPES_H */

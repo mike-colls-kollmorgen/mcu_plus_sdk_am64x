@@ -33,6 +33,12 @@
 #ifndef IPNOS_H_
 #define IPNOS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                          Doxygen                                           */
 /* ========================================================================== */
@@ -249,5 +255,10 @@ int32_t PN_RTC_disableISR(PN_Handle pnHandle);
 int32_t PN_OS_txPacket(ICSS_EMAC_Handle icssEmacHandle,
                        const uint8_t *srcAddress, int32_t portNumber, int32_t queuePriority,
                        int32_t lengthOfPacket);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IPNOS_H_ */

@@ -279,6 +279,16 @@ typedef struct EI_API_ADP_SCmgrForwardCloseInfo
     uint8_t conPath[80];    // Connection Path
 } EI_API_ADP_SCmgrForwardCloseInfo_t;
 
+
+typedef struct EI_API_ADP_SEipStatus{
+
+    uint8_t   gen_status;          // Eip general status code
+    uint8_t   extended_status_size;// Eip extended status array size
+    uint16_t* extended_status_arr; // Eip extended status array
+
+} EI_API_ADP_SEipStatus_t;
+
+
 typedef union EI_API_ADP_UCmgrInfo
 {
     EI_API_ADP_SCmgrForwardOpenInfo_t forwardOpenInfo;
@@ -324,7 +334,7 @@ typedef void(*EI_API_ADP_CBStackError)(uint32_t errorCode_p, uint8_t fatal_p, ui
  *  \brief Function prototype for CIP CMNGR callback functions.
  *  \ingroup EI_API_CIP_CALLBACK
  */
-typedef void(*EI_API_ADP_CBCmgr)(uint32_t serviceCode_p, EI_API_ADP_UCmgrInfo_u CmgrInfo);
+typedef EI_API_ADP_SEipStatus_t(*EI_API_ADP_CBCmgr)(uint32_t serviceCode_p, EI_API_ADP_UCmgrInfo_u CmgrInfo);
 #undef T
 
 #ifdef  __cplusplus 

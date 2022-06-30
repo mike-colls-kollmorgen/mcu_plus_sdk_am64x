@@ -35,6 +35,12 @@
 #ifndef CDN_XHCI_STRUCTS_IF_H
 #define CDN_XHCI_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_xhci_if.h"
 
@@ -377,5 +383,10 @@ struct USBSSP_XferBufferDesc_s
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CDN_XHCI_STRUCTS_IF_H */

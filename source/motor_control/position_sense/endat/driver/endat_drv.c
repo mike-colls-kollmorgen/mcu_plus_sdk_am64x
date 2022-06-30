@@ -1275,9 +1275,9 @@ static void endat_config_global_rx_arm_cnt(struct endat_priv *priv,
 {
     void *pruss_cfg = priv->pruss_cfg;
 
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1 + 2) =  val;
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG1 + 2) =  val;
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG1 + 2) =  val;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1 + 2) =  val;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG1 + 2) =  val;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG1 + 2) =  val;
 }
 
 void endat_config_rx_arm_cnt(struct endat_priv *priv, unsigned short val)
@@ -1285,14 +1285,14 @@ void endat_config_rx_arm_cnt(struct endat_priv *priv, unsigned short val)
     void *pruss_cfg = priv->pruss_cfg;
     int ch = priv->channel;
 
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1 + ch * 8 + 2) =  val;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1 + ch * 8 + 2) =  val;
 }
 
 void endat_config_wire_delay(struct endat_priv *priv, unsigned short val)
 {
     void *pruss_cfg = priv->pruss_cfg;
     int ch = priv->channel;
-    unsigned short regval = HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0 + ch *
+    unsigned short regval = HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0 + ch *
                                    8);
 
     /* clear wire delay bits, keep other bits as is */
@@ -1301,7 +1301,7 @@ void endat_config_wire_delay(struct endat_priv *priv, unsigned short val)
     val &= 0x7FF;
     regval |= val;
 
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0 + ch * 8) =  regval;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0 + ch * 8) =  regval;
 }
 
 void endat_config_clock(struct endat_priv *priv,
@@ -1309,18 +1309,18 @@ void endat_config_clock(struct endat_priv *priv,
 {
     void *pruss_cfg = priv->pruss_cfg;
     /* Set PRU1_ED_RX_SB_POL polarity bit, required for ICSSG (don't care for ICSSM) */
-    HWREG(pruss_cfg + ICSS_CFG_PRUx_ENDAT_RXCFG) = clk_cfg->rx_div << 16 | 0x8 |
+    HWREG((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_RXCFG) = clk_cfg->rx_div << 16 | 0x8 |
             clk_cfg->rx_div_attr;
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_TXCFG + 2) = clk_cfg->tx_div;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_TXCFG + 2) = clk_cfg->tx_div;
 }
 
 void endat_config_tst_delay(struct endat_priv *priv, unsigned short delay)
 {
     void *pruss_cfg = priv->pruss_cfg;
 
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1) = delay;
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG1) = delay;
-    HWREGH(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG1) = delay;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG1) = delay;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG1) = delay;
+    HWREGH((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG1) = delay;
 }
 
 void endat_config_rx_clock_disable(struct endat_priv *priv,
@@ -1434,16 +1434,16 @@ static inline void endat_config_clr_cfg0(struct endat_priv *priv)
 {
     void *pruss_cfg = priv->pruss_cfg;
 
-    HWREG(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0) = 0;
-    HWREG(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG0) = 0;
-    HWREG(pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG0) = 0;
+    HWREG((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH0_CFG0) = 0;
+    HWREG((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH1_CFG0) = 0;
+    HWREG((uint8_t *)pruss_cfg + ICSS_CFG_PRUx_ENDAT_CH2_CFG0) = 0;
 }
 
 static inline void endat_config_endat_mode(struct endat_priv *priv)
 {
     void *pruss_cfg = priv->pruss_cfg;
 
-    HWREGB(pruss_cfg + ICSS_CFG_GPCFGx + 3) =  4;
+    HWREGB((uint8_t *)pruss_cfg + ICSS_CFG_GPCFGx + 3) =  4;
 }
 
 static void endat_hw_init(struct endat_priv *priv)

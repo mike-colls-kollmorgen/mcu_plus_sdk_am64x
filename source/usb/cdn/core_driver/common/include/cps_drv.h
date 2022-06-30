@@ -35,6 +35,12 @@
 #ifndef CPS_DRV_H_
 #define CPS_DRV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cps.h"
 
 /* parasoft-begin-suppress MISRA2012-DIR-4_9-4 "function-like macro, DRV-4760" */
@@ -233,6 +239,11 @@ static inline uint32_t CPS_FldClear(uint32_t width, uint32_t mask, uint32_t is_w
 /* parasoft-end-suppress MISRA2012-RULE-20_10-4 */
 /* parasoft-end-suppress MISRA2012-DIR-4_9-4 */
 /* parasoft-end-suppress METRICS-36-3 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CPS_DRV_H_ */
 

@@ -32,10 +32,9 @@ var group__ENET__MOD__TAS =
       [ "state", "structEnetTas__SetStateInArgs.html#a077d944a8c8b30138621c8ec2607df04", null ]
     ] ],
     [ "ENET_TAS_PUBLIC_IOCTL", "group__ENET__MOD__TAS.html#ga646b5827ab5887372fd16785d585f58b", null ],
+    [ "ENET_TAS_GATE_MASK", "group__ENET__MOD__TAS.html#ga57cb11fc0e96db077b99f64bad7651c2", null ],
     [ "ENET_TAS_MAX_CMD_LISTS", "group__ENET__MOD__TAS.html#ga5c58e8bfd260feeb2b2bd6073cec3ba1", null ],
     [ "ENET_TAS_MAX_NUM_QUEUES", "group__ENET__MOD__TAS.html#ga9bbc7336ba01460b29e7a0d28c269c44", null ],
-    [ "ENET_TAS_MIN_CYCLE_TIME_NS", "group__ENET__MOD__TAS.html#gad958544fab14da48d8437ffaa8928b73", null ],
-    [ "ENET_TAS_MIN_WINDOW_DURATION_NS", "group__ENET__MOD__TAS.html#ga2da9a9c7148853d16f3bcd4608fbe466", null ],
     [ "EnetTas_Ioctl", "group__ENET__MOD__TAS.html#gada0ad2c0a7a0c6530e49a3dd78c09ab2", [
       [ "ENET_TAS_IOCTL_GET_VERSION", "group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2a6d70b9331a5ee4039b9d8d8edeb169ca", null ],
       [ "ENET_TAS_IOCTL_SET_ADMIN_LIST", "group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2a2d555672c01e2a6720fd139936844561", null ],
@@ -47,12 +46,12 @@ var group__ENET__MOD__TAS =
       [ "ENET_TAS_IOCTL_CONFIG_CHANGE_STATUS_PARAMS", "group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2a59da2a30d3f250515116b00f4cf8158b", null ]
     ] ],
     [ "EnetTas_OperStatus", "group__ENET__MOD__TAS.html#gac07caadee47eaf55259b4afdf5b918aa", [
-      [ "TAS_OPER_LIST_NOT_YET_UPDATED", "group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa3d3f46d57079d5e768d89725d688b674", null ],
-      [ "TAS_OPER_LIST_UPDATED", "group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa58354fd65c30e1bee1a6098bc67ab49b", null ]
+      [ "ENET_TAS_OPER_LIST_NOT_YET_UPDATED", "group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa6d1eafe0152c4d68ab48ea03e0989f95", null ],
+      [ "ENET_TAS_OPER_LIST_UPDATED", "group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa1c2a33d1c552b4cc747878fe6b0959a4", null ]
     ] ],
     [ "EnetTas_TasState", "group__ENET__MOD__TAS.html#ga3acb36109645d538c493fd97c7dc817c", [
-      [ "TAS_DISABLE", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817caee08e8ace7e69f083c1db6dd000b851c", null ],
-      [ "TAS_ENABLE", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817cab1bf8f6ae57200e40fc9cddc3dd000eb", null ],
-      [ "TAS_RESET", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817cae743f0dcf884a0ee0a91b311f656e784", null ]
+      [ "ENET_TAS_DISABLE", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca09b78dc8dc4d5f4129f855271ee9d8cf", null ],
+      [ "ENET_TAS_ENABLE", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca22dfbd3f27824d920781a1e80e760e23", null ],
+      [ "ENET_TAS_RESET", "group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca292753a3b16c05651371772a1de565a1", null ]
     ] ]
 ];

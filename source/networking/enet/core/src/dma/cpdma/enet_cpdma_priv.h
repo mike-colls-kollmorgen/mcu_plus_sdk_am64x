@@ -64,13 +64,8 @@ extern "C" {
 /* CPDMA teardown acknowledgement value */
 #define ENET_CPDMA_TEARDOWN_DESC        ((uint32_t)0xFFFFFFFCU)
 
-/* CPDMA teardown acknowledgement value .Sized to R5 cache line size
- * as ENET is supported only on R5 cores Using worst case line size of 128
- * will result in significant memory wastage
- */
-#define ENET_CPDMA_CACHE_LINE_ALIGNMENT  (32U)
-
-
+/* CPDMA channel override feature to override the default identity based mapping of packet priority to switch priority */
+#define ENET_CPDMA_CHANNEL_OVERRIDE      (ENET_BIT(0U))
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -86,7 +81,7 @@ typedef struct EnetCpdma_cppiDesc_s
     /*!
     * \brief        Pointer to next descriptor in chain.
     */
-    volatile struct EnetCpdma_cppiDesc_s *pNext  __attribute__ ((aligned(ENET_CPDMA_CACHE_LINE_ALIGNMENT)));
+    volatile struct EnetCpdma_cppiDesc_s *pNext  __attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT)));
     /*!
     * \brief        Pointer to data buffer.
     */
@@ -127,6 +122,8 @@ typedef struct EnetCpdma_cppiDesc_s
 /* Macros to set to port enable field in packet descriptor */
 #define ENET_CPDMA_DESC_PSINFO_TO_PORT_ENABLE_MASK    (0x00100000U)
 #define ENET_CPDMA_DESC_PSINFO_TO_PORT_ENABLE_SHIFT   (20U)
+
+
 
 /*!
  * \brief DMA transfer direction (rx/tx) enum
@@ -215,6 +212,21 @@ typedef struct EnetCpdma_RxChObj_s
 #endif
 } EnetCpdma_RxChObj;
 
+typedef struct EnetCpdma_DescHistoryEntry_s {
+    volatile EnetCpdma_cppiDesc *listBegin;
+    volatile EnetCpdma_cppiDesc *listEnd;
+    EnetCpdma_cppiDesc *cpDesc;
+    uint32_t unackedCpDescCount;
+    volatile EnetCpdma_cppiDesc *unackedCpDescFirst;
+} EnetCpdma_DescHistoryEntry;
+
+#define ENETCPDMA_MAX_DESC_HISTORY (16U)
+
+typedef struct EnetCpdma_DescHistory_s {
+    EnetCpdma_DescHistoryEntry descEntry[ENETCPDMA_MAX_DESC_HISTORY];
+    uint32_t descHistoryCount;
+} EnetCpdma_DescHistory;
+
 /**
  *  \brief Transmit/Receive Descriptor Channel Structure
  *
@@ -245,6 +257,9 @@ typedef struct EnetCpdma_DescCh_s {
     EnetCpdma_cppiDesc *pDescWrite;
     /*! Location to write next desc */
     volatile EnetCpdma_cppiDesc *pDescTail;
+    EnetCpdma_DescHistory descHistory;
+    uint32_t unackedCpDescCount;
+    volatile EnetCpdma_cppiDesc *unackedCpDescFirst;
 } EnetCpdma_DescCh;
 
 
@@ -309,6 +324,8 @@ typedef struct EnetCpdma_DrvObj_s
     uint32_t        hwStatus;
     /*! If error, contains DMASTATUS register contents                 */
     uint32_t        hwErrInfo;
+	/*! Peripheral features */
+    uint32_t        features;
 } EnetCpdma_DrvObj;
 
 /* ========================================================================== */
@@ -387,7 +404,7 @@ void EnetCpdmaStats_updateNotifyStats(EnetDma_CbStats *pktStats,
 static inline void EnetCpdmaStats_addCnt(uint64_t *statCnt,
                                          uint64_t addCnt)
 {
-#if defined(ENETCPDMA_INSTRUMENTATION_ENABLED)
+#if defined(ENETDMA_INSTRUMENTATION_ENABLED)
     *statCnt += addCnt;
 #endif
 }

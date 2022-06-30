@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_CACHE_PAGE.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md400">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md401">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md402">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md403">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md404">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md456">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md457">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md458">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md459">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md460">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_CacheP"></a></p>
-<h1><a class="anchor" id="autotoc_md400"></a>
+<h1><a class="anchor" id="autotoc_md456"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to perform below cache operations<ul>
@@ -133,10 +133,10 @@ Features Supported</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md401"></a>
+<h1><a class="anchor" id="autotoc_md457"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md402"></a>
+<h1><a class="anchor" id="autotoc_md458"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>The region based cache APIs, <a class="el" href="group__KERNEL__DPL__CACHE.html#ga53f4efb4e3538bc517f14d5a8e60bcec">CacheP_wb</a>, <a class="el" href="group__KERNEL__DPL__CACHE.html#ga00eda537bc092a20584dcc7a3ed0d8e0">CacheP_wbInv</a>, <a class="el" href="group__KERNEL__DPL__CACHE.html#ga894fcf969b6afb5f30e25861d39c9219">CacheP_inv</a>, operate on a CPU cache line, hence its strongly recommended to make sure 'addr' is cache line aliged and 'size` is a multiple of cache line size<ul>
@@ -158,7 +158,7 @@ Important Usage Guidelines</h1>
 <li>On R5F, It is recommended to enable both program and data cache in R5F in all applications. In R5F for cache to be enabled MPU needs to be enabled.</li>
 <li>On M4F, the CPU does not support cache so these APIs when used with M4F, will be blank and will have no effect</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md403"></a>
+<h1><a class="anchor" id="autotoc_md459"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="CacheP_8h.html">kernel/dpl/CacheP.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Example usage for cache write back invalidate, </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[1024];</div>
@@ -179,7 +179,7 @@ Example Usage</h1>
 <div class="line">    <span class="comment">// invalidate contents of cache so that a CPU can see the data written by DMA or HW peripheral</span></div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__CACHE.html#ga894fcf969b6afb5f30e25861d39c9219">CacheP_inv</a>(<a class="code" href="csl__udmap__tr_8h.html#a0e89cf6b9f6cd3125470b1bed2b823df">addr</a>, <a class="code" href="tisci__boardcfg_8h.html#aaba88b24a21a6c70c895c0d55f4a69a0">size</a>, <a class="code" href="group__KERNEL__DPL__CACHE.html#ggab8295dda8ae672ab4e314e51292de1fbadbcd63274b569051fa80b3526ef04ae7">CacheP_TYPE_ALL</a>);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md404"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md460"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__CACHE.html">APIs for Cache</a>, </p>
 </div></div><!-- contents -->

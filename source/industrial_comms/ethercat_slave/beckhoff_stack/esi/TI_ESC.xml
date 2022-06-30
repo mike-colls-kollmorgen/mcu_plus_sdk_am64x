@@ -133,7 +133,7 @@
 								</SubItem>
 								<SubItem>
 									<SubIdx>2</SubIdx>
-									<Name>Product code</Name>
+									<Name>Product Code</Name>
 									<Type>UDINT</Type>
 									<BitSize>32</BitSize>
 									<BitOffs>48</BitOffs>
@@ -144,7 +144,7 @@
 								</SubItem>
 								<SubItem>
 									<SubIdx>3</SubIdx>
-									<Name>Revision</Name>
+									<Name>Revision Number</Name>
 									<Type>UDINT</Type>
 									<BitSize>32</BitSize>
 									<BitOffs>80</BitOffs>
@@ -155,7 +155,7 @@
 								</SubItem>
 								<SubItem>
 									<SubIdx>4</SubIdx>
-									<Name>Serial number</Name>
+									<Name>Serial Number</Name>
 									<Type>UDINT</Type>
 									<BitSize>32</BitSize>
 									<BitOffs>112</BitOffs>
@@ -221,7 +221,7 @@
 									<BitSize>32</BitSize>
 									<BitOffs>16</BitOffs>
 									<Flags>
-										<Access>rw</Access>
+										<Access>ro</Access>
 										<Category>o</Category>
 									</Flags>
 								</SubItem>
@@ -363,6 +363,16 @@
 									</Flags>
 								</SubItem>
 								<SubItem>
+									<SubIdx>13</SubIdx>
+									<Name>Shift Time Too Short Counter</Name>
+									<Type>UINT</Type>
+									<BitSize>16</BitSize>
+									<BitOffs>320</BitOffs>
+									<Flags>
+										<Access>ro</Access>
+									</Flags>
+								</SubItem>
+								<SubItem>
 									<SubIdx>32</SubIdx>
 									<Name>Sync Error</Name>
 									<Type>BOOL</Type>
@@ -497,6 +507,16 @@
 									<Flags>
 										<Access>ro</Access>
 										<Category>c</Category>
+									</Flags>
+								</SubItem>
+								<SubItem>
+									<SubIdx>13</SubIdx>
+									<Name>Shift Time Too Short Counter</Name>
+									<Type>UINT</Type>
+									<BitSize>16</BitSize>
+									<BitOffs>320</BitOffs>
+									<Flags>
+										<Access>ro</Access>
 									</Flags>
 								</SubItem>
 								<SubItem>
@@ -903,7 +923,7 @@
 							</Object>
 							<Object>
 								<Index>#x1009</Index>
-								<Name>Hardware version</Name>
+								<Name>Manufacturer Hardware version</Name>
 								<Type>STRING(4)</Type>
 								<BitSize>32</BitSize>
 								<Info>
@@ -916,11 +936,11 @@
 							</Object>
 							<Object>
 								<Index>#x100a</Index>
-								<Name>Software version</Name>
+								<Name>Manufacturer Software version</Name>
 								<Type>STRING(4)</Type>
 								<BitSize>32</BitSize>
 								<Info>
-									<DefaultData>352E3130</DefaultData>
+									<DefaultData>352E3133</DefaultData>
 								</Info>
 								<Flags>
 									<Access>ro</Access>
@@ -971,7 +991,7 @@
 							</Object>
 							<Object>
 								<Index>#x1018</Index>
-								<Name>Identity</Name>
+								<Name>Identity Object</Name>
 								<Type>DT1018</Type>
 								<BitSize>144</BitSize>
 								<Info>
@@ -988,19 +1008,19 @@
 										</Info>
 									</SubItem>
 									<SubItem>
-										<Name>Product code</Name>
+										<Name>Product Code</Name>
 										<Info>
 											<DefaultData>02004954</DefaultData>
 										</Info>
 									</SubItem>
 									<SubItem>
-										<Name>Revision</Name>
+										<Name>Revision Number</Name>
 										<Info>
 											<DefaultData>11000000</DefaultData>
 										</Info>
 									</SubItem>
 									<SubItem>
-										<Name>Serial number</Name>
+										<Name>Serial Number</Name>
 										<Info>
 											<DefaultData>00000000</DefaultData>
 										</Info>

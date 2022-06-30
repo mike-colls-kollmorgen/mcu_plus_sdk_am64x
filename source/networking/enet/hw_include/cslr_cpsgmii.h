@@ -39,6 +39,12 @@
 #ifndef CSLR_CPSGMII_TOP_H
 #define CSLR_CPSGMII_TOP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #if defined(SOC_K2K)||defined(SOC_K2H)||defined(SOC_C6678)
 
@@ -57,5 +63,10 @@
 #include <sgmii/V1/cslr_cpsgmii.h>
 
 #endif /* SOC_XXXXX */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSLR_CPSGMII_TOP_H */

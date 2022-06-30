@@ -153,7 +153,7 @@ int32_t Udma_deinit(Udma_DrvHandle drvHandle)
             {
                 DebugP_logError("[UDMA] Global event free failed!!!\r\n");
             }
-            drvHandleInt->globalEventHandle = (Udma_EventHandle) NULL_PTR;
+            drvHandleInt->globalEventHandle = (Udma_EventHandleInt) NULL_PTR;
         }
 
         retVal += Udma_rmDeinit(drvHandleInt);

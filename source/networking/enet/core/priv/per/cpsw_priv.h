@@ -57,6 +57,9 @@
 #include <include/core/enet_dma.h>
 #include <include/per/cpsw.h>
 #include <include/phy/enetphy.h>
+#if ENET_CFG_IS_ON(CPSW_EST)
+#include <priv/per/cpsw_est_priv.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,6 +71,9 @@ extern "C" {
 
 /*! \brief InterVLAN feature mask. */
 #define CPSW_FEATURE_INTERVLAN                (ENET_BIT(1U))
+
+/*! \brief EST feature mask. */
+#define CPSW_FEATURE_EST                      (ENET_BIT(2U))
 
 /* ========================================================================== */
 /*                         Structures and Enums                               */
@@ -209,6 +215,26 @@ typedef struct Cpsw_Obj_s
 
     /*! Maximum of MTUs for TX Priority 0 to 7 */
     uint32_t maxPerPrioMtu;
+
+#if ENET_CFG_IS_ON(CPSW_EST)
+    /*! CPTS RFT clock frequency, needed to compute ESTF length value. */
+    CpswCpts_RftClkFreq cptsRftClkFreq;
+
+    /*! Per-port EST status */
+    Cpsw_EstState estState[CPSW_MAC_PORT_NUM];
+#endif
+
+    /*! Disable Enet LLD PHY driver - Disables use on PHY driver inside the
+     *  Enet LLD. All PHY functionality including PHY state machine is bypassed
+     *  Application will use this mode if ethernet PHY is managed outside the Enet LLD
+     *  Application is responsible for PHY management. Application can register
+     *  with Enet LLD to get mdioLinkStateChangeCb callback.
+     *  Application _must_ use Enet LLD IOCTLs to access MDIO as MDIO ownership
+     *  is still with Enet LLD and there should not be multiple masters for the
+     *  MDIO peripheral
+     */
+    bool disablePhyDriver;
+
 } Cpsw_Obj;
 
 /*!

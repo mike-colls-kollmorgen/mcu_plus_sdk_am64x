@@ -34,6 +34,8 @@
 #include <kernel/nortos/dpl/r5/HwiP_armv7r_vim.h>
 #include <drivers/hw_include/csl_types.h>
 
+static volatile uint32_t gdummy;
+
 /* IRQ handler starts execution in HwiP_irq_handler, defined in portASM.S
  * After some initial assembly logic it then branches to this function.
  * After exiting this function it does some more assembly including
@@ -45,10 +47,10 @@ void __attribute__((section(".text.hwi"))) HwiP_irq_handler_c(void)
     uint32_t intNum;
 
     #ifndef HWIP_VIM_VIC_ENABLE
-    volatile uint32_t dummy;
+    volatile uint32_t gdummy;
 
     /* Read to force prioritization logic to take effect */
-    dummy = HwiP_getIRQVecAddr();
+    gdummy = HwiP_getIRQVecAddr();
     #endif
 
     status = HwiP_getIRQ(&intNum);
@@ -97,10 +99,9 @@ void __attribute__((interrupt("FIQ"), section(".text.hwi"))) HwiP_fiq_handler(vo
 {
     int32_t status;
     uint32_t intNum;
-    volatile uint32_t dummy;
 
     /* Read to force prioritization logic to take effect */
-    dummy = HwiP_getFIQVecAddr();
+    gdummy = HwiP_getFIQVecAddr();
 
     status = HwiP_getFIQ(&intNum);
     if(status==SystemP_SUCCESS)

@@ -68,6 +68,23 @@ int32_t Bootloader_uniflashProcessFlashCommands(Bootloader_UniflashConfig *confi
 	    status = SystemP_FAILURE;
 	}
 
+	/* Obtain the actual filesize */
+	config->bufSize = fileHeader.actualFileSize;
+
+	/* Check if the actual filesize is 16 B aligned. This is smallest program granularity suppported by NOR flashes.
+	 * If it is not aligned, we have to write 1-15 bytes extra. Since xmodem would have already padded zeros into the
+	 * file buffer for 1024B alignment, we can assume that these 1-15 bytes would be zero.
+	 */
+	uint32_t remainder = config->bufSize % 16U;
+	if(remainder != 0)
+	{
+		config->bufSize += (16U - remainder);
+	}
+	else
+	{
+		/* do nothing */
+	}
+
 	if(SystemP_SUCCESS == status)
 	{
 	    uint32_t opType = (fileHeader.operationTypeAndFlags) & (uint32_t)0xFF;
@@ -519,6 +536,10 @@ static int32_t Bootloader_uniflashFlashFileMMCSDRaw(uint32_t mmcsdIndex, uint8_t
     {
         status = SystemP_FAILURE;
     }
+    else if (MMCSD_CARD_TYPE_NO_DEVICE == ((MMCSD_Config *)handle)->object->cardType)
+    {
+    	status = SystemP_FAILURE;
+    }
     else
     {
         status = MMCSD_enableBootPartition(handle, 1);
@@ -603,3 +624,4 @@ static int32_t Bootloader_uniflashFlashVerifyFileMMCSDRaw(uint32_t mmcsdIndex, u
 }
 
 #endif
+

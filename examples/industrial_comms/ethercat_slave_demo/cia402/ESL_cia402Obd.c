@@ -8,7 +8,7 @@
  *  KUNBUS GmbH
  *
  *  \date
- *  2020-06-19
+ *  2022-04-01
  *
  *  \copyright
  *  Copyright (c) 2021, KUNBUS GmbH<br /><br />
@@ -56,7 +56,7 @@
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  ecSlaveApi		DTK Instance.
+ *  \param[in]  ecSlaveApi		SDK Instance.
  *  \return     ErrorCode       Error code.
  *
  *  <!-- Example: -->
@@ -94,6 +94,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
     EC_API_SLV_SCoE_Object_t*   pObj6092                = NULL;
     EC_API_SLV_SCoE_Object_t*   pObj6096                = NULL;
     EC_API_SLV_SCoE_Object_t*   pObj6099                = NULL;
+    EC_API_SLV_SCoE_Object_t*   pObj60C2                = NULL;
 
     if (!pApplicationInstance)
     {
@@ -129,7 +130,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x605A: Quickstop option code
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, pApplicationInstance->CiA402_axisData[axis].quickStopIndex.objectIndex, "Quickstop option code", DEFTYPE_INTEGER16, 16, ACCESS_READWRITE, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, pApplicationInstance->CiA402_axisData[axis].quickStopIndex.objectIndex, "Quick stop option code", DEFTYPE_INTEGER16, 16, ACCESS_READWRITE, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -217,7 +218,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x6066: Following error timeout
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_FOLLOWING_ERROR_TIMEOUT_INDEX(axis), "Following error timeout", DEFTYPE_UNSIGNED16, 16, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_FOLLOWING_ERROR_TIMEOUT_INDEX(axis), "Following error time out", DEFTYPE_UNSIGNED16, 16, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -305,7 +306,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x6072: Max torque
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_MAX_TORQUE_INDEX(axis), "Max torque", DEFTYPE_INTEGER16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_MAX_TORQUE_INDEX(axis), "Max torque", DEFTYPE_UNSIGNED16, 16, ACCESS_READWRITE, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -399,7 +400,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x607E: Polarity
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_POLARITY_INDEX(axis), "Polarity", DEFTYPE_INTEGER8, 8, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_POLARITY_INDEX(axis), "Polarity", DEFTYPE_UNSIGNED8, 8, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -439,7 +440,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x6085: Quickstop deceleration
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_QUISTOP_DECELERATION_INDEX(axis), "Quickstop deceleration", DEFTYPE_UNSIGNED32, 32, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_QUISTOP_DECELERATION_INDEX(axis), "Quick stop deceleration", DEFTYPE_UNSIGNED32, 32, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -478,7 +479,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x6090: Velocity encoder resolution
-        error = EC_API_SLV_CoE_odAddRecord(pEcApiSlv, OBD_VELOCITY_ENCONDER_RESOLUTION_INDEX(axis), "Position encoder resolution", NULL, NULL, NULL, NULL, &pObj6090);
+        error = EC_API_SLV_CoE_odAddRecord(pEcApiSlv, OBD_VELOCITY_ENCONDER_RESOLUTION_INDEX(axis), "Velocity encoder resolution", NULL, NULL, NULL, NULL, &pObj6090);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -649,7 +650,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x60BA: Touch probe 1 positive edge
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_1_POS_EDGE_INDEX(axis), "Touch probe 1 postive edge", DEFTYPE_INTEGER32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_1_POS_EDGE_INDEX(axis), "Touch probe 1 positive edge", DEFTYPE_INTEGER32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -665,7 +666,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x60BC: Touch probe 2 positive edge
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_2_POS_EDGE_INDEX(axis), "Touch probe 2 postive edge", DEFTYPE_INTEGER32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_2_POS_EDGE_INDEX(axis), "Touch probe 2 positive edge", DEFTYPE_INTEGER32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -681,11 +682,26 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x60C2: Interpolation time period
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_INTERPOLATION_TIME_PERIOD_INDEX(axis), "Interpolation time period", DEFTYPE_UNSIGNED32, 32, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddRecord(pEcApiSlv, OBD_INTERPOLATION_TIME_PERIOD_INDEX(axis), "Interpolation time period", NULL, NULL, NULL, NULL, &pObj60C2);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
             goto Exit;
+        }
+        if(pObj60C2)
+        {
+            error = EC_API_SLV_CoE_configRecordSubIndex(pEcApiSlv, pObj60C2, 1, "Interpolation time period value", DEFTYPE_UNSIGNED8, 8, ACCESS_READWRITE | OBJACCESS_RXPDOMAPPING);
+            if (error != EC_API_eERR_NONE)
+            {
+                OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
+                goto Exit;
+            }
+            error = EC_API_SLV_CoE_configRecordSubIndex(pEcApiSlv, pObj60C2, 2, "Interpolation time index", DEFTYPE_INTEGER8, 8, ACCESS_READ);
+            if (error != EC_API_eERR_NONE)
+            {
+                OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
+                goto Exit;
+            }
         }
 
         //Object 0x60C5: Max acceleration
@@ -704,6 +720,14 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
             goto Exit;
         }
 
+        //Object 0x60D0: Touch probe source
+        error = EC_API_SLV_CoE_odAddArray(pEcApiSlv, OBD_TOUCH_PROBE_SOURCE(axis), "Touch probe source", 2, DEFTYPE_INTEGER16, 16, ACCESS_READ, NULL, NULL, NULL, NULL);
+        if (error != EC_API_eERR_NONE)
+        {
+            OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
+            goto Exit;
+        }
+
         //Object 0x60D5: Touch probe 1 positive edge counter
         error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_1_POS_EDGE_CNT_INDEX(axis), "Touch probe 1 positive edge counter", DEFTYPE_UNSIGNED16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
@@ -713,7 +737,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x60D6: Touch probe 1 negative edge counter
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_1_NEG_EDGE_CNT_INDEX(axis), "Touch probe 2 negative edge counter", DEFTYPE_UNSIGNED16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_1_NEG_EDGE_CNT_INDEX(axis), "Touch probe 1 negative edge counter", DEFTYPE_UNSIGNED16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -721,7 +745,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x60D7: Touch probe 2 positive edge counter
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_2_POS_EDGE_CNT_INDEX(axis), "Touch probe 1 positive edge counter", DEFTYPE_UNSIGNED16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, OBD_TOUCH_PROBE_2_POS_EDGE_CNT_INDEX(axis), "Touch probe 2 positive edge counter", DEFTYPE_UNSIGNED16, 16, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);
@@ -769,7 +793,7 @@ uint32_t EC_SLV_APP_cia402ObjectDictionary(void* pContext_p)
         }
 
         //Object 0x6502: Support drive modes
-        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, pApplicationInstance->CiA402_axisData[axis].supportedDriveModesIndex.objectIndex, "Support drive modes", DEFTYPE_INTEGER32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
+        error = EC_API_SLV_CoE_odAddVariable(pEcApiSlv, pApplicationInstance->CiA402_axisData[axis].supportedDriveModesIndex.objectIndex, "Supported drive modes", DEFTYPE_UNSIGNED32, 32, ACCESS_READ | OBJACCESS_TXPDOMAPPING, NULL, NULL, NULL, NULL);
         if (error != EC_API_eERR_NONE)
         {
             OSAL_printf("%s:%d (%s) Error code: 0x%08x\r\n", __FUNCTION__, __LINE__, __FUNCTION__, error);

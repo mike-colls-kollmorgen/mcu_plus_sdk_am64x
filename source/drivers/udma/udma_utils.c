@@ -147,13 +147,14 @@ void UdmaUtils_makeTrpd(uint8_t *trpdMem,
     CSL_udmapCppi5SetSrcTag(trpdMem, 0x0000);
     CSL_udmapCppi5SetDstTag(trpdMem, 0x0000);
     CSL_udmapCppi5TrSetEntryStride((CSL_UdmapCppi5TRPD *)trpdMem, trSizeEncoded);
+    /* Return Policy descriptors are reserved in case of AM243X/Am64X */
     CSL_udmapCppi5SetReturnPolicy(
         trpdMem,
         descType,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPOLICY_VAL_ENTIRE_PKT,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_EARLYRET_VAL_NO,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPUSHPOLICY_VAL_TO_TAIL,
-        cqRingNum);
+        0U,
+        0U,
+        0U,
+        0U);
 
     return;
 }

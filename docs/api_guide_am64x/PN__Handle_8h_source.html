@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,74 +142,85 @@ $(document).ready(function(){initNavTree('PN__Handle_8h_source.html',''); initRe
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef PN_HANDLE_H_</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define PN_HANDLE_H_</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">/*                          Handle Definition                                 */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="HwiP_8h.html">kernel/dpl/HwiP.h</a>&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">/*                          Handle Declarations                               */</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">/*                          Handle Definition                                 */</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">*  \brief     PN_IntAttrs</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">*             Structure storing the interrupt configurations</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html">   54</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_IntAttrs_s</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">   56</a></span>&#160;    <a class="code" href="structHwiP__Object.html">HwiP_Object</a> <a class="code" href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">interruptObject</a>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">   58</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">pruIntNum</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">   60</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">coreIntNum</a>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">   62</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">socEvId</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">   64</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">intPrio</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">   66</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">args</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">   68</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">isrFnPtr</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">   70</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">callBackPtr</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">*  \brief     PN_IntConfig</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">*             Structure storing the different interrupt configurations of Profinet</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html">   77</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_IntConfig_s</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">   80</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">ppmIntConfig</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">   82</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">cpmIntConfig</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">   84</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">dhtIntConfig</a>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">   86</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">ptcpIntConfig</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#ifdef ENABLE_LATCH_SUPPORT</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> latchIntConfig;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <a class="code" href="structPN__IntConfig.html">PN_IntConfig</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">   96</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_Config_s *<a class="code" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* PN_HANDLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="HwiP_8h.html">kernel/dpl/HwiP.h</a>&gt;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">/*                          Handle Declarations                               */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">*  \brief     PN_IntAttrs</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">*             Structure storing the interrupt configurations</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html">   60</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_IntAttrs_s</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">   62</a></span>&#160;    <a class="code" href="structHwiP__Object.html">HwiP_Object</a> <a class="code" href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">interruptObject</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">   64</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">pruIntNum</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">   66</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">coreIntNum</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">   68</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">socEvId</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">   70</a></span>&#160;    uint32_t <a class="code" href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">intPrio</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">   72</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">args</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">   74</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">isrFnPtr</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">   76</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">callBackPtr</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">*  \brief     PN_IntConfig</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">*             Structure storing the different interrupt configurations of Profinet</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html">   83</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_IntConfig_s</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">   86</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">ppmIntConfig</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">   88</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">cpmIntConfig</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">   90</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">dhtIntConfig</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">   92</a></span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> <a class="code" href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">ptcpIntConfig</a>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#ifdef ENABLE_LATCH_SUPPORT</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structPN__IntAttrs.html">PN_IntAttrs</a> latchIntConfig;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <a class="code" href="structPN__IntConfig.html">PN_IntConfig</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">  102</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>PN_Config_s *<a class="code" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* PN_HANDLE_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructPN__IntAttrs_html_ab7303b6d330910cf643c43ca94fa43e5"><div class="ttname"><a href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">PN_IntAttrs::intPrio</a></div><div class="ttdeci">uint32_t intPrio</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:64</div></div>
-<div class="ttc" id="astructPN__IntConfig_html"><div class="ttname"><a href="structPN__IntConfig.html">PN_IntConfig</a></div><div class="ttdef"><b>Definition:</b> PN_Handle.h:78</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a5eae14468f5f5dae5d880b0747e1aa58"><div class="ttname"><a href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">PN_IntAttrs::callBackPtr</a></div><div class="ttdeci">void * callBackPtr</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:70</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a367ef3ced80ede3df90d6714980d4ef0"><div class="ttname"><a href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">PN_IntAttrs::isrFnPtr</a></div><div class="ttdeci">void * isrFnPtr</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:68</div></div>
-<div class="ttc" id="aPN__Handle_8h_html_ada5f9f33afc81eb9c9cd231fc4945a0c"><div class="ttname"><a href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a></div><div class="ttdeci">struct PN_Config_s * PN_Handle</div><div class="ttdoc">Alias for Profinet Handle containing base addresses and modules.</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:96</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a3547d679ff71e45ae84ffacf86c90f85"><div class="ttname"><a href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">PN_IntAttrs::coreIntNum</a></div><div class="ttdeci">uint32_t coreIntNum</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:60</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a33d548d5b85c835034a236bc88cd8c08"><div class="ttname"><a href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">PN_IntAttrs::pruIntNum</a></div><div class="ttdeci">uint32_t pruIntNum</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:58</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a8f8401f73943f3e1f9ee6f39086cd06f"><div class="ttname"><a href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">PN_IntAttrs::socEvId</a></div><div class="ttdeci">uint32_t socEvId</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:62</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a9e87e1ed6e8ba8f7df9ced9963d7ef09"><div class="ttname"><a href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">PN_IntAttrs::args</a></div><div class="ttdeci">void * args</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:66</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_ab7303b6d330910cf643c43ca94fa43e5"><div class="ttname"><a href="structPN__IntAttrs.html#ab7303b6d330910cf643c43ca94fa43e5">PN_IntAttrs::intPrio</a></div><div class="ttdeci">uint32_t intPrio</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:70</div></div>
+<div class="ttc" id="astructPN__IntConfig_html"><div class="ttname"><a href="structPN__IntConfig.html">PN_IntConfig</a></div><div class="ttdef"><b>Definition:</b> PN_Handle.h:84</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a5eae14468f5f5dae5d880b0747e1aa58"><div class="ttname"><a href="structPN__IntAttrs.html#a5eae14468f5f5dae5d880b0747e1aa58">PN_IntAttrs::callBackPtr</a></div><div class="ttdeci">void * callBackPtr</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:76</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a367ef3ced80ede3df90d6714980d4ef0"><div class="ttname"><a href="structPN__IntAttrs.html#a367ef3ced80ede3df90d6714980d4ef0">PN_IntAttrs::isrFnPtr</a></div><div class="ttdeci">void * isrFnPtr</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:74</div></div>
+<div class="ttc" id="aPN__Handle_8h_html_ada5f9f33afc81eb9c9cd231fc4945a0c"><div class="ttname"><a href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a></div><div class="ttdeci">struct PN_Config_s * PN_Handle</div><div class="ttdoc">Alias for Profinet Handle containing base addresses and modules.</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:102</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a3547d679ff71e45ae84ffacf86c90f85"><div class="ttname"><a href="structPN__IntAttrs.html#a3547d679ff71e45ae84ffacf86c90f85">PN_IntAttrs::coreIntNum</a></div><div class="ttdeci">uint32_t coreIntNum</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:66</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a33d548d5b85c835034a236bc88cd8c08"><div class="ttname"><a href="structPN__IntAttrs.html#a33d548d5b85c835034a236bc88cd8c08">PN_IntAttrs::pruIntNum</a></div><div class="ttdeci">uint32_t pruIntNum</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:64</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a8f8401f73943f3e1f9ee6f39086cd06f"><div class="ttname"><a href="structPN__IntAttrs.html#a8f8401f73943f3e1f9ee6f39086cd06f">PN_IntAttrs::socEvId</a></div><div class="ttdeci">uint32_t socEvId</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:68</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a9e87e1ed6e8ba8f7df9ced9963d7ef09"><div class="ttname"><a href="structPN__IntAttrs.html#a9e87e1ed6e8ba8f7df9ced9963d7ef09">PN_IntAttrs::args</a></div><div class="ttdeci">void * args</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:72</div></div>
 <div class="ttc" id="aHwiP_8h_html"><div class="ttname"><a href="HwiP_8h.html">HwiP.h</a></div></div>
-<div class="ttc" id="astructPN__IntConfig_html_a37e7a22ce96ca64fbaff390d4ab9a730"><div class="ttname"><a href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">PN_IntConfig::ptcpIntConfig</a></div><div class="ttdeci">PN_IntAttrs ptcpIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:86</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html"><div class="ttname"><a href="structPN__IntAttrs.html">PN_IntAttrs</a></div><div class="ttdef"><b>Definition:</b> PN_Handle.h:55</div></div>
-<div class="ttc" id="astructPN__IntConfig_html_a7db60d5bc1ddb7163e8878d731cf7c3e"><div class="ttname"><a href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">PN_IntConfig::dhtIntConfig</a></div><div class="ttdeci">PN_IntAttrs dhtIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:84</div></div>
-<div class="ttc" id="astructPN__IntConfig_html_a83d23ac11a7846af693383b7b0098cbd"><div class="ttname"><a href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">PN_IntConfig::cpmIntConfig</a></div><div class="ttdeci">PN_IntAttrs cpmIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:82</div></div>
+<div class="ttc" id="astructPN__IntConfig_html_a37e7a22ce96ca64fbaff390d4ab9a730"><div class="ttname"><a href="structPN__IntConfig.html#a37e7a22ce96ca64fbaff390d4ab9a730">PN_IntConfig::ptcpIntConfig</a></div><div class="ttdeci">PN_IntAttrs ptcpIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:92</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html"><div class="ttname"><a href="structPN__IntAttrs.html">PN_IntAttrs</a></div><div class="ttdef"><b>Definition:</b> PN_Handle.h:61</div></div>
+<div class="ttc" id="astructPN__IntConfig_html_a7db60d5bc1ddb7163e8878d731cf7c3e"><div class="ttname"><a href="structPN__IntConfig.html#a7db60d5bc1ddb7163e8878d731cf7c3e">PN_IntConfig::dhtIntConfig</a></div><div class="ttdeci">PN_IntAttrs dhtIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:90</div></div>
+<div class="ttc" id="astructPN__IntConfig_html_a83d23ac11a7846af693383b7b0098cbd"><div class="ttname"><a href="structPN__IntConfig.html#a83d23ac11a7846af693383b7b0098cbd">PN_IntConfig::cpmIntConfig</a></div><div class="ttdeci">PN_IntAttrs cpmIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:88</div></div>
 <div class="ttc" id="astructHwiP__Object_html"><div class="ttname"><a href="structHwiP__Object.html">HwiP_Object</a></div><div class="ttdoc">Opaque Hwi object used with the Hwi APIs.</div><div class="ttdef"><b>Definition:</b> HwiP.h:91</div></div>
-<div class="ttc" id="astructPN__IntConfig_html_abd62b5e9c43b85155b199bd9db76fb3f"><div class="ttname"><a href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">PN_IntConfig::ppmIntConfig</a></div><div class="ttdeci">PN_IntAttrs ppmIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:80</div></div>
-<div class="ttc" id="astructPN__IntAttrs_html_a5da3d2f2d28898b75f980b36a1cb9adb"><div class="ttname"><a href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">PN_IntAttrs::interruptObject</a></div><div class="ttdeci">HwiP_Object interruptObject</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:56</div></div>
+<div class="ttc" id="astructPN__IntConfig_html_abd62b5e9c43b85155b199bd9db76fb3f"><div class="ttname"><a href="structPN__IntConfig.html#abd62b5e9c43b85155b199bd9db76fb3f">PN_IntConfig::ppmIntConfig</a></div><div class="ttdeci">PN_IntAttrs ppmIntConfig</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:86</div></div>
+<div class="ttc" id="astructPN__IntAttrs_html_a5da3d2f2d28898b75f980b36a1cb9adb"><div class="ttname"><a href="structPN__IntAttrs.html#a5da3d2f2d28898b75f980b36a1cb9adb">PN_IntAttrs::interruptObject</a></div><div class="ttdeci">HwiP_Object interruptObject</div><div class="ttdef"><b>Definition:</b> PN_Handle.h:62</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

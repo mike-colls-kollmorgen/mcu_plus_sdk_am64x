@@ -31,7 +31,7 @@
  */
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 #include "ti_drivers_config.h"
 #include <drivers/pinmux.h>

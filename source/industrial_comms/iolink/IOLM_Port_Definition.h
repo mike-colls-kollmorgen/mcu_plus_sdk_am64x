@@ -32,6 +32,12 @@
 #ifndef INC_PROT__IOLM_PORT_DEFINITION_H__
 #define INC_PROT__IOLM_PORT_DEFINITION_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  \addtogroup group_iolm_port_definition IO-Link Master port definitions
  \{
@@ -65,7 +71,7 @@
  If #IOLM_IRQ_PROCESSING is enabled, this value equals the min cycle time of the
  Mmster. If not, the min cycle time of the Master is this processing time + the message
  sequence time on the line. */
-#define IOLM_MASTER_PROCESSING_TIME     50
+#define IOLM_MASTER_PROCESSING_TIME     10
 
 /** \brief Wake-up sequence retry interval should be 500 to 1000ms
 
@@ -101,7 +107,7 @@ See table 40  of \ref section_iol_spec_1_1 */
  next frame. Increasing this, reduces the min cycle time, but also makes the communication
  more reliable on multi port implementation or heavy interrupt load.
  */
-#define IOLM_ADDITIONAL_MSEQ_TIMEOUT 20
+#define IOLM_ADDITIONAL_MSEQ_TIMEOUT 10
 
 /** \brief Cycle jitter value
 
@@ -168,5 +174,10 @@ See table 40  of \ref section_iol_spec_1_1 */
 #define IOLM_SMI_MASTER_ID      0x00, 0x00, 0x00, 0x05
 
 /** \} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -92,6 +92,18 @@
 /*! \brief GENFn minimum length value. */
 #define CPSW_CPTS_GENFN_LENGTH_MIN_VAL        (5U)
 
+/*! \brief EST event sequence number mask in sequence_id field. */
+#define CPSW_CPTS_EST_EVENT_SEQNUM_MASK       (0x00FFU)
+
+/*! \brief EST event sequence number shift within sequence_id field. */
+#define CPSW_CPTS_EST_EVENT_SEQNUM_SHIFT      (0U)
+
+/*! \brief EST event receive port number shift within sequence_id field. */
+#define CPSW_CPTS_EST_EVENT_RXPORT_MASK       (0xF000U)
+
+/*! \brief EST event receive port number shift within sequence_id field. */
+#define CPSW_CPTS_EST_EVENT_RXPORT_SHIFT      (12U)
+
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
@@ -125,6 +137,11 @@ static int32_t CpswCpts_checkGenfEstfErrata(EnetMod_Handle hMod,
 static int32_t CpswCpts_lookUpEvent(CpswCpts_Handle hCpts,
                                     const CpswCpts_Event *matchEvent,
                                     CpswCpts_Event *event);
+
+static int32_t CpswCpts_lookUpEstEvent(CpswCpts_Handle hCpts,
+                                       Enet_MacPort macPort,
+                                       uint32_t domain,
+                                       CpswCpts_EstEvent *event);
 
 static int32_t CpswCpts_handleEvents(CpswCpts_Handle hCpts,
                                      CSL_cptsRegs *regs);
@@ -211,6 +228,10 @@ static Enet_IoctlValidate gCpswCpts_ioctlValidate[] =
     ENET_IOCTL_VALID_PRMS(CPSW_CPTS_IOCTL_LOOKUP_EVENT,
                           sizeof(CpswCpts_Event),
                           sizeof(CpswCpts_Event)),
+
+    ENET_IOCTL_VALID_PRMS(CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT,
+                          sizeof(CpswCpts_EstEventMatchParams),
+                          sizeof(CpswCpts_EstEvent)),
 };
 
 /* Private CPTS IOCTL validation data. */
@@ -870,6 +891,17 @@ int32_t CpswCpts_ioctl(EnetMod_Handle hMod,
             }
             break;
 
+            case CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT:
+            {
+                CpswCpts_EstEventMatchParams *matchParams = (CpswCpts_EstEventMatchParams *)prms->inArgs;
+                CpswCpts_EstEvent *event = (CpswCpts_EstEvent *)prms->outArgs;
+
+                status = CpswCpts_lookUpEstEvent(hCpts, matchParams->macPort, matchParams->domain, event);
+                ENETTRACE_ERR_IF(((status != ENET_SOK) && (status != ENET_ENOTFOUND)),
+                                 "Failed to lookup for EST event: %d\n", status);
+            }
+            break;
+
             case CPSW_CPTS_IOCTL_HANDLE_INTR:
             {
                 /* Handle events and notify the respective callbacks */
@@ -1206,6 +1238,62 @@ static int32_t CpswCpts_lookUpEvent(CpswCpts_Handle hCpts,
     return status;
 }
 
+static int32_t CpswCpts_lookUpEstEvent(CpswCpts_Handle hCpts,
+                                       Enet_MacPort macPort,
+                                       uint32_t domain,
+                                       CpswCpts_EstEvent *event)
+{
+    CpswCpts_Event *evtPool = &hCpts->hostTxEventPool.eventMemPool[0U];
+    CpswCpts_Event *evt;
+#if ENET_CFG_IS_ON(ENET_CFG_CPSW_CPTS_STATS)
+    CpswCpts_EventStats *stats = &hCpts->eventStats;
+#endif
+    bool found = false;
+    uint32_t i = 0U;
+    uintptr_t key;
+    int32_t status = ENET_SOK;
+
+    key = EnetOsal_disableAllIntr();
+
+    /* Traverse through memory pool for a matching event */
+    for (i = 0U; i < ENET_CFG_CPSW_CPTS_EVENTS_POOL_SIZE; i++)
+    {
+        evt = &evtPool[i];
+
+        if ((evt->portNum == ENET_MACPORT_ID(macPort)) &&
+            (evt->domain == domain))
+        {
+            found = true;
+#if ENET_CFG_IS_ON(ENET_CFG_CPSW_CPTS_STATS)
+            stats->ethHostTxEventLookupCnt++;
+#endif
+            break;
+        }
+    }
+
+    if (found)
+    {
+        event->tsVal    = evt->tsVal;
+        event->domain   = evt->domain;
+        event->priority = (uint32_t)evt->msgType;
+        event->seqNum   = (evt->seqId & CPSW_CPTS_EST_EVENT_SEQNUM_MASK) >> CPSW_CPTS_EST_EVENT_SEQNUM_SHIFT;
+        event->ingressPort = (evt->seqId & CPSW_CPTS_EST_EVENT_RXPORT_MASK) >> CPSW_CPTS_EST_EVENT_RXPORT_SHIFT;
+        event->egressPort  = evt->portNum;
+
+        /* Remove the event from pool after copying */
+        memset(evt, 0, sizeof(CpswCpts_Event));
+        status = ENET_SOK;
+    }
+    else
+    {
+        status = ENET_ENOTFOUND;
+    }
+
+    EnetOsal_restoreAllIntr(key);
+
+    return status;
+}
+
 static int32_t CpswCpts_handleEvents(CpswCpts_Handle hCpts,
                                      CSL_cptsRegs *regs)
 {
@@ -1361,9 +1449,9 @@ static int32_t CpswCpts_handleEvents(CpswCpts_Handle hCpts,
                     evt->msgType   = (EnetTimeSync_MsgType)eventInfo.msgType;
                     evt->seqId     = eventInfo.seqId;
                     evt->domain    = eventInfo.domain;
+                    evt->portNum   = eventInfo.portNo;
 
                     /* These fields are meaningless for this event type */
-                    evt->portNum   = 0U;
                     evt->hwPushNum = CPSW_CPTS_HWPUSH_INVALID;
 
 #if ENET_CFG_IS_ON(ENET_CFG_CPSW_CPTS_STATS)

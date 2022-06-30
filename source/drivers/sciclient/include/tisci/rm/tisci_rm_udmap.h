@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_UDMAP_H
 #define RM_TISCI_UDMAP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /* Common declarations */
 
@@ -1789,6 +1795,11 @@ struct tisci_msg_rm_udmap_flow_delegate_req {
 struct tisci_msg_rm_udmap_flow_delegate_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_UDMAP_H */
 

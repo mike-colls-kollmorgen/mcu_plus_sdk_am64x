@@ -38,6 +38,7 @@
         .type MpuP_disableAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_disableAsm:
         mrc     p15, #0, r0, c1, c0, #0  // read SCTLR register
         bic     r0, r0, #0x1             // clear bit 0 in r0
@@ -51,6 +52,7 @@ MpuP_disableAsm:
         .type MpuP_disableBRAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_disableBRAsm:
         mrc     p15, #0, r0, c1, c0, #0  // read SCTLR register
         bic     r0, r0, #0x20000         // clear bit 17 in r0
@@ -62,6 +64,7 @@ MpuP_disableBRAsm:
         .type MpuP_enableAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_enableAsm:
         mrc     p15, #0, r0, c1, c0, #0  // read SCTLR register
         orr     r0, r0, #0x1             // set bit 0 in r0
@@ -75,6 +78,7 @@ MpuP_enableAsm:
         .type MpuP_enableBRAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_enableBRAsm:
         mrc     p15, #0, r0, c1, c0, #0  // read SCTLR register
         orr     r0, r0, #0x20000         // set bit 17 in r0
@@ -86,6 +90,7 @@ MpuP_enableBRAsm:
         .type MpuP_isEnableAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_isEnableAsm:
         mov     r0, #0
         mrc     p15, #0, r1, c1, c0, #0  // read SCTLR register to r1
@@ -106,6 +111,7 @@ MpuP_isEnableAsm:
         .type MpuP_setRegionAsm,%function
         .section ".text.mpu","ax",%progbits
         .arm
+        .align 2
 MpuP_setRegionAsm:
         mcr     p15, #0, r0, c6, c2, #0  // select MPU region
         mcr     p15, #0, r1, c6, c1, #0  // set region base address

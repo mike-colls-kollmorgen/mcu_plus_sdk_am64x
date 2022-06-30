@@ -53,6 +53,12 @@
 #ifndef TISCI_KEYSTORE_H_
 #define TISCI_KEYSTORE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /** Keystore Major ABI revision value */
 #define KEYSTORE_ABI_MAJ_VALUE                  0x00
@@ -155,6 +161,11 @@ struct tisci_msg_keystore_import_req {
 struct tisci_msg_keystore_import_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_KEYSTORE_H_ */
 

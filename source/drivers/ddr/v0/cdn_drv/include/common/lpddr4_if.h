@@ -35,6 +35,12 @@
 #ifndef LPDDR4_IF_H
 #define LPDDR4_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include <drivers/hw_include/soc_config.h>
 #ifdef DDR_16BIT
@@ -536,5 +542,10 @@ uint32_t LPDDR4_DeferredRegVerify(const LPDDR4_PrivateData* pD, LPDDR4_RegBlock 
  *  @}
  */
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* LPDDR4_IF_H */

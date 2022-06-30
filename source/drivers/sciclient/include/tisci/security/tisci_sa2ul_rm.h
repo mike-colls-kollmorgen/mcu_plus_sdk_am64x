@@ -53,6 +53,12 @@
 #ifndef TISCI_SA2UL_RM_H_
 #define TISCI_SA2UL_RM_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request to acquire the authentication resources from System Fimrware
@@ -125,6 +131,11 @@ struct tisci_msg_sa2ul_auth_res_release_req {
 struct tisci_msg_sa2ul_auth_res_release_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_SA2UL_RM_H_ */
 

@@ -68,6 +68,12 @@
 #include <ESL_eeprom.h>
 #include <ESL_version.h>
 
+#if !(defined FBTL_REMOTE) && !(defined DPRAM_REMOTE)
+#if !(defined OLDPHYAPI) || (1!=OLDPHYAPI)
+#include <CUST_PHY_base.h>
+#endif
+#endif
+
 #if (defined HAVEDISPLAY) && (HAVEDISPLAY==1)
 #include <oled_drv.h>
 #endif
@@ -117,7 +123,7 @@ void oled_init(void)
 {
     /* Oled Init */
     const char oled_line1[] = "Kunbus GmbH";
-    const char oled_line2[] = "EtherCAT DTK Demo";
+    const char oled_line2[] = "EtherCAT SDK Demo";
     Board_oledInit();
 
     clear();
@@ -163,7 +169,7 @@ void oled_init(void)
  * */
 void oled_run(uint8_t state_p)
 {
-    const char oled_line1[] = "EtherCAT DTK Demo";
+    const char oled_line1[] = "EtherCAT SDK Demo";
     clear();
     setline(0);
     setOrientation(1);
@@ -2119,35 +2125,39 @@ void EC_SLV_APP_registerStacklessBoardFunctions(EC_SLV_APP_Sapplication_t *pAppI
     }
 
 #if !(defined DPRAM_REMOTE) && !(defined FBTL_REMOTE)
-#if !(defined TIESC_PHYADDR_0) && !(defined TIESC_PHYADDR_1) && !(defined TIESC_PHYADDR_2) && !(defined TIESC_PHYADDR_3)
-#error "EtherCAT without PHY is useless"
-#endif
-
-#if (defined TIESC_PHYADDR_0) && (defined TIESC_PHYADDR_1)
+# if !(defined TIESC_PHYADDR_0) && !(defined TIESC_PHYADDR_1) && !(defined TIESC_PHYADDR_2) && !(defined TIESC_PHYADDR_3)
+#  error "EtherCAT without PHY is useless"
+# endif
+# if (defined TIESC_PHYADDR_0) && (defined TIESC_PHYADDR_1)
     if (EC_API_SLV_ePRUICSS_INSTANCE_ONE == pAppInstance_p->selectedPruInstance)
     {
         EC_API_SLV_registerPhy(0, TIESC_PHYADDR_0, TIESC_LINK0_POLINVERT, TIESC_LINK0_USERXLINK);
         EC_API_SLV_registerPhy(1, TIESC_PHYADDR_1, TIESC_LINK1_POLINVERT, TIESC_LINK1_USERXLINK);
     }
-#endif
+# endif
 
-#if (defined TIESC_PHYADDR_2) && (defined TIESC_PHYADDR_3)
+# if (defined TIESC_PHYADDR_2) && (defined TIESC_PHYADDR_3)
     if ((EC_API_SLV_ePRUICSS_INSTANCE_TWO == pAppInstance_p->selectedPruInstance) || (0 == pAppInstance_p->selectedPruInstance))
     {
         EC_API_SLV_registerPhy(0, TIESC_PHYADDR_2, TIESC_LINK2_POLINVERT, TIESC_LINK2_USERXLINK);
         EC_API_SLV_registerPhy(1, TIESC_PHYADDR_3, TIESC_LINK3_POLINVERT, TIESC_LINK3_USERXLINK);
     }
-#endif
-#if (defined TIESC_PHYADDR_4) && (defined TIESC_PHYADDR_5)
+# endif
+# if (defined TIESC_PHYADDR_4) && (defined TIESC_PHYADDR_5)
     if (EC_API_SLV_ePRUICSS_INSTANCE_THREE == pAppInstance_p->selectedPruInstance)
     {
         EC_API_SLV_registerPhy(0, TIESC_PHYADDR_4, TIESC_LINK4_POLINVERT, TIESC_LINK4_USERXLINK);
         EC_API_SLV_registerPhy(1, TIESC_PHYADDR_5, TIESC_LINK5_POLINVERT, TIESC_LINK5_USERXLINK);
     }
-#endif
+# endif
+
+# if (defined OLDPHYAPI) && (1==OLDPHYAPI)
 
     EC_API_SLV_cbRegisterPhyReset(EC_SLV_APP_boardPhyReset, pAppInstance_p);
-
+# else
+    CUST_PHY_CBregisterLibDetect(CUST_PHY_detect, pAppInstance_p);
+    CUST_PHY_CBregisterReset(EC_SLV_APP_boardPhyReset, pAppInstance_p);
+# endif
 #endif
 Exit:
     return;
@@ -2251,7 +2261,7 @@ void EC_SLV_APP_applicationInit(EC_SLV_APP_Sapplication_t* pAppInstance_p)
         goto Exit;
     }
 
-    // Initialize DTK
+    // Initialize SDK
     pAppInstance_p->ptEcSlvApi = EC_API_SLV_new();
     if (!pAppInstance_p->ptEcSlvApi)
     {

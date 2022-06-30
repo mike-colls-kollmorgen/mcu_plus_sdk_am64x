@@ -38,6 +38,12 @@
 #ifndef RED_NODETABLE_H_
 #define RED_NODETABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -140,5 +146,10 @@ bool RedNodetableLinearSearch(uint16_t start, uint16_t size,
  *
  */
 void RedNodetableRefresh(void *args);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_NODETABLE_H_ */

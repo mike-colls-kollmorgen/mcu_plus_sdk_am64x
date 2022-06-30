@@ -34,6 +34,12 @@
 #ifndef BYTEORDER_H
 #define BYTEORDER_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #if !defined(CPU_LITTLE_ENDIAN) && !defined(CPU_BIG_ENDIAN)
 #define CPU_LITTLE_ENDIAN
 #endif
@@ -96,5 +102,10 @@
 #define leXToCpu le32ToCpu
 #endif
 /* parasoft-end-suppress MISRA2012-DIR-4_9-4 "Do not define function-like macro" */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* BYTEORDER_H */
 

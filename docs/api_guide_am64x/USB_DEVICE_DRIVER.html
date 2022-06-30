@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,20 +108,20 @@ $(document).ready(function(){initNavTree('USB_DEVICE_DRIVER.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md870">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md871">Features Supported</a><ul><li class="level2"><a href="#autotoc_md872">TinyUSB</a></li>
-<li class="level2"><a href="#autotoc_md873">USB Device Driver</a></li>
-<li class="level2"><a href="#autotoc_md874">SoC Porting Layer</a></li>
+<ul><li class="level1"><a href="#autotoc_md954">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md955">Features Supported</a><ul><li class="level2"><a href="#autotoc_md956">TinyUSB</a></li>
+<li class="level2"><a href="#autotoc_md957">USB Device Driver</a></li>
+<li class="level2"><a href="#autotoc_md958">SoC Porting Layer</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md875">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md876">Features Not Supported</a></li>
-<li class="level1"><a href="#autotoc_md877">Important files and directory structure</a></li>
+<li class="level1"><a href="#autotoc_md959">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md960">Features Not Supported</a></li>
+<li class="level1"><a href="#autotoc_md961">Important files and directory structure</a></li>
 <li class="level1"><a href="#TINYUSB_ADDITIONAL_REFERENCES">Additional References</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_usb_usb_driver"></a></p>
-<h1><a class="anchor" id="autotoc_md870"></a>
+<h1><a class="anchor" id="autotoc_md954"></a>
 Introduction</h1>
 <p>The USB SW stack in MCU+ SDK is shown below.</p>
 <p> <style>div.image img[src="usb_cdc_tinyusb_arch.png"]{width:30%}</style> </p><div class="image">
@@ -135,16 +135,16 @@ USB SW Stack Block Diagram</div></div>
 </ul>
 <p>We encourage customers to use USB peripheral from tinyUSB APIs. The <a class="el" href="EXAMPLES_USB_CDC_ECHO.html">USB CDC Echo Example</a> is using the CDC class API from TinyUSB. This way, customers can easily adapt to other TinyUSB examples.</p>
 <p>For advanced customers or 3P USB stack vendors, refer to the USB device driver references listed below.</p>
-<h1><a class="anchor" id="autotoc_md871"></a>
+<h1><a class="anchor" id="autotoc_md955"></a>
 Features Supported</h1>
-<h2><a class="anchor" id="autotoc_md872"></a>
+<h2><a class="anchor" id="autotoc_md956"></a>
 TinyUSB</h2>
 <p>TinyUSB is an open-source cross-platform USB Host/Device stack for embedded system, designed to be memory-safe with no dynamic allocation and thread-safe with all interrupt events are deferred then handled in the non-ISR task function.</p>
 <p>Below features are supported in the SDK</p><ul>
 <li>USB device</li>
 <li>USB CDC Class</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md873"></a>
+<h2><a class="anchor" id="autotoc_md957"></a>
 USB Device Driver</h2>
 <p>The USB device driver is the USB HW specific software component that provides a programming abstraction to the Cadence USB IP included in the SOC and supports below features,</p>
 <ul>
@@ -153,7 +153,7 @@ USB Device Driver</h2>
 <li>USB device data transfer</li>
 <li>USB device interrupts and DMA</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md874"></a>
+<h2><a class="anchor" id="autotoc_md958"></a>
 SoC Porting Layer</h2>
 <p>The SoC porting layer for USB device driver is the glue layer between the SoC and the USB device driver and does the below,</p>
 <ul>
@@ -162,13 +162,13 @@ SoC Porting Layer</h2>
 <li>Clock settings needed for USB device</li>
 <li>Configure the USB HW for USB device mode</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md875"></a>
+<h1><a class="anchor" id="autotoc_md959"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
 <li>Initialize USB device driver including clock setup and pinmux</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md876"></a>
+<h1><a class="anchor" id="autotoc_md960"></a>
 Features Not Supported</h1>
 <ul>
 <li>TinyUSB Class Drivers Other Than CDC</li>
@@ -177,7 +177,7 @@ Features Not Supported</h1>
 <li>USB 2.0 Host Mode</li>
 <li>USB Dual Role Mode</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md877"></a>
+<h1><a class="anchor" id="autotoc_md961"></a>
 Important files and directory structure</h1>
 <table class="doxtable">
 <tr>

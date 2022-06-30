@@ -2,6 +2,7 @@
     let module = system.modules["/networking/enet_icss/enet_icss"];
 %%}
 % let instance = module.$instances[0];
+
 /*
  * Enet DMA memory allocation utility functions.
  */
@@ -11,65 +12,167 @@
 /* ========================================================================== */
 
 #include <string.h>
+#include <stdint.h>
+#include <stdarg.h>
 
 #include <enet.h>
-#include <include/core/enet_utils.h>
-
-#include <include/core/enet_dma.h>
-
 #include "enet_appmemutils.h"
 #include "enet_appmemutils_cfg.h"
 #include "enet_apputils.h"
+#include <enet_cfg.h>
+#include <include/core/enet_per.h>
+#include <include/core/enet_utils.h>
+#include <include/core/enet_dma.h>
+#include <include/per/icssg.h>
+#include <priv/per/icssg_priv.h>
+#include <soc/k3/icssg_soc.h>
 
-#define PKT_POOL_ENABLE `Number(instance.PktPoolEnable)`U
+#include "ti_enet_config.h"
+
+#include <drivers/hw_include/cslr_soc.h>
+#include <drivers/udma/include/udma_types.h>
+#include <networking/enet/hw_include/cslr_icss.h>
+#include <networking/enet/hw_include/csl_cpswitch.h>
+#include <networking/enet/core/priv/per/icssg_priv.h>
+#include <networking/enet/core/src/dma/udma/enet_udma_priv.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/RX_PRU_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/RX_PRU_SLICE1_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/RTU0_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/RTU0_SLICE1_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/TX_PRU_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/dualmac/TX_PRU_SLICE1_bin.h>
+
+#include <networking/enet/core/src/per/firmware/icssg/switch/RX_PRU_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/switch/RX_PRU_SLICE1_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/switch/RTU0_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/switch/RTU0_SLICE1_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/switch/TX_PRU_SLICE0_bin.h>
+#include <networking/enet/core/src/per/firmware/icssg/switch/TX_PRU_SLICE1_bin.h>
+/* --------------------------------- ICSS-G MACROS --------------------------------- */
+
+% if(instance.mode == "SWITCH"){
+/*
+ * ICSSG Port buffer pool memory:
+ *  - Switch:
+ *          Gigabit Support: 8 pools of 6kB each
+ *          100M Support:    8 pools of 6kB each. For 100M also we need 6kB port buffer pool memory
+ */
+#define ICSSG_SWITCH_PORT_POOL_SIZE              ((ENET_SYSCFG_ENABLE_GIGABIT) ? (6 * 1024U) : (6 * 1024U))
+#define ICSSG_PORT_POOL_TOTAL_SIZE               (ICSSG_SWITCH_PORT_BUFFER_POOL_NUM * ICSSG_SWITCH_PORT_POOL_SIZE)
+/*
+ * ICSSG Host buffer pool memory:
+ *  - Switch:
+ *          Gigabit Support: No of pools based on QOS level and 6kB each
+ *          100M Support:    No of pools based on QOS level and 3kB each
+ */
+#define ICSSG_SWITCH_HOST_POOL_SIZE              ((ENET_SYSCFG_ENABLE_GIGABIT) ? (6 * 1024U) : (3 * 1024U))
+#define ICSSG_SWITCH_HOST_POOL_TOTAL_SIZE        (ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG * ICSSG_SWITCH_HOST_POOL_SIZE)
+#define ICSSG_HOST_POOL_TOTAL_SIZE               (ICSSG_SWITCH_HOST_POOL_TOTAL_SIZE)
+
+/*
+ * ICSSG Host egress queue memory:
+ *  - Switch:
+ *          Gigabit Support: 2 queues of (6kB + 2kB) each
+ *          100M Support:    2 queues of (3kB + 2kB) each
+ */
+#define ICSSG_SWITCH_HOST_QUEUE_SIZE             ((ENET_SYSCFG_ENABLE_GIGABIT) ? (8 * 1024U) : (5 * 1024U))
+#define ICSSG_SWITCH_HOST_QUEUE_TOTAL_SIZE       ((ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM * ICSSG_SWITCH_HOST_QUEUE_SIZE) + ICSSG_HOST_EGRESS_BUFFER_PADDING)
+#define ICSSG_HOST_QUEUE_TOTAL_SIZE              (ICSSG_SWITCH_HOST_QUEUE_TOTAL_SIZE)
+#define ICSSG_PRE_QUEUE_TOTAL_SIZE               ((ENET_SYSCFG_PREMPTION_ENABLE) ? (ICSSG_SWITCH_HOST_QUEUE_TOTAL_SIZE) : 0U)
+% }
+
+
+% if(instance.mode == "DUAL MAC"){
+/*DUAL MAC MODE*/
+/*
+ * ICSSG Port buffer pool memory:
+ *  - Dual-MAC: Not needed
+ */
+#define ICSSG_PORT_POOL_TOTAL_SIZE              (0U)
+/*
+ * ICSSG Host buffer pool memory:
+ *  - Dual-MAC:
+ *            Gigabit Support: No of pools based on QOS level and 8kB each
+ *            100M Support:    No of pools based on QOS level and 4kB each
+ */
+#define ICSSG_DUALMAC_HOST_POOL_SIZE             ((ENET_SYSCFG_ENABLE_GIGABIT) ? (8 * 1024U) : (4 * 1024U))
+#define ICSSG_DUALMAC_HOST_POOL_TOTAL_SIZE       (ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG * ICSSG_DUALMAC_HOST_POOL_SIZE)
+#define ICSSG_HOST_POOL_TOTAL_SIZE               (ICSSG_DUALMAC_HOST_POOL_TOTAL_SIZE)
+
+/*
+ * ICSSG Host egress queue memory:
+ *  - Dual-MAC:
+ *            Gigabit Support: 2 queues of (6kB + 2kB) each
+ *            100M Support:    2 queues of (3kB + 2kB) each
+ */
+#define ICSSG_DUALMAC_HOST_QUEUE_SIZE            ((ENET_SYSCFG_ENABLE_GIGABIT) ? (8 * 1024U) : (5 * 1024U))
+#define ICSSG_DUALMAC_HOST_QUEUE_TOTAL_SIZE      ((ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM * ICSSG_DUALMAC_HOST_QUEUE_SIZE) + ICSSG_HOST_EGRESS_BUFFER_PADDING)
+#define ICSSG_HOST_QUEUE_TOTAL_SIZE              (ICSSG_DUALMAC_HOST_QUEUE_TOTAL_SIZE )
+#define ICSSG_PRE_QUEUE_TOTAL_SIZE               ((ENET_SYSCFG_PREMPTION_ENABLE) ? (ICSSG_DUALMAC_HOST_QUEUE_TOTAL_SIZE) : 0)
+% }
+
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
 
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
 /* Enet UDMA DESC memories */
-static EnetMem_DmaDescMemPoolEntry gDmaDescMemArray[(((`instance.TxPacketsCount`U) * ENET_CFG_TX_CHANNELS_NUM) +
-                            ((`instance.RxPacketsCount`U) * ENET_CFG_RX_FLOWS_NUM))]
+static EnetMem_DmaDescMemPoolEntry gDmaDescMemArray[(((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM) +
+                            ((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM))]
+__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
+                section(".bss:ENET_DMA_DESC_MEMPOOL")));
+static EnetMem_DmaDescMem gDmaDescMemInfoArray[(((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM) +
+                            ((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM))]
 __attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
                 section(".bss:ENET_DMA_DESC_MEMPOOL")));
 
 /* RX & TX RingAcc memories */
-static EnetMem_RingMemPoolEntry gRingMemArray[((`instance.RingsTypes`U) *
+static EnetMem_RingMemPoolEntry gRingMemArray[(ENET_MEM_NUM_RINGS_TYPES *
                                     (ENET_CFG_TX_CHANNELS_NUM + ENET_CFG_RX_FLOWS_NUM))]
-__attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT),
                 section(".bss:ENET_DMA_RING_MEMPOOL")));
+
+static EnetMem_RingMem gRingMemInfoArray[(ENET_MEM_NUM_RINGS_TYPES *
+                                    (ENET_CFG_TX_CHANNELS_NUM + ENET_CFG_RX_FLOWS_NUM))]
+__attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT),
+                section(".bss:ENET_DMA_RING_MEMPOOL")));
+
 #endif
-
-#if (PKT_POOL_ENABLE == 1)
+% if (instance.PktPoolEnable == true){
 /* Eth packet info memory Q - large pool */
-static EnetDma_Pkt gAppPktInfoMem_LargePool[(((`instance.RxPacketsCount`U) * ENET_CFG_RX_FLOWS_NUM) +
-     ((`instance.TxPacketsCount`U) * ENET_CFG_TX_CHANNELS_NUM))];
+static EnetDma_Pkt gAppPktInfoMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))];
 
+
+static EnetMem_AppPktInfoMem gAppPktInfoContainerMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))];
 
 /* Eth packet large pool memories */
-static uint8_t gEthPktMem_LargePool[(((`instance.RxPacketsCount`U) * ENET_CFG_RX_FLOWS_NUM) +
-     ((`instance.TxPacketsCount`U) * ENET_CFG_TX_CHANNELS_NUM))][ENET_MEM_LARGE_POOL_PKT_SIZE]
+static uint8_t gEthPktMem_LargePool[(((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM))][ENET_MEM_LARGE_POOL_PKT_SIZE]
 __attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT),
                 section(".bss:ENET_DMA_PKT_MEMPOOL")));
-#endif
+% }
 
 static const EnetMem_Cfg gEthMemCfg =
 {
-#if (PKT_POOL_ENABLE == 1)
+% if (instance.PktPoolEnable == true){
     .pktBufPool =
     {
         [ENET_MEM_POOLIDX_LARGE] =
         {
             .pktSize     = ENET_MEM_LARGE_POOL_PKT_SIZE,
-            .numPkts     = (((`instance.RxPacketsCount`U) * ENET_CFG_RX_FLOWS_NUM) +
-     ((`instance.TxPacketsCount`U) * ENET_CFG_TX_CHANNELS_NUM)),
+            .numPkts     = (((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM) +
+     ((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM)),
             .pktInfoMem  = gAppPktInfoMem_LargePool,
             .pktInfoSize = sizeof(gAppPktInfoMem_LargePool),
             .pktBufMem   = &gEthPktMem_LargePool[0][0],
             .pktBufSize  = sizeof(gEthPktMem_LargePool),
+            .pktInfoContainerMem = &gAppPktInfoContainerMem_LargePool[0],
+            .pktInfoContainerSize = sizeof(gAppPktInfoContainerMem_LargePool),
         },
     },
-#else
+% } else {
     .pktBufPool =
     {
         [ENET_MEM_POOLIDX_LARGE] =
@@ -82,21 +185,25 @@ static const EnetMem_Cfg gEthMemCfg =
             .pktBufSize  = 0,
         },
     },
-#endif
+% }
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
     .ringMem =
     {
-        .numRings    =  ((`instance.RingsTypes`U) *
+        .numRings    =  (ENET_MEM_NUM_RINGS_TYPES *
                                     (ENET_CFG_TX_CHANNELS_NUM + ENET_CFG_RX_FLOWS_NUM)),
         .ringMemBase =  gRingMemArray,
         .ringMemSize =  sizeof(gRingMemArray),
+        .ringInfoContainerBase = gRingMemInfoArray,
+        .ringInfoContainerSize = sizeof(gRingMemInfoArray),
     },
     .dmaDescMem =
     {
-        .numDesc     = (((`instance.TxPacketsCount`U) * ENET_CFG_TX_CHANNELS_NUM) +
-                            ((`instance.RxPacketsCount`U) * ENET_CFG_RX_FLOWS_NUM)),
+        .numDesc     = (((ENET_SYSCFG_NUM_TX_PKT) * ENET_CFG_TX_CHANNELS_NUM) +
+                            ((ENET_SYSCFG_NUM_RX_PKT) * ENET_CFG_RX_FLOWS_NUM)),
         .descMemBase = gDmaDescMemArray,
         .descMemSize = sizeof(gDmaDescMemArray),
+        .descInfoContainerMemBase = gDmaDescMemInfoArray,
+        .descInfoContainerMemSize = sizeof(gDmaDescMemInfoArray),
     },
 #endif
 };
@@ -104,4 +211,1448 @@ static const EnetMem_Cfg gEthMemCfg =
 const EnetMem_Cfg * EnetMem_getCfg(void)
 {
     return &gEthMemCfg;
+}
+
+
+void EnetAppUtils_setCommonRxFlowPrms(EnetUdma_OpenRxFlowPrms *pRxFlowPrms)
+{
+    pRxFlowPrms->numRxPkts           = ENET_SYSCFG_NUM_RX_PKT;
+    pRxFlowPrms->disableCacheOpsFlag = false;
+    pRxFlowPrms->rxFlowMtu           = ENET_MEM_LARGE_POOL_PKT_SIZE;
+
+    pRxFlowPrms->ringMemAllocFxn = &EnetMem_allocRingMem;
+    pRxFlowPrms->ringMemFreeFxn  = &EnetMem_freeRingMem;
+
+    pRxFlowPrms->dmaDescAllocFxn = &EnetMem_allocDmaDesc;
+    pRxFlowPrms->dmaDescFreeFxn  = &EnetMem_freeDmaDesc;
+}
+
+void EnetAppUtils_setCommonTxChPrms(EnetUdma_OpenTxChPrms *pTxChPrms)
+{
+    pTxChPrms->numTxPkts           = ENET_SYSCFG_NUM_TX_PKT;
+    pTxChPrms->disableCacheOpsFlag = false;
+
+    pTxChPrms->ringMemAllocFxn = &EnetMem_allocRingMem;
+    pTxChPrms->ringMemFreeFxn  = &EnetMem_freeRingMem;
+
+    pTxChPrms->dmaDescAllocFxn = &EnetMem_allocDmaDesc;
+    pTxChPrms->dmaDescFreeFxn  = &EnetMem_freeDmaDesc;
+}
+
+/* --------------------------------- ICSS-G --------------------------------- */
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+/* ICSSG0 memories */
+static uint8_t gEnetSoc_icssg0PortPoolMem_0[ICSSG_PORT_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg0HostPoolMem_0[ICSSG_HOST_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg0HostQueueMem_0[ICSSG_HOST_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg0ScratchMem_0[ICSSG_SCRATCH_BUFFER_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+static uint8_t gEnetSoc_icssg0PortPoolMem_1[ICSSG_PORT_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg0HostPoolMem_1[ICSSG_HOST_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg0HostQueueMem_1[ICSSG_HOST_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg0ScratchMem_1[ICSSG_SCRATCH_BUFFER_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+/* ICSSG1 memories */
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+static uint8_t gEnetSoc_icssg1PortPoolMem_0[ICSSG_PORT_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg1HostPoolMem_0[ICSSG_HOST_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg1HostQueueMem_0[ICSSG_HOST_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg1ScratchMem_0[ICSSG_SCRATCH_BUFFER_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+static uint8_t gEnetSoc_icssg1PortPoolMem_1[ICSSG_PORT_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg1HostPoolMem_1[ICSSG_HOST_POOL_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg1HostQueueMem_1[ICSSG_HOST_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg1ScratchMem_1[ICSSG_SCRATCH_BUFFER_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+% if(instance.PremptionEnable == true){
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg0HostPreQueueMem_0[ICSSG_PRE_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg0HostPreQueueMem_1[ICSSG_PRE_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static uint8_t gEnetSoc_icssg1HostPreQueueMem_0[ICSSG_PRE_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1") || module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static uint8_t gEnetSoc_icssg1HostPreQueueMem_1[ICSSG_PRE_QUEUE_TOTAL_SIZE]
+        __attribute__ ((aligned (ENETDMA_CACHELINE_ALIGNMENT)));
+%}
+%}
+
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg0_0_FwPoolMem[] =
+{
+    [0] =
+    {
+            .portBufferPoolMem   = NULL,
+            .portBufferPoolSize  = 0U,
+            .portBufferPoolNum   = 0U,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg0HostPoolMem_0,
+            .hostBufferPoolSize  = ICSSG_DUALMAC_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg0HostQueueMem_0,
+            .hostEgressQueueSize = ICSSG_DUALMAC_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg0HostPreQueueMem_0,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg0ScratchMem_0,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+    },
+};
+%}
+
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg0_1_FwPoolMem[] =
+{
+    [0] =
+    {
+        .portBufferPoolMem   = NULL,
+        .portBufferPoolSize  = 0U,
+        .portBufferPoolNum   = 0U,
+
+        .hostBufferPoolMem   = gEnetSoc_icssg0HostPoolMem_1,
+        .hostBufferPoolSize  = ICSSG_DUALMAC_HOST_POOL_SIZE,
+        .hostBufferPoolNum   = ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG,
+
+        .hostEgressQueueMem  = gEnetSoc_icssg0HostQueueMem_1,
+        .hostEgressQueueSize = ICSSG_DUALMAC_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg0HostPreQueueMem_1,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+        .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+        .hostEgressQueueNum  = ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM,
+
+        .scratchBufferMem    = gEnetSoc_icssg0ScratchMem_1,
+        .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+    },
+};
+%}
+
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg1_0_FwPoolMem[] =
+{
+    [0] =
+    {
+            .portBufferPoolMem   = NULL,
+            .portBufferPoolSize  = 0U,
+            .portBufferPoolNum   = 0U,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg1HostPoolMem_0,
+            .hostBufferPoolSize  = ICSSG_DUALMAC_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg1HostQueueMem_0,
+            .hostEgressQueueSize = ICSSG_DUALMAC_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg1HostPreQueueMem_0,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg1ScratchMem_0,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+    },
+};
+%}
+
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg1_1_FwPoolMem[] =
+{
+    [0] =
+    {
+            .portBufferPoolMem   = NULL,
+            .portBufferPoolSize  = 0U,
+            .portBufferPoolNum   = 0U,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg1HostPoolMem_1,
+            .hostBufferPoolSize  = ICSSG_DUALMAC_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg1HostQueueMem_1,
+            .hostEgressQueueSize = ICSSG_DUALMAC_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg1HostPreQueueMem_1,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg1ScratchMem_1,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+    },
+};
+% }
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg0_Swt_FwPoolMem[] =
+{
+    [0] =
+    {
+            .portBufferPoolMem   = gEnetSoc_icssg0PortPoolMem_0,
+            .portBufferPoolSize  = ICSSG_SWITCH_PORT_POOL_SIZE,
+            .portBufferPoolNum   = ICSSG_SWITCH_PORT_BUFFER_POOL_NUM,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg0HostPoolMem_0,
+            .hostBufferPoolSize  = ICSSG_SWITCH_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg0HostQueueMem_0,
+            .hostEgressQueueSize = ICSSG_SWITCH_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg0HostPreQueueMem_0,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg0ScratchMem_0,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+        },
+    [1] =
+    {
+            .portBufferPoolMem   = gEnetSoc_icssg0PortPoolMem_1,
+            .portBufferPoolSize  = ICSSG_SWITCH_PORT_POOL_SIZE,
+            .portBufferPoolNum   = ICSSG_SWITCH_PORT_BUFFER_POOL_NUM,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg0HostPoolMem_1,
+            .hostBufferPoolSize  = ICSSG_SWITCH_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg0HostQueueMem_1,
+            .hostEgressQueueSize = ICSSG_SWITCH_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg0HostPreQueueMem_1,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg0ScratchMem_1,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+        },
+};
+% }
+
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+static Icssg_FwPoolMem gEnetSoc_Icssg1_Swt_FwPoolMem[] =
+{
+    [0] =
+    {
+            .portBufferPoolMem   = gEnetSoc_icssg1PortPoolMem_0,
+            .portBufferPoolSize  = ICSSG_SWITCH_PORT_POOL_SIZE,
+            .portBufferPoolNum   = ICSSG_SWITCH_PORT_BUFFER_POOL_NUM,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg1HostPoolMem_0,
+            .hostBufferPoolSize  = ICSSG_SWITCH_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg1HostQueueMem_0,
+            .hostEgressQueueSize = ICSSG_SWITCH_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg1HostPreQueueMem_0,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg1ScratchMem_0,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+        },
+    [1] =
+    {
+            .portBufferPoolMem   = gEnetSoc_icssg1PortPoolMem_1,
+            .portBufferPoolSize  = ICSSG_SWITCH_PORT_POOL_SIZE,
+            .portBufferPoolNum   = ICSSG_SWITCH_PORT_BUFFER_POOL_NUM,
+
+            .hostBufferPoolMem   = gEnetSoc_icssg1HostPoolMem_1,
+            .hostBufferPoolSize  = ICSSG_SWITCH_HOST_POOL_SIZE,
+            .hostBufferPoolNum   = ICSSG_SWITCH_HOST_BUFFER_POOL_NUM_CFG,
+
+            .hostEgressQueueMem  = gEnetSoc_icssg1HostQueueMem_1,
+            .hostEgressQueueSize = ICSSG_SWITCH_HOST_QUEUE_SIZE,
+% if(instance.PremptionEnable == true){
+            .hostEgressPreQueueMem  = gEnetSoc_icssg1HostPreQueueMem_1,
+% } else {
+            .hostEgressPreQueueMem  = NULL,
+% }
+            .hostEgressPreQueueSize = ICSSG_PRE_QUEUE_TOTAL_SIZE,
+            .hostEgressQueueNum  = ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM,
+
+            .scratchBufferMem    = gEnetSoc_icssg1ScratchMem_1,
+            .scratchBufferSize   = ICSSG_SCRATCH_BUFFER_SIZE,
+        },
+};
+% }
+
+/* PRU_ICSSG 0 */
+Icssg_Pruss gEnetSoc_PruIcssg0 =
+{
+    .instance    = ICSSG_PRUSS_ID_0,
+    .initialized = false,
+    .iep0InUse   = false,
+};
+
+
+/* PRU_ICSSG 1 */
+Icssg_Pruss gEnetSoc_PruIcssg1 =
+{
+    .instance    = ICSSG_PRUSS_ID_1,
+    .initialized = false,
+    .iep0InUse   = false,
+};
+
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+/* ICSSG0 Dual-MAC Port 1 (ENET_ICSSG_DUALMAC, 0) */
+static Icssg_Obj gEnetSoc_icssg0DMacp1 =
+{
+    .enetPer =
+    {
+        .name         = "icssg0-1",
+        .enetType     = ENET_ICSSG_DUALMAC,
+        .instId       = 0U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    /* Shared between ICSSG0 Port 1 and Port 2 objects */
+    .pruss = &gEnetSoc_PruIcssg0,
+
+    /* Dual-MAC firmware for slice 0 */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE0_b00_DMac,
+            .pruSize   = sizeof(RX_PRU_SLICE0_b00_DMac),
+            .rtu       = RTU0_SLICE0_b00_DMac,
+            .rtuSize   = sizeof(RTU0_SLICE0_b00_DMac),
+            .txpru     = TX_PRU_SLICE0_b00_DMac,
+            .txpruSize = sizeof(TX_PRU_SLICE0_b00_DMac)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-1.timesync",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-1.mdio",
+            .physAddr   = CSL_PRU_ICSSG0_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-1.stats",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg0-1.tas",
+                .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-1.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+/* ICSSG0 Dual-MAC Port 2 (ENET_ICSSG_DUALMAC, 1) */
+static Icssg_Obj gEnetSoc_icssg0DMacp2 =
+{
+    .enetPer =
+    {
+        .name         = "icssg0-2",
+        .enetType     = ENET_ICSSG_DUALMAC,
+        .instId       = 1U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    /* Shared between ICSSG0 Port 1 and Port 2 objects */
+    .pruss = &gEnetSoc_PruIcssg0,
+
+    /* Dual-MAC firmware for slice 1 */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE1_b00_DMac,
+            .pruSize   = sizeof(RX_PRU_SLICE1_b00_DMac),
+            .rtu       = RTU0_SLICE1_b00_DMac,
+            .rtuSize   = sizeof(RTU0_SLICE1_b00_DMac),
+            .txpru     = TX_PRU_SLICE1_b00_DMac,
+            .txpruSize = sizeof(TX_PRU_SLICE1_b00_DMac)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-2.timesync",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-2.mdio",
+            .physAddr   = CSL_PRU_ICSSG0_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-2.stats",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg0-2.tas",
+                .physAddr   = CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0-2.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+/* ICSSG1 Dual-MAC Port 1 (ENET_ICSSG_DUALMAC, 2) */
+static Icssg_Obj gEnetSoc_icssg1DMacp1 =
+{
+    .enetPer =
+    {
+        .name         = "icssg1-1",
+        .enetType     = ENET_ICSSG_DUALMAC,
+        .instId       = 2U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    /* Shared between ICSSG1 Port 1 and Port 2 objects */
+    .pruss = &gEnetSoc_PruIcssg1,
+
+    /* Dual-MAC firmware for slice 0 */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE0_b00_DMac,
+            .pruSize   = sizeof(RX_PRU_SLICE0_b00_DMac),
+            .rtu       = RTU0_SLICE0_b00_DMac,
+            .rtuSize   = sizeof(RTU0_SLICE0_b00_DMac),
+            .txpru     = TX_PRU_SLICE0_b00_DMac,
+            .txpruSize = sizeof(TX_PRU_SLICE0_b00_DMac)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-1.timesync",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-1.mdio",
+            .physAddr   = CSL_PRU_ICSSG1_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-1.stats",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg1-1.tas",
+                .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-1.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+/* ICSSG1 Dual-MAC Port 2 (ENET_ICSSG_DUALMAC, 3) */
+static Icssg_Obj gEnetSoc_icssg1DMacp2 =
+{
+    .enetPer =
+    {
+        .name         = "icssg1-2",
+        .enetType     = ENET_ICSSG_DUALMAC,
+        .instId       = 3U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    /* Shared between ICSSG1 Port 1 and Port 2 objects */
+    .pruss = &gEnetSoc_PruIcssg1,
+
+    /* Dual-MAC firmware for slice 1 */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE1_b00_DMac,
+            .pruSize   = sizeof(RX_PRU_SLICE1_b00_DMac),
+            .rtu       = RTU0_SLICE1_b00_DMac,
+            .rtuSize   = sizeof(RTU0_SLICE1_b00_DMac),
+            .txpru     = TX_PRU_SLICE1_b00_DMac,
+            .txpruSize = sizeof(TX_PRU_SLICE1_b00_DMac)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-2.timesync",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-2.mdio",
+            .physAddr   = CSL_PRU_ICSSG1_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-2.stats",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg1-2.tas",
+                .physAddr   = CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1-2.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+% }
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+/* ICSSG0 Switch (ENET_ICSSG_SWITCH, 0) */
+static Icssg_Obj gEnetSoc_icssg0Swt =
+{
+    .enetPer =
+    {
+        .name         = "icssg0",
+        .enetType     = ENET_ICSSG_SWITCH,
+        .instId       = 0U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    .pruss = &gEnetSoc_PruIcssg0,
+
+    /* Switch firmware for both slices */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE0_b00_Swt,
+            .pruSize   = sizeof(RX_PRU_SLICE0_b00_Swt),
+            .rtu       = RTU0_SLICE0_b00_Swt,
+            .rtuSize   = sizeof(RTU0_SLICE0_b00_Swt),
+            .txpru     = TX_PRU_SLICE0_b00_Swt,
+            .txpruSize = sizeof(TX_PRU_SLICE0_b00_Swt)
+        },
+        {
+            .pru       = RX_PRU_SLICE1_b00_Swt,
+            .pruSize   = sizeof(RX_PRU_SLICE1_b00_Swt),
+            .rtu       = RTU0_SLICE1_b00_Swt,
+            .rtuSize   = sizeof(RTU0_SLICE1_b00_Swt),
+            .txpru     = TX_PRU_SLICE1_b00_Swt,
+            .txpruSize = sizeof(TX_PRU_SLICE1_b00_Swt)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0.timesync",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0.mdio",
+            .physAddr   = CSL_PRU_ICSSG0_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0.stats",
+            .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg0-1.tas",
+                .physAddr   = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+        {
+            .enetMod =
+            {
+                .name       = "icssg0-2.tas",
+                .physAddr   = CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg0.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+%}
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+/* ICSSG1 Switch (ENET_ICSSG_SWITCH, 1) */
+static Icssg_Obj gEnetSoc_icssg1Swt =
+{
+    .enetPer =
+    {
+        .name         = "icssg1",
+        .enetType     = ENET_ICSSG_SWITCH,
+        .instId       = 1U,
+        .magic        = ENET_NO_MAGIC,
+        .physAddr     = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+        .physAddr2    = 0U,
+        .features     = ENET_FEAT_BASE,
+        .errata       = ENET_ERRATA_NONE,
+        .initCfg      = &Icssg_initCfg,
+        .open         = &Icssg_open,
+        .close        = &Icssg_close,
+        .rejoin       = &Icssg_rejoin,
+        .ioctl        = &Icssg_ioctl,
+        .poll         = &Icssg_poll,
+        .convertTs    = &Icssg_convertTs,
+%if(instance.ExternalPhyMgmtEnable == false){
+        .periodicTick = &Icssg_periodicTick,
+%} else {
+        .periodicTick = NULL,
+%}
+        .registerEventCb   = &Icssg_registerEventCb,
+        .unregisterEventCb = &Icssg_unregisterEventCb,
+    },
+
+    .pruss = &gEnetSoc_PruIcssg1,
+
+    /* Switch firmware for both slices */
+    .fw =
+    {
+        {
+            .pru       = RX_PRU_SLICE0_b00_Swt,
+            .pruSize   = sizeof(RX_PRU_SLICE0_b00_Swt),
+            .rtu       = RTU0_SLICE0_b00_Swt,
+            .rtuSize   = sizeof(RTU0_SLICE0_b00_Swt),
+            .txpru     = TX_PRU_SLICE0_b00_Swt,
+            .txpruSize = sizeof(TX_PRU_SLICE0_b00_Swt)
+        },
+        {
+            .pru       = RX_PRU_SLICE1_b00_Swt,
+            .pruSize   = sizeof(RX_PRU_SLICE1_b00_Swt),
+            .rtu       = RTU0_SLICE1_b00_Swt,
+            .rtuSize   = sizeof(RTU0_SLICE1_b00_Swt),
+            .txpru     = TX_PRU_SLICE1_b00_Swt,
+            .txpruSize = sizeof(TX_PRU_SLICE1_b00_Swt)
+        },
+    },
+
+    /* TimeSync module object */
+    .timeSyncObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1.timesync",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_PR1_IEP0_SLV_REGS_BASE,
+            .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgTimeSync_open,
+            .rejoin     = &IcssgTimeSync_rejoin,
+            .ioctl      = &IcssgTimeSync_ioctl,
+            .close      = &IcssgTimeSync_close,
+        },
+    },
+
+    /* MDIO module object */
+    .mdioObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1.mdio",
+            .physAddr   = CSL_PRU_ICSSG1_PR1_MDIO_V1P7_MDIO_BASE,
+            .features   = MDIO_FEATURE_CLAUSE45,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &Mdio_open,
+            .rejoin     = &Mdio_rejoin,
+            .ioctl      = &Mdio_ioctl,
+            .close      = &Mdio_close,
+        },
+    },
+
+    /* Stats module object */
+    .statsObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1.stats",
+            .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+            .physAddr2  = 0,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &IcssgStats_open,
+            .rejoin     = &IcssgStats_rejoin,
+            .ioctl      = &IcssgStats_ioctl,
+            .close      = &IcssgStats_close,
+        },
+    },
+
+    /* Tas module object */
+    .tasObj =
+    {
+        {
+            .enetMod =
+            {
+                .name       = "icssg1-1.tas",
+                .physAddr   = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+        {
+            .enetMod =
+            {
+                .name       = "icssg1-2.tas",
+                .physAddr   = CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE,
+                .physAddr2  = CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + CSL_ICSS_G_RAM_SLV_RAM_REGS_BASE,
+                .features   = ENET_FEAT_BASE,
+                .errata     = ENET_ERRATA_NONE,
+                .open       = &IcssgTas_open,
+                .rejoin     = &IcssgTas_rejoin,
+                .ioctl      = &IcssgTas_ioctl,
+                .close      = &IcssgTas_close,
+            },
+        },
+    },
+
+    /* RM module object */
+    .rmObj =
+    {
+        .enetMod =
+        {
+            .name       = "icssg1.rm",
+            .physAddr   = 0U,
+            .features   = ENET_FEAT_BASE,
+            .errata     = ENET_ERRATA_NONE,
+            .open       = &EnetRm_open,
+            .rejoin     = &EnetRm_rejoin,
+            .ioctl      = &EnetRm_ioctl,
+            .close      = &EnetRm_close,
+        },
+    },
+};
+% }
+/* ---------------------------- Enet Peripherals ---------------------------- */
+%{ let numPerInstances = 0;
+Enet_Obj gEnetSoc_perObj[] =
+{
+    /* CPSW_3G Enet driver/peripheral */
+    {
+        .enetPer = NULL,
+    },
+
+    /* ICSSG0 Dual-MAC Port 1 Enet driver/peripheral */
+    {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+%   numPerInstances++;
+        .enetPer = &gEnetSoc_icssg0DMacp1.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+    {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+%   numPerInstances++;
+        /* ICSSG0 Dual-MAC Port 2 Enet driver/peripheral */
+        .enetPer = &gEnetSoc_icssg0DMacp2.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+    {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+%   numPerInstances++;
+        /* ICSSG1 Dual-MAC Port 1 Enet driver/peripheral */
+        .enetPer = &gEnetSoc_icssg1DMacp1.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+    {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+%   numPerInstances++;
+        /* ICSSG1 Dual-MAC Port 2 Enet driver/peripheral */
+        .enetPer = &gEnetSoc_icssg1DMacp2.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+    {
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+%   numPerInstances++;
+        /* ICSSG0 Switch Enet driver/peripheral */
+        .enetPer = &gEnetSoc_icssg0Swt.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+    {
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+%   numPerInstances++;
+        /* ICSSG0 Switch Enet driver/peripheral */
+        .enetPer = &gEnetSoc_icssg1Swt.enetPer,
+%} else {
+        .enetPer = NULL,
+%}
+    },
+
+};
+
+
+Enet_Handle EnetSoc_getEnetHandleByIdx(uint32_t idx)
+{
+    Enet_Handle hEnet = NULL;
+
+    if (idx < ENET_ARRAYSIZE(gEnetSoc_perObj))
+    {
+        hEnet = &gEnetSoc_perObj[idx];
+    }
+
+    EnetSoc_assert((hEnet != NULL), "Unsupported  peripheral index (index=%u )\n", idx);
+    return hEnet;
+}
+
+Enet_Handle EnetSoc_getEnetHandle(Enet_Type enetType,
+                                  uint32_t instId)
+{
+    Enet_Handle hEnet = NULL;
+
+    switch (enetType)
+    {
+        case ENET_CPSW_3G:
+            if (instId == 0U)
+            {
+                hEnet = &gEnetSoc_perObj[0U];
+            }
+            break;
+
+        case ENET_ICSSG_DUALMAC:
+            switch (instId)
+            {
+                case 0:
+                    hEnet = &gEnetSoc_perObj[1U];
+                    break;
+                case 1:
+                    hEnet = &gEnetSoc_perObj[2U];
+                    break;
+                case 2:
+                    hEnet = &gEnetSoc_perObj[3U];
+                    break;
+                case 3:
+                    hEnet = &gEnetSoc_perObj[4U];
+                    break;
+                default:
+                    EnetSoc_assert(false, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+                    break;
+            }
+            break;
+
+        case ENET_ICSSG_SWITCH:
+            switch (instId)
+            {
+                case 0:
+                    hEnet = &gEnetSoc_perObj[5U];
+                    break;
+                case 1:
+                    hEnet = &gEnetSoc_perObj[6U];
+                    break;
+                case 2:
+                    hEnet = &gEnetSoc_perObj[7U];
+                    break;
+                default:
+                    EnetSoc_assert(false, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+                    break;
+            }
+            break;
+
+        default:
+            {
+                EnetSoc_assert(false, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+            }
+            break;
+    }
+    EnetSoc_assert((hEnet != NULL), "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+    return hEnet;
+}
+
+
+/* ------------------------------- DMA objects ------------------------------ */
+
+EnetUdma_DrvObj gEnetSoc_dmaObj[`Number(numPerInstances)`U];
+%}
+
+EnetUdma_DrvObjMemInfo gEnetSoc_dmaObjMemInfo =
+{
+    .numObjs = ENET_ARRAYSIZE(gEnetSoc_dmaObj),
+    .drvObjMem = &gEnetSoc_dmaObj[0],
+};
+
+uint32_t EnetSoc_getEnetNum(void)
+{
+    return ENET_ARRAYSIZE(gEnetSoc_perObj);
+}
+
+EnetDma_Handle EnetSoc_getDmaHandle(Enet_Type enetType,
+                                    uint32_t instId)
+{
+    EnetDma_Handle hDma = NULL;
+
+    switch (enetType)
+    {
+#if (ENET_ENABLE_PER_CPSW == 1)
+        case ENET_CPSW_3G:
+        /*TODO: hDma should return null if CPSW is disabled*/
+            if (instId == 0U)
+            {
+                hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+            }
+            break;
+#endif
+% if(instance.mode == "DUAL MAC") {
+        case ENET_ICSSG_DUALMAC:
+            switch (instId)
+            {
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_1")) {
+                case 0:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG0", "ENET_MAC_PORT_2")) {
+                case 1:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_1")) {
+                case 2:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+%if (module.isIcssgIfEnabled(instance, "DUAL MAC", "ICSSG1", "ENET_MAC_PORT_2")) {
+                case 3:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+                default:
+                    EnetSoc_assert(false, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+                    break;
+            }
+            break;
+% }
+% if(instance.mode == "SWITCH"){
+        case ENET_ICSSG_SWITCH:
+            switch (instId)
+            {
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG0")) {
+                case 0:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+%if (module.isIcssgIfEnabled(instance, "SWITCH", "ICSSG1")) {
+                case 1:
+                    hDma = &gEnetSoc_dmaObjMemInfo.drvObjMem[0U];
+                    break;
+% }
+                default:
+                    EnetSoc_assert(false, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+                    break;
+            }
+            break;
+% }
+
+        default:
+            break;
+    }
+
+    EnetSoc_assert(hDma != NULL, "Invalid peripheral (eneType=%u instId=%u)\n", enetType, instId);
+    return hDma;
+
 }

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_SBL_SD.html',''); ini
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1212">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1417">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_DRIVERS_SBL_SD_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1213">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1214">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1215">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1418">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1419">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1420">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_sbl_sd"></a></p>
-<h1><a class="anchor" id="autotoc_md1212"></a>
+<h1><a class="anchor" id="autotoc_md1417"></a>
 Introduction</h1>
 <p>This bootloader does SOC initializations and attempts to boot a multicore appimage file named "app" present in the first FAT partition found in the connected SD card. The file can be copied to the SD card by connecting it to the host PC using a card reader. Make sure that it is named "app" without any file extension. If the card is new, make sure that it is formatted with FAT32/16.</p>
 <p>If a multicore appimage file is found at the location, the SBL reads the file into a buffer, parses it, splits it into RPRCs for each core applicable. Each core is then initialized, RPRC image is loaded, entry points are set and the core is released from reset. For more on bootflow/bootloaders, please refer <a class="el" href="BOOTFLOW_GUIDE.html">Understanding the bootflow and bootloaders</a></p>
@@ -130,11 +130,11 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Toolchain  </td><td class="markdownTableBodyNone">ti-arm-clang   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm   </td></tr>
+<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm, am64x-sk   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/boot/sbl_sd   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1213"></a>
+<h1><a class="anchor" id="autotoc_md1418"></a>
 Steps to Run the Example</h1>
 <p>Since this is a bootloader, the example will be run every time you boot an application using this example. It is run from an SD card unlike other examples which are usually loaded with CCS. Nevertheless, you can build this example like you do for the others using makefile or build it via CCS by importing as a project.</p>
 <ul>
@@ -142,10 +142,10 @@ Steps to Run the Example</h1>
 <li><b>When using makefiles to build</b>, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 <li>Refer to the page <a class="el" href="TOOLS_FLASH.html#BASIC_STEPS_TO_FLASH_FILES">Basic steps to flash files</a> to flash this bootloader along with the application to boot.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1214"></a>
+<h1><a class="anchor" id="autotoc_md1419"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_BOOTLOADER_PAGE.html">BOOTLOADER</a></p>
-<h1><a class="anchor" id="autotoc_md1215"></a>
+<h1><a class="anchor" id="autotoc_md1420"></a>
 Sample Output</h1>
 <div class="fragment"><div class="line">[BOOTLOADER PROFILE] SYSFW Load                       :      17632us</div>
 <div class="line">[BOOTLOADER PROFILE] System_init                      :      12246us</div>

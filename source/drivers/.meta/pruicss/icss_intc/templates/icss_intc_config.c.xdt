@@ -52,7 +52,7 @@ PRUICSS_IntcInitData icss1_intc_initdata =
             `getEventMacro(instance.event)`,
             `getChannelMacro(instance.channel)`,
             SYS_EVT_POLARITY_HIGH,
-            SYS_EVT_TYPE_EDGE
+            SYS_EVT_TYPE_PULSE
         },
 % }
         {0xFF, 0xFF, 0xFF, 0xFF}

@@ -32,6 +32,7 @@
 
 #include <drivers/soc.h>
 #include <kernel/dpl/AddrTranslateP.h>
+#include <kernel/dpl/CpuIdP.h>
 
 #define CSL_MAIN_CTRL_MMR_LOCKn_KICK0_OFFSET(n)   (0x1008 + 0x4000*(n))
 #define CSL_MCU_CTRL_MMR_LOCKn_KICK0_OFFSET(n)    (0x1008 + 0x4000*(n))
@@ -40,6 +41,57 @@
 #define KICK_LOCK_VAL                           (0x00000000U)
 #define KICK0_UNLOCK_VAL                        (0x68EF3490U)
 #define KICK1_UNLOCK_VAL                        (0xD172BC5AU)
+
+uint32_t SOC_isR5FDualCoreMode(CSL_ArmR5CPUInfo *cpuInfo)
+{
+    uint32_t retVal = FALSE, cpuId;
+    int32_t status = SystemP_SUCCESS;
+    uint32_t sciclientCpuProcId;
+    struct tisci_msg_proc_get_status_resp proc_get_status;
+
+    proc_get_status.config_flags_1 = 0;
+    if ((cpuInfo->grpId == CSL_ARM_R5_CLUSTER_GROUP_ID_0) &&
+        (cpuInfo->cpuID == CSL_ARM_R5_CPU_ID_0))
+    {
+        cpuId = CSL_CORE_ID_R5FSS0_0;
+        sciclientCpuProcId = SCICLIENT_PROCID_R5_CL0_C0;
+    }
+    else if ((cpuInfo->grpId == CSL_ARM_R5_CLUSTER_GROUP_ID_0) &&
+        (cpuInfo->cpuID == CSL_ARM_R5_CPU_ID_1))
+    {
+        cpuId = CSL_CORE_ID_R5FSS0_1;
+        sciclientCpuProcId = SCICLIENT_PROCID_R5_CL0_C1;
+    }
+    else if ((cpuInfo->grpId == CSL_ARM_R5_CLUSTER_GROUP_ID_1) &&
+        (cpuInfo->cpuID == CSL_ARM_R5_CPU_ID_0))
+    {
+        cpuId = CSL_CORE_ID_R5FSS1_0;
+        sciclientCpuProcId = SCICLIENT_PROCID_R5_CL1_C0;
+    }
+    else
+    {
+        cpuId = CSL_CORE_ID_R5FSS1_1;
+        sciclientCpuProcId = SCICLIENT_PROCID_R5_CL1_C1;
+    }
+
+    status = Sciclient_procBootGetProcessorState(sciclientCpuProcId,
+                &proc_get_status,
+                SystemP_WAIT_FOREVER);
+    if(status != SystemP_SUCCESS)
+    {
+        DebugP_logError("CPU get state failed for %s\r\n", cpuId);
+    }
+    if(status == SystemP_SUCCESS)
+    {
+        if ((proc_get_status.config_flags_1 & TISCI_MSG_VAL_PROC_BOOT_CFG_FLAG_R5_SINGLE_CORE) !=
+            TISCI_MSG_VAL_PROC_BOOT_CFG_FLAG_R5_SINGLE_CORE)
+        {
+            retVal = TRUE;
+        }
+    }
+
+    return retVal;
+}
 
 int32_t SOC_moduleClockEnable(uint32_t moduleId, uint32_t enable)
 {
@@ -262,7 +314,7 @@ void SOC_controlModuleLockMMR(uint32_t domainId, uint32_t partition)
 
     if(SOC_DOMAIN_ID_MAIN == domainId)
     {
-        #if 0 /* in AM64x, main dowmin MMRs are left unlocked since when working with linux kernel, linux kernel assumes MMRs are unlocked */
+        #ifndef SOC_AM64X /* in AM64x, main dowmin MMRs are left unlocked since when working with linux kernel, linux kernel assumes MMRs are unlocked */
         baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_CTRL_MMR0_CFG0_BASE);
         kickAddr = (volatile uint32_t *) (baseAddr + CSL_MAIN_CTRL_MMR_LOCKn_KICK0_OFFSET(partition));
         CSL_REG32_WR(kickAddr, KICK_LOCK_VAL);      /* KICK 0 */
@@ -343,12 +395,196 @@ uint64_t SOC_virtToPhy(void *virtAddr)
     uintptr_t   temp = (uintptr_t) virtAddr;
     uint64_t    phyAddr = (uint64_t) temp;                  /* Default case */
 
+    /* R5F overrides */
+#if (__ARM_ARCH == 7) && (__ARM_ARCH_PROFILE == 'R')
+    CSL_ArmR5CPUInfo cpuInfo;
+    uint32_t    tempTcmaSize, tempTcmbSize, retVal;
+
+    /* Get Core ID Info */
+    CSL_armR5GetCpuID(&cpuInfo);
+    if (cpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_0) /* R5SS0-0 */
+    {
+        retVal = SOC_isR5FDualCoreMode(&cpuInfo);
+        /* Dual Core Mode TCM Size is 128KB R5SS0-0 */
+        if (retVal == TRUE)
+        {
+            tempTcmaSize = (CSL_R5FSS0_ATCM_SIZE * 2U);
+            tempTcmbSize = (CSL_R5FSS0_BTCM_SIZE * 2U);
+        }
+        else
+        {
+            tempTcmaSize = (CSL_R5FSS0_ATCM_SIZE);
+            tempTcmbSize = (CSL_R5FSS0_BTCM_SIZE);
+        }
+        if(cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_0)
+        {
+            /* TCMA R5FSS0-0 */
+            if((temp >= CSL_R5FSS0_ATCM_BASE) &&
+               (temp < (CSL_R5FSS0_ATCM_BASE + tempTcmaSize)))
+            {
+                phyAddr -= CSL_R5FSS0_ATCM_BASE;
+                phyAddr += CSL_R5FSS0_CORE0_ATCM_BASE;
+            }
+
+            /* TCMB R5FSS0-0 */
+            if((temp >= CSL_R5FSS0_BTCM_BASE) &&
+               (temp < (CSL_R5FSS0_BTCM_BASE + tempTcmbSize)))
+            {
+                phyAddr -= CSL_R5FSS0_BTCM_BASE;
+                phyAddr += CSL_R5FSS0_CORE0_BTCM_BASE;
+            }
+        }
+        if(cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_1)
+        {
+            /* TCMA R5FSS0-1 */
+            if((temp >= CSL_R5FSS0_ATCM_BASE) &&
+               (temp < (CSL_R5FSS0_ATCM_BASE + CSL_R5FSS0_ATCM_SIZE)))
+            {
+                phyAddr -= CSL_R5FSS0_ATCM_BASE;
+                phyAddr += CSL_R5FSS0_CORE1_ATCM_BASE;
+            }
+
+            /* TCMB R5FSS0-1 */
+            if((temp >= CSL_R5FSS0_BTCM_BASE) &&
+               (temp < (CSL_R5FSS0_BTCM_BASE + CSL_R5FSS0_BTCM_SIZE)))
+            {
+                phyAddr -= CSL_R5FSS0_BTCM_BASE;
+                phyAddr += CSL_R5FSS0_CORE1_BTCM_BASE;
+            }
+        }
+    }
+
+    if (cpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_1) /* R5SS1-0 */
+    {
+        retVal = SOC_isR5FDualCoreMode(&cpuInfo);
+        /* Dual Core Mode TCM Size is 128KB R5SS1-0 */
+        if (retVal == TRUE)
+        {
+            tempTcmaSize = (CSL_R5FSS1_ATCM_SIZE * 2U);
+            tempTcmbSize = (CSL_R5FSS1_BTCM_SIZE * 2U);
+        }
+        else
+        {
+            tempTcmaSize = (CSL_R5FSS1_ATCM_SIZE);
+            tempTcmbSize = (CSL_R5FSS1_BTCM_SIZE);
+        }
+        if(cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_0)
+        {
+            /* TCMA R5FSS1-0 */
+            if((temp >= CSL_R5FSS1_ATCM_BASE) &&
+               (temp < (CSL_R5FSS1_ATCM_BASE + tempTcmaSize)))
+            {
+                phyAddr -= CSL_R5FSS1_ATCM_BASE;
+                phyAddr += CSL_R5FSS1_CORE0_ATCM_BASE;
+            }
+
+            /* TCMB R5FSS1-0 */
+            if((temp >= CSL_R5FSS1_BTCM_BASE) &&
+               (temp < (CSL_R5FSS1_BTCM_BASE + tempTcmbSize)))
+            {
+                phyAddr -= CSL_R5FSS1_BTCM_BASE;
+                phyAddr += CSL_R5FSS1_CORE0_BTCM_BASE;
+            }
+        }
+        if(cpuInfo.cpuID == CSL_ARM_R5_CPU_ID_1)
+        {
+            /* TCMA R5FSS1-1 */
+            if((temp >= CSL_R5FSS1_ATCM_BASE) &&
+               (temp < (CSL_R5FSS1_ATCM_BASE + CSL_R5FSS1_ATCM_SIZE)))
+            {
+                phyAddr -= CSL_R5FSS1_ATCM_BASE;
+                phyAddr += CSL_R5FSS1_CORE1_ATCM_BASE;
+            }
+
+            /* TCMB R5FSS1-1 */
+            if((temp >= CSL_R5FSS1_BTCM_BASE) &&
+               (temp < (CSL_R5FSS1_BTCM_BASE + CSL_R5FSS1_BTCM_SIZE)))
+            {
+                phyAddr -= CSL_R5FSS1_BTCM_BASE;
+                phyAddr += CSL_R5FSS1_CORE1_BTCM_BASE;
+            }
+        }
+    }
+#endif
+
     return (phyAddr);
 }
 
 void *SOC_phyToVirt(uint64_t phyAddr)
 {
     void       *virtAddr = (void *) ((uintptr_t) phyAddr);  /* Default case */
+
+    /* R5F overrides */
+#if (__ARM_ARCH == 7) && (__ARM_ARCH_PROFILE == 'R')
+    /* TCMA - R5FSS0-0 */
+    if((phyAddr >= CSL_R5FSS0_CORE0_ATCM_BASE) &&
+       (phyAddr < (CSL_R5FSS0_CORE0_ATCM_BASE + CSL_R5FSS0_ATCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS0_CORE0_ATCM_BASE;
+        phyAddr += CSL_R5FSS0_ATCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+    /* TCMB - R5FSS0-0 */
+    if((phyAddr >= CSL_R5FSS0_CORE0_BTCM_BASE) &&
+       (phyAddr < (CSL_R5FSS0_CORE0_BTCM_BASE + CSL_R5FSS0_BTCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS0_CORE0_BTCM_BASE;
+        phyAddr += CSL_R5FSS0_BTCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+
+    /* TCMA - R5FSS0-1 */
+    if((phyAddr >= CSL_R5FSS0_CORE1_ATCM_BASE) &&
+       (phyAddr < (CSL_R5FSS0_CORE1_ATCM_BASE + CSL_R5FSS0_ATCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS0_CORE1_ATCM_BASE;
+        phyAddr += CSL_R5FSS0_ATCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+    /* TCMB - R5FSS0-1 */
+    if((phyAddr >= CSL_R5FSS0_CORE1_BTCM_BASE) &&
+       (phyAddr < (CSL_R5FSS0_CORE1_BTCM_BASE + CSL_R5FSS0_BTCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS0_CORE1_BTCM_BASE;
+        phyAddr += CSL_R5FSS0_BTCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+
+    /* TCMA - R5FSS1-0 */
+    if((phyAddr >= CSL_R5FSS1_CORE0_ATCM_BASE) &&
+       (phyAddr < (CSL_R5FSS1_CORE0_ATCM_BASE + CSL_R5FSS1_ATCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS1_CORE0_ATCM_BASE;
+        phyAddr += CSL_R5FSS1_ATCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+    /* TCMB - R5FSS1-0 */
+    if((phyAddr >= CSL_R5FSS1_CORE0_BTCM_BASE) &&
+       (phyAddr < (CSL_R5FSS1_CORE0_BTCM_BASE + CSL_R5FSS1_BTCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS1_CORE0_BTCM_BASE;
+        phyAddr += CSL_R5FSS1_BTCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+
+    /* TCMA - R5FSS1-1 */
+    if((phyAddr >= CSL_R5FSS1_CORE1_ATCM_BASE) &&
+       (phyAddr < (CSL_R5FSS1_CORE1_ATCM_BASE + CSL_R5FSS1_ATCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS1_CORE1_ATCM_BASE;
+        phyAddr += CSL_R5FSS1_ATCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+    /* TCMB - R5FSS1-1 */
+    if((phyAddr >= CSL_R5FSS1_CORE1_BTCM_BASE) &&
+       (phyAddr < (CSL_R5FSS1_CORE1_BTCM_BASE + CSL_R5FSS1_BTCM_SIZE)))
+    {
+        phyAddr -= CSL_R5FSS1_CORE1_BTCM_BASE;
+        phyAddr += CSL_R5FSS1_BTCM_BASE;
+        virtAddr = (void *) ((uintptr_t) phyAddr);
+    }
+
+#endif
 
     return (virtAddr);
 }
@@ -376,4 +612,157 @@ int32_t SOC_moduleGetClockFrequency(uint32_t moduleId, uint32_t clkId, uint64_t 
                                             SystemP_WAIT_FOREVER);
 
     return status;
+}
+
+void SOC_generateSwWarmResetMainDomain(void)
+{
+    /* Reset Ctrl belongs to partition 6 of the CTRL MMR */
+    uint32_t     rstPartition = 6U;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+    
+    /* MAIN domain reset */
+    CSL_REG32_FINS(CSL_CTRL_MMR0_CFG0_BASE + CSL_MAIN_CTRL_MMR_CFG0_RST_CTRL,
+                    MAIN_CTRL_MMR_CFG0_RST_CTRL_SW_MAIN_WARMRST,
+                    0x6U);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+
+    /* execute wfi */
+#if defined(__ARM_ARCH_7R__)
+    __asm volatile ("wfi");
+#endif
+}
+
+void SOC_generateSwPORResetMainDomain(void)
+{
+    /* Reset Ctrl belongs to partition 6 of the CTRL MMR */
+    uint32_t     rstPartition = 6U;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+    
+    /* MCU domain reset */
+    CSL_REG32_FINS(CSL_CTRL_MMR0_CFG0_BASE + CSL_MAIN_CTRL_MMR_CFG0_RST_CTRL,
+                    MAIN_CTRL_MMR_CFG0_RST_CTRL_SW_MAIN_POR,
+                    0x6U);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+
+    /* execute wfi */
+#if defined(__ARM_ARCH_7R__)
+    __asm volatile ("wfi");
+#endif
+}
+
+uint32_t SOC_getWarmResetCauseMainDomain(void)
+{
+    uint32_t     resetCause = 0U;
+    /* Reset Src belongs to partition 6 of the CTRL MMR */
+    uint32_t     rstPartition = 6U;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+
+    /* Read the Reset Cause Register bits */
+    resetCause = CSL_REG32_RD(CSL_CTRL_MMR0_CFG0_BASE + CSL_MAIN_CTRL_MMR_CFG0_RST_SRC);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MAIN, rstPartition);
+
+    return resetCause;
+}
+
+void SOC_generateSwWarmResetMcuDomain(void)
+{
+    /* Reset Ctrl belongs to partition 6 of the MCU CTRL MMR */
+    uint32_t     rstPartition = 6U, baseAddr;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+
+    /* MAIN domain warm reset */
+    baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_MCU_CTRL_MMR0_CFG0_BASE);
+    CSL_REG32_FINS(baseAddr + CSL_MCU_CTRL_MMR_CFG0_RST_CTRL,
+                    MCU_CTRL_MMR_CFG0_RST_CTRL_SW_MCU_WARMRST,
+                    0x6U);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+}
+
+void SOC_generateSwWarmResetMainDomainFromMcuDomain(void)
+{
+    /* Reset Ctrl belongs to partition 6 of the MCU CTRL MMR */
+    uint32_t     rstPartition = 6U, baseAddr;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+    
+    /* MAIN domain reset */
+    baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_MCU_CTRL_MMR0_CFG0_BASE);
+    CSL_REG32_FINS(baseAddr + CSL_MCU_CTRL_MMR_CFG0_RST_CTRL,
+                    MCU_CTRL_MMR_CFG0_RST_CTRL_SW_MAIN_WARMRST,
+                    0x6U);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+}
+
+void SOC_generateSwPORResetMainDomainFromMcuDomain(void)
+{
+    /* Reset Ctrl belongs to partition 6 of the MCU CTRL MMR */
+    uint32_t     rstPartition = 6U, baseAddr;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+    
+    /* MAIN domain POR reset */
+    baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_MCU_CTRL_MMR0_CFG0_BASE);
+    CSL_REG32_FINS(baseAddr + CSL_MCU_CTRL_MMR_CFG0_RST_CTRL,
+                    MCU_CTRL_MMR_CFG0_RST_CTRL_SW_MAIN_POR,
+                    0x6U);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+}
+
+uint32_t SOC_getWarmResetCauseMcuDomain(void)
+{
+    uint32_t     resetCause = 0U;
+    /* Reset Src belongs to partition 6 of the MCU CTRL MMR */
+    uint32_t     rstPartition = 6U, baseAddr;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+
+    /* Read the Reset Cause Register bits */
+    baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_MCU_CTRL_MMR0_CFG0_BASE);
+    resetCause = CSL_REG32_RD(baseAddr + CSL_MCU_CTRL_MMR_CFG0_RST_SRC);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+
+    return resetCause;
+}
+
+void SOC_clearResetCauseMainMcuDomain(uint32_t resetCause)
+{
+    /* Reset Src belongs to partition 6 of the CTRL MMR */
+    uint32_t     rstPartition = 6U, baseAddr;
+
+    /* Unlock CONTROL MMR registers */
+    SOC_controlModuleUnlockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+
+    /* Clear the Reset Cause Register bits */
+    baseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CSL_MCU_CTRL_MMR0_CFG0_BASE);
+    CSL_REG32_WR(baseAddr + CSL_MCU_CTRL_MMR_CFG0_RST_SRC, resetCause);
+
+    /* Lock CONTROL MMR registers */
+    SOC_controlModuleLockMMR(SOC_DOMAIN_ID_MCU, rstPartition);
+
+    return;
 }

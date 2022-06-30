@@ -61,6 +61,12 @@
 #ifndef RED_H_
 #define RED_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -208,5 +214,10 @@ void       RedProtocolStop(hsrPrpHandle *hsrPrphandle,
 /**
 * @}
 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_H_ */

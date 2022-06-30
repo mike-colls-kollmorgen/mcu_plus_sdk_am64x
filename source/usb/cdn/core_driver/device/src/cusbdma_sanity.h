@@ -49,6 +49,12 @@
 #ifndef CUSBDMA_SANITY_H
 #define CUSBDMA_SANITY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_errno.h"
 #include "cusbdma_if.h"
@@ -78,6 +84,11 @@ uint32_t CUSBDMA_SanityFunction7(const CUSBDMA_DmaController* pD, const CUSBDMA_
 #define CUSBDMA_ChannelSetMaxPktSzSF CUSBDMA_SanityFunction5
 #define CUSBDMA_ChannelHandleStallSF CUSBDMA_SanityFunction5
 #define CUSBDMA_ChannelFreeHeadTrbChSF CUSBDMA_SanityFunction5
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBDMA_SANITY_H */
 

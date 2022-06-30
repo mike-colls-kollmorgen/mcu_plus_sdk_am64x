@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_UNIFLASH_H_
 #define BOOTLOADER_UNIFLASH_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 #include <drivers/hw_include/soc_config.h>
 
@@ -72,10 +78,12 @@ typedef struct Bootloader_UniflashFileHeader_s
 	uint32_t eraseSize;
 	/* Size of flash to erase */
 
+	uint32_t actualFileSize;
+	/* Size of the file sent. This is needed because xmodem returns a padded file size */
+
 	uint32_t rsv1;
 	uint32_t rsv2;
 	uint32_t rsv3;
-	uint32_t rsv4;
 	/* Reserved */
 } Bootloader_UniflashFileHeader;
 
@@ -107,5 +115,10 @@ typedef struct Bootloader_UniflashConfig_s
 } Bootloader_UniflashConfig;
 
 int32_t Bootloader_uniflashProcessFlashCommands(Bootloader_UniflashConfig *config, Bootloader_UniflashResponseHeader *respHeader);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

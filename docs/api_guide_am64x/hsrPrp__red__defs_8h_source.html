@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -111,25 +111,36 @@ $(document).ready(function(){initNavTree('hsrPrp__red__defs_8h_source.html','');
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifndef RED_DEFS_H_</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define RED_DEFS_H_</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/*                           Macros &amp; Typedefs                                */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a8d296cd46b3eb07fe0a418181077f16e">   46</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_DANP               (0)</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ad4f54c50e1f1de0ea3c99c385e967019">   47</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_REDBOXP            (1)</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ad3c8ade61d847917b64ea176c148fb4c">   48</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_VDANP              (2)</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a3757b7c385fbe4f2ebe625bc412f2acb">   49</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_DANH               (3)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a50c6cdc4f0c8b190211bfc9198b5d3c1">   50</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_REDBOXH            (4)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a337c51101a47c9d9b744f01e5d6403a3">   51</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_VDANH              (5)</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ae1cd1b27813c32e66b818c3a6d20ff5b">   52</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_SAN                (6)</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#af71ddce8fed65832ac15899c624bcf50">   54</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_DUPLICATE_ACCEPT                 (1)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a23e300ff03fb2fee6d8b109a7a96c3ac">   55</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_DUPLICATE_DISCARD                (2)</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a7a247ec91b63201d2a6b8f114206f422">   57</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_TRANSPARENT_RECEPTION_REMOVE_RCT (1)</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a17e7567d6575a3a60c721861c58391d0">   58</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_TRANSPARENT_RECEPTION_PASS_RCT   (2)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/*                           Macros &amp; Typedefs                                */</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a8d296cd46b3eb07fe0a418181077f16e">   52</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_DANP               (0)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ad4f54c50e1f1de0ea3c99c385e967019">   53</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_REDBOXP            (1)</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ad3c8ade61d847917b64ea176c148fb4c">   54</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_VDANP              (2)</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a3757b7c385fbe4f2ebe625bc412f2acb">   55</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_DANH               (3)</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a50c6cdc4f0c8b190211bfc9198b5d3c1">   56</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_REDBOXH            (4)</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a337c51101a47c9d9b744f01e5d6403a3">   57</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_VDANH              (5)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#ae1cd1b27813c32e66b818c3a6d20ff5b">   58</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_REM_NODE_TYPE_SAN                (6)</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_DEFS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#af71ddce8fed65832ac15899c624bcf50">   60</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_DUPLICATE_ACCEPT                 (1)</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a23e300ff03fb2fee6d8b109a7a96c3ac">   61</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_DUPLICATE_DISCARD                (2)</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a7a247ec91b63201d2a6b8f114206f422">   63</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_TRANSPARENT_RECEPTION_REMOVE_RCT (1)</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="hsrPrp__red__defs_8h.html#a17e7567d6575a3a60c721861c58391d0">   64</a></span>&#160;<span class="preprocessor">#define IEC62439_CONST_TRANSPARENT_RECEPTION_PASS_RCT   (2)</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_DEFS_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.11-->

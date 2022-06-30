@@ -36,6 +36,15 @@ function getConfigurables()
         }
       });
 
+    let hideVringConfig = false;
+    /*
+     * AM62x currently supports only LinuxIPC (M4 <---> A53), hide vringNumBuff, vringMsgSize and  vringSize
+     * This can be removed once full RP Msg IPC is supported.
+     */
+    if (common.getSocName().match(/am62x/))
+    {
+        hideVringConfig = true;
+    }
     /* to this add the configurable for RP Message buffer size and number */
     config.push(
         {
@@ -52,6 +61,7 @@ function getConfigurables()
                 { name: 12},
                 { name: 16},
             ],
+            hidden: hideVringConfig,
         },
         {
             name: "vringMsgSize",
@@ -68,6 +78,7 @@ function getConfigurables()
                 { name: 1024},
                 { name: 1152},
             ],
+            hidden: hideVringConfig,
         },
     );
 
@@ -85,6 +96,7 @@ function getConfigurables()
                 description: `Amount of shared memory needed for current user configuration`,
                 default: getRPMessageVringSize(instanceLikeObj), /* set initial value based on defaults */
                 readOnly: true,
+                hidden: hideVringConfig,
             },
         );
 

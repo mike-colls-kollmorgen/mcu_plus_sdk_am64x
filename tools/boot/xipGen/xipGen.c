@@ -668,7 +668,7 @@ int parseArgs(int argc, char **argv)
             case 'f':
                 if(optarg!=NULL)
                 {
-                    uint32_t addr = strtol(optarg, NULL, 16);
+                    uint32_t addr = strtoul(optarg, NULL, 16);
 
                     if(addr > 0)
                     {

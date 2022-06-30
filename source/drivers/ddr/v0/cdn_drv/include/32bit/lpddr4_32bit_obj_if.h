@@ -36,7 +36,18 @@
 #ifndef LPDDR4_32BIT_OBJ_IF_H
 #define LPDDR4_32BIT_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "lpddr4_32bit_if.h"
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* LPDDR4_32BIT_OBJ_IF_H */

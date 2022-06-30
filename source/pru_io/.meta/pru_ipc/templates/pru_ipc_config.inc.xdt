@@ -16,6 +16,108 @@
         if(dir === "tx")
             return  0x0020 + parseInt(instance.txIntcMapping?.event) - 16;
     }
+
+    let instancesOffsets = {
+        ICSSG0: {
+            PRU0: {
+                memOffset: 0,
+            },
+            PRU1: {
+                memOffset: 0,
+            },
+            RTU_PRU0: {
+                memOffset: 0,
+            },
+            RTU_PRU1: {
+                memOffset: 0,
+            },
+            TX_PRU0: {
+                memOffset: 0,
+            },
+            TX_PRU1: {
+                memOffset: 0,
+            },
+        },
+        ICSSG1: {
+            PRU0: {
+                memOffset: 0,
+            },
+            PRU1: {
+                memOffset: 0,
+            },
+            RTU_PRU0: {
+                memOffset: 0,
+            },
+            RTU_PRU1: {
+                memOffset: 0,
+            },
+            TX_PRU0: {
+                memOffset: 0,
+            },
+            TX_PRU1: {
+                memOffset: 0,
+            },
+        },
+    };
+
+    const RTU_OFFSET = 0x00001000;
+    const TX_OFFSET  = 0x00001800;
+
+    // maybe an advanced mode option to provide user options to select memName and memOffset
+    function getPruConfigMemOffset (instance) {
+        let offset = instancesOffsets[instance.icssInstance][instance.pruCore].memOffset;
+        let memAddr = "NULL";
+        if (instance.icssInstance === "ICSSG0") {
+            switch(instance.pruCore) {
+                case "PRU0":
+                    memAddr = offset.toString(16);
+                    break;
+                case "PRU1":
+                    memAddr = offset.toString(16);
+                    break;
+                case "RTU_PRU0":
+                    memAddr = (RTU_OFFSET + offset).toString(16);
+                    break;
+                case "RTU_PRU1":
+                    memAddr = (RTU_OFFSET + offset).toString(16);
+                    break;
+                case "TX_PRU0":
+                    memAddr = (TX_OFFSET + offset).toString(16);
+                    break;
+                case "TX_PRU1":
+                    memAddr = (TX_OFFSET + offset).toString(16);
+                    break;
+                default:
+                    // Nothing
+            }
+        }
+        if (instance.icssInstance === "ICSSG1") {
+            switch(instance.pruCore) {
+                case "PRU0":
+                    memAddr = offset.toString(16);
+                    break;
+                case "PRU1":
+                    memAddr = offset.toString(16);
+                    break;
+                case "RTU_PRU0":
+                    memAddr = (RTU_OFFSET + offset).toString(16);
+                    break;
+                case "RTU_PRU1":
+                    memAddr = (RTU_OFFSET + offset).toString(16);
+                    break;
+                case "TX_PRU0":
+                    memAddr = (TX_OFFSET + offset).toString(16);
+                    break;
+                case "TX_PRU1":
+                    memAddr = (TX_OFFSET + offset).toString(16);
+                    break;
+                default:
+                    // Nothing
+            }
+        }
+        instancesOffsets[instance.icssInstance][instance.pruCore].memOffset += 8 + 4*instance.noOfBuffers;
+        return  memAddr;
+    }
 %%}
 ;------------------------------------------------------------------------------
 ;   PRU IPC
@@ -26,13 +128,14 @@
     .if     $defined(`instance.icssInstance`)
     .if     $defined(`instance.pruCore`)
 
+    .asg    0x`getPruConfigMemOffset(instance).toString(16)`,       `instance.$name`_CONFIG_MEM_OFFSET
     % if(instance.interruptRx) {
-    .asg    1,       PRU_IPC_RX_INTR_ENABLE
-    .asg    0x`getEventValue(instance, "rx").toString(16)`,       PRU_IPC_RX_EVENT
+    .asg    1,          `instance.$name`_RX_INTR_ENABLE
+    .asg    0x`getEventValue(instance, "rx").toString(16)`,       `instance.$name`_RX_EVENT
     % }
     % if(instance.interruptTx) {
-    .asg    1,       PRU_IPC_TX_INTR_ENABLE
-    .asg    0x`getEventValue(instance, "tx").toString(16)`,       PRU_IPC_TX_EVENT
+    .asg    1,       `instance.$name`_TX_INTR_ENABLE
+    .asg    0x`getEventValue(instance, "tx").toString(16)`,       `instance.$name`_TX_EVENT
     % }
 
     .endif  ; `instance.pruCore`

@@ -442,6 +442,7 @@ typedef struct Cpsw_MdioLinkStateChangeInfo_s
 
     /*! Whether PHY is linked or not */
     bool isLinked;
+
 } Cpsw_MdioLinkStateChangeInfo;
 
 /*!
@@ -527,7 +528,20 @@ typedef struct Cpsw_Cfg_s
 
     /*! QSGMII1 Running Disparity Check (RDCD) enable */
     bool enableQsgmii1RDC;
+
+    /*! Disable Enet LLD PHY driver - Disables use on PHY driver inside the
+     *  Enet LLD. All PHY functionality including PHY state machine is bypassed
+     *  Application will use this mode if ethernet PHY is managed outside the Enet LLD
+     *  Application is responsible for PHY management. Application can register 
+     *  with Enet LLD to get mdioLinkStateChangeCb callback.
+     *  Application _must_ use Enet LLD IOCTLs to access MDIO as MDIO ownership 
+     *  is still with Enet LLD and there should not be multiple masters for the
+     *  MDIO peripheral
+     */
+    bool disablePhyDriver;
+
 } Cpsw_Cfg;
+
 
 /* ========================================================================== */
 /*                         Global Variables Declarations                      */

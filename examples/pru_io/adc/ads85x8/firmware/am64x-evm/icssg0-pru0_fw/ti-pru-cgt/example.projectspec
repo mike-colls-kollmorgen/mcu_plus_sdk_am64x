@@ -33,8 +33,9 @@
             -I${MCU_PLUS_SDK_PATH}/source
             -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/common
             -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/adc/include
-            -I${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/adc/ads8598
+            -DICSSG0
             -DPRU0
+            -DSLICE0
             -v4
             -DSOC_AM64X
         "

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,20 +108,20 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_SBL_OSPI_LINUX.html',
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1196">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1197">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1198">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1199">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1200">Create an SD-Card with Linux image</a></li>
-<li class="level2"><a href="#autotoc_md1201">Create Linux Appimage</a></li>
-<li class="level2"><a href="#autotoc_md1202">Run the example</a></li>
+<ul><li class="level1"><a href="#autotoc_md1401">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1402">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1403">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1404">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1405">Create an SD-Card with Linux image</a></li>
+<li class="level2"><a href="#autotoc_md1406">Create Linux Appimage</a></li>
+<li class="level2"><a href="#autotoc_md1407">Run the example</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1203">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1204">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1408">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1409">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_sbl_ospi_linux"></a> </p><dl class="section note"><dt>Note</dt><dd>The load address of resource table for R5 and M4 cores must be consistant with the address in the Linux dts file.</dd></dl>
-<h1><a class="anchor" id="autotoc_md1196"></a>
+<h1><a class="anchor" id="autotoc_md1401"></a>
 Introduction</h1>
 <p>This is a bootloader example, which shows an example of booting Linux on A53 core and RTOS/NORTOS applications on R5 and M4 cores.</p>
 <p>The SBL uses two appimages</p><ul>
@@ -130,7 +130,7 @@ Introduction</h1>
 </ul>
 <p>The bootloader does SOC initializations and parses the multicore appimage present at 0x80000, splits it into RPRCs for each core applicable. Each core is then initialized, RPRC image is loaded, entry points are set and the core is released from reset.</p>
 <p>For booting Linux, SBL parses the Linux appimage present at 0x300000, splits it into individual linux binaries (ATF, OPTEE, SPL). SBL loads the Linux binaries, entry point is set to the start address of ATF and A53 core is released from reset.</p>
-<h1><a class="anchor" id="autotoc_md1197"></a>
+<h1><a class="anchor" id="autotoc_md1402"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -144,27 +144,27 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/boot/sbl_ospi_linux   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1198"></a>
+<h1><a class="anchor" id="autotoc_md1403"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1199"></a>
+<h2><a class="anchor" id="autotoc_md1404"></a>
 Build the example</h2>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li><b>When using makefiles to build</b>, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1200"></a>
+<h2><a class="anchor" id="autotoc_md1405"></a>
 Create an SD-Card with Linux image</h2>
 <ul>
 <li>For booting A53 with linux SD-Card with linux image needs to be created. Refer to <b>Processor SDK Linux</b> user guide on how to create SD-Card to boot Linux.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1201"></a>
+<h2><a class="anchor" id="autotoc_md1406"></a>
 Create Linux Appimage</h2>
 <ul>
 <li>Create a Linux Appimage containing the <b>Linux binaries (ATF, OPTEE, SPL)</b></li>
 <li>This can be done by running the makefile at {SDK_INSTALL_PATH}/tools/boot/linuxAppimageGen after setting the PSDK path in file <code>config.mak</code></li>
 <li>Refer <a class="el" href="TOOLS_BOOT.html#LINUX_APPIMAGE_GEN_TOOL">Linux Appimage Generator Tool</a> for more details</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1202"></a>
+<h2><a class="anchor" id="autotoc_md1407"></a>
 Run the example</h2>
 <ul>
 <li>This example is the SBL which needs to be flashed on the EVM flash, along with sample application images for R5, M4 CPUs and Linux Appimage.</li>
@@ -180,10 +180,10 @@ Run the example</h2>
 </pre></li>
 <li>Boot the EVM in OSPI boot mode with the SD card containing the Linux image in the EVM.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1203"></a>
+<h1><a class="anchor" id="autotoc_md1408"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_BOOTLOADER_PAGE.html">BOOTLOADER</a></p>
-<h1><a class="anchor" id="autotoc_md1204"></a>
+<h1><a class="anchor" id="autotoc_md1409"></a>
 Sample Output</h1>
 <p>After flashing and booting the EVM, you will see below output on the UART console (Complete log is not shown) </p><pre class="fragment">[BOOTLOADER PROFILE] SYSFW Load                       :      17592us
 [BOOTLOADER PROFILE] System_init                      :      19018us

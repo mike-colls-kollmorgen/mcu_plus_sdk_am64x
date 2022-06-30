@@ -33,6 +33,12 @@
 #ifndef PN_HANDLE_H_
 #define PN_HANDLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -94,5 +100,10 @@ typedef struct PN_IntConfig_s
  * \brief Alias for Profinet Handle containing base addresses and modules
  */
 typedef struct PN_Config_s *PN_Handle;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PN_HANDLE_H_ */

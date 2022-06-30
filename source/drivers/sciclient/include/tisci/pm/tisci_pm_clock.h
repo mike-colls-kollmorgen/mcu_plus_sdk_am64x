@@ -53,6 +53,12 @@
 #ifndef TISCI_PM_TISCI_CLOCK_H
 #define TISCI_PM_TISCI_CLOCK_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * The IP does not require this clock, it can be disabled, regardless of the
@@ -556,6 +562,11 @@ struct tisci_msg_get_freq_resp {
     struct tisci_header    hdr;
     uint64_t            freq_hz;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_PM_TISCI_CLOCK_H */
 

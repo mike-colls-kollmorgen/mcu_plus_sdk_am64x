@@ -1,100 +1,114 @@
 var KERNEL_DPL_PAGE =
 [
-    [ "Introduction", "KERNEL_DPL_PAGE.html#autotoc_md459", null ],
+    [ "Introduction", "KERNEL_DPL_PAGE.html#autotoc_md525", null ],
     [ "HW Interrupts", "KERNEL_DPL_HWI_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_HWI_PAGE.html#autotoc_md424", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_HWI_PAGE.html#autotoc_md425", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_HWI_PAGE.html#autotoc_md426", null ],
-      [ "Example Usage", "KERNEL_DPL_HWI_PAGE.html#autotoc_md427", null ],
-      [ "API", "KERNEL_DPL_HWI_PAGE.html#autotoc_md428", null ]
+      [ "Features Supported", "KERNEL_DPL_HWI_PAGE.html#autotoc_md485", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_HWI_PAGE.html#autotoc_md486", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_HWI_PAGE.html#autotoc_md487", null ],
+      [ "Example Usage", "KERNEL_DPL_HWI_PAGE.html#autotoc_md488", null ],
+      [ "API", "KERNEL_DPL_HWI_PAGE.html#autotoc_md489", null ]
     ] ],
     [ "Semaphore", "KERNEL_DPL_SEMAPHORE_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md419", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md420", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md421", null ],
-      [ "Example Usage", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md422", null ],
-      [ "API", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md423", null ]
+      [ "Features Supported", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md480", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md481", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md482", null ],
+      [ "Example Usage", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md483", null ],
+      [ "API", "KERNEL_DPL_SEMAPHORE_PAGE.html#autotoc_md484", null ]
     ] ],
     [ "Task", "KERNEL_DPL_TASK_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_TASK_PAGE.html#autotoc_md444", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_TASK_PAGE.html#autotoc_md445", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_TASK_PAGE.html#autotoc_md446", null ],
-      [ "Example Usage", "KERNEL_DPL_TASK_PAGE.html#autotoc_md447", null ],
-      [ "API", "KERNEL_DPL_TASK_PAGE.html#autotoc_md448", null ]
+      [ "Features Supported", "KERNEL_DPL_TASK_PAGE.html#autotoc_md505", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_TASK_PAGE.html#autotoc_md506", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_TASK_PAGE.html#autotoc_md507", null ],
+      [ "Example Usage", "KERNEL_DPL_TASK_PAGE.html#autotoc_md508", null ],
+      [ "API", "KERNEL_DPL_TASK_PAGE.html#autotoc_md509", null ]
     ] ],
     [ "Clock", "KERNEL_DPL_CLOCK_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md405", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md406", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md407", null ],
-      [ "Example Usage", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md408", null ],
-      [ "API", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md409", null ]
+      [ "Features Supported", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md466", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md467", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md468", null ],
+      [ "Example Usage", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md469", null ],
+      [ "API", "KERNEL_DPL_CLOCK_PAGE.html#autotoc_md470", null ]
     ] ],
     [ "Cycle Counter", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md439", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md440", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md441", null ],
-      [ "Example Usage", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md442", null ],
-      [ "API", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md443", null ]
+      [ "Features Supported", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md500", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md501", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md502", null ],
+      [ "Example Usage", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md503", null ],
+      [ "API", "KERNEL_DPL_CYCLE_COUNTER_PAGE.html#autotoc_md504", null ]
+    ] ],
+    [ "Queue", "KERNEL_DPL_QUEUE_PAGE.html", [
+      [ "Features Supported", "KERNEL_DPL_QUEUE_PAGE.html#autotoc_md510", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_QUEUE_PAGE.html#autotoc_md511", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_QUEUE_PAGE.html#autotoc_md512", null ],
+      [ "Example Usage", "KERNEL_DPL_QUEUE_PAGE.html#autotoc_md513", null ],
+      [ "API", "KERNEL_DPL_QUEUE_PAGE.html#autotoc_md514", null ]
     ] ],
     [ "Cache", "KERNEL_DPL_CACHE_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md400", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md401", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md402", null ],
-      [ "Example Usage", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md403", null ],
-      [ "API", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md404", null ]
+      [ "Features Supported", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md456", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md457", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md458", null ],
+      [ "Example Usage", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md459", null ],
+      [ "API", "KERNEL_DPL_CACHE_PAGE.html#autotoc_md460", null ]
+    ] ],
+    [ "CPUID for ARMv7 (ARM R5)", "KERNEL_DPL_CPUID_PAGE.html", [
+      [ "Features Supported", "KERNEL_DPL_CPUID_PAGE.html#autotoc_md461", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_CPUID_PAGE.html#autotoc_md462", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_CPUID_PAGE.html#autotoc_md463", null ],
+      [ "Example Usage", "KERNEL_DPL_CPUID_PAGE.html#autotoc_md464", null ],
+      [ "API", "KERNEL_DPL_CPUID_PAGE.html#autotoc_md465", null ]
     ] ],
     [ "MMU for ARMv8 (ARM A53)", "KERNEL_DPL_MMU_ARMV8_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md460", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md461", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md462", null ],
-      [ "Example Usage", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md463", null ],
-      [ "API", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md464", null ]
+      [ "Features Supported", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md526", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md527", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md528", null ],
+      [ "Example Usage", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md529", null ],
+      [ "API", "KERNEL_DPL_MMU_ARMV8_PAGE.html#autotoc_md530", null ]
     ] ],
     [ "MPU for ARMv7 (ARM R5, ARM M4)", "KERNEL_DPL_MPU_ARMV7_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md465", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md466", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md467", null ],
-      [ "Example Usage", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md468", null ],
-      [ "API", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md469", null ]
+      [ "Features Supported", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md531", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md532", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md533", null ],
+      [ "Example Usage", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md534", null ],
+      [ "API", "KERNEL_DPL_MPU_ARMV7_PAGE.html#autotoc_md535", null ]
     ] ],
     [ "Region based Address Translate", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md434", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md435", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md436", null ],
-      [ "Example Usage", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md437", null ],
-      [ "API", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md438", null ]
+      [ "Features Supported", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md495", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md496", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md497", null ],
+      [ "Example Usage", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md498", null ],
+      [ "API", "KERNEL_DPL_ADDR_TRANSLATE_PAGE.html#autotoc_md499", null ]
     ] ],
     [ "Heap", "KERNEL_DPL_HEAP_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md429", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md430", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md431", null ],
-      [ "Example Usage", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md432", null ],
-      [ "API", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md433", null ]
+      [ "Features Supported", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md490", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md491", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md492", null ],
+      [ "Example Usage", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md493", null ],
+      [ "API", "KERNEL_DPL_HEAP_PAGE.html#autotoc_md494", null ]
     ] ],
     [ "Debug", "KERNEL_DPL_DEBUG_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md410", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md411", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md412", [
-        [ "Shared memory logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md413", null ],
-        [ "UART logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md414", null ],
-        [ "Memory logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md415", null ],
-        [ "Other guidelines", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md416", null ]
+      [ "Features Supported", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md471", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md472", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md473", [
+        [ "Shared memory logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md474", null ],
+        [ "UART logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md475", null ],
+        [ "Memory logging", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md476", null ],
+        [ "Other guidelines", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md477", null ]
       ] ],
-      [ "Example Usage", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md417", null ],
-      [ "API", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md418", null ]
+      [ "Example Usage", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md478", null ],
+      [ "API", "KERNEL_DPL_DEBUG_PAGE.html#autotoc_md479", null ]
     ] ],
     [ "Event", "KERNEL_DPL_EVENT_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md454", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md455", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md456", null ],
-      [ "Example Usage", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md457", null ],
-      [ "API", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md458", null ]
+      [ "Features Supported", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md520", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md521", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md522", null ],
+      [ "Example Usage", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md523", null ],
+      [ "API", "KERNEL_DPL_EVENT_PAGE.html#autotoc_md524", null ]
     ] ],
     [ "Timer", "KERNEL_DPL_TIMER_PAGE.html", [
-      [ "Features Supported", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md449", null ],
-      [ "Features NOT Supported", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md450", null ],
-      [ "Important Usage Guidelines", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md451", null ],
-      [ "Example Usage", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md452", null ],
-      [ "API", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md453", null ]
+      [ "Features Supported", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md515", null ],
+      [ "Features NOT Supported", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md516", null ],
+      [ "Important Usage Guidelines", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md517", null ],
+      [ "Example Usage", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md518", null ],
+      [ "API", "KERNEL_DPL_TIMER_PAGE.html#autotoc_md519", null ]
     ] ]
 ];

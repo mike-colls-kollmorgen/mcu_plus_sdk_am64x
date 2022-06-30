@@ -35,6 +35,12 @@
 #ifndef CUSBDMA_STRUCTS_IF_H
 #define CUSBDMA_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cusbdma_if.h"
 
@@ -219,5 +225,10 @@ struct CUSBDMA_DmaTransferParam_s
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBDMA_STRUCTS_IF_H */

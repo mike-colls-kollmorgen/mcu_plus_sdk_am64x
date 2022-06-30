@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,33 +108,33 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_EVENT_PAGE.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md454">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md455">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md456">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md457">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md458">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md520">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md521">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md522">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md523">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md524">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_EventP"></a></p>
-<h1><a class="anchor" id="autotoc_md454"></a>
+<h1><a class="anchor" id="autotoc_md520"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to construct and destruct Events</li>
 <li>APIs to set, get or clear bits and wait for bits</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md455"></a>
+<h1><a class="anchor" id="autotoc_md521"></a>
 Features NOT Supported</h1>
 <ul>
 <li>These APIs are not implemented for no-RTOS. Error will be returned if these APIs called using no-RTOS.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md456"></a>
+<h1><a class="anchor" id="autotoc_md522"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li><a class="el" href="group__KERNEL__DPL__EVENT.html#ga49665ab39513aebef09c689c6e1c34cd">EventP_waitBits</a> should not be called within ISR context. It can be called from task context.</li>
 <li>Setting or clearing the Event bits is a non-deterministic operation and FreeRTOS does not allow non-deterministic operations to be performed in interrupts or from critical sections. If <a class="el" href="group__KERNEL__DPL__EVENT.html#ga3ebf3093b25a2a3036ef20f5224c69cc">EventP_setBits</a> or <a class="el" href="group__KERNEL__DPL__EVENT.html#ga1862bf85d3f7e9ff0dfafa22e2da2fe4">EventP_clearBits</a> is called from an ISR, a message is sent to RTOS daemon task to perform the operation in the context of daemon task. If the set or clear operation is required to be completed immediately, then the priority of RTOS daemon task must be higher than the priority of task waiting for the Event bits. The priority of RTOS daemon task is set by the <code>configTIMER_TASK_PRIORITY</code> in FreeRTOSConfig.h file.</li>
 <li>The actual current value of Event bits returned from <a class="el" href="group__KERNEL__DPL__EVENT.html#ga49665ab39513aebef09c689c6e1c34cd">EventP_waitBits</a> and <a class="el" href="group__KERNEL__DPL__EVENT.html#gafc3f4a27c2889586c62ad25508f86275">EventP_getBits</a> can be different from returned value if an interrupt or a higher priority task modifies the value between the calling task leaving blocked state and exiting this API.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md457"></a>
+<h1><a class="anchor" id="autotoc_md523"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="EventP_8h.html">kernel/dpl/EventP.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Example usage to define an Event </p><div class="fragment"><div class="line"><span class="comment">/* Event objects, typically these are global&#39;s */</span></div>
@@ -174,7 +174,7 @@ Example Usage</h1>
 <div class="line">    status = <a class="code" href="group__KERNEL__DPL__EVENT.html#ga3ebf3093b25a2a3036ef20f5224c69cc">EventP_setBits</a>(&amp;gMyEvent, EVENT_BIT_PONG);</div>
 <div class="line"> </div>
 <div class="line">}</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md458"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md524"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__EVENT.html">APIs for Event</a> </p>
 </div></div><!-- contents -->

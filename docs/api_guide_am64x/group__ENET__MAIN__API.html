@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -212,6 +212,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4710f1318cbf2089a92a50609a403c39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MAIN__API.html#ga4710f1318cbf2089a92a50609a403c39">Enet_close</a> (<a class="el" href="enet__base_8h.html#aaf6a26638306b81ac1148da6da42f513">Enet_Handle</a> hEnet)</td></tr>
 <tr class="memdesc:ga4710f1318cbf2089a92a50609a403c39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the Enet peripheral.  <a href="group__ENET__MAIN__API.html#ga4710f1318cbf2089a92a50609a403c39">More...</a><br /></td></tr>
 <tr class="separator:ga4710f1318cbf2089a92a50609a403c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f380cf84a2b5b317683b71e60e211da"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MAIN__API.html#ga1f380cf84a2b5b317683b71e60e211da">Enet_getHandleInfo</a> (<a class="el" href="enet__base_8h.html#aaf6a26638306b81ac1148da6da42f513">Enet_Handle</a> hEnet, <a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a> *enetType, uint32_t *instId)</td></tr>
+<tr class="memdesc:ga1f380cf84a2b5b317683b71e60e211da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get enetType and instId info from the enet handle.  <a href="group__ENET__MAIN__API.html#ga1f380cf84a2b5b317683b71e60e211da">More...</a><br /></td></tr>
+<tr class="separator:ga1f380cf84a2b5b317683b71e60e211da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -429,7 +432,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga2fc2a2cd7bf8881bdc6b0a68cda970f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lowest packet priority.  <a href="group__ENET__MAIN__API.html#ga2fc2a2cd7bf8881bdc6b0a68cda970f8">More...</a><br /></td></tr>
 <tr class="separator:ga2fc2a2cd7bf8881bdc6b0a68cda970f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ab187501a798f1c2491ec9a2cc6bfba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MAIN__API.html#ga6ab187501a798f1c2491ec9a2cc6bfba">ENET_PRI_MAX</a>&#160;&#160;&#160;(<a class="el" href="group__ENET__MAIN__API.html#ga986325bf9f8fe35ad61b134d0cd914fc">ENET_PRI_NUM</a> - 1U)</td></tr>
-<tr class="memdesc:ga6ab187501a798f1c2491ec9a2cc6bfba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lowest packet priority.  <a href="group__ENET__MAIN__API.html#ga6ab187501a798f1c2491ec9a2cc6bfba">More...</a><br /></td></tr>
+<tr class="memdesc:ga6ab187501a798f1c2491ec9a2cc6bfba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Highest packet priority.  <a href="group__ENET__MAIN__API.html#ga6ab187501a798f1c2491ec9a2cc6bfba">More...</a><br /></td></tr>
 <tr class="separator:ga6ab187501a798f1c2491ec9a2cc6bfba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacc619bc26058bcd497807d5756be5ff6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MAIN__API.html#gacc619bc26058bcd497807d5756be5ff6">ENET_TOS_PRI_NUM</a>&#160;&#160;&#160;(64U)</td></tr>
 <tr class="memdesc:gacc619bc26058bcd497807d5756be5ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of Service (ToS) priority.  <a href="group__ENET__MAIN__API.html#gacc619bc26058bcd497807d5756be5ff6">More...</a><br /></td></tr>
@@ -1511,7 +1514,7 @@ Enet Error Codes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Lowest packet priority. </p>
+<p>Highest packet priority. </p>
 
 </div>
 </div>
@@ -3118,6 +3121,51 @@ Enet Error Codes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hEnet</td><td>Enet driver handle </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga1f380cf84a2b5b317683b71e60e211da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f380cf84a2b5b317683b71e60e211da">&#9670;&nbsp;</a></span>Enet_getHandleInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t Enet_getHandleInfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="enet__base_8h.html#aaf6a26638306b81ac1148da6da42f513">Enet_Handle</a>&#160;</td>
+          <td class="paramname"><em>hEnet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a> *&#160;</td>
+          <td class="paramname"><em>enetType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>instId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get enetType and instId info from the enet handle. </p>
+<p>Returns the enetType and instance id associated with Enet_Handle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hEnet</td><td>Enet driver handle </td></tr>
+    <tr><td class="paramname">enetType</td><td>Pointer to enetType set by this function </td></tr>
+    <tr><td class="paramname">instId</td><td>Instance Id </td></tr>
   </table>
   </dd>
 </dl>

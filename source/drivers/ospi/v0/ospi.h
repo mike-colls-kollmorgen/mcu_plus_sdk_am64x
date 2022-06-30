@@ -704,6 +704,17 @@ void OSPI_ReadCmdParams_init(OSPI_ReadCmdParams *rdParams);
 void OSPI_WriteCmdParams_init(OSPI_WriteCmdParams *wrParams);
 
 /**
+ *  \brief  This function returns the input clk frequency OSPI was programmed at
+ *
+ *  \pre    OSPI controller has been opened using #OSPI_open()
+ *
+ *  \param  handle  An #OSPI_Handle returned from an #OSPI_open()
+ *
+ *  \return OSPI RCLK in Hertz
+ */
+uint32_t OSPI_getInputClk(OSPI_Handle handle);
+
+/**
  *  \brief  This function checks if the Direct Access Controller is enabled
  *
  *  \pre    OSPI controller has been opened using #OSPI_open()

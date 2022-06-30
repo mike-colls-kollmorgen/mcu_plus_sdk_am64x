@@ -76,6 +76,8 @@ var group__tisci__protocol =
     [ "TISCI_MSG_SA2UL_GET_DKEK", "group__tisci__protocol.html#gadc4a062b844f61eab0cbe6c56cb3fc85", null ],
     [ "TISCI_MSG_SEC_HANDOVER", "group__tisci__protocol.html#ga5bb7e03b209a9720d857ea90f6090023", null ],
     [ "TISCI_MSG_KEY_WRITER", "group__tisci__protocol.html#ga991943d6ce5d85e205b4d78268cc468f", null ],
+    [ "TISCI_MSG_WRITE_SWREV", "group__tisci__protocol.html#ga7c82f25f1862301f112265d26d26aeef", null ],
+    [ "TISCI_MSG_READ_SWREV", "group__tisci__protocol.html#gaa73e475871f5a217d53ce58b7f41d619", null ],
     [ "TISCI_MSG_PROC_REQUEST", "group__tisci__protocol.html#gae7e87e9e33cf094d076789307b5ce5fc", null ],
     [ "TISCI_MSG_PROC_RELEASE", "group__tisci__protocol.html#ga1609277ed75462d4dba24089ffb2116f", null ],
     [ "TISCI_MSG_PROC_HANDOVER", "group__tisci__protocol.html#gaf2eaad424bab459e969a06570fa19d24", null ],

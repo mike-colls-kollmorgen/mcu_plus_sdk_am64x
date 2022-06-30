@@ -43,7 +43,7 @@ extern "C" {
 bool EI_APP_init(void);
 void EI_APP_run(void);
 void EI_APP_mainTask(void* pvTaskArg_p);
-void EI_APP_stackInit(uint8_t pruInstance_p);
+void EI_APP_stackInit(void);
 
 void EI_APP_osErrorHandlerCb(uint32_t errorCode_p, bool fatal_p, uint8_t paraCnt_p, va_list argptr_p);
 void EI_APP_osPrintfCb(void* pContext_p, const char* __restrict pFormat_p, va_list argptr_p);

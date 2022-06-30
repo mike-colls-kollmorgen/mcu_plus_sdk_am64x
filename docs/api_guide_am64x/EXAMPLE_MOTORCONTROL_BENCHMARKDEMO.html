@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,19 +108,19 @@ $(document).ready(function(){initNavTree('EXAMPLE_MOTORCONTROL_BENCHMARKDEMO.htm
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1053">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1054">Supported Combinations</a></li>
-<li class="level1"><a href="#STEPS">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1055">Hardware Prerequisites</a></li>
-<li class="level2"><a href="#autotoc_md1056">Build the R5F side projects</a></li>
-<li class="level2"><a href="#autotoc_md1057">Run the demo</a></li>
+<ul><li class="level1"><a href="#autotoc_md1168">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1169">Supported Combinations</a></li>
+<li class="level1"><a href="#STEPS">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1170">Hardware Prerequisites</a></li>
+<li class="level2"><a href="#autotoc_md1171">Build the R5F side projects</a></li>
+<li class="level2"><a href="#autotoc_md1172">Run the demo</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1058">Sample Output</a></li>
-<li class="level1"><a href="#autotoc_md1059">Benchmark Results</a></li>
+<li class="level1"><a href="#autotoc_md1173">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1174">Benchmark Results</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_motorcontrol_benchmarkdemo_example_am64x"></a></p>
-<h1><a class="anchor" id="autotoc_md1053"></a>
+<h1><a class="anchor" id="autotoc_md1168"></a>
 Introduction</h1>
 <p>The benchmark demo showcases the capabilities of the four R5F cores as well as the A53 core. This demo is run by default when <b>Processor SDK Linux</b> is flashed to SD card. Different R5F benchmarks will run on each of the four R5F cores. There are four options available for each benchmark. Users can switch the options using the drop-down menu in the GUI to view performance of R5F with each option.</p>
 <p>The mapping of R5F core to the benchmark that is run is shown below </p><table class="doxtable">
@@ -135,7 +135,7 @@ Introduction</h1>
 <tr>
 <td>R5F Core 3 (rf5ss1-1) </td><td>Field Oriented Control (FOC) benchmark  </td><td>16 Khz execution loop </td><td>CMSIS FOC benchmark for R5F  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1054"></a>
+<h1><a class="anchor" id="autotoc_md1169"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -157,7 +157,7 @@ Supported Combinations</h1>
 </table>
 <h1><a class="anchor" id="STEPS"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1055"></a>
+<h2><a class="anchor" id="autotoc_md1170"></a>
 Hardware Prerequisites</h2>
 <p>Other than the basic EVM setup mentioned in <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>, below additional HW is required to run this demo</p><ul>
 <li>PC with a web browser and wired ethernet connectivity (Windows or Linux)</li>
@@ -165,7 +165,7 @@ Hardware Prerequisites</h2>
 <li>Ethernet switch or ethernet router with DHCP service</li>
 <li>SD card (minimum 2GB)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1056"></a>
+<h2><a class="anchor" id="autotoc_md1171"></a>
 Build the R5F side projects</h2>
 <dl class="section note"><dt>Note</dt><dd>The default <b>Processor SDK Linux</b> has prebuilt applications already, so this step can be skipped unless you have modified the demo application on R5F.</dd>
 <dd>
@@ -186,7 +186,7 @@ This is a <code>system</code> or multi-core project, so refer to system project 
 </div><!-- fragment --></li>
 <li><b>NOTE</b>, the copy step can only be done using a Linux machine since the Linux filesystem on the SD card cannot be seen on a Windows machine.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1057"></a>
+<h2><a class="anchor" id="autotoc_md1172"></a>
 Run the demo</h2>
 <ul>
 <li>To run this demo, Linux needs to run on the Cortex A-core.<ul>
@@ -232,13 +232,13 @@ SD BOOT MODE</div></div>
 <ul>
 <li>The R5F application for each core is fixed. User can change the <code>Options</code> for each core, then click <code>LOAD</code> to refresh the statistics</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1058"></a>
+<h1><a class="anchor" id="autotoc_md1173"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run.</p>
 <p> <style>div.image img[src="OOB_GUI_stats.png"]{width:70%}</style> </p><div class="image">
 <img src="OOB_GUI_stats.png" alt=""/>
 </div>
-<h1><a class="anchor" id="autotoc_md1059"></a>
+<h1><a class="anchor" id="autotoc_md1174"></a>
 Benchmark Results</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">

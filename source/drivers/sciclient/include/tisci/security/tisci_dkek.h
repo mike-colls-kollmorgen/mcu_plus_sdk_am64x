@@ -53,6 +53,12 @@
 #ifndef TISCI_DKEK_H_
 #define TISCI_DKEK_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Derived key length 32 bytes always
@@ -138,6 +144,11 @@ struct tisci_msg_sa2ul_get_dkek_resp {
     struct tisci_header    hdr;
     uint8_t            dkek[SA2UL_DKEK_KEY_LEN];
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

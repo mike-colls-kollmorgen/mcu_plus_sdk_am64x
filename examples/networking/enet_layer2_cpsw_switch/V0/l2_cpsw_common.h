@@ -54,7 +54,7 @@
 #include <networking/enet/utils/include/enet_apputils.h>
 #include <networking/enet/utils/include/enet_appmemutils.h>
 #include <networking/enet/utils/include/enet_appmemutils_cfg.h>
-#include <enet_board_cfg.h>
+#include "ti_board_config.h"
 #include "ti_drivers_open_close.h"
 #include "ti_board_open_close.h"
 
@@ -128,15 +128,9 @@ typedef struct EnetApp_PerCtxt_s
     /* Enet driver handle for this peripheral type/instance */
     Enet_Handle hEnet;
 
-    /* CPSW configuration */
-    Cpsw_Cfg cpswCfg;
-
     /* MAC address. It's port's MAC address in Dual-MAC or
      * host port's MAC addres in Switch */
     uint8_t macAddr[ENET_MAC_ADDR_LEN];
-
-    /* UDMA driver configuration */
-    EnetUdma_Cfg dmaCfg;
 
     /* TX channel number */
     uint32_t txChNum;
@@ -162,6 +156,13 @@ typedef struct EnetApp_PerCtxt_s
 
     /* Semaphore used to synchronize all REgular RX tasks exits */
     SemaphoreP_Object rxDoneSemObj;
+
+    /* Core key returned by Enet RM after attaching this core */
+    uint32_t coreKey;
+
+    /* Main UDMA driver handle */
+    Udma_DrvHandle hMainUdmaDrv;
+
 } EnetApp_PerCtxt;
 
 typedef struct EnetApp_Obj_s
@@ -172,24 +173,8 @@ typedef struct EnetApp_Obj_s
     /* This core's id */
     uint32_t coreId;
 
-    /* Core key returned by Enet RM after attaching this core */
-    uint32_t coreKey;
-
-    /* Main UDMA driver handle */
-    Udma_DrvHandle hMainUdmaDrv;
-
     /* Queue of free TX packets */
     EnetDma_PktQ txFreePktInfoQ;
-
-    /* Periodic tick timer - used only to post a semaphore */
-    ClockP_Object tickTimerObj;
-
-    /* Periodic tick task - Enet period tick needs to be called from task context
-     * hence it's called from this task (i.e. as opposed to in timer callback) */
-    TaskP_Object tickTaskObj;
-
-    /* Semaphore posted by tick timer to run tick task */
-    SemaphoreP_Object timerSemObj;
 
     /* Array of all peripheral/port contexts used in the test */
     EnetApp_PerCtxt perCtxt[ENETAPP_PER_MAX];

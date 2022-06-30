@@ -51,6 +51,12 @@
 #ifndef SOC_TISCI_DEVICES_H
 #define SOC_TISCI_DEVICES_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define TISCI_DEV_ADC0 0
 #define TISCI_DEV_CMP_EVENT_INTROUTER0 1
 #define TISCI_DEV_DBGSUSPENDROUTER0 2
@@ -210,6 +216,11 @@
 #define TISCI_DEV_PBIST2 165
 #define TISCI_DEV_PBIST3 166
 #define TISCI_DEV_COMPUTE_CLUSTER0_PBIST_0 167
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SOC_TISCI_DEVICES_H */
 

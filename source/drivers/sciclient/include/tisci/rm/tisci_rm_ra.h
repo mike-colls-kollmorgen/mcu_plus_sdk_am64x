@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_RA_H
 #define RM_TISCI_RA_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * The addr_lo parameter is valid for RM ring configure TISCI message
@@ -415,6 +421,11 @@ struct tisci_msg_rm_ring_mon_cfg_req {
 struct tisci_msg_rm_ring_mon_cfg_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_RA_H */
 

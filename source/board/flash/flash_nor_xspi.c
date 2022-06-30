@@ -93,7 +93,7 @@ static int32_t Flash_norXspiWaitReady(Flash_Config *config, uint32_t timeOut)
     Flash_NorXspiDevDefines *devDefines = (Flash_NorXspiDevDefines *)config->devDefines;
     Flash_NorXspiObject *obj = (Flash_NorXspiObject *)(config->object);
 
-    uint8_t  readStatus;
+    uint8_t  readStatus = 0;
     uint8_t  cmd, numAddrBytes;
     uint32_t cmdAddr;
 
@@ -286,7 +286,7 @@ static int32_t Flash_norXspiEnableSDR(Flash_Config *config)
 }
 
 static int32_t Flash_norXspiSetDummyCycles(Flash_Config *config)
-{ 
+{
     int32_t status = SystemP_SUCCESS;
     Flash_NorXspiObject *obj = (Flash_NorXspiObject *)(config->object);
     Flash_NorXspiDevDefines *devDefines = (Flash_NorXspiDevDefines *)config->devDefines;
@@ -410,7 +410,7 @@ static int32_t Flash_norXspiHybridSectorConfig(Flash_Config *config, uint8_t ena
 
         if(wrReg == 1U)
         {
-            status = Flash_norXspiRegWrite(config, devDefines->NOR_CFG3_NVREG_ADDR, regData);   
+            status = Flash_norXspiRegWrite(config, devDefines->NOR_CFG3_NVREG_ADDR, regData);
         }
     }
 
@@ -473,7 +473,7 @@ static int32_t Flash_norXspiOpen(Flash_Config *config, Flash_Params *params)
         OSPI_setRdDataCaptureDelay(obj->ospiHandle, readDataCapDelay);
         status = Flash_norXspiReadId(config);
 
-        while((status != SystemP_SUCCESS) && (readDataCapDelay >= 0U))
+        while((status != SystemP_SUCCESS) && (readDataCapDelay > 0U))
         {
             readDataCapDelay--;
             OSPI_setRdDataCaptureDelay(obj->ospiHandle, readDataCapDelay);

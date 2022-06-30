@@ -82,6 +82,44 @@ extern "C" {
                                                ENET_IOCTL_PER_CPSW |     \
                                                ENET_IOCTL_MIN(x))
 
+/*! \brief EST non-zero minimum time interval, in wireside clocks. Needed to
+ *  guarantee that next fetch value has time to be fetched before current
+ *  fetch count is over. */
+#define CPSW_MACPORT_EST_TIME_INTERVAL_MIN    (0x010U)
+
+/*! \brief EST maximum time interval (14-bit), in wireside clocks. */
+#define CPSW_MACPORT_EST_TIME_INTERVAL_MAX    (0x3FFFU)
+
+/*! \brief Time interval step in nsecs for 1 Gbps link. */
+#define CPSW_MACPORT_EST_TIME_STEP_1G         (8U)
+
+/*! \brief Time interval step in nsecs for 100 Mbps link. */
+#define CPSW_MACPORT_EST_TIME_STEP_100M       (40U)
+
+/*! \brief Time interval step in nsecs for a 10 Mbps link. */
+#define CPSW_MACPORT_EST_TIME_STEP_10M        (400U)
+
+/*! \brief Min time interval in nsecs for given link speed. */
+#define CPSW_MACPORT_EST_TIME_MIN(speed)      (CPSW_MACPORT_EST_TIME_STEP_##speed * CPSW_MACPORT_EST_TIME_INTERVAL_MIN)
+
+/*! \brief Max time interval in nsecs for given link speed. */
+#define CPSW_MACPORT_EST_TIME_MAX(speed)      (CPSW_MACPORT_EST_TIME_STEP_##speed * CPSW_MACPORT_EST_TIME_INTERVAL_MAX)
+
+/*! \brief EST allow count scaling factor for 1 Gbps link. */
+#define CPSW_MACPORT_EST_ALLOWCNT_FACTOR_1G   (1U)
+
+/*! \brief EST allow count scaling factor for 100 Mbps link. */
+#define CPSW_MACPORT_EST_ALLOWCNT_FACTOR_100M (2U)
+
+/*! \brief EST allow count scaling factor for 10 Mbps link. */
+#define CPSW_MACPORT_EST_ALLOWCNT_FACTOR_10M  (2U)
+
+/*! \brief Guard band duration in nsecs for given link speed and
+ *  maximum packet size in previous time interval. */
+#define CPSW_MACPORT_EST_GUARD_BAND(maxPktSize, speed)  (((((maxPktSize) + 4U) * \
+                                                           CPSW_MACPORT_EST_ALLOWCNT_FACTOR_##speed) + 292U) * \
+                                                         CPSW_MACPORT_EST_TIME_STEP_##speed)
+
 /* ========================================================================== */
 /*                         Structures and Enums                               */
 /* ========================================================================== */
@@ -117,6 +155,26 @@ typedef enum CpswMacPort_Ioctl_s
      * - outArgs: None
      */
     CPSW_MACPORT_IOCTL_DISABLE_CPTS_EVENT = CPSW_MACPORT_PUBLIC_IOCTL(2U),
+
+    /*!
+     * \brief Enable EST packet timestamping functionality.
+     *
+     * Once enabled, timestamps can be retrieved using CPSW CPTS IOCTLs.
+     *
+     * IOCTL parameters:
+     *   inArgs: #CpswMacPort_EstTimestampCfg
+     *  outArgs: None
+     */
+    CPSW_MACPORT_IOCTL_EST_ENABLE_TIMESTAMP = CPSW_MACPORT_PUBLIC_IOCTL(3U),
+
+    /*!
+     * \brief Disable EST packet timestamping functionality.
+     *
+     * IOCTL parameters:
+     *   inArgs: #EnetMacPort_GenericInArgs
+     *  outArgs: None
+     */
+    CPSW_MACPORT_IOCTL_EST_DISABLE_TIMESTAMP = CPSW_MACPORT_PUBLIC_IOCTL(4U),
 } CpswMacPort_Ioctl;
 
 /*!
@@ -352,6 +410,46 @@ typedef struct CpswMacPort_EnableTsEventInArgs_s
     /*! Time sync configuration */
     CpswMacPort_TsEventCfg tsEventCfg;
 } CpswMacPort_EnableTsEventInArgs;
+
+/*!
+ * \brief EST timestamping modes.
+ */
+typedef enum CpswMacPort_EstTimestampMode_e
+{
+    /*! Timestamp all express packets on any priority. */
+    CPSW_MACPORT_EST_TIMESTAMP_ALL,
+
+    /*! Timestamp only express packets of a given priority. */
+    CPSW_MACPORT_EST_TIMESTAMP_ONEPRI,
+
+    /*! Timestamp the first express packet in each time interval. */
+    CPSW_MACPORT_EST_TIMESTAMP_FIRST,
+
+    /*! Timestamp the first express packet of a given priority in the time interval. */
+    CPSW_MACPORT_EST_TIMESTAMP_FIRST_ONEPRI,
+
+} CpswMacPort_EstTimestampMode;
+
+/*!
+ * \brief EST timestamping configuration parameters.
+ */
+typedef struct CpswMacPort_EstTimestampCfg_s
+{
+    /*! Port number. */
+    Enet_MacPort macPort;
+
+    /*! Timestamping mode. Determines what packets are timestamped. */
+    CpswMacPort_EstTimestampMode mode;
+
+    /*! Priority that timestamps will be generated on. Applicable for
+     *  \ref CPSW_MACPORT_EST_TIMESTAMP_ONEPRI and
+     *  \ref CPSW_MACPORT_EST_TIMESTAMP_FIRST_ONEPRI. */
+    uint8_t priority;
+
+    /*! CPTS EST timestamp domain.  It can be used to indicate and identify that an
+     *  event came from EST. */
+    uint8_t domain;
+} CpswMacPort_EstTimestampCfg;
 
 /*!
  * \brief MAC port module configuration parameters.

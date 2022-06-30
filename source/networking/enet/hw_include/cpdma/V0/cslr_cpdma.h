@@ -337,6 +337,11 @@ typedef struct {
 #define CSL_CPDMA_DMACONTROL_RX_TS_ENCAP_RESETVAL               ((uint32_t)(0x00000000U))
 #define CSL_CPDMA_DMACONTROL_RX_TS_ENCAP_MAX                    ((uint32_t)(0x00000001U))
 
+#define CSL_CPDMA_DMACONTROL_TH_CH_OVERRIDE_MASK        	    ((uint32_t)(0x00000080U))
+#define CSL_CPDMA_DMACONTROL_TH_CH_OVERRIDE_SHIFT       		((uint32_t)(7U))
+#define CSL_CPDMA_DMACONTROL_TH_CH_OVERRIDE_RESETVAL    		((uint32_t)(0x00000000U))
+#define CSL_CPDMA_DMACONTROL_TH_CH_OVERRIDE_MAX         		((uint32_t)(0x00000001U))
+
 #define CSL_CPDMA_DMACONTROL_TX_RLIM_MASK                       ((uint32_t)(0x0000FF00U))
 #define CSL_CPDMA_DMACONTROL_TX_RLIM_SHIFT                      ((uint32_t)(8U))
 #define CSL_CPDMA_DMACONTROL_TX_RLIM_RESETVAL                   ((uint32_t)(0x00000000U))

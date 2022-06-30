@@ -38,6 +38,12 @@
 #ifndef RED_STATISTICS_H_
 #define RED_STATISTICS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -58,5 +64,10 @@
  */
 RED_STATUS RedGetStatistics(RED_STATISTICS *pStatisitcs,
                             ICSS_EMAC_Handle icssEmacHandle);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_STATISTICS_H_ */

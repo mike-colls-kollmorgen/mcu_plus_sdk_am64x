@@ -403,6 +403,17 @@ void OSPI_WriteCmdParams_init(OSPI_WriteCmdParams *wrParams)
     wrParams->txDataLen = 0;
 }
 
+uint32_t OSPI_getInputClk(OSPI_Handle handle)
+{
+    uint32_t retVal = 0U;
+    if(handle != NULL)
+    {
+        const OSPI_Attrs* attrs = ((OSPI_Config *)handle)->attrs;
+        retVal = attrs->inputClkFreq;
+    }
+    return retVal;
+}
+
 uint32_t OSPI_isDacEnable(OSPI_Handle handle)
 {
     uint32_t retVal = 0U;
@@ -969,7 +980,7 @@ int32_t OSPI_readCmd(OSPI_Handle handle, OSPI_ReadCmdParams *rdParams)
     const OSPI_Attrs *attrs = ((OSPI_Config *)handle)->attrs;
     const CSL_ospi_flash_cfgRegs *pReg = (const CSL_ospi_flash_cfgRegs *)(attrs->baseAddr);
     OSPI_Object *obj = ((OSPI_Config *)handle)->object;
-    uint8_t *pBuf = rdParams->rxDataBuf;
+    uint8_t *pBuf = (uint8_t *) rdParams->rxDataBuf;
     uint32_t rxLen = rdParams->rxDataLen;
 
     /* Clear flash command control register */
@@ -1049,7 +1060,7 @@ int32_t OSPI_readDirect(OSPI_Handle handle, OSPI_Transaction *trans)
     uint32_t addrOffset;
 
     addrOffset = trans->addrOffset;
-    pDst = trans->buf;
+    pDst = (uint8_t *) trans->buf;
 
     /* Enable Direct Access Mode */
     CSL_REG32_FINS(&pReg->CONFIG_REG,
@@ -1064,16 +1075,6 @@ int32_t OSPI_readDirect(OSPI_Handle handle, OSPI_Transaction *trans)
     uint32_t isDmaCopy = (attrs->dmaEnable == TRUE) &&
                          (OSPI_isDmaRestrictedRegion(handle, (uint32_t)pDst) == FALSE) &&
                          (trans->count > OSPI_DMA_COPY_LOWER_LIMIT);
-
-    /* In HS devices, DMA is throwing error while loading. As a temporary workaround, disable DMA for HS. TODO: Remove this when the bug is fixed */
-    if(Bootloader_socIsAuthRequired() == TRUE)
-    {
-        isDmaCopy = FALSE;
-    }
-    else
-    {
-    	/* do nothing */
-    }
 
     if(isDmaCopy == TRUE)
     {
@@ -1144,7 +1145,7 @@ int32_t OSPI_readIndirect(OSPI_Handle handle, OSPI_Transaction *trans)
     uint32_t sramLevel = 0, readBytes = 0;
 
     addrOffset = trans->addrOffset;
-    pDst = trans->buf;
+    pDst = (uint8_t *) trans->buf;
 
     /* Disable DAC Mode */
     CSL_REG32_FINS(&pReg->CONFIG_REG,
@@ -1210,7 +1211,7 @@ int32_t OSPI_writeCmd(OSPI_Handle handle, OSPI_WriteCmdParams *wrParams)
     const OSPI_Attrs *attrs = ((OSPI_Config *)handle)->attrs;
     const CSL_ospi_flash_cfgRegs *pReg = (const CSL_ospi_flash_cfgRegs *)(attrs->baseAddr);
 
-    uint8_t *txBuf = wrParams->txDataBuf;
+    uint8_t *txBuf = (uint8_t *) wrParams->txDataBuf;
     uint32_t txLen = wrParams->txDataLen;
 
     /* Clear the flash command control register */
@@ -1301,7 +1302,7 @@ int32_t OSPI_writeIndirect(OSPI_Handle handle, OSPI_Transaction *trans)
     uint32_t addrOffset, remainingSize, sramLevel, wrBytes, wrFlag = 0;
 
     addrOffset = trans->addrOffset;
-    pSrc = trans->buf;
+    pSrc = (uint8_t *) trans->buf;
 
     /* Disable DAC Mode */
     CSL_REG32_FINS(&pReg->CONFIG_REG,

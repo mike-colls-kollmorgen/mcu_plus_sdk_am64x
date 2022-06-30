@@ -36,6 +36,12 @@
 #ifndef REG_USBSSP_REGS_MACROS_H_
 #define REG_USBSSP_REGS_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define USBSSP__CDNS_DID_READ_MASK                                   0xFFFFFFFFU
 #define USBSSP__CDNS_DID_WRITE_MASK                                  0xFFFFFFFFU
 #define USBSSP__CDNS_DID__DID_MASK                                   0xFFFFFFFFU
@@ -11008,6 +11014,11 @@
 #define USBSSP__DMA_AXI_CTRL2__RESERVED0_MASK                        0xFFFFFF80U
 #define USBSSP__DMA_AXI_CTRL2__RESERVED0_SHIFT                                7U
 #define USBSSP__DMA_AXI_CTRL2__RESERVED0_WIDTH                               25U
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_USBSSP_REGS_MACROS_H_ */
 

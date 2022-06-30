@@ -31,7 +31,7 @@
  */
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 
 #include "ti_drivers_open_close.h"

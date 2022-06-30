@@ -9,6 +9,18 @@ var group__CPSW__CPTS__MOD =
       [ "domain", "structCpswCpts__Event.html#af149d29241322cddc3dedf7291434d64", null ],
       [ "hwPushNum", "structCpswCpts__Event.html#a02de60ef6699768bd893b851faefa0c3", null ]
     ] ],
+    [ "CpswCpts_EstEventMatchParams", "structCpswCpts__EstEventMatchParams.html", [
+      [ "macPort", "structCpswCpts__EstEventMatchParams.html#a6e791de55645c62d2dc4530395a9e711", null ],
+      [ "domain", "structCpswCpts__EstEventMatchParams.html#a4780828b44010077c24db0a01cccedc7", null ]
+    ] ],
+    [ "CpswCpts_EstEvent", "structCpswCpts__EstEvent.html", [
+      [ "tsVal", "structCpswCpts__EstEvent.html#a699d4d59409ed76183c5dbd7c57f6ea7", null ],
+      [ "priority", "structCpswCpts__EstEvent.html#abe45a015bb65e266737b16d47d6e5dd7", null ],
+      [ "seqNum", "structCpswCpts__EstEvent.html#ae2978aeaff7b4fb80ae7c9b19824a2ff", null ],
+      [ "ingressPort", "structCpswCpts__EstEvent.html#ac22dabe374877d0cad2402d7e6009d99", null ],
+      [ "egressPort", "structCpswCpts__EstEvent.html#abd2d563a1eff465ee5f1073b68052168", null ],
+      [ "domain", "structCpswCpts__EstEvent.html#a987f709a3bad9a100a52fff9707686b7", null ]
+    ] ],
     [ "CpswCpts_RegisterStackInArgs", "structCpswCpts__RegisterStackInArgs.html", [
       [ "eventNotifyCb", "structCpswCpts__RegisterStackInArgs.html#ace5932523d396f5d852b094a1b7e8431", null ],
       [ "eventNotifyCbArg", "structCpswCpts__RegisterStackInArgs.html#a32e0f436cf0475bf3fec05dcb84e4a20", null ]
@@ -63,7 +75,8 @@ var group__CPSW__CPTS__MOD =
       [ "CPSW_CPTS_IOCTL_SET_ESTF", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffac6eaefcea265ab3daad15e68e9893517", null ],
       [ "CPSW_CPTS_IOCTL_SET_ESTF_NUDGE", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffab57afdaae1e084173e8abddb8dfbf22c", null ],
       [ "CPSW_CPTS_IOCTL_SELECT_TS_OUTPUT_BIT", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa8491bc68f11147b215ca1758dac1dd9a", null ],
-      [ "CPSW_CPTS_IOCTL_LOOKUP_EVENT", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa7b7d4822c6a1298a48390eb10fd83066", null ]
+      [ "CPSW_CPTS_IOCTL_LOOKUP_EVENT", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa7b7d4822c6a1298a48390eb10fd83066", null ],
+      [ "CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT", "group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffac0a8dd0957cbe423b3b64dfea807c34d", null ]
     ] ],
     [ "CpswCpts_RftClkFreq", "group__CPSW__CPTS__MOD.html#ga56e0d94edce09eac7239037c2c548028", [
       [ "CPSW_CPTS_RFTCLK_FREQ_1000MHZ", "group__CPSW__CPTS__MOD.html#gga56e0d94edce09eac7239037c2c548028afaae3ccab2ee6cd7a3dd36f07872d6b4", null ],

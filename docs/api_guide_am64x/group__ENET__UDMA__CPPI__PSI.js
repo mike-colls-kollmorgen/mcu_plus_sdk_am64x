@@ -1,6 +1,10 @@
 var group__ENET__UDMA__CPPI__PSI =
 [
     [ "EnetUdma_RxProtoInfo", "structEnetUdma__RxProtoInfo.html", [
+      [ "R5F Function:", "EXAMPLES_PRU_ADC_ADS85X8_DETAILS.html#autotoc_md1702", null ],
+      [ "PRU Function:", "EXAMPLES_PRU_ADC_ADS85X8_DETAILS.html#autotoc_md1703", null ],
+      [ "R5F Function:", "EXAMPLES_PRU_ADC_ADS127_DETAILS.html#autotoc_md1711", null ],
+      [ "PRU Function:", "EXAMPLES_PRU_ADC_ADS127_DETAILS.html#autotoc_md1712", null ],
       [ "ipv6Valid", "structEnetUdma__RxProtoInfo.html#a48a78976aeeab5c5a8fee0d93b0c6bdb", null ],
       [ "ipv4Valid", "structEnetUdma__RxProtoInfo.html#a5c28e0d108243dc10e4126e8ea37ba7f", null ],
       [ "tcpudpIndicator", "structEnetUdma__RxProtoInfo.html#ade437c0c134b54b7a28365e638b21be0", null ],

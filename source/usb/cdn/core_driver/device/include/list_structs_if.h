@@ -35,6 +35,12 @@
 #ifndef LIST_STRUCTS_IF_H
 #define LIST_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "list_if.h"
 
@@ -60,5 +66,10 @@ struct LIST_ListHead_s {
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* LIST_STRUCTS_IF_H */

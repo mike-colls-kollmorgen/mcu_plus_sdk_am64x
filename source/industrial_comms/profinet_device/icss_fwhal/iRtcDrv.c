@@ -838,7 +838,7 @@ int32_t PN_writeSortedList(PN_Handle pnHandle, t_rtcPacket *pPkts)
 
 int32_t PN_writePpmDesc(PN_Handle pnHandle, t_rtcPacket *pPkt, uint8_t pos)
 {
-    t_ppmDesc   new;
+    t_ppmDesc   newDesc;
     uint32_t        *dstAddr;
 
     /* next only works as long as NO_PPM = NO_CPM = NO_PM*/
@@ -850,32 +850,32 @@ int32_t PN_writePpmDesc(PN_Handle pnHandle, t_rtcPacket *pPkt, uint8_t pos)
     dstAddr = (uint32_t *)pPkt->pBuffer->addr[pPkt->proc];  /*PRU0 buffer address*/
 
     /*this address is PRU specific and therefore does not support EDMA buffer copy!*/
-    new.FrameReference = (uint32_t)dstAddr &
+    newDesc.FrameReference = (uint32_t)dstAddr &
                          0xFFFF;    /*start address of current packet buffer*/
-    new.FrameLength = pPkt->length;
+    newDesc.FrameLength = pPkt->length;
     /* store FID for identification ... little endian conversion for direct compare with packet stream*/
-    new.FrameId = ((pPkt->frameId & 0xFF00) >> 8) + ((pPkt->frameId & 0xFF) <<
+    newDesc.FrameId = ((pPkt->frameId & 0xFF00) >> 8) + ((pPkt->frameId & 0xFF) <<
                   8); /* aligned with CPM*/
-    new.FrameIndex = pPkt->proc;
-    new.Phase = pPkt->phase - 1;
-    new.RR = pPkt->reduRatio - 1;   /* PRU reduction ratio = RR-1*/
+    newDesc.FrameIndex = pPkt->proc;
+    newDesc.Phase = pPkt->phase - 1;
+    newDesc.RR = pPkt->reduRatio - 1;   /* PRU reduction ratio = RR-1*/
 
     if(pPkt->frameOffset == 0)      /*/ green?*/
     {
-        new.FrameFlags1 = 0;
+        newDesc.FrameFlags1 = 0;
     }
 
     else
     {
-        new.FrameFlags1 = 1;    /* red packet*/
+        newDesc.FrameFlags1 = 1;    /* red packet*/
     }
 
-    new.FrameSendOffset = pPkt->frameOffset & 0x3FFFFF;
+    newDesc.FrameSendOffset = pPkt->frameOffset & 0x3FFFFF;
 
     /*TODO: Review this*/
     uint32_t *addr = (pnHandle->ppmList).pDescs[(pnHandle->ppmList).shadow];
     addr += pos * DESC_WORD_LENGTH;                    /* advance to correct offset*/
-    uint32_t *dest = (uint32_t *)&new;                              /* portability?*/
+    uint32_t *dest = (uint32_t *)&newDesc;                              /* portability?*/
     *addr++ = *dest++;                                  /* copy 16 byte decriptor as 4 words*/
     *addr++ = *dest++;
     *addr++ = *dest++;
@@ -887,7 +887,7 @@ int32_t PN_writePpmDesc(PN_Handle pnHandle, t_rtcPacket *pPkt, uint8_t pos)
 
 int32_t PN_writeCpmDesc(PN_Handle pnHandle, t_rtcPacket *pPkt, uint8_t pos)
 {
-    t_cpmDesc   new;
+    t_cpmDesc   newDesc;
 
     /* next only works as long as NO_PPM = NO_CPM = NO_PM*/
     if(pos >= NO_PM)                /* pos should point to next free position here*/
@@ -897,32 +897,32 @@ int32_t PN_writeCpmDesc(PN_Handle pnHandle, t_rtcPacket *pPkt, uint8_t pos)
 
     if((void *)0xFFFFFFFF == pPkt->pBuffer)
     {
-        new.FrameReference = 0x0;           /* special case to clear descriptor*/
+        newDesc.FrameReference = 0x0;           /* special case to clear descriptor*/
     }
 
     else
     {
         /*new descriptor requires a pointer to three buffer addresses*/
-        new.FrameReference =
+        newDesc.FrameReference =
             pPkt->pBuffer->regbase;    /*previously assigned - slot specific*/
     }
 
-    new.FrameLength =
+    newDesc.FrameLength =
         pPkt->length; /* length should have space for FCS and VLAN TAG??*/
     /* store FID for identification ... little endian conversion for direct compare with packet stream*/
-    new.FrameId = ((pPkt->frameId & 0xFF00) >> 8) + ((pPkt->frameId & 0xFF) << 8);
-    new.Phase = pPkt->phase;
-    new.RR = pPkt->reduRatio - 1;
-    new.FrameDataPointer = 0;       /*clear data that will be set by PRU on RX*/
-    new.FrameIndex = 0;
-    new.FrameFlags1 = 0;
-    new.FrameFlags2 = 0;
-    new.Reserved = 0;
+    newDesc.FrameId = ((pPkt->frameId & 0xFF00) >> 8) + ((pPkt->frameId & 0xFF) << 8);
+    newDesc.Phase = pPkt->phase;
+    newDesc.RR = pPkt->reduRatio - 1;
+    newDesc.FrameDataPointer = 0;       /*clear data that will be set by PRU on RX*/
+    newDesc.FrameIndex = 0;
+    newDesc.FrameFlags1 = 0;
+    newDesc.FrameFlags2 = 0;
+    newDesc.Reserved = 0;
 
     uint32_t *addr =
         (pnHandle->cpmList).pDescs[0];                    /*only one active list!*/
     addr += pos * DESC_WORD_LENGTH;                    /* advance to correct offset*/
-    uint32_t *dest = (uint32_t *)&new;                             /*portability?*/
+    uint32_t *dest = (uint32_t *)&newDesc;                             /*portability?*/
     *addr++ = *dest++;                                  /* copy 16 byte decriptor as 4 words*/
     *addr++ = *dest++;
     *addr++ = *dest++;
@@ -1262,19 +1262,19 @@ int32_t PN_initRtcDrv(PN_Handle pnHandle)
 void PN_registerPpmCall(PN_Handle pnHandle, pnCallBack_t callBack)
 {
     PN_IntAttrs *ppmIntConfig = &((pnHandle->pnIntConfig).ppmIntConfig);
-    ppmIntConfig->callBackPtr = callBack;
+    ppmIntConfig->callBackPtr = (void *)callBack;
 }
 
 void PN_registerCpmCall(PN_Handle pnHandle, pnCallBack_t callBack)
 {
     PN_IntAttrs *cpmIntConfig = &((pnHandle->pnIntConfig).cpmIntConfig);
-    cpmIntConfig->callBackPtr = callBack;
+    cpmIntConfig->callBackPtr = (void *)callBack;
 }
 
 void PN_registerStatCall(PN_Handle pnHandle, pnCallBack_t callBack)
 {
     PN_IntAttrs *dhtIntConfig = &((pnHandle->pnIntConfig).dhtIntConfig);
-    dhtIntConfig->callBackPtr = callBack;
+    dhtIntConfig->callBackPtr = (void *)callBack;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,37 +108,37 @@ $(document).ready(function(){initNavTree('ETHERNETIP_ADAPTER_FWHAL.html',''); in
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md723">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md724">PRU-ICSS EtherNet/IP Adapter Firmware</a><ul><li class="level2"><a href="#autotoc_md725">Features Supported</a></li>
-<li class="level2"><a href="#autotoc_md726">Known Issues</a></li>
+<ul><li class="level1"><a href="#autotoc_md808">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md809">PRU-ICSS EtherNet/IP Adapter Firmware</a><ul><li class="level2"><a href="#autotoc_md810">Features Supported</a></li>
+<li class="level2"><a href="#autotoc_md811">Known Issues</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md727">Important Files and Directory Structure</a></li>
-<li class="level1"><a href="#autotoc_md728">Terms and Abbreviations</a></li>
-<li class="level1"><a href="#autotoc_md729">API Documentation</a></li>
-<li class="level1"><a href="#autotoc_md730">Procedure to kick-off the EtherNet/IP Adapter</a></li>
-<li class="level1"><a href="#autotoc_md731">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md732">Interface with ICSS-EMAC</a></li>
+<li class="level1"><a href="#autotoc_md812">Important Files and Directory Structure</a></li>
+<li class="level1"><a href="#autotoc_md813">Terms and Abbreviations</a></li>
+<li class="level1"><a href="#autotoc_md814">API Documentation</a></li>
+<li class="level1"><a href="#autotoc_md815">Procedure to kick-off the EtherNet/IP Adapter</a></li>
+<li class="level1"><a href="#autotoc_md816">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md817">Interface with ICSS-EMAC</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md733">Interrupts</a></li>
-<li class="level1"><a href="#autotoc_md734">Device Level Ring</a></li>
-<li class="level1"><a href="#autotoc_md735">IEEE PTP-1588 Implementation</a></li>
+<li class="level1"><a href="#autotoc_md818">Interrupts</a></li>
+<li class="level1"><a href="#autotoc_md819">Device Level Ring</a></li>
+<li class="level1"><a href="#autotoc_md820">IEEE PTP-1588 Implementation</a></li>
 <li class="level1"><a href="#ETHERNETIP_ADAPTER_ADDITIONAL_REFERENCES">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md736">See also</a></li>
+<li class="level1"><a href="#autotoc_md821">See also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_industrial_comms_ethernetip_adapter"></a></p>
-<h1><a class="anchor" id="autotoc_md723"></a>
+<h1><a class="anchor" id="autotoc_md808"></a>
 Introduction</h1>
 <p>This software is designed for the TI SoCs with PRU-ICSS IP to enable customers add EtherNet/IP Adapter protocol support to their system. It implements EtherNet/IP + PTP + DLR functionality and provides EtherNet/IP ASIC like functionality integrated into TI SoCs.</p>
 <div class="image">
 <img src="EtherNetIP_Adapter_Software_Architecture.PNG" alt=""/>
 <div class="caption">
 Software Architecture</div></div>
-<p>EtherNet/IP firmware for PRU-ICSS is a black box product maintained by TI. EtherNet/IP Adapter FWHAL(Firmware and Hardware Abstraction Layer) allows loading and run EtherNet/IP firmware and acts as an interface with the firmware. FWHAL implements the key interface between EtherNet/IP Adapter firmware and EtherNet/IP Adapter stack.</p>
-<h1><a class="anchor" id="autotoc_md724"></a>
+<p>EtherNet/IP firmware for PRU-ICSS is a black box product maintained by TI. EtherNet/IP Adapter FWHAL(Firmware and Hardware Abstraction Layer) allows loading and running EtherNet/IP firmware and acts as an interface with the firmware. FWHAL implements the key interface between EtherNet/IP Adapter firmware and EtherNet/IP Adapter stack.</p>
+<h1><a class="anchor" id="autotoc_md809"></a>
 PRU-ICSS EtherNet/IP Adapter Firmware</h1>
-<h2><a class="anchor" id="autotoc_md725"></a>
+<h2><a class="anchor" id="autotoc_md810"></a>
 Features Supported</h2>
 <ul>
 <li>Integrated two-port cut-through switch<ul>
@@ -182,7 +182,7 @@ Features Supported</h2>
 </li>
 <li>Firmware based on 200 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md726"></a>
+<h2><a class="anchor" id="autotoc_md811"></a>
 Known Issues</h2>
 <table class="doxtable">
 <tr>
@@ -192,7 +192,7 @@ Known Issues</h2>
 <p class="endtd"></p>
 </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md727"></a>
+<h1><a class="anchor" id="autotoc_md812"></a>
 Important Files and Directory Structure</h1>
 <table class="doxtable">
 <tr>
@@ -216,7 +216,7 @@ Important Files and Directory Structure</h1>
 <p class="endtd"></p>
 </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md728"></a>
+<h1><a class="anchor" id="autotoc_md813"></a>
 Terms and Abbreviations</h1>
 <table class="doxtable">
 <tr>
@@ -234,10 +234,10 @@ Terms and Abbreviations</h1>
 <tr>
 <td>E2E </td><td>End to End  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md729"></a>
+<h1><a class="anchor" id="autotoc_md814"></a>
 API Documentation</h1>
 <p>Please see <a class="el" href="group__INDUSTRIAL__COMMS__ETHERNETIP__ADAPTER__FWHAL__MODULE.html">APIs for EtherNet/IP Adapter FWHAL</a> for API documentation. It is recommended to use these FWHAL APIs in the stack adaptation files.</p>
-<h1><a class="anchor" id="autotoc_md730"></a>
+<h1><a class="anchor" id="autotoc_md815"></a>
 Procedure to kick-off the EtherNet/IP Adapter</h1>
 <ul>
 <li>Initialize ICSS-EMAC to work as a switch</li>
@@ -248,13 +248,13 @@ Procedure to kick-off the EtherNet/IP Adapter</h1>
 <li>Start firmware</li>
 <li>Handle the events as needed. The Event/ISR definitions are available in developer guide(provide a link here), these have respective callbacks that can be registered to custom stack APIs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md731"></a>
+<h1><a class="anchor" id="autotoc_md816"></a>
 Integration with ICSS-EMAC</h1>
 <p>Ethernet/IP Adapter examples uses the ICSS-EMAC as its base switch layer. The PRU Firmware provides switch functionality and additional PTP and DLR functionalities. The NRT(non-real time) traffic is handled by ICSS-EMAC, wherein the packets are forwarded either to the TCP stack or a custom callback (configurable in ICSS-EMAC).</p>
-<h2><a class="anchor" id="autotoc_md732"></a>
+<h2><a class="anchor" id="autotoc_md817"></a>
 Interface with ICSS-EMAC</h2>
 <p>Ethernet/IP packets are standard ethernet frames and all protocol specific data is embedded in TCP/IP payload. Hence the standard switch model applies. Packets are segregated based on VLAN PCP field. The 8 priorities which map to 4 queues, with highest and next highest priorities going to Queue 0 and Queue 1 and so on. If PCP field does not exist, then frames go to Queue 3. All queues except the highest priority queue forward the frames to TCP/IP stack. Further if packet type does not match PTP or DLR then that frame goes to TCP/IP stack. The highest priority queues are used for PTP and DLR. These packets are directly forwarded to the registered callback in ICSS-EMAC (using rxRTCallBack).</p>
-<h1><a class="anchor" id="autotoc_md733"></a>
+<h1><a class="anchor" id="autotoc_md818"></a>
 Interrupts</h1>
 <p>EtherNet/IP firmware generates the following interrupts.</p>
 <p>8 Host Interrupts (Host Interrupts 2 through 9) are exported from the PRU_ICSSG internal INTC for signaling the device level interrupt controllers. PRU_EVTOUT0 to PRU_EVTOUT7 correspond to these eight interrupts in the following table. Please check <a class="el" href="DRIVERS_PRUICSS_PAGE.html#PRUICSS_INTC">PRUICSS Interrupt Controller</a> section for more details.</p>
@@ -276,10 +276,10 @@ Interrupts</h1>
 <tr>
 <td>Link Change </td><td>PRU_EVTOUT6 </td><td>Interrupt is raised when the link on Ethernet PHY comes up or goes down  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md734"></a>
+<h1><a class="anchor" id="autotoc_md819"></a>
 Device Level Ring</h1>
 <p>Device Level Ring on EtherNet/IP firmware provides redundancy to the switch implementation. It is a beacon based implementation with support for a minimum beacon of 200us and timeout of 400us. More information is available in developer guide(provide a link here).</p>
-<h1><a class="anchor" id="autotoc_md735"></a>
+<h1><a class="anchor" id="autotoc_md820"></a>
 IEEE PTP-1588 Implementation</h1>
 <p>PTP/1588 on EtherNet/IP provides time synchronization support. The implementation is driven by CIP Sync requirements which require End to End clock support over UDP (Annex D). EtherNet/IP adapter application supports both OC and TC implementations along with syntonization.</p>
 <h1><a class="anchor" id="ETHERNETIP_ADAPTER_ADDITIONAL_REFERENCES"></a>
@@ -291,7 +291,7 @@ Additional References</h1>
 <tr>
 <td><a href="https://www.ti.com/lit/pdf/spry249">EtherNet/IP on TI's Sitara processors</a> </td><td>Application note by TI on the EtherNet/IP Adapter implementation on TI's Sitara Processors.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md736"></a>
+<h1><a class="anchor" id="autotoc_md821"></a>
 See also</h1>
 <ul>
 <li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERNETIP_ADAPTER_DEMOS.html">EtherNet/IP Adapter Demos</a> </li>

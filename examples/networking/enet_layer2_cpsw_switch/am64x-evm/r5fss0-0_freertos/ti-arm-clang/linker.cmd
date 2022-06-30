@@ -1,3 +1,4 @@
+#include "generated/ti_enet_config.h"
 
 /* This is the stack that is used by code running within main()
  * In case of NORTOS,
@@ -87,6 +88,14 @@ SECTIONS
         RUN_START(__UNDEFINED_STACK_START)
         RUN_END(__UNDEFINED_STACK_END)
     } > MSRAM
+
+    .enet_dma_mem {
+        *(*ENET_DMA_DESC_MEMPOOL)
+        *(*ENET_DMA_RING_MEMPOOL)
+#if (ENET_SYSCFG_PKT_POOL_ENABLE == 1)
+        *(*ENET_DMA_PKT_MEMPOOL)
+#endif
+    } (NOLOAD) > MSRAM
 
     /* General purpose user shared memory, used in some examples */
     /*.bss.user_shared_mem (NOLOAD) : {} > USER_SHM_MEM*/

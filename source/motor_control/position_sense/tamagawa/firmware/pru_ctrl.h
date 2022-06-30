@@ -33,6 +33,12 @@
 #ifndef _PRU_CTRL_H_
 #define _PRU_CTRL_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* PRU CTRL register set */
 typedef struct
 {
@@ -160,5 +166,10 @@ typedef struct
 /* Definition of control register structures. */
 #define PRU0_CTRL (*((volatile pruCtrl*)0x22000))
 #define PRU1_CTRL (*((volatile pruCtrl*)0x24000))
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PRU_CTRL_H_ */

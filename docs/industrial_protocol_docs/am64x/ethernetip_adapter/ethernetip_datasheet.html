@@ -42,7 +42,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">EtherNet/IP™ Adapter
-   &#160;<span id="projectnumber">1.04.06</span>
+   &#160;<span id="projectnumber">1.04.10</span>
    </div>
    <div id="projectbrief">User Reference Manual</div>
   </td>
@@ -269,21 +269,81 @@ Key Performance Parameters</h1>
 <tr>
 <td>Change of State </td><td>1 ms  </td></tr>
 </table>
+<h1><a class="anchor" id="ethernetip_quickconnect"></a>
+EtherNet/IP QuickConnect™</h1>
+<h2><a class="anchor" id="ethernetip_quickconnect_scope"></a>
+Scope</h2>
+<p>QuickConnect is an optional functionality that may be enabled on a node-by-node basis. When enabled, QuickConnect will allow EtherNet/IP devices to quickly power up and join an EtherNet/IP network.</p>
+<p>QuickConnect connection time is comprised of several key time durations. One factor of the QuickConnect connection time is devices power-up time. Another factor is the amount of time it takes a controller to detect the newly attached device and send a Forward Open request to start the connection process.</p>
+<p>QuickConnect targets 500 ms as the time between initial power-up and the establisment of IO connections.</p>
+<h2><a class="anchor" id="ethernetip_quickconnect_target"></a>
+EtherNet/IP QuickConnect Target</h2>
+<p>QuickConnect measurements have been performed on the LP-AM243 launchpad and the TMDS64GPEVM evaluation module with an attached TMDS64DC01EVM high-speed extension card.</p>
+<p>For the measurements an oscilloscope is connected to a GPIO pin on the particular board which was set to high on application start and reset to low on the first Forward Open request. The measurements were triggered by the MCU_PORz signals available on the evaluation modules. The power-up time is the time interval between the MCU_PORz signal and application start. The connection establishment is the time interval between application start and the detection of the Forward Open request.</p>
+<table class="doxtable">
+<tr>
+<th>Evaluation Module </th><th>MCU_PORz Signal </th><th>GPIO </th><th>Pin  </th></tr>
+<tr>
+<td>LP-AM243 </td><td>Header J6 pin 56 </td><td>GPIO1_21 </td><td>Header J7 pin 57  </td></tr>
+<tr>
+<td>TMDS64GPEVM </td><td>Safety connector pin 24 </td><td>GPIO0_41 </td><td>TMDS64DC01EVM, header J8 pin 24  </td></tr>
+</table>
+<p>To enable GPIO control the example application shipped with the EtherNet/IP Adapter software is extended by two functions:</p>
+<div class="fragment"><div class="line">uint32_t    gpioBaseAddr;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> GPIO_init(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">    gpioBaseAddr = (uint32_t) AddrTranslateP_getLocalAddr(CONFIG_GPIO0_BASE_ADDR);</div>
+<div class="line">    GPIO_setDirMode(gpioBaseAddr, CONFIG_GPIO0_PIN, CONFIG_GPIO0_DIR);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> GPIO_set(<span class="keywordtype">bool</span> set)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordflow">if</span>(set)</div>
+<div class="line">        GPIO_pinWriteHigh(gpioBaseAddr, CONFIG_GPIO0_PIN);</div>
+<div class="line">    <span class="keywordflow">else</span></div>
+<div class="line">        GPIO_pinWriteLow(gpioBaseAddr, CONFIG_GPIO0_PIN);</div>
+<div class="line">}</div>
+</div><!-- fragment --><p><code>GPIO_init</code> and <code>GPIO_set</code> are called in <code>App.c</code> at application start and later in the Forward Open callback function.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> EI_APP_mainTask(</div>
+<div class="line">    <span class="keywordtype">void</span>* pvTaskArg_p)</div>
+<div class="line">{</div>
+<div class="line">    uint32_t err;</div>
+<div class="line"> </div>
+<div class="line">    Board_init();</div>
+<div class="line"> </div>
+<div class="line">    Drivers_open();</div>
+<div class="line">    Board_driversOpen();</div>
+<div class="line">    GPIO_init();</div>
+<div class="line">    GPIO_set(<span class="keyword">true</span>);</div>
+<div class="line"> </div>
+<div class="line">    ......</div>
+</div><!-- fragment --><h2><a class="anchor" id="ethernetip_quickconnect_controller"></a>
+EtherNet/IP QuickConnect Controller</h2>
+<p>The QuickConnect controller device is emulated by a Python script that triggers the connection establishment upon detection of ARP announce frames.</p>
+<table class="doxtable">
+<tr>
+<th>ARP announce frame received </th><th>Request of TCP connection </th><th>Request of Register Session </th><th>Forward Open request  </th></tr>
+<tr>
+<td>0.0 ms </td><td>2.494 ms </td><td>15.215 ms </td><td>26.398 ms  </td></tr>
+</table>
+<h2><a class="anchor" id="ethernetip_quickconnect_results"></a>
+EtherNet/IP QuickConnect Measurement Results</h2>
+<table class="doxtable">
+<tr>
+<th>Evaluation Module </th><th>Application start </th><th>Forward Open Request  </th></tr>
+<tr>
+<td>LP-AM243 </td><td>252 ms </td><td>318 ms  </td></tr>
+<tr>
+<td>TMDS64GPEVM </td><td>180 ms </td><td>269 ms  </td></tr>
+</table>
 <h1><a class="anchor" id="ethernetip_non_fb_parameters"></a>
 General Stack Parameters</h1>
 <table class="doxtable">
 <tr>
-<td rowspan="2">Stack Memory Usage - Standard Demo </td><td>Read Only Memory </td><td>486 KB  </td></tr>
+<td rowspan="2">Stack Memory Usage - CIP Sync </td><td>Read Only Memory </td><td>966 KB  </td></tr>
 <tr>
-<td>Random Access Memory </td><td>636 KB  </td></tr>
-<tr>
-<td rowspan="2">Stack Memory Usage - CIP Sync </td><td>Read Only Memory </td><td>555 KB  </td></tr>
-<tr>
-<td>Random Access Memory </td><td>638 KB  </td></tr>
-<tr>
-<td rowspan="2">Stack Memory Usage - CIP Sync + Quick Connect </td><td>Read Only Memory </td><td>556 KB  </td></tr>
-<tr>
-<td>Random Access Memory </td><td>638 KB  </td></tr>
+<td>Random Access Memory </td><td>971 KB  </td></tr>
 </table>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

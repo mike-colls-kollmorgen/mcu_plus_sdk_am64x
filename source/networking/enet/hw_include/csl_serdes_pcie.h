@@ -45,6 +45,12 @@
 #ifndef CSL_SERDES_PCIE_TOP_H_
 #define CSL_SERDES_PCIE_TOP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #include <drivers/hw_include/tistdtypes.h>
 
@@ -58,6 +64,11 @@
 #include <serdes_cd/V2/csl_serdes3_pcie.h>
 #else
 #include <ti/csl/src/ip/serdes_sb/V0/csl_serdes2_pcie.h>
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* CSL_SERDES_PCIE_H_ */

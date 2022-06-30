@@ -15,6 +15,12 @@
 #ifndef ENETAPP_ETHPATTERNS_H_
 #define ENETAPP_ETHPATTERNS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define ENETAPP_ETHPATTERN_LENGTH                     (1500U)
 
 extern uint8_t Enet_DataPattern1[ENETAPP_ETHPATTERN_LENGTH];
@@ -24,5 +30,10 @@ extern uint8_t Enet_DataPattern2[ENETAPP_ETHPATTERN_LENGTH];
 extern uint8_t Enet_DataPattern3[ENETAPP_ETHPATTERN_LENGTH];
 
 extern uint8_t Enet_DataPattern4[ENETAPP_ETHPATTERN_LENGTH];
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ENETAPP_ETHPATTERNS_H_ */

@@ -719,6 +719,26 @@ static inline void CSL_CPSW_enableCpdmaRx
 }
 
 /**
+ * \brief   This function set the thost_ch_override bit in the CPDMA Control Register.
+ *
+ * \param   hCpdmaRegs    Pointer to CSL_CpdmaRegs structure
+ *
+ * \return  None
+ *
+ **/
+static inline void CSL_CPSW_enableCpdmaChOverride
+(
+    CSL_CpdmaRegs           *hCpdmaRegs
+);/* for misra warnings*/
+static inline void CSL_CPSW_enableCpdmaChOverride
+(
+    CSL_CpdmaRegs           *hCpdmaRegs
+)
+{
+    CSL_FINS (hCpdmaRegs->DMACONTROL, CPDMA_DMACONTROL_TH_CH_OVERRIDE, (uint32_t)1U);
+}
+
+/**
  * \brief   API to write the TX HDP register. If transmit is enabled,
  *          write to the TX HDP will immediately start transmission.
  *          The data will be taken from the buffer pointer of the TX buffer

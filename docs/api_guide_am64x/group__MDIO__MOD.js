@@ -6,7 +6,8 @@ var group__MDIO__MOD =
       [ "phyStatePollFreqHz", "structMdio__Cfg.html#a36a0858a690d98155cbdf12fba8bff63", null ],
       [ "pollEnMask", "structMdio__Cfg.html#ac6f20413fdbf079e97dbb60ad2d6e981", null ],
       [ "c45EnMask", "structMdio__Cfg.html#a106d720ba92dce9729eae1091043bf29", null ],
-      [ "isMaster", "structMdio__Cfg.html#a6a455bdd4279e85494eb9ec41197c7cf", null ]
+      [ "isMaster", "structMdio__Cfg.html#a6a455bdd4279e85494eb9ec41197c7cf", null ],
+      [ "disableStateMachineOnInit", "structMdio__Cfg.html#a7222eca907432c1a9b11f27bad14b698", null ]
     ] ],
     [ "MDIO_MAX_PHY_CNT", "group__MDIO__MOD.html#ga719ee6aafcb4a68e601415b2c7f6f90e", null ],
     [ "Mdio_OpMode", "group__MDIO__MOD.html#gab48ee8974570a86d1e28497623ffe6ae", [

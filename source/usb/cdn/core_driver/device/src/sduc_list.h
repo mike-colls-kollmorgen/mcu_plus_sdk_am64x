@@ -34,6 +34,12 @@
 #ifndef CDN_LIST_H
 #define CDN_LIST_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "list_if.h"
 #include "list_structs_if.h"
 
@@ -69,5 +75,10 @@ static inline void listDelete(LIST_ListHead * list) {
     list->prev = NULL;
     list->next = NULL;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

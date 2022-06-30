@@ -60,7 +60,7 @@ void ClockP_timerTickIsr(void *args)
 
 void ClockP_timerCallbackFunction( TimerHandle_t xTimer )
 {
-    ClockP_Struct *pTimer = pvTimerGetTimerID(xTimer);
+    ClockP_Struct *pTimer = (ClockP_Struct *) pvTimerGetTimerID(xTimer);
 
     if(pTimer != NULL && pTimer->callback )
     {

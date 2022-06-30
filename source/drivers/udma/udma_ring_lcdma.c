@@ -105,7 +105,7 @@ void Udma_ringSetCfgLcdma(Udma_DrvHandleInt drvHandle,
         addrLo = CSL_REG32_FEXT(&ringHandle->pLcdmaCfgRegs->BA_LO, LCDMA_RINGACC_RING_CFG_RING_BA_LO_ADDR_LO);
         lcdmaRingCfg->physBase       = (uint64_t)((((uint64_t) addrHi) << 32UL) |
                                             ((uint64_t) addrLo));
-        lcdmaRingCfg->virtBase       = Udma_phyToVirtFxn(lcdmaRingCfg->physBase, drvHandle, (Udma_ChHandle) NULL_PTR);
+        lcdmaRingCfg->virtBase       = Udma_phyToVirtFxn(lcdmaRingCfg->physBase, drvHandle, (Udma_ChHandleInt) NULL_PTR);
         lcdmaRingCfg->mode           = CSL_REG32_FEXT(&ringHandle->pLcdmaCfgRegs->SIZE, LCDMA_RINGACC_RING_CFG_RING_SIZE_QMODE);
         lcdmaRingCfg->elCnt          = CSL_REG32_FEXT(&ringHandle->pLcdmaCfgRegs->SIZE, LCDMA_RINGACC_RING_CFG_RING_SIZE_ELCNT);
         /* CSL expects ring size in bytes; ring_elsize for AM64x is hardcoded as 1=8bytes*/

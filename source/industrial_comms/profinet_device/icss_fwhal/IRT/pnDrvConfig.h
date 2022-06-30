@@ -33,6 +33,12 @@
 #ifndef PN_DRV_CONFIG_H_
 #define PN_DRV_CONFIG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
@@ -76,6 +82,11 @@
 #undef ENABLE_LATCH_SUPPORT
 #else
 #define ENABLE_LATCH_SUPPORT
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* PN_DRV_CONFIG_H_ */

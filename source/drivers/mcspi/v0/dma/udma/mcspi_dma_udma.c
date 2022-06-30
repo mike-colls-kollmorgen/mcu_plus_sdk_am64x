@@ -226,7 +226,6 @@ static void MCSPI_udmaHpdInit(Udma_ChHandle chHandle,
 {
     CSL_UdmapCppi5HMPD *pHpd = (CSL_UdmapCppi5HMPD *) pHpdMem;
     uint32_t descType = (uint32_t)CSL_UDMAP_CPPI5_PD_DESCINFO_DTYPE_VAL_HOST;
-    uint32_t cqRingNum = Udma_chGetCqRingNum(chHandle);
 
     /* Setup descriptor */
     CSL_udmapCppi5SetDescType(pHpd, descType);
@@ -238,13 +237,14 @@ static void MCSPI_udmaHpdInit(Udma_ChHandle chHandle,
     CSL_udmapCppi5SetIds(pHpd, descType, 0x321, UDMA_DEFAULT_FLOW_ID);
     CSL_udmapCppi5SetSrcTag(pHpd, 0x0000);     /* Not used */
     CSL_udmapCppi5SetDstTag(pHpd, 0x0000);     /* Not used */
+    /* Return Policy descriptors are reserved in case of AM243X/Am64X */
     CSL_udmapCppi5SetReturnPolicy(
         pHpd,
         descType,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPOLICY_VAL_ENTIRE_PKT,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_EARLYRET_VAL_NO,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPUSHPOLICY_VAL_TO_TAIL,
-        cqRingNum);
+        0U,
+        0U,
+        0U,
+        0U);
     CSL_udmapCppi5LinkDesc(pHpd, 0U);
     CSL_udmapCppi5SetBufferAddr(pHpd, (uint64_t) Udma_defaultVirtToPhyFxn(destBuf, 0U, NULL));
     CSL_udmapCppi5SetBufferLen(pHpd, length);
@@ -406,18 +406,9 @@ static int32_t MCSPI_udmaConfigPdmaTx(MCSPI_Object *obj,
                                       const uint8_t *txBufPtr)
 {
     int32_t             retVal;
-    uint32_t            baseAddr, chNum;
     Udma_ChPdmaPrms     pdmaPrms;
-    Udma_DrvHandle      drvHandle;
     Udma_ChHandle       txChHandle;
-    MCSPI_DmaConfig     *dmaConfig;
-    McspiDma_UdmaArgs   *udmaArgs;
 
-    baseAddr = obj->baseAddr;
-    chNum = chObj->chCfg.chNum;
-    dmaConfig = (MCSPI_DmaConfig *)obj->mcspiDmaHandle;
-    udmaArgs  = (McspiDma_UdmaArgs *)dmaConfig->mcspiDmaArgs;
-    drvHandle   = udmaArgs->drvHandle;
     txChHandle  = chObj->dmaChCfg.txChHandle;
 
     /* Config PDMA channel */
@@ -446,7 +437,7 @@ static int32_t MCSPI_udmaConfigPdmaTx(MCSPI_Object *obj,
     DebugP_assert(UDMA_SOK == retVal);
 
     /* Update host packet descriptor, length should be always in terms of total number of bytes */
-    MCSPI_udmaHpdInit(txChHandle, chObj->dmaChCfg.txHpdMem, txBufPtr, (numWords << chObj->bufWidthShift));
+    MCSPI_udmaHpdInit(txChHandle, (uint8_t *) chObj->dmaChCfg.txHpdMem, txBufPtr, (numWords << chObj->bufWidthShift));
 
     retVal = Udma_ringQueueRaw(
                  Udma_chGetFqRingHandle(txChHandle),
@@ -463,18 +454,9 @@ static int32_t MCSPI_udmaConfigPdmaRx(MCSPI_Object *obj,
                                       uint8_t *rxBufPtr)
 {
     int32_t             retVal;
-    uint32_t            baseAddr, chNum;
     Udma_ChPdmaPrms     pdmaPrms;
-    Udma_DrvHandle      drvHandle;
     Udma_ChHandle       rxChHandle;
-    MCSPI_DmaConfig     *dmaConfig;
-    McspiDma_UdmaArgs   *udmaArgs;
 
-    baseAddr = obj->baseAddr;
-    chNum = chObj->chCfg.chNum;
-    dmaConfig = (MCSPI_DmaConfig *)obj->mcspiDmaHandle;
-    udmaArgs = (McspiDma_UdmaArgs *)dmaConfig->mcspiDmaArgs;
-    drvHandle   = udmaArgs->drvHandle;
     rxChHandle  = chObj->dmaChCfg.rxChHandle;
 
     /* Config PDMA channel */
@@ -502,7 +484,7 @@ static int32_t MCSPI_udmaConfigPdmaRx(MCSPI_Object *obj,
     DebugP_assert(UDMA_SOK == retVal);
 
     /* Update host packet descriptor, length should be always in terms of total number of bytes */
-    MCSPI_udmaHpdInit(rxChHandle, chObj->dmaChCfg.rxHpdMem, rxBufPtr, (numWords << chObj->bufWidthShift));
+    MCSPI_udmaHpdInit(rxChHandle, (uint8_t *) chObj->dmaChCfg.rxHpdMem, rxBufPtr, (numWords << chObj->bufWidthShift));
 
     /* Submit HPD to channel */
     retVal = Udma_ringQueueRaw(
@@ -616,7 +598,7 @@ static void MCSPI_udmaIsrTx(Udma_EventHandle eventHandle,
     MCSPI_Object       *obj;
     MCSPI_ChObject     *chObj;
     MCSPI_Transaction  *transaction;
-    uint32_t            chNum, baseAddr, effByteCnt, peerData;
+    uint32_t            chNum, effByteCnt, peerData;
     Udma_ChHandle       txChHandle;
     const MCSPI_Attrs  *attrs;
 
@@ -628,7 +610,6 @@ static void MCSPI_udmaIsrTx(Udma_EventHandle eventHandle,
         DebugP_assert(NULL != obj);
         DebugP_assert(NULL != config->attrs);
         attrs = config->attrs;
-        baseAddr = obj->baseAddr;
 
         transaction = obj->currTransaction;
         chNum = transaction->channel;
@@ -651,7 +632,8 @@ static void MCSPI_udmaIsrTx(Udma_EventHandle eventHandle,
             }
 
             /* In case of TX only mode, stop channel and close it */
-            if (MCSPI_TR_MODE_TX_ONLY == chObj->chCfg.trMode)
+            if ((transaction->status == MCSPI_TRANSFER_COMPLETED) &&
+                (MCSPI_TR_MODE_TX_ONLY == chObj->chCfg.trMode))
             {
                 retVal = Udma_getPeerData(txChHandle, &peerData);
                 DebugP_assert(retVal == UDMA_SOK);
@@ -704,7 +686,7 @@ static void MCSPI_udmaIsrRx(Udma_EventHandle eventHandle,
     MCSPI_Object       *obj;
     MCSPI_ChObject     *chObj;
     MCSPI_Transaction  *transaction;
-    uint32_t            chNum, baseAddr, effByteCnt, peerData;
+    uint32_t            chNum, effByteCnt, peerData;
     Udma_ChHandle       rxChHandle;
     const MCSPI_Attrs  *attrs;
 
@@ -716,7 +698,6 @@ static void MCSPI_udmaIsrRx(Udma_EventHandle eventHandle,
         DebugP_assert(NULL != obj);
         DebugP_assert(NULL != config->attrs);
         attrs = config->attrs;
-        baseAddr = obj->baseAddr;
         transaction = obj->currTransaction;
         chNum = transaction->channel;
         chObj = &obj->chObj[chNum];

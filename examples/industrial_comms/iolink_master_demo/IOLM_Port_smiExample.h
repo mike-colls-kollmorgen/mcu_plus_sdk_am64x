@@ -139,6 +139,8 @@ void IOLM_EXMPL_cbDeviceReadCnf(uint8_t clientID_p, uint8_t port_p, uint16_t err
 /* Cyclic communication */
 void IOLM_EXMPL_cbPDInCnf(uint8_t clientID_p, uint8_t u8Port_p, uint16_t error_p, uint16_t argBlockLength_p, uint8_t* pArgBlock_p);
 void IOLM_EXMPL_cbPDOutCnf(uint8_t clientID_p, uint8_t port_p, uint16_t error_p);
+/* Mainloop Request - called by stack to indicate SMI mainloop run is required */
+void IOLM_MAIN_cbMainLoopRequest();
 
 /* Error handler */
 IOLM_EXMPL_EExampleState_t IOLM_EXMPL_PortErrorHandler(uint8_t port_p, uint16_t error_p);

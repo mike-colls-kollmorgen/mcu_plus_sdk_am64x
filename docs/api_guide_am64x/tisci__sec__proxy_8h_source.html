@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,177 +142,188 @@ $(document).ready(function(){initNavTree('tisci__sec__proxy_8h_source.html','');
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#ifndef AM64X_TISCI_SEC_PROXY_H</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#define AM64X_TISCI_SEC_PROXY_H</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_0 host</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0bb4dcfe590531910535f8b13ef7fc72">   63</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_READ_RESPONSE_THREAD_ID (0U)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8400c8f9f0f34441fc4570b62138a8be">   65</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad032aa4f30ff80f7994cf024b409e2c7">   68</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_WRITE_LOW_PRIORITY_THREAD_ID (1U)</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4f8df2c5b2e16a3b7f9d83c8810b777b">   70</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_1 host</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_0 host</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0bb4dcfe590531910535f8b13ef7fc72">   69</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_READ_RESPONSE_THREAD_ID (0U)</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8400c8f9f0f34441fc4570b62138a8be">   71</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad032aa4f30ff80f7994cf024b409e2c7">   74</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_WRITE_LOW_PRIORITY_THREAD_ID (1U)</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae9115064f4e24aeb241586ad89cbffd1">   77</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_READ_RESPONSE_THREAD_ID (2U)</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga08a96cecbc6920fbc76931d15cd21c88">   79</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga3444154d5b15cd9a7898bbc2f22dea4b">   82</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_WRITE_LOW_PRIORITY_THREAD_ID (3U)</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadc1255a1e49041d9788298d1e8033f1d">   84</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_2 host</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4f8df2c5b2e16a3b7f9d83c8810b777b">   76</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_1 host</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae9115064f4e24aeb241586ad89cbffd1">   83</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_READ_RESPONSE_THREAD_ID (2U)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga08a96cecbc6920fbc76931d15cd21c88">   85</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga3444154d5b15cd9a7898bbc2f22dea4b">   88</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_WRITE_LOW_PRIORITY_THREAD_ID (3U)</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad42e3d4ddb7083ac8526cfd82e397a77">   91</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_READ_RESPONSE_THREAD_ID (4U)</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga80a6674e21e51408d58434d55286e9d6">   93</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga86c9c9a6d2d5fe8808d1302c2ab89f83">   96</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_WRITE_LOW_PRIORITY_THREAD_ID (5U)</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4d0efab8c464f421cf955d1021aa4784">   98</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_3 host</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadc1255a1e49041d9788298d1e8033f1d">   90</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_2 host</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad42e3d4ddb7083ac8526cfd82e397a77">   97</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_READ_RESPONSE_THREAD_ID (4U)</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga80a6674e21e51408d58434d55286e9d6">   99</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga86c9c9a6d2d5fe8808d1302c2ab89f83">  102</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_WRITE_LOW_PRIORITY_THREAD_ID (5U)</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaf24716881bb568c50a33cb8fbbe9df45">  105</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_READ_RESPONSE_THREAD_ID (6U)</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae6e4cc42bacb6057088c3d63ef1383cf">  107</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga80798c4ab1059e1b1e5b5e2b90eef9b3">  110</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_WRITE_LOW_PRIORITY_THREAD_ID (7U)</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga56e92c9afa22651e954b6182e92bb373">  112</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_0 host</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4d0efab8c464f421cf955d1021aa4784">  104</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_0_R5_3 host</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaf24716881bb568c50a33cb8fbbe9df45">  111</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_READ_RESPONSE_THREAD_ID (6U)</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae6e4cc42bacb6057088c3d63ef1383cf">  113</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga80798c4ab1059e1b1e5b5e2b90eef9b3">  116</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_WRITE_LOW_PRIORITY_THREAD_ID (7U)</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga46b355d0823d950329f859ba60539cdb">  119</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_READ_RESPONSE_THREAD_ID (8U)</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8625a25f170bb300a5400db829cdcc7f">  121</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaaf16be280d77b8bbca4f3625dee58740">  124</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_WRITE_LOW_PRIORITY_THREAD_ID (9U)</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5bc97664280f5ffe186decb7e04aba6a">  126</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_1 host</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga56e92c9afa22651e954b6182e92bb373">  118</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_0_R5_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_0 host</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga46b355d0823d950329f859ba60539cdb">  125</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_READ_RESPONSE_THREAD_ID (8U)</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8625a25f170bb300a5400db829cdcc7f">  127</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_READ_RESPONSE_NUM_MESSAGES (11U)</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaaf16be280d77b8bbca4f3625dee58740">  130</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_WRITE_LOW_PRIORITY_THREAD_ID (9U)</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5c736101d28e70100c0484049a4a16cd">  133</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_READ_RESPONSE_THREAD_ID (10U)</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga04ff313bb0404b3b61f9c6ab41d55251">  135</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4bd7e910fa5a291991a356456b449ce1">  138</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_WRITE_LOW_PRIORITY_THREAD_ID (11U)</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadd7d027127f2de87e3f214f9f9753164">  140</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_2 host</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5bc97664280f5ffe186decb7e04aba6a">  132</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (10U)</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_1 host</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5c736101d28e70100c0484049a4a16cd">  139</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_READ_RESPONSE_THREAD_ID (10U)</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga04ff313bb0404b3b61f9c6ab41d55251">  141</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4bd7e910fa5a291991a356456b449ce1">  144</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_WRITE_LOW_PRIORITY_THREAD_ID (11U)</span></div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gab39557eaa849c813fa26cce8f7a808a9">  147</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_READ_RESPONSE_THREAD_ID (12U)</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaa24343acc7d25019f108b00b84eec1e2">  149</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4d44ad4cb613cd3325809324e8f0b8ac">  152</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_WRITE_LOW_PRIORITY_THREAD_ID (13U)</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gade58aa0d6231035e8618608e13c48205">  154</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_3 host</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadd7d027127f2de87e3f214f9f9753164">  146</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_2 host</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gab39557eaa849c813fa26cce8f7a808a9">  153</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_READ_RESPONSE_THREAD_ID (12U)</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaa24343acc7d25019f108b00b84eec1e2">  155</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga4d44ad4cb613cd3325809324e8f0b8ac">  158</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_WRITE_LOW_PRIORITY_THREAD_ID (13U)</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga90a21e319bf5de157f8d1b199550c669">  161</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_READ_RESPONSE_THREAD_ID (14U)</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga2cf4c0e32468ed42ba01129ae868bd30">  163</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga18aa5c6c8cfd46819a11221855cedb1c">  166</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_WRITE_LOW_PRIORITY_THREAD_ID (15U)</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga1c9de7d2b306a093d38fb9de96cc842e">  168</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment"> * Secure Proxy configurations for M4_0 host</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gade58aa0d6231035e8618608e13c48205">  160</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"> * Secure Proxy configurations for A53_3 host</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga90a21e319bf5de157f8d1b199550c669">  167</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_READ_RESPONSE_THREAD_ID (14U)</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga2cf4c0e32468ed42ba01129ae868bd30">  169</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga18aa5c6c8cfd46819a11221855cedb1c">  172</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_WRITE_LOW_PRIORITY_THREAD_ID (15U)</span></div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga61559f0463d8e7767e50aa63fb1c2f2c">  175</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_READ_RESPONSE_THREAD_ID (16U)</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5d26608d2b20c70455d97ccdec37214f">  177</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae921d63dfc966894684a14e23516040c">  180</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_WRITE_LOW_PRIORITY_THREAD_ID (17U)</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga23b343d87e2ce9214c30128a9e178cde">  182</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_0 host</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga1c9de7d2b306a093d38fb9de96cc842e">  174</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_A53_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment"> * Secure Proxy configurations for M4_0 host</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga61559f0463d8e7767e50aa63fb1c2f2c">  181</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_READ_RESPONSE_THREAD_ID (16U)</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga5d26608d2b20c70455d97ccdec37214f">  183</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae921d63dfc966894684a14e23516040c">  186</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_WRITE_LOW_PRIORITY_THREAD_ID (17U)</span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga76657ea45a5ca6b7404ad3f420c6b411">  189</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_READ_RESPONSE_THREAD_ID (18U)</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga53ab793360cb74f7ccacdbf8ad744338">  191</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad74381750f487147dd182f78bdddbb9b">  194</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_WRITE_LOW_PRIORITY_THREAD_ID (19U)</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaa8732c822c4f59aeef03b62d7c947af9">  196</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_1 host</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga23b343d87e2ce9214c30128a9e178cde">  188</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_M4_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_0 host</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga76657ea45a5ca6b7404ad3f420c6b411">  195</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_READ_RESPONSE_THREAD_ID (18U)</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga53ab793360cb74f7ccacdbf8ad744338">  197</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad74381750f487147dd182f78bdddbb9b">  200</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_WRITE_LOW_PRIORITY_THREAD_ID (19U)</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0c2d90b8d53ed03c09b7729436d6e1a3">  203</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_READ_RESPONSE_THREAD_ID (20U)</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga675019dc1564d666ccfeeb5dfdecce94">  205</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad90f63c9957c4b8ed4846aefa3093a44">  208</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_WRITE_LOW_PRIORITY_THREAD_ID (21U)</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0d6010972575cfd7204d851a57cc4f8d">  210</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_2 host</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaa8732c822c4f59aeef03b62d7c947af9">  202</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_1 host</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0c2d90b8d53ed03c09b7729436d6e1a3">  209</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_READ_RESPONSE_THREAD_ID (20U)</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga675019dc1564d666ccfeeb5dfdecce94">  211</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_READ_RESPONSE_NUM_MESSAGES (6U)</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gad90f63c9957c4b8ed4846aefa3093a44">  214</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_WRITE_LOW_PRIORITY_THREAD_ID (21U)</span></div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga686c8664d85d15bcf344ec33db798e1f">  217</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_READ_RESPONSE_THREAD_ID (22U)</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae56357905aa312255dda804fc5bdb52e">  219</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga1ecb5a911dc9677564064a2a75f3a8dc">  222</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_WRITE_LOW_PRIORITY_THREAD_ID (23U)</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadfcad07fc27f03165b4bf095094dc898">  224</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_3 host</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga0d6010972575cfd7204d851a57cc4f8d">  216</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_1_WRITE_LOW_PRIORITY_NUM_MESSAGES (5U)</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_2 host</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga686c8664d85d15bcf344ec33db798e1f">  223</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_READ_RESPONSE_THREAD_ID (22U)</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gae56357905aa312255dda804fc5bdb52e">  225</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga1ecb5a911dc9677564064a2a75f3a8dc">  228</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_WRITE_LOW_PRIORITY_THREAD_ID (23U)</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga44081ed4f74cd1d8943f771eaf50860f">  231</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_READ_RESPONSE_THREAD_ID (24U)</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8d9e93932081f21aa0c50a0d490d3914">  233</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga561ed432c112904eeb74d77744b5bb99">  236</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_WRITE_LOW_PRIORITY_THREAD_ID (25U)</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga45b6be2e4b7717759a41135354d24c75">  238</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment"> * Secure Proxy configurations for ICSSG_0 host</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gadfcad07fc27f03165b4bf095094dc898">  230</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_2_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"> * Secure Proxy configurations for MAIN_1_R5_3 host</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga44081ed4f74cd1d8943f771eaf50860f">  237</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_READ_RESPONSE_THREAD_ID (24U)</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8d9e93932081f21aa0c50a0d490d3914">  239</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga561ed432c112904eeb74d77744b5bb99">  242</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_WRITE_LOW_PRIORITY_THREAD_ID (25U)</span></div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8acd109f6b8cdd95623bdce03750899b">  245</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_READ_RESPONSE_THREAD_ID (26U)</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga9af05d923023056e69b392bc20e8f573">  247</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gac651f04f625c91688d5ab856114ec9ed">  250</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_WRITE_LOW_PRIORITY_THREAD_ID (27U)</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaefaa61c73addb2b109799b532a8759bd">  252</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga45b6be2e4b7717759a41135354d24c75">  244</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_MAIN_1_R5_3_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"> * Secure Proxy configurations for ICSSG_0 host</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga8acd109f6b8cdd95623bdce03750899b">  251</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_READ_RESPONSE_THREAD_ID (26U)</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#ga9af05d923023056e69b392bc20e8f573">  253</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_READ_RESPONSE_NUM_MESSAGES (2U)</span></div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* AM64X_TISCI_SEC_PROXY_H */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gac651f04f625c91688d5ab856114ec9ed">  256</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_WRITE_LOW_PRIORITY_THREAD_ID (27U)</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="group__tisci__sec__proxy.html#gaefaa61c73addb2b109799b532a8759bd">  258</a></span>&#160;<span class="preprocessor">#define TISCI_SEC_PROXY_ICSSG_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;}</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* AM64X_TISCI_SEC_PROXY_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.11-->

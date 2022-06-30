@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,13 +108,13 @@ $(document).ready(function(){initNavTree('GETTING_STARTED_BUILD.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md25">Using CCS projects</a></li>
-<li class="level1"><a href="#autotoc_md26">Using makefiles</a></li>
-<li class="level1"><a href="#autotoc_md27">Rebuilding libraries</a></li>
+<ul><li class="level1"><a href="#autotoc_md46">Using CCS projects</a></li>
+<li class="level1"><a href="#autotoc_md47">Using makefiles</a></li>
+<li class="level1"><a href="#autotoc_md48">Rebuilding libraries</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_getting_started_getting_started_build"></a></p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Using CCS projects</h1>
 <ul>
 <li><b>When using CCS projects to build</b>, make sure you have imported and built the CCS project of interest (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>)</li>
@@ -129,16 +129,18 @@ Using CCS projects</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 Using makefiles</h1>
 <ul>
 <li><b>When using makefiles to build</b>, make sure you have built the example of interest using makefiles (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
-<li>Given below is the command to build the "hello world example". Note, use <code>make</code> in Linux <pre class="fragment">  cd ${SDK_INSTALL_PATH}
-  gmake -s -C examples/hello_world/{board}/r5fss0-0_freertos/ti-arm-clang
-</pre></li>
+<li>Given below is the command to build the "hello world example". Note, use <code>make</code> in Linux</li>
+</ul>
+<pre class="fragment">    cd ${SDK_INSTALL_PATH}
+    gmake -s -C examples/hello_world/{board}/r5fss0-0_freertos/ti-arm-clang
+</pre><ul>
 <li>After the executable is built successfully, now you can load and run it (see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a>)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Rebuilding libraries</h1>
 <ul>
 <li>When a CCS example project is built or a single example is built with makefiles, as described above, the libraries are not re-built.</li>

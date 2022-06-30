@@ -32,6 +32,12 @@
 #ifndef LWIP_ARCH_SYS_ARCH_H
 #define LWIP_ARCH_SYS_ARCH_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "lwip/opt.h"
 #include "lwip/arch.h"
 
@@ -91,5 +97,10 @@ void sys_arch_netconn_sem_free(void);
 #define LWIP_NETCONN_THREAD_SEM_ALLOC() sys_arch_netconn_sem_alloc()
 #define LWIP_NETCONN_THREAD_SEM_FREE()  sys_arch_netconn_sem_free()
 #endif /* LWIP_NETCONN_SEM_PER_THREAD */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LWIP_ARCH_SYS_ARCH_H */

@@ -76,7 +76,7 @@ void MPU_FIREWALL_init()
     */
     for (i = 0; i < gMpuFirewallNumRegions; i++)
     {
-        MPU_FIREWALL_setRegion(&gMpuFirewallRegionConfig[i]);
+        (void) MPU_FIREWALL_setRegion(&gMpuFirewallRegionConfig[i]);
     }
 }
 

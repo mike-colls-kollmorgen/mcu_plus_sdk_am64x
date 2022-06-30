@@ -1168,7 +1168,7 @@ static RED_FRAME *RedFrameAllocate(const uint8_t *pFrame, int32_t frameSize)
     }
 
     /* Allocate the RED frame structure */
-    pRedFrame = malloc(sizeof(RED_FRAME));
+    pRedFrame = (RED_FRAME *) malloc(sizeof(RED_FRAME));
 
     if(!pRedFrame)
     {

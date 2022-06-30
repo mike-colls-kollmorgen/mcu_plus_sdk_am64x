@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,17 @@ $(document).ready(function(){initNavTree('DRIVERS_BOOTLOADER_PAGE.html',''); ini
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md477">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md478">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md479">Features not Supported</a></li>
-<li class="level1"><a href="#autotoc_md480">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md481">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md543">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md544">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md545">Features not Supported</a></li>
+<li class="level1"><a href="#autotoc_md546">R5 Dual Core Support</a></li>
+<li class="level1"><a href="#autotoc_md547">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md548">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_bootloader"></a></p>
 <p>The Bootloader module provides APIs to write bootloader applications for various boot media like OSPI, UART, SOC memory etc.</p>
-<h1><a class="anchor" id="autotoc_md477"></a>
+<h1><a class="anchor" id="autotoc_md543"></a>
 Features Supported</h1>
 <ul>
 <li>OSPI Boot</li>
@@ -125,7 +126,7 @@ Features Supported</h1>
 <li>API to parse multicore appimage</li>
 <li>Separate APIs to boot self and non-self cores</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md478"></a>
+<h1><a class="anchor" id="autotoc_md544"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
@@ -133,12 +134,15 @@ SysConfig Features</h1>
 <li>Boot Media to be used</li>
 <li>Boot Image offset</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md479"></a>
+<h1><a class="anchor" id="autotoc_md545"></a>
 Features not Supported</h1>
 <ul>
 <li>MMCSD Boot</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md480"></a>
+<h1><a class="anchor" id="autotoc_md546"></a>
+R5 Dual Core Support</h1>
+<p>RBL boots the R5 in eFUSE default, which is <b>split mode</b>. SBL (Secondary Boot Loader) follows the same and keeps the R5s in split mode. As of now the lock step configuration of dual R5 is not supported from bootloader.</p>
+<h1><a class="anchor" id="autotoc_md547"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="bootloader_8h.html">drivers/bootloader.h</a>&gt;</span></div>
@@ -186,7 +190,7 @@ Example Usage</h1>
 <div class="line">    }</div>
 <div class="line"> </div>
 </div><!-- fragment --><p> Instance Close Example </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__BOOTLOADER__MODULE.html#ga021ceadeefd7c709ba42b9c23775ec92">Bootloader_close</a>(gBootloaderHandle);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md481"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md548"></a>
 API</h1>
 <p><a class="el" href="group__DRV__BOOTLOADER__MODULE.html">APIs for BOOTLOADING CPUs</a> </p>
 </div></div><!-- contents -->

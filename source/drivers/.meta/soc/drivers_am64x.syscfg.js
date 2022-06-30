@@ -56,6 +56,9 @@ const driverVer = {
     "ospi": {
         version: "v0",
     },
+    "pcie": {
+        version: "v0",
+    },
     "pruicss": {
         version: "g_v0",
     },
@@ -91,6 +94,7 @@ const topModules_main = [
     "/drivers/mcspi/mcspi",
     "/drivers/mmcsd/mmcsd",
     "/drivers/ospi/ospi",
+    "/drivers/pcie/pcie",
     "/drivers/pruicss/pruicss",
     "/drivers/uart/uart",
     "/drivers/udma/udma",

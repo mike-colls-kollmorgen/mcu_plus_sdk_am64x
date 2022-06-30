@@ -33,6 +33,12 @@
 #ifndef ICSS_INTC_DEFINES_H_
 #define ICSS_INTC_DEFINES_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  @brief  ICSSG Interrupt Mapping Defines
  *
@@ -334,5 +340,10 @@
  *  R5FSS0_CORE0_INTR_IN_254  |  254  |  PRU_ICSSG1_PR1_HOST_INTR_PEND_6
  *  R5FSS0_CORE0_INTR_IN_255  |  255  |  PRU_ICSSG1_PR1_HOST_INTR_PEND_7
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_INTC_DEFINES_H_ */

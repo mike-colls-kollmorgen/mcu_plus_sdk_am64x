@@ -252,7 +252,7 @@ int32_t LED_tpic2810SetMask(LED_Config *config, uint32_t mask)
 {
     int32_t         status = SystemP_SUCCESS;
     LED_Object     *object;
-    LED_Attrs      *attrs;
+
     uint8_t         wrData[2U];
     I2C_Transaction i2cTransaction;
 
@@ -263,7 +263,7 @@ int32_t LED_tpic2810SetMask(LED_Config *config, uint32_t mask)
     else
     {
         object      = (LED_Object *) config->object;
-        attrs       = config->attrs;
+
 
         /* Set mask */
         wrData[0U] = TPIC2810_CMD_WR_IMMEDIATE;

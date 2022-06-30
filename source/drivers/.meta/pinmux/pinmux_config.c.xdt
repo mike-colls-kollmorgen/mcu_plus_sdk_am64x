@@ -31,7 +31,7 @@
  */
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 % let common = system.getScript("/common");
 #include "ti_drivers_config.h"

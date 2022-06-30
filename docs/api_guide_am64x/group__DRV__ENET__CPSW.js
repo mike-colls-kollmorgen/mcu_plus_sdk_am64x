@@ -83,7 +83,8 @@ var group__DRV__ENET__CPSW =
       [ "portLinkStatusChangeCb", "structCpsw__Cfg.html#a7d9526dc5f9b25e410eceddcde89b962", null ],
       [ "portLinkStatusChangeCbArg", "structCpsw__Cfg.html#a92a604c28fd5f6e9a5c370fedce64b19", null ],
       [ "enableQsgmii0RDC", "structCpsw__Cfg.html#ab58eb5b0e02c839dd383543e05778bdc", null ],
-      [ "enableQsgmii1RDC", "structCpsw__Cfg.html#a25be1c060f61b996319e45e5104484a2", null ]
+      [ "enableQsgmii1RDC", "structCpsw__Cfg.html#a25be1c060f61b996319e45e5104484a2", null ],
+      [ "disablePhyDriver", "structCpsw__Cfg.html#a3ee6b7ca2ccd697ab6b0702ffbff69d8", null ]
     ] ],
     [ "CPSW_PER_PUBLIC_IOCTL", "group__DRV__ENET__CPSW.html#ga38260bffd42c0ef43ce49eee0045ef18", null ],
     [ "CPSW_MAC_PORT_NUM", "group__DRV__ENET__CPSW.html#ga3823a3b952020b15351a2dc8aa62d9c8", null ],

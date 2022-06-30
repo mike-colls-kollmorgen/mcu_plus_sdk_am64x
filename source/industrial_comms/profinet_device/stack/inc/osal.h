@@ -102,8 +102,14 @@
 #define OSALUNREF_PARM(x) \
     (void)(x)
 
+#if (defined __GNUC__) || (defined __TI_ARM__)
 #define OSAL_ASSERT_DMB()               __asm("    dmb")
 #define OSAL_ASSERT_DSB()               __asm("    dsb")
+#else
+#define OSAL_ASSERT_DMB()
+#define OSAL_ASSERT_DSB()
+#endif
+
 
 #define OSAL_TICKS_IN_MILLI_SEC         1               /* 1000us tick */
 
@@ -127,6 +133,7 @@ typedef enum OSAL_EError
     OSAL_eERR_ENOENT                = OSAL_ERROR_CLASS(2),      /*!< No such file or directory. */
     OSAL_eERR_ENXIO                 = OSAL_ERROR_CLASS(6),      /*!< No such device or address. */
     OSAL_eERR_NOMEMORY              = OSAL_ERROR_CLASS(12),     /*!< Not enough memory. */
+    OSAL_eERR_NOACCESS              = OSAL_ERROR_CLASS(13),     /*!< No access, no hardware license */
     OSAL_eERR_INVALIDSTATE          = OSAL_ERROR_CLASS(14),     /*!< Invalid state. */
     OSAL_eERR_EINVAL                = OSAL_ERROR_CLASS(22),     /*!< Invalid argument. */
     OSAL_eERR_NOTIMPLEMENTED        = OSAL_ERROR_CLASS(34),     /*!< Not implemeented. */
@@ -192,6 +199,16 @@ typedef enum OSAL_TASK_EPriority
 #define OSAL_TASK_ePRIO_ECEoE           (OSAL_TASK_ePRIO_25)        /* 72       25      12          */
 #define OSAL_TASK_ePRIO_ECPDI           (OSAL_TASK_ePRIO_16)        /* 54       16      8           */
 #define OSAL_TASK_ePRIO_ECDemoThread    (OSAL_TASK_ePRIO_29)        /* 80       29      14          */
+
+        /* FBTL */
+#define OSAL_TASK_ePRIO_FBTLSync        (OSAL_TASK_ePRIO_Interrupt)
+#define OSAL_TASK_ePRIO_FBTLAcycIST     (OSAL_TASK_ePRIO_Interrupt)
+#define OSAL_TASK_ePRIO_FBTLCyclic      (OSAL_TASK_ePRIO_InterruptSub1)
+#define OSAL_TASK_ePRIO_FBTLSendAcyc    (OSAL_TASK_ePRIO_InterruptSub1)
+#define OSAL_TASK_ePRIO_FBTLReceiver    (OSAL_TASK_ePRIO_InterruptSub1)
+#define OSAL_TASK_ePRIO_FBTLService     (OSAL_TASK_ePRIO_Interrupt)
+#define OSAL_TASK_ePRIO_FBTLSlowService (OSAL_TASK_ePRIO_Interrupt)
+#define OSAL_TASK_ePRIO_FBTLOSISTCONT   (OSAL_TASK_ePRIO_InterruptSub1)
 
 /* DPR */
 #define OSAL_TASK_ePRIO_DPRIRQ          (OSAL_TASK_ePRIO_28)
@@ -322,6 +339,31 @@ typedef struct OSAL_CMDQUEUE_SHandle
 
 typedef long long OSAL_PJumpBuf_t[64] __attribute__((__aligned__ (8)));
 
+/*!
+ *  <!-- Description: -->
+ *
+ *  \brief
+ *  Callback to printout OSAL_printf occurencies
+ *
+ *  <!-- Parameters and return values: -->
+ *
+ *  \param[in]  pContext_p      call context
+ *  \param[in]  __format_p      Format string.
+ *  \param[in]  ...             Parameter list.
+ *
+ *  <!-- Example: -->
+ *
+ *  <!-- Group: -->
+ *
+ *  \ingroup OSALAPI
+ *
+ * */
+typedef void (*OSAL_printfOut_t)(void*                          pContext_p
+                                ,const char* __restrict         pFormat_p
+                                 /* @cppcheck_justify{misra-c2012-17.1} dynamic printf is only possible with use of stdarg */
+                                 //cppcheck-suppress misra-c2012-17.1
+                                ,va_list                        arg_p);
+
 #if (defined __cplusplus)
 extern "C" {
 #endif
@@ -329,6 +371,14 @@ extern "C" {
 /* OSAL */
 extern OSAL_API uint32_t            OSAL_init                   (void);
 extern OSAL_API void                OSAL_deinit                 (void);
+
+extern OSAL_API uint32_t            OSAL_getVersion             (void);
+extern OSAL_API uint32_t            OSAL_getVersionStr          (uint32_t                       bufLen_p
+                                                                ,char*                          pBuffer_p
+                                                                ,uint32_t*                      pUsedLen_p);
+extern OSAL_API uint32_t            OSAL_getVersionId           (uint32_t                       bufLen_p
+                                                                ,char*                          pBuffer_p
+                                                                ,uint32_t*                      pUsedLen_p);
 
 extern OSAL_API void                OSAL_setExceptionPoint      (OSAL_PJumpBuf_t*               pJumpBuf_p);
 extern OSAL_API OSAL_PJumpBuf_t*    OSAL_getExceptionPoint      (void);
@@ -342,27 +392,30 @@ extern OSAL_API void                OSAL_error                  (const char*    
                                                                 ,uint32_t                       line_p
                                                                 ,uint32_t                       errCode_p
                                                                 ,bool                           fatal_p
-                                                                ,uint8_t                        paraCnt_p
+                                                                ,uint32_t                        paraCnt_p
                                                                 ,...);
 extern OSAL_API void                OSAL_registerErrorHandler   (OSAL_ERR_CBHandler_t           cbErrHandler_p);
 
 extern OSAL_API void                OSAL_closeHandles           (void);
 
+extern OSAL_API void                OSAL_registerPrintOut       (void*                          pContext_p
+                                                                ,OSAL_printfOut_t               cbFunc_p);
+
 /* @cppcheck_justify{misra-c2012-17.1} va_list dynamic args is defined in stdarg.h */
 //cppcheck-suppress misra-c2012-17.1
 /* @cppcheck_justify{misra-c2012-2.7} va_list is false positive shown as unused */
 //cppcheck-suppress misra-c2012-2.7
-extern OSAL_API void                OSAL_printf                 (const char* __restrict         __format_p /* __format_p by intention, no p__ */
+extern OSAL_API void                OSAL_printf                 (const char* __restrict         format_p
                                                                 ,...);
-extern OSAL_API void                OSAL_vprintf                (const char* __restrict         __format_p /* __format_p by intention, no p__ */,
+extern OSAL_API void                OSAL_vprintf                (const char* __restrict         format_p
                                                                  /* @cppcheck_justify{misra-c2012-17.1} dynamic printf is only possible with use of stdarg */
                                                                  //cppcheck-suppress misra-c2012-17.1
-                                                                va_list                        arg_p);
+                                                                ,va_list                        arg_p);
 extern OSAL_API void                OSAL_printfSuppress         (bool suppress_p);
 
 extern OSAL_API uint32_t            OSAL_getMsTick              (void);
 extern OSAL_API void                OSAL_waitTimerUs            (uint32_t                       waitTime_p);
-extern OSAL_API uint32_t            OSAL_randomEnable           (void);
+extern OSAL_API uint32_t            OSAL_randomEnable           (uint32_t                       seed_p);
 extern OSAL_API uint32_t            OSAL_getRandomNumber        (void);
 
 /* OSAL_SCHED */
@@ -395,6 +448,8 @@ extern OSAL_API uint32_t            OSAL_EVT_wait               (OSAL_SCHED_SEve
 
 extern OSAL_API void                OSAL_TIMER_init             (OSAL_TIMER_SHandle_t*          pTimer_p
                                                                 ,char*                          pName_p);
+extern OSAL_API void                OSAL_TIMER_set100usecTickSupport
+                                                                (bool                           support_p);
 extern OSAL_API void                OSAL_TIMER_start            (OSAL_TIMER_SHandle_t*          pTimer_p
                                                                 ,uint32_t                       durationMs_p);
 extern OSAL_API void                OSAL_TIMER_startUs          (OSAL_TIMER_SHandle_t*          pTimer_p
@@ -418,6 +473,7 @@ extern OSAL_API uint32_t            OSAL_CMDQUEUE_exec          (OSAL_CMDQUEUE_S
 extern OSAL_API uint32_t            OSAL_CMDQUEUE_getFree       (OSAL_CMDQUEUE_SHandle_t*       pQueue_p);
 
 extern OSAL_API void                OSAL_MTX_init               (OSAL_SCHED_SMutexHandle_t*     pMutex_p);
+extern OSAL_API void                OSAL_MTX_deinit             (OSAL_SCHED_SMutexHandle_t*     pMutex_p);
 extern OSAL_API void                OSAL_MTX_release            (OSAL_SCHED_SMutexHandle_t*     pMutex_p);
 extern OSAL_API uint32_t            OSAL_MTX_get                (OSAL_SCHED_SMutexHandle_t*     pMutex_p
                                                                 ,uint32_t                       timeOut_p
@@ -457,12 +513,25 @@ extern OSAL_API int32_t             OSAL_lockNamedMutex         (void*          
                                                                 ,uint32_t                       msTimeout_p);
 extern OSAL_API int32_t             OSAL_unLockNamedMutex       (void*                          pMutex_p);
 
+extern OSAL_API void*               OSAL_CSMTX_create           (void);
+extern OSAL_API void*               OSAL_CSMTX_delete           (void*                          pCritSect_p);
+extern OSAL_API int32_t             OSAL_CSMTX_enter            (void*                          pCritSect_p
+                                                                ,uint32_t                       msTimeout_p);
+extern OSAL_API int32_t             OSAL_CSMTX_leave            (void*                          pCritsect_p);
+
 extern OSAL_API void*               OSAL_createSignal           (const char*                    pName_p);
 extern OSAL_API void*               OSAL_openSignal             (const char*                    pName_p);
 extern OSAL_API void*               OSAL_deleteSignal           (void*                          pSignal_p);
 extern OSAL_API int32_t             OSAL_waitSignal             (void*                          pSignal_p
                                                                 ,uint32_t                       msTimeout_p);
 extern OSAL_API int32_t             OSAL_postSignal             (void*                          pSignal_p);
+
+extern OSAL_API void*               OSAL_createCountSignal      (uint32_t                       countStart_p
+                                                                ,uint32_t                       countMax_p);
+extern OSAL_API void*               OSAL_deleteCountSignal      (void*                          pSignal_p);
+extern OSAL_API int32_t             OSAL_waitCountSignal        (void*                          pSignal_p
+                                                                ,uint32_t                       msTimeout_p);
+extern OSAL_API int32_t             OSAL_postCountSignal        (void*                          pSignal_p);
 
 /* OSAL Memory */
 extern OSAL_API void                OSAL_MEMORY_init            (void);
@@ -481,6 +550,9 @@ extern OSAL_API void                OSAL_MEMORY_memcpy          (void*          
                                                                 ,size_t                         size_p);
 extern OSAL_API void                OSAL_MEMORY_memset          (void*                          pTarget_p
                                                                 ,int32_t                        value_p
+                                                                ,size_t                         size_p);
+extern OSAL_API int32_t             OSAL_MEMORY_memcmp          (void*                          pPtr1_p
+                                                                ,void*                          pPtr2_p
                                                                 ,size_t                         size_p);
 
 extern OSAL_API uint32_t            OSAL_VNET_create            (char*                          pDev_p);

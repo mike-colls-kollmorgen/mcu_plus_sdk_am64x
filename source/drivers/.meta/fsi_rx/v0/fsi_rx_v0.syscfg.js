@@ -52,11 +52,6 @@ function getPeripheralPinNames(inst) {
     return [ "CLK", "D0", "D1" ];
 }
 
-function getClockEnableIds(inst) {
-    let instConfig = getInstanceConfig(inst);
-    return instConfig.clockIds;
-}
-
 function validate(instance, report) {
     /* None. Verified by SYSCFG based on selected pin */
 }
@@ -75,6 +70,14 @@ let fsi_rx_module = {
         },
     },
     defaultInstanceName: "CONFIG_FSI_RX",
+    config: [
+        {
+            name: "intrEnable",
+            displayName: "Interrupt Mode",
+            description: "Enable Interrupt mode of operation",
+            default: true,
+        },
+    ],
     validate: validate,
     modules: function(inst) {
         return [{
@@ -83,10 +86,36 @@ let fsi_rx_module = {
         }]
     },
     pinmuxRequirements,
+    moduleInstances: moduleInstances,
     getInstanceConfig,
     getInterfaceName,
     getPeripheralPinNames,
-    getClockEnableIds,
 };
+
+function moduleInstances(inst) {
+    let modInstances = new Array();
+
+    if(soc.interruptXbarConfig == true && inst.intrEnable == true)
+    {
+        modInstances.push({
+            name: "fsiRxIntXbar0",
+            displayName: "FSI RX Interrupt 0 XBAR",
+            moduleName: '/xbar/int_xbar/int_xbar',
+            requiredArgs: {
+                parentName: "FSI_RX_INT0",
+            },
+        });
+        modInstances.push({
+            name: "fsiRxIntXbar1",
+            displayName: "FSI RX Interrupt 1 XBAR",
+            moduleName: '/xbar/int_xbar/int_xbar',
+            requiredArgs: {
+                parentName: "FSI_RX_INT1",
+            },
+        });
+    }
+
+    return (modInstances);
+}
 
 exports = fsi_rx_module;

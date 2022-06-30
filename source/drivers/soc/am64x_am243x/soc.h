@@ -48,6 +48,7 @@ extern "C"
  */
 
 #include <drivers/sciclient.h>
+#include <kernel/dpl/CpuIdP.h>
 
 /**
  *  \anchor SOC_DomainId_t
@@ -161,6 +162,64 @@ void *SOC_phyToVirt(uint64_t phyAddr);
  * \param bootMode [IN] Boot mode switch value
  */
 void SOC_setDevStat(uint32_t bootMode);
+
+/**
+ * \brief Return R5SS supporting single or dual core mode.
+ *
+ * \param cpuInfo [IN] Pointer to the \ref CSL_ArmR5CPUInfo struct.
+ *
+ *  \return TRUE if it is Dual Core mode else FALSE.
+ */
+uint32_t SOC_isR5FDualCoreMode(CSL_ArmR5CPUInfo *cpuInfo);
+
+/**
+ * \brief Generate SW Warm Reset Main Domain
+ */
+void SOC_generateSwWarmResetMainDomain(void);
+
+/**
+ * \brief Generate SW POR Reset Main Domain
+ */
+void SOC_generateSwPORResetMainDomain(void);
+
+/**
+ * \brief Get the reset reason source for Main Domain
+ *
+ * \return Reset Reason Source Main Domain
+ */
+uint32_t SOC_getWarmResetCauseMainDomain(void);
+
+/**
+ * \brief Generate SW WARM Reset Mcu Domain
+ */
+void SOC_generateSwWarmResetMcuDomain(void);
+
+/**
+ * \brief Generate SW WARM Reset Main Domain from Mcu Domain
+ */
+void SOC_generateSwWarmResetMainDomainFromMcuDomain(void);
+
+/**
+ * \brief Generate SW POR Reset Main Domain from Mcu Domain
+ */
+void SOC_generateSwPORResetMainDomainFromMcuDomain(void);
+
+/**
+ * \brief Get the reset reason source for Mcu Domain
+ *
+ * \return Reset Reason Source Mcu Domain
+ */
+uint32_t SOC_getWarmResetCauseMcuDomain(void);
+
+/**
+ * \brief Clears reason for Warm and Main/Mcu Domain Power On Resets.
+ *        CTRLMMR_RST_SRC is just a mirror of CTRLMMR_MCU_RST_SRC register. It
+ *        is read only. So we need to write 1 to CTRLMMR_MCU_RST_SRC to clear
+ *        the reset reason.
+ *
+ * \param resetCause [IN] Reset reason value to clear.
+ */
+void SOC_clearResetCauseMainMcuDomain(uint32_t resetCause);
 
 /** @} */
 

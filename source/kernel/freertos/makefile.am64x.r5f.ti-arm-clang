@@ -1,5 +1,5 @@
 #
-# Auto generated makefile - DO NOT MODIFY
+# Auto generated makefile
 #
 
 export MCU_PLUS_SDK_PATH?=$(abspath ../../..)
@@ -27,10 +27,12 @@ FILES_common := \
     HwiP_armv7r_vim.c \
     MpuP_armv7r.c \
     CacheP_armv7r.c \
+    CpuId_armv7r.c \
     HeapP_internal.c \
     printf.c \
     AddrTranslateP.c \
     PmuP_armv7r.c \
+    QueueP_nortos.c \
     ClockP_freertos.c \
     ClockP_freertos_r5.c \
     SemaphoreP_freertos.c \
@@ -64,6 +66,7 @@ ASMFILES_common := \
     HwiP_armv7r_asm.S \
     MpuP_armv7r_asm.S \
     CacheP_armv7r_asm.S \
+    CpuId_armv7r_asm.S \
     PmuP_armv7r_asm.S \
     HwiP_armv7r_vectors_freertos_asm.S \
     portASM.S \
@@ -96,12 +99,25 @@ CFLAGS_common := \
     -mcpu=cortex-r5 \
     -mfloat-abi=hard \
     -mfpu=vfpv3-d16 \
+    -mthumb \
     -Wall \
     -Werror \
     -g \
     -Wno-gnu-variable-sized-type-not-at-end \
     -Wno-unused-function \
     -Wno-extra \
+
+CFLAGS_cpp_common := \
+    -Wno-c99-designator \
+    -Wno-extern-c-compat \
+    -Wno-c++11-narrowing \
+    -Wno-reorder-init-list \
+    -Wno-deprecated-register \
+    -Wno-writable-strings \
+    -Wno-enum-compare \
+    -Wno-reserved-user-defined-literal \
+    -Wno-unused-const-variable \
+    -x c++ \
 
 CFLAGS_debug := \
     -D_DEBUG_=1 \
@@ -116,6 +132,10 @@ FILES := $(FILES_common) $(FILES_$(PROFILE))
 ASMFILES := $(ASMFILES_common) $(ASMFILES_$(PROFILE))
 FILES_PATH := $(FILES_PATH_common) $(FILES_PATH_$(PROFILE))
 CFLAGS := $(CFLAGS_common) $(CFLAGS_$(PROFILE))
+ASMFLAGS := $(CFLAGS_common) $(CFLAGS_$(PROFILE))
+ifeq ($(CPLUSPLUS_BUILD), yes)
+CFLAGS += $(CFLAGS_cpp_common)
+endif
 DEFINES := $(DEFINES_common) $(DEFINES_$(PROFILE))
 INCLUDES := $(INCLUDES_common) $(INCLUDE_$(PROFILE))
 ARFLAGS := $(ARFLAGS_common) $(ARFLAGS_$(PROFILE))
@@ -136,7 +156,7 @@ $(OBJDIR)/%.obj %.obj: %.c
 
 $(OBJDIR)/%.obj %.obj: %.S
 	@echo  Compiling: $(LIBNAME): $<
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/$@ $<
+	$(CC) -c $(ASMFLAGS) -o $(OBJDIR)/$@ $<
 
 all: $(LIBDIR)/$(LIBNAME)
 

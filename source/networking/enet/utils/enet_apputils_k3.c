@@ -457,14 +457,13 @@ void EnetAppUtils_enableClocks(Enet_Type enetType, uint32_t instId)
 {
     uint32_t moduleId = 0U;
     uint32_t appFlags = 0U;
-    EnetAppUtils_CptsClkSelMux clkSelMux;
     uint64_t cppiClkFreqHz;
     uint32_t cppiClkId;
     uint32_t rgmii250MHzClkId;
     uint32_t rgmii50MHzClkId;
     uint32_t rgmii5MHzClkId;
 
-    EnetAppUtils_print("Enabling clocks!\r\r\n");
+    EnetAppUtils_print("Enabling clocks!\r\n");
 
     cppiClkFreqHz = EnetSoc_getClkFreq(enetType, instId, CPSW_CPPI_CLK);
 
@@ -528,16 +527,18 @@ void EnetAppUtils_enableClocks(Enet_Type enetType, uint32_t instId)
 
     EnetAppUtils_setDeviceState(moduleId, TISCI_MSG_VALUE_DEVICE_SW_STATE_ON, appFlags);
 
+#if (ENET_ENABLE_PER_CPSW == 1)
     if (Enet_isCpswFamily(enetType))
     {
+        EnetAppUtils_CptsClkSelMux clkSelMux;
 #if defined(SOC_AM64X) || defined(SOC_AM243X)
         //confirm this
         clkSelMux = ENETAPPUTILS_CPTS_CLKSEL_CPSWHSDIV_CLKOUT2;
 #endif
-#if (ENET_ENABLE_PER_CPSW == 1)
+
         EnetAppUtils_selectCptsClock(enetType, clkSelMux);
-#endif
     }
+#endif
 }
 
 void EnetAppUtils_disableClocks(Enet_Type enetType, uint32_t instId)

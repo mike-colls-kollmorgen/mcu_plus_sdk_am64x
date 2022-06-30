@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -147,6 +147,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:ab58eb5b0e02c839dd383543e05778bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25be1c060f61b996319e45e5104484a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpsw__Cfg.html#a25be1c060f61b996319e45e5104484a2">enableQsgmii1RDC</a></td></tr>
 <tr class="separator:a25be1c060f61b996319e45e5104484a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee6b7ca2ccd697ab6b0702ffbff69d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpsw__Cfg.html#a3ee6b7ca2ccd697ab6b0702ffbff69d8">disablePhyDriver</a></td></tr>
+<tr class="separator:a3ee6b7ca2ccd697ab6b0702ffbff69d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="af9c345f9d9efe883197826b23e399e15"></a>
@@ -386,6 +388,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>QSGMII1 Running Disparity Check (RDCD) enable </p>
+
+</div>
+</div>
+<a id="a3ee6b7ca2ccd697ab6b0702ffbff69d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee6b7ca2ccd697ab6b0702ffbff69d8">&#9670;&nbsp;</a></span>disablePhyDriver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cpsw_Cfg::disablePhyDriver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Disable Enet LLD PHY driver - Disables use on PHY driver inside the Enet LLD. All PHY functionality including PHY state machine is bypassed Application will use this mode if ethernet PHY is managed outside the Enet LLD Application is responsible for PHY management. Application can register with Enet LLD to get mdioLinkStateChangeCb callback. Application <em>must</em> use Enet LLD IOCTLs to access MDIO as MDIO ownership is still with Enet LLD and there should not be multiple masters for the MDIO peripheral </p>
 
 </div>
 </div>

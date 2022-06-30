@@ -54,6 +54,12 @@
 #ifndef TISCI_BOARD_CFG_H
 #define TISCI_BOARD_CFG_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 
 #define TISCI_BOARDCFG_ABI_MAJ_VALUE                  0x00
@@ -433,6 +439,11 @@ struct tisci_boardcfg_hashes_data {
     uint8_t    sec_bcfg_num_iter;
     uint8_t    hashes_received;
 };
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif          /* TISCI_BOARD_CFG_H */
 
 /** @} */

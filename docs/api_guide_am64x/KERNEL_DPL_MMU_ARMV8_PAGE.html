@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,30 +108,30 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_MMU_ARMV8_PAGE.html',''); i
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md460">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md461">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md462">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md463">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md464">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md526">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md527">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md528">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md529">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md530">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_MmuP_arm_v8"></a></p>
-<h1><a class="anchor" id="autotoc_md460"></a>
+<h1><a class="anchor" id="autotoc_md526"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to setup MMU regions, including region address, size, attributes like access permissions, cache properties</li>
 <li>APIs to enable, disable MMU</li>
 <li>API to check if MMU is enabled</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md461"></a>
+<h1><a class="anchor" id="autotoc_md527"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md462"></a>
+<h1><a class="anchor" id="autotoc_md528"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>MMU regions can overlap each other, with higher numbered regions taking more precedence in case of address overlaps.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md463"></a>
+<h1><a class="anchor" id="autotoc_md529"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="CacheP_8h.html">kernel/dpl/CacheP.h</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="MmuP__armv8_8h.html">kernel/dpl/MmuP_armv8.h</a>&gt;</span></div>
@@ -166,7 +166,7 @@ Example Usage</h1>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__MMU__ARMV8.html#ga606bcb8e4362806206d08ba2f55bc706">MmuP_enable</a>();</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__CACHE.html#gaca2cab801bb5e7b72e1605367ad71808">CacheP_enable</a>(<a class="code" href="group__KERNEL__DPL__CACHE.html#ggab8295dda8ae672ab4e314e51292de1fbadbcd63274b569051fa80b3526ef04ae7">CacheP_TYPE_ALL</a>);</div>
 <div class="line"> </div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md464"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md530"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__MMU__ARMV8.html">APIs for MMU for ARMv8 (ARM A53)</a> </p>
 </div></div><!-- contents -->

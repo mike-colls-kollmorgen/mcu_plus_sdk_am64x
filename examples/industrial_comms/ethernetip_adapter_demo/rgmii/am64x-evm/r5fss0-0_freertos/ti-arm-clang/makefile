@@ -1,5 +1,5 @@
 #
-# Auto generated makefile - DO NOT MODIFY
+# Auto generated makefile
 #
 
 export MCU_PLUS_SDK_PATH?=$(abspath ../../../../../../..)
@@ -30,6 +30,11 @@ BOOTIMAGE_NAME_SIGNED:=ethernetip_adapter_rgmii_demo.$(PROFILE).appimage.signed
 BOOTIMAGE_RPRC_NAME:=ethernetip_adapter_rgmii_demo.$(PROFILE).rprc
 BOOTIMAGE_RPRC_NAME_XIP:=ethernetip_adapter_rgmii_demo.$(PROFILE).rprc_xip
 BOOTIMAGE_RPRC_NAME_TMP:=ethernetip_adapter_rgmii_demo.$(PROFILE).rprc_tmp
+BOOTIMAGE_NAME_HS:=ethernetip_adapter_rgmii_demo.$(PROFILE).appimage.hs
+TARGETS := $(BOOTIMAGE_NAME)
+ifeq ($(DEVICE_TYPE), HS)
+   TARGETS += $(BOOTIMAGE_NAME_HS)
+endif
 
 FILES_common := \
 	AppPerm.c \
@@ -37,6 +42,8 @@ FILES_common := \
 	App.c \
 	AppClass71.c \
 	appPhyReset.c \
+	CUST_PHY_base.c \
+	CUST_PHY_dp83869.c \
 	ti_drivers_config.c \
 	ti_drivers_open_close.c \
 	ti_board_config.c \
@@ -50,6 +57,7 @@ FILES_PATH_common = \
 	../../.. \
 	../../../.. \
 	../../../../board/am64x-evm \
+	../../../../customPhy/src \
 	generated \
 
 INCLUDES_common := \
@@ -60,6 +68,7 @@ INCLUDES_common := \
 	-I${MCU_PLUS_SDK_PATH}/source/kernel/freertos/config/am64x/r5f \
 	-I${MCU_PLUS_SDK_PATH}/examples/industrial_comms/ethernetip_adapter_demo \
 	-I${MCU_PLUS_SDK_PATH}/examples/industrial_comms/ethernetip_adapter_demo/board/am64x-evm \
+	-I${MCU_PLUS_SDK_PATH}/examples/industrial_comms/ethernetip_adapter_demo/customPhy/inc \
 	-I${MCU_PLUS_SDK_PATH}/source/industrial_comms/ethernetip_adapter/stack \
 	-I${MCU_PLUS_SDK_PATH}/source/industrial_comms/ethernetip_adapter/stack/inc \
 	-Igenerated \
@@ -72,13 +81,25 @@ CFLAGS_common := \
 	-mcpu=cortex-r5 \
 	-mfloat-abi=hard \
 	-mfpu=vfpv3-d16 \
+	-mthumb \
 	-Wall \
 	-Werror \
 	-g \
 	-Wno-gnu-variable-sized-type-not-at-end \
 	-Wno-unused-function \
-	-mthumb \
 	-mllvm -align-all-functions=2 \
+
+CFLAGS_cpp_common := \
+	-Wno-c99-designator \
+	-Wno-extern-c-compat \
+	-Wno-c++11-narrowing \
+	-Wno-reorder-init-list \
+	-Wno-deprecated-register \
+	-Wno-writable-strings \
+	-Wno-enum-compare \
+	-Wno-reserved-user-defined-literal \
+	-Wno-unused-const-variable \
+	-x c++ \
 
 CFLAGS_debug := \
 	-D_DEBUG_=1 \
@@ -115,6 +136,7 @@ LFLAGS_common = \
 	-Wl,--reread_libs \
 	-Wl,--use_memcpy=fast \
 	-Wl,--use_memset=fast \
+
 
 LIBS_NAME = \
 	freertos.am64x.r5f.ti-arm-clang.${ConfigName}.lib \
@@ -166,7 +188,7 @@ $(OBJDIR)/%.obj %.obj: %.S
 	@echo  Compiling: am64x:r5fss0-0:freertos:ti-arm-clang $(LIBNAME): $<
 	$(CC) -c $(CFLAGS) -o $(OBJDIR)/$@ $<
 
-all: $(BOOTIMAGE_NAME)
+all: $(TARGETS)
 
 SYSCFG_GEN_FILES=generated/ti_drivers_config.c generated/ti_drivers_config.h
 SYSCFG_GEN_FILES+=generated/ti_drivers_open_close.c generated/ti_drivers_open_close.h
@@ -189,6 +211,7 @@ clean:
 	$(RM) $(BOOTIMAGE_NAME)
 	$(RM) $(BOOTIMAGE_NAME_XIP)
 	$(RM) $(BOOTIMAGE_NAME_SIGNED)
+	$(RM) $(BOOTIMAGE_NAME_HS)
 	$(RM) $(BOOTIMAGE_RPRC_NAME)
 	$(RM) $(BOOTIMAGE_RPRC_NAME_XIP)
 	$(RMDIR) generated/
@@ -284,23 +307,23 @@ endif
 	$(XIPGEN_CMD) -i $(BOOTIMAGE_RPRC_NAME_TMP) -o $(BOOTIMAGE_RPRC_NAME) -x $(BOOTIMAGE_RPRC_NAME_XIP) --flash-start-addr 0x60000000 -v > $(BOOTIMAGE_TEMP_OUT_FILE)
 	$(MULTI_CORE_IMAGE_GEN) --devID $(SBL_DEV_ID) --out $(BOOTIMAGE_NAME) $(MULTI_CORE_IMAGE_PARAMS) >> $(BOOTIMAGE_TEMP_OUT_FILE)
 	$(MULTI_CORE_IMAGE_GEN) --devID $(SBL_DEV_ID) --out $(BOOTIMAGE_NAME_XIP) $(MULTI_CORE_IMAGE_PARAMS_XIP) >> $(BOOTIMAGE_TEMP_OUT_FILE)
-ifeq ($(DEVICE_TYPE),HS)
-# Sign the appimage using appimage signing script
-ifeq ($(ENC_ENABLED),no)
-	@echo Boot image signing: Encryption is disabled.
-	$(PYTHON) $(APP_IMAGE_SIGN_CMD) --bin $(BOOTIMAGE_NAME) --authtype 1 --key $(APP_SIGNING_KEY) --output $(BOOTIMAGE_NAME).hs
-else
-	@echo Boot image signing: Encryption is enabled.
-	$(PYTHON) $(APP_IMAGE_SIGN_CMD) --bin $(BOOTIMAGE_NAME) --authtype 1 --key $(APP_SIGNING_KEY) --enc y --enckey $(APP_ENCRYPTION_KEY) --output $(BOOTIMAGE_NAME).hs
-	$(RM) $(BOOTIMAGE_NAME)-enc
-endif
-endif
 	$(RM) $(BOOTIMAGE_RPRC_NAME_TMP)
 	$(RM) $(BOOTIMAGE_TEMP_OUT_FILE)
 	@echo  Boot image: am64x:r5fss0-0:freertos:ti-arm-clang $(BOOTIMAGE_PATH)/$@ Done !!!
-ifeq ($(DEVICE_TYPE),HS)
-	@echo  Boot image: am64x:r5fss0-0:freertos:ti-arm-clang $(BOOTIMAGE_PATH)/$(BOOTIMAGE_NAME).hs Done !!!
-endif
 	@echo  .
 
+$(BOOTIMAGE_NAME_HS): $(BOOTIMAGE_NAME)
+ifeq ($(DEVICE_TYPE), HS)
+# Sign the appimage using appimage signing script
+ifeq ($(ENC_ENABLED),no)
+	@echo Boot image signing: Encryption is disabled.
+	$(PYTHON) $(APP_IMAGE_SIGN_CMD) --bin $(BOOTIMAGE_NAME) --authtype 1 --key $(APP_SIGNING_KEY) --output $(BOOTIMAGE_NAME_HS)
+else
+	@echo Boot image signing: Encryption is enabled.
+	$(PYTHON) $(APP_IMAGE_SIGN_CMD) --bin $(BOOTIMAGE_NAME) --authtype 1 --key $(APP_SIGNING_KEY) --enc y --enckey $(APP_ENCRYPTION_KEY) --output $(BOOTIMAGE_NAME_HS)
+	$(RM) $(BOOTIMAGE_NAME)-enc
+endif
+	@echo  Boot image: am64x:r5fss0-0:freertos:ti-arm-clang $(BOOTIMAGE_PATH)/$(BOOTIMAGE_NAME_HS) Done !!!
+	@echo  .
+endif
 -include $(addprefix $(OBJDIR)/, $(DEPS))

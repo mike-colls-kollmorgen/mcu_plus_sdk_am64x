@@ -1,0 +1,17 @@
+%%{
+    let module = system.modules["/networking/enet_cpsw/enet_cpsw"];
+%%}
+% let instance = module.$instances[0];
+/*
+ * Enet DMA memory allocation utility functions.
+ */
+
+/* ========================================================================== */
+/*                         Macros & Typedefs                                  */
+/* ========================================================================== */
+
+#define ENET_SYSCFG_NUM_TX_PKT      (`instance.TxPacketsCount`U)
+#define ENET_SYSCFG_NUM_RX_PKT      (`instance.RxPacketsCount`U)
+#define ENET_SYSCFG_PKT_POOL_ENABLE (`Number(instance.PktPoolEnable)`U)
+#define ENET_SYSCFG_MAX_MAC_PORTS   (`Number((module.getCpswInstInfo(instance)).numMacPorts)`U)
+#define ENET_SYSCFG_ENABLE_EXTPHY   (`Number((instance.ExternalPhyMgmtEnable == true))`U)

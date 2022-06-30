@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,23 +108,26 @@ $(document).ready(function(){initNavTree('EXAMPLES_ENET_LAYER2_CPSW_SWITCH.html'
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1309">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1310">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1311">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1312">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1313">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1314">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1315">For CPSW based example</a></li>
+<ul><li class="level1"><a href="#autotoc_md1533">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1534">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1535">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1536">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1537">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1538">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1539">For CPSW based example</a></li>
+</ul>
+</li>
+<li class="level3"><a href="#autotoc_md1540">AM64X-SK</a><ul><li class="level4"><a href="#autotoc_md1541">For CPSW based example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md1316">Run the example</a></li>
-<li class="level2"><a href="#autotoc_md1317">Sample output for Multiport example</a></li>
+<li class="level2"><a href="#autotoc_md1542">Run the example</a></li>
+<li class="level2"><a href="#autotoc_md1543">Sample output for Multiport example</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1318">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1544">See Also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_networking_enet_layer2_cpsw_switch"></a></p>
-<h1><a class="anchor" id="autotoc_md1309"></a>
+<h1><a class="anchor" id="autotoc_md1533"></a>
 Introduction</h1>
 <p>The layer 2 cpsw switch example is dedicated to demonstrate usage of Enet CPSW3G peripheral operation as a basic switch.</p>
 <p>On AM64X, we can do ethernet based communication using CPSW HW mechanism</p>
@@ -149,7 +152,13 @@ Introduction</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1310"></a>
+<dl class="section attention"><dt>Attention</dt><dd></dd></dl>
+<ul>
+<li>AM64X-SK CPSW3G RGMII1 RX pins use IOset2 pinmux combination.</li>
+<li>The phy address of CPSW ethernet PHY-2 is 0x0001 for AM64X-SK.</li>
+<li>Use the default value in the AM64X-SK system configuration file for RX pins and phy addresses.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md1534"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -159,24 +168,24 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Toolchain  </td><td class="markdownTableBodyNone">ti-arm-clang   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm   </td></tr>
+<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm, am64x-sk   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/networking/enet_layer2_cpsw_switch/V0   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1311"></a>
+<h1><a class="anchor" id="autotoc_md1535"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1312"></a>
+<h2><a class="anchor" id="autotoc_md1536"></a>
 Build the example</h2>
 <ul>
 <li>When using CCS projects to build, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li>When using makefiles to build, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1313"></a>
+<h2><a class="anchor" id="autotoc_md1537"></a>
 HW Setup</h2>
 <dl class="section note"><dt>Note</dt><dd>Make sure you have setup the EVM with cable connections as shown here, <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>. In addition do below steps.</dd></dl>
-<h3><a class="anchor" id="autotoc_md1314"></a>
+<h3><a class="anchor" id="autotoc_md1538"></a>
 AM64X-EVM</h3>
-<h4><a class="anchor" id="autotoc_md1315"></a>
+<h4><a class="anchor" id="autotoc_md1539"></a>
 For CPSW based example</h4>
 <ul>
 <li>Connect a ethernet cable to the EVM from host PC as shown below</li>
@@ -185,18 +194,42 @@ For CPSW based example</h4>
 <img src="am64x_evm_lwip_example_00.png" alt=""/>
 <div class="caption">
 Ethernet cable for CPSW based ethernet</div></div>
-<h2><a class="anchor" id="autotoc_md1316"></a>
+<h3><a class="anchor" id="autotoc_md1540"></a>
+AM64X-SK</h3>
+<h4><a class="anchor" id="autotoc_md1541"></a>
+For CPSW based example</h4>
+<ul>
+<li>Connect two ethernet cables to the CPSW RGMII 1 and CPSW RGMII 2 ports in AM64X-SK from host PC as shown below</li>
+</ul>
+<p> <style>div.image img[src="am64x_sk_cpsw_example_01.png"]{width:40%}</style> </p><div class="image">
+<img src="am64x_sk_cpsw_example_01.png" alt=""/>
+<div class="caption">
+Ethernet cable for CPSW based ethernet</div></div>
+<h2><a class="anchor" id="autotoc_md1542"></a>
 Run the example</h2>
 <dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run again, a CPU power-cycle is MUST</dd></dl>
 <ul>
 <li>Launch a CCS debug session and run the example executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>You will see logs in the UART terminal as shown in the next section.</li>
-<li>We can start sending packets from Colasoft Pkt Builder or packETH tool and capture the packets in Wireshark.</li>
+<li>Launch a CCS debug session and run the example executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
+<li>You will see logs in the UART terminal as shown in the next section.</li>
+<li>We can start sending multicast packets from Colasoft Pkt Builder or packETH tool.<ul>
+<li>In the Colasoft Pkt Builder, click on Add icon , select any layer2 Packet and click ok.</li>
+<li>Edit the source and destination address in the decode editor.</li>
+<li>Click on send icon and select the ethernet adapater.</li>
+<li>Click start, packets will be send to the target.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1317"></a>
+</li>
+<li>Capture the packets in Wireshark.</li>
+</ul>
+<p> <style>div.image img[src="layer2_cpsw_example_packet_builder.png"]{width:60%}</style> </p><div class="image">
+<img src="layer2_cpsw_example_packet_builder.png" alt=""/>
+<div class="caption">
+Colasoft Pkt Builder to generate and send packets.</div></div>
+<h2><a class="anchor" id="autotoc_md1543"></a>
 Sample output for Multiport example</h2>
 <div class="fragment"><div class="line">==========================</div>
-<div class="line">     Layer 2 CPSW SWITCH Test    </div>
+<div class="line">     Layer 2 CPSW SWITCH Test</div>
 <div class="line">==========================</div>
 <div class="line">Init Enet&#39;s OSAL and utils to use defaults</div>
 <div class="line">Init memory utils</div>
@@ -326,7 +359,7 @@ Sample output for Multiport example</h2>
 <img src="layer2_cpsw_example_wireshark_log.png" alt=""/>
 <div class="caption">
 Wireshark log for Layer 2 CPSW Example</div></div>
-<h1><a class="anchor" id="autotoc_md1318"></a>
+<h1><a class="anchor" id="autotoc_md1544"></a>
 See Also</h1>
 <p><a class="el" href="NETWORKING.html">Networking</a> </p>
 </div></div><!-- contents -->

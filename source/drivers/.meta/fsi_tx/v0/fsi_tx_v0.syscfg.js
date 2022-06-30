@@ -57,6 +57,13 @@ function getClockEnableIds(inst) {
     return instConfig.clockIds;
 }
 
+function getClockFrequencies(inst) {
+
+    let instConfig = getInstanceConfig(inst);
+
+    return instConfig.clockFrequencies;
+}
+
 function validate(inst, report) {
     /* None */
 }
@@ -73,8 +80,19 @@ let fsi_tx_module = {
         "/drivers/pinmux/pinmux_config.c.xdt": {
             moduleName: fsi_tx_module_name,
         },
+        "/drivers/system/power_clock_config.c.xdt": {
+            moduleName: fsi_tx_module_name,
+        },
     },
     defaultInstanceName: "CONFIG_FSI_TX",
+    config: [
+        {
+            name: "intrEnable",
+            displayName: "Interrupt Mode",
+            description: "Enable Interrupt mode of operation",
+            default: true,
+        },
+    ],
     validate: validate,
     modules: function(inst) {
         return [{
@@ -83,10 +101,38 @@ let fsi_tx_module = {
         }]
     },
     pinmuxRequirements,
+    moduleInstances: moduleInstances,
     getInstanceConfig,
     getInterfaceName,
     getPeripheralPinNames,
     getClockEnableIds,
+    getClockFrequencies,
 };
+
+function moduleInstances(inst) {
+    let modInstances = new Array();
+
+    if(soc.interruptXbarConfig == true && inst.intrEnable == true)
+    {
+        modInstances.push({
+            name: "fsiTxIntXbar0",
+            displayName: "FSI TX Interrupt 0 XBAR",
+            moduleName: '/xbar/int_xbar/int_xbar',
+            requiredArgs: {
+                parentName: "FSI_TX_INT0",
+            },
+        });
+        modInstances.push({
+            name: "fsiTxIntXbar1",
+            displayName: "FSI TX Interrupt 1 XBAR",
+            moduleName: '/xbar/int_xbar/int_xbar',
+            requiredArgs: {
+                parentName: "FSI_TX_INT1",
+            },
+        });
+    }
+
+    return (modInstances);
+}
 
 exports = fsi_tx_module;

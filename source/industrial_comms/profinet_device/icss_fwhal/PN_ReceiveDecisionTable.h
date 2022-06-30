@@ -33,6 +33,12 @@
 #ifndef PN_RECEIVE_DECISION_TABLE_H_
 #define PN_RECEIVE_DECISION_TABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -101,5 +107,10 @@ const uint32_t PN_Receive_Decision_Table[] =
     0xffffffff, /* 01-15-4E-00-00-00  ..  01-15-4E-00-00-1F */
     0xffffffff  /* 01-80-C2-00-00-00  ..  01-80-C2-00-00-1F */
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PN_RECEIVE_DECISION_TABLE_H_ */

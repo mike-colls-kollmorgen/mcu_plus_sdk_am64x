@@ -34,6 +34,17 @@
 #ifndef LIST_OBJ_IF_H
 #define LIST_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "list_if.h"
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* LIST_OBJ_IF_H */

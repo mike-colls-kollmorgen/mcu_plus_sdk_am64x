@@ -17,7 +17,7 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./main.obj" \
-"$(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/adc_diagnostic.cmd" \
+"$(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/am64x-evm/icssg0-pru0_fw/ti-pru-cgt/adc_diagnostic.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 
@@ -32,7 +32,7 @@ SUBDIRS := \
 
 # Add inputs and outputs from these tool invocations to the build variables
 CMD_SRCS += \
-$(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/adc_diagnostic.cmd \
+$(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/am64x-evm/icssg0-pru0_fw/ti-pru-cgt/adc_diagnostic.cmd \
 
 ASM_SRCS += \
 $(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/main.asm
@@ -56,7 +56,7 @@ ASM_SRCS__QUOTED += \
 main.obj: $(MCU_PLUS_SDK_PATH)/examples/pru_io/adc/ads85x8/firmware/main.asm $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	@echo 'Building file: "$<"'
 	@echo 'Invoking: PRU Compiler'
-	"$(CG_TOOL_ROOT)/bin/clpru" -v4 --include_path="$(CCS_PATH)" --include_path="$(SYSCFG_DIR)" --include_path="$(CG_TOOL_ROOT)/include" --include_path="$(MCU_PLUS_SDK_PATH)/source" --include_path="$(MCU_PLUS_SDK_PATH)/source/pru_io/firmware/common" --include_path="$(MCU_PLUS_SDK_PATH)/source/pru_io/firmware/adc/include" --include_path="$(MCU_PLUS_SDK_PATH)/source/pru_io/firmware/adc/ads8598" --define=PRU0 --define=SOC_AM64X --define=_DEBUG_=1 -g --diag_warning=225 --diag_wrap=off --display_error_number --endian=little --preproc_with_compile --preproc_dependency="$(basename $(<F)).d_raw" $(GEN_OPTS__FLAG) "$<"
+	"$(CG_TOOL_ROOT)/bin/clpru" -DICSSG0 -DPRU0 -DSLICE0 -v4 --define=SOC_AM64X --include_path="$(CCS_PATH)" --include_path="$(SYSCFG_DIR)" --include_path="${CG_TOOL_ROOT}/include" --include_path="${MCU_PLUS_SDK_PATH}/source" --include_path="${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/common" --include_path="${MCU_PLUS_SDK_PATH}/source/pru_io/firmware/adc/include"  --define=_DEBUG_=1 -g --diag_warning=225 --diag_wrap=off --display_error_number --endian=little --preproc_with_compile --preproc_dependency="$(basename $(<F)).d_raw" $(GEN_OPTS__FLAG) "$<"
 	@echo 'Finished building: "$<"'
 	@echo ' '
 
@@ -86,7 +86,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: PRU Linker'
-	"$(CG_TOOL_ROOT)/bin/clpru" -v4 --define=PRU0 --define=SOC_AM64X --define=_DEBUG_=1 -g --diag_warning=225 --diag_wrap=off --display_error_number --endian=little -z -m"adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.map" -i"$(CG_TOOL_ROOT)/lib" --diag_wrap=off --display_error_number --warn_sections --xml_link_info="adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt_linkInfo.xml" --rom_model -o "adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.out" $(ORDERED_OBJS)
+	"$(CG_TOOL_ROOT)/bin/clpru" -DICSSG0 -DPRU0 -DSLICE0 -v4 --define=SOC_AM64X  --define=_DEBUG_=1 -g --diag_warning=225 --diag_wrap=off --display_error_number --endian=little -z -m"adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.map" -i"$(CG_TOOL_ROOT)/lib" --diag_wrap=off --display_error_number --warn_sections --xml_link_info="adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt_linkInfo.xml" --rom_model -o "adc_am64x-evm_icssg0-pru0_fw_ti-pru-cgt.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -116,4 +116,3 @@ post-build:
 .SECONDARY:
 
 -include ../makefile.targets
-

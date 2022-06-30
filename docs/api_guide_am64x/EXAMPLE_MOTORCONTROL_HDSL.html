@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('EXAMPLE_MOTORCONTROL_HDSL.html',''); i
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_examples_motorcontrol_hdsl_example"></a> </p>
-<h1><a class="anchor" id="autotoc_md1022"></a>
+<h1><a class="anchor" id="autotoc_md1137"></a>
 Introduction</h1>
 <p>The HDSL firmware running on ICSS-PRU provides a defined well interface to execute the HDSL protocol. The HDSL diagnostic application described here interacts with the firmware interface.</p>
 <p>HDSL diagnostic application does below,</p><ul>
@@ -118,7 +118,7 @@ Introduction</h1>
 <li>Loads the initialization section of PRU firmware &amp; executes it.</li>
 </ul>
 <p>Firmware is split to three sections, initialization, datalink and transport. At startup, the application displays details about encoder and status. It then presents the user with menu options, based on the option selected, application communicates with HDSL interface and the result is presented to the user.</p>
-<h2><a class="anchor" id="autotoc_md1023"></a>
+<h2><a class="anchor" id="autotoc_md1138"></a>
 Features Supported</h2>
 <ul>
 <li>PRU firmware source</li>
@@ -129,14 +129,14 @@ Features Supported</h2>
 <li>Register interface to be compatible with SICK HDSL FPGA IP Core. (except registers that have different functionality for read and write)</li>
 <li>Parameter channel communication (short message write)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1024"></a>
+<h2><a class="anchor" id="autotoc_md1139"></a>
 SysConfig Features</h2>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure things mentioned below:</p><ul>
 <li>Selecting the ICSSG0PRUx instance.(Tested on ICSSG0-PRU1)</li>
 <li>Configuring PINMUX.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1025"></a>
+<h2><a class="anchor" id="autotoc_md1140"></a>
 Features Not Supported</h2>
 <p>In general, peripherals or features not mentioned as part of "Features Supported" section are not supported, including the below</p><ul>
 <li>Fast position, speed</li>
@@ -144,7 +144,7 @@ Features Not Supported</h2>
 <li>Short message read</li>
 <li>Safety</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1026"></a>
+<h2><a class="anchor" id="autotoc_md1141"></a>
 Important files and directory structure</h2>
 <table class="doxtable">
 <tr>
@@ -178,9 +178,9 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/motorcontrol/hdsl_example   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1027"></a>
+<h1><a class="anchor" id="autotoc_md1142"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1028"></a>
+<h2><a class="anchor" id="autotoc_md1143"></a>
 Hardware Prerequisites</h2>
 <p>Other than the basic EVM setup mentioned in <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>, below additional HW is required to run this demo</p><ul>
 <li>HDSL encoder</li>
@@ -203,19 +203,19 @@ Hardware Prerequisites</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1029"></a>
+<h2><a class="anchor" id="autotoc_md1144"></a>
 Hardware Setup(Using TIDA-00179, TIDEP-01015 and Interface board)</h2>
 <p> <style>div.image img[src="HDSL_Connections.png"]{width:40%}</style> </p><div class="image">
 <img src="HDSL_Connections.png" alt=""/>
 <div class="caption">
 Hardware Setup</div></div>
-<h2><a class="anchor" id="autotoc_md1030"></a>
+<h2><a class="anchor" id="autotoc_md1145"></a>
 Hardware Setup(Using HDSL AM64xE1 Transceiver)</h2>
 <p> <style>div.image img[src="HDSL_AM64xE1_2.png"]{width:80%}</style> </p><div class="image">
 <img src="HDSL_AM64xE1_2.png" alt=""/>
 <div class="caption">
 Hardware Setup</div></div>
-<h2><a class="anchor" id="autotoc_md1031"></a>
+<h2><a class="anchor" id="autotoc_md1146"></a>
 Build, load and run</h2>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
@@ -223,7 +223,7 @@ Build, load and run</h2>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>Refer to UART terminal for user interface menu options.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1032"></a>
+<h1><a class="anchor" id="autotoc_md1147"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run:</p>
 <ul>

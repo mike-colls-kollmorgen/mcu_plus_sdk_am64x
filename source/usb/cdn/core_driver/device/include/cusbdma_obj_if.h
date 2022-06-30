@@ -34,6 +34,12 @@
 #ifndef CUSBDMA_OBJ_IF_H
 #define CUSBDMA_OBJ_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cusbdma_if.h"
 
 /** @defgroup DriverObject Driver API Object
@@ -186,5 +192,10 @@ extern CUSBDMA_OBJ *CUSBDMA_GetInstance(void);
  *  @}
  */
 /* parasoft-end-suppress METRICS-36-3 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBDMA_OBJ_IF_H */

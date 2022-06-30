@@ -38,6 +38,12 @@
 #ifndef RED_SNMP_H_
 #define RED_SNMP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -276,5 +282,10 @@ int32_t                   getLreNodeTable(RED_NODE_TABLE *pNodeTable,
 *
 */
 RemNodeType_t             getLreRemNodeType(uint8_t nodeEntryStatus);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_SNMP_H_ */

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,21 +108,21 @@ $(document).ready(function(){initNavTree('TOOLS_CCS.html',''); initResizable(); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md894">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md895">Application loader</a><ul><li class="level2"><a href="#autotoc_md896">Usage</a></li>
+<ul><li class="level1"><a href="#autotoc_md983">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md984">Application loader</a><ul><li class="level2"><a href="#autotoc_md985">Usage</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md897">DMSC loader</a></li>
+<li class="level1"><a href="#autotoc_md986">DMSC loader</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_tools_tools_ccs"></a></p>
-<h1><a class="anchor" id="autotoc_md894"></a>
+<h1><a class="anchor" id="autotoc_md983"></a>
 Introduction</h1>
 <p>This section describes CCS utility scripts that can optionally be used to make your development more productive.</p>
-<h1><a class="anchor" id="autotoc_md895"></a>
+<h1><a class="anchor" id="autotoc_md984"></a>
 Application loader</h1>
 <p><code>load.js</code> script located at <code>${SDK_INSTALL_PATH}/tools/ccs_load/{soc}</code> is useful for loading and running applications across multiple CPUs in one step.</p>
-<h2><a class="anchor" id="autotoc_md896"></a>
+<h2><a class="anchor" id="autotoc_md985"></a>
 Usage</h2>
 <ol type="1">
 <li><p class="startli">Search and modify below mentioned variables in the script file before loading. These are used to construct path to the example .out file when the example is built via makefiles. Alternatively, can you give absolute paths to the example .out of interest.</p>
@@ -171,7 +171,7 @@ Usage</h2>
 <li>To reload without power cycle, repeat step 3 onwards.</li>
 <li>See also description at the top of this file <code>load.js</code> for detailed instructions</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md897"></a>
+<h1><a class="anchor" id="autotoc_md986"></a>
 DMSC loader</h1>
 <p><code>load_dmsc.js</code> located at <code>${SDK_INSTALL_PATH}/tools/ccs_load/{soc}</code> is useful to perform SOC initialization using CCS scripting. This script basically loads <code>sysfw.bin</code> to M3 core to initialize DMSC and then loads <code>sciclient_set_boardcfg.release.out</code> to R5F core to perform the default board configuration.</p>
 <p>This script is especially useful for initial custom board bring up when only GEL files are available and nothing else.</p>

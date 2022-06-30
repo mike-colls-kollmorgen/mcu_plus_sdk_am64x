@@ -3,6 +3,7 @@
     let soc = system.getScript(`/drivers/soc/drivers_${common.getSocName()}`);
     let driverVer = soc.getDriverVer("mcspi");
     let module = system.modules['/drivers/mcspi/mcspi'];
+    let mcspiEdmaInstances = [];
     let module_ch = system.modules[`/drivers/mcspi/${driverVer}/mcspi_${driverVer}_channel`];
 %%}
 /*
@@ -10,6 +11,9 @@
  */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
+    % if(instance.intrEnable == "DMA") {
+    %    mcspiEdmaInstances.push(module.getInstanceConfig(instance).edmaDriver);
+    % }
     % let config = module.getInstanceConfig(instance);
     % if(config.transferMode == "CALLBACK" && config.transferCallbackFxn != "NULL") {
 /* MCSPI Transfer Callback */
@@ -21,6 +25,7 @@ MCSPI_Handle gMcspiHandle[CONFIG_MCSPI_NUM_INSTANCES];
 /* MCSPI Driver Open Parameters */
 MCSPI_OpenParams gMcspiOpenParams[CONFIG_MCSPI_NUM_INSTANCES] =
 {
+% let dmaInstanceIndex = 0;
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
     % let config = module.getInstanceConfig(instance);
@@ -37,6 +42,12 @@ MCSPI_OpenParams gMcspiOpenParams[CONFIG_MCSPI_NUM_INSTANCES] =
         .transferTimeout        = `transferTimeout`,
         .transferCallbackFxn    = `config.transferCallbackFxn`,
         .msMode                 = MCSPI_MS_MODE_`msMode`,
+        %if(instance.intrEnable == "DMA") {
+        .mcspiDmaIndex = `dmaInstanceIndex`,
+        %}
+        %else {
+        .mcspiDmaIndex = -1,
+        %}
     },
 % }
 };
@@ -72,6 +83,35 @@ MCSPI_ChConfig g`instNameCamelCase`ChCfg[`instance.$name.toUpperCase()`_NUM_CH] 
     % }
 };
 % }
+
+#include <drivers/mcspi/v0/dma/mcspi_dma.h>
+%if(mcspiEdmaInstances.length > 0) {
+#include <drivers/mcspi/v0/dma/edma/mcspi_dma_edma.h>
+#include <drivers/edma.h>
+%}
+
+%  for(let i=0; i < module.$instances.length; i++) {
+%      let instance = module.$instances[i];
+%      let ch_instances = instance.mcspiChannel;
+%      let config = module.getInstanceConfig(instance);
+%      let instNameCamelCase = common.camelSentence(instance.$name);
+%      if(instance.intrEnable == "DMA") {
+
+
+MCSPI_DmaChConfig g`instNameCamelCase`DmaChCfg[`instance.$name.toUpperCase()`_NUM_CH] =
+{
+% for(let ch = 0; ch < ch_instances.length; ch++) {
+% let ch_instance = ch_instances[ch];
+% let ch_config = module_ch.getInstanceConfig(ch_instance);
+{
+.edmaRxChId = `ch_instance.mcspiRxConfigXbar.instance`,
+.edmaTxChId = `ch_instance.mcspiTxConfigXbar.instance`,
+},
+% }
+};
+%}
+%}
+
 
 void Drivers_mcspiOpen(void)
 {
@@ -109,6 +149,17 @@ void Drivers_mcspiOpen(void)
             DebugP_logError("`instance.$name.toUpperCase()` channel %d config failed !!!\r\n", chCnt);
             break;
         }
+    % if(instance.intrEnable == "DMA") {
+        status = MCSPI_dmaChConfig(
+                     gMcspiHandle[`instance.$name.toUpperCase()`],
+                     &g`instNameCamelCase`ChCfg[chCnt],
+                     &g`instNameCamelCase`DmaChCfg[chCnt]);
+        if(status != SystemP_SUCCESS)
+        {
+            DebugP_logError("`instance.$name.toUpperCase()` DMA channel %d config failed !!!\r\n", chCnt);
+            break;
+        }
+     %}
     }
 % }
 
@@ -123,7 +174,25 @@ void Drivers_mcspiOpen(void)
 void Drivers_mcspiClose(void)
 {
     uint32_t instCnt;
-
+%if(mcspiEdmaInstances.length > 0) {
+    int32_t status, chCnt;
+% }
+% for(let i = 0; i < module.$instances.length; i++) {
+    % let instance = module.$instances[i];
+    % let instNameCamelCase = common.camelSentence(instance.$name);
+    % if(instance.intrEnable == "DMA") {
+    for(chCnt = 0U; chCnt < `instance.$name.toUpperCase()`_NUM_CH; chCnt++)
+    {
+        status = MCSPI_dmaClose(gMcspiHandle[`instance.$name.toUpperCase()`],
+                                &g`instNameCamelCase`ChCfg[chCnt]);
+        if(status != SystemP_SUCCESS)
+        {
+            DebugP_logError("`instance.$name.toUpperCase()` DMA close %d failed !!!\r\n", chCnt);
+            break;
+        }
+    }
+         %}
+% }
     /* Close all instances that are open */
     for(instCnt = 0U; instCnt < CONFIG_MCSPI_NUM_INSTANCES; instCnt++)
     {

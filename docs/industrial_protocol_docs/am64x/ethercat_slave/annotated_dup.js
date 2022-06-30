@@ -8,7 +8,6 @@ var annotated_dup =
     [ "EC_API_SLV_EEP_SCat_SyncMan", "struct_e_c___a_p_i___s_l_v___e_e_p___s_cat___sync_man.html", "struct_e_c___a_p_i___s_l_v___e_e_p___s_cat___sync_man" ],
     [ "EC_API_SLV_EEP_SCat_SyncManEntry", "struct_e_c___a_p_i___s_l_v___e_e_p___s_cat___sync_man_entry.html", "struct_e_c___a_p_i___s_l_v___e_e_p___s_cat___sync_man_entry" ],
     [ "EC_API_SLV_SEeprom", "struct_e_c___a_p_i___s_l_v___s_eeprom.html", "struct_e_c___a_p_i___s_l_v___s_eeprom" ],
-    [ "EC_API_SLV_SPhyDescriptor", "struct_e_c___a_p_i___s_l_v___s_phy_descriptor.html", "struct_e_c___a_p_i___s_l_v___s_phy_descriptor" ],
     [ "EC_SLV_API_CiA402_SAxis_t", "struct_e_c___s_l_v___a_p_i___ci_a402___s_axis__t.html", "struct_e_c___s_l_v___a_p_i___ci_a402___s_axis__t" ],
     [ "EC_SLV_API_SSyncManDesc", "struct_e_c___s_l_v___a_p_i___s_sync_man_desc.html", "struct_e_c___s_l_v___a_p_i___s_sync_man_desc" ],
     [ "EC_SLV_APP_Sapplication", "struct_e_c___s_l_v___a_p_p___sapplication.html", "struct_e_c___s_l_v___a_p_p___sapplication" ],

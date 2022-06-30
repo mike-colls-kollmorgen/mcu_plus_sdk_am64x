@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,16 @@ $(document).ready(function(){initNavTree('RESOURCE_ALLOCATION_GUIDE.html',''); i
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md294">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md295">Changing a particular resource</a></li>
-<li class="level1"><a href="#autotoc_md296">Rebuilding the board configuration</a></li>
+<ul><li class="level1"><a href="#autotoc_md347">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md348">Changing a particular resource</a></li>
+<li class="level1"><a href="#autotoc_md349">Rebuilding the board configuration</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_resource_allocation"></a></p>
-<h1><a class="anchor" id="autotoc_md294"></a>
+<h1><a class="anchor" id="autotoc_md347"></a>
 Introduction</h1>
 <p>Various resources of the SOC like the number of DMA channels, number of interrupt router outputs, number of interrupt aggregator virtual interrupt numbers etc. are usually managed by a resource management system or a resource manager. In the case of AM64x and AM243x devices, this is managed by the System Controller Firmware (SYSFW) running on the M3 core. Once the SYSFW is loaded on M3 and is initialized, we need to send a certain configuration data to the SYSFW regarding the resources we would be using. This is largely an array of resource assignment entries, with each entry specifying the start number of the resource, count or number of resource needed, type of resource, host id of the core which will request for this resource, etc. Later when the request for a specific resource is made, the SYSFW will cross check the request parameters with this already sent configuration data, and the requested resources will only be allocated if that falls within the range in this configuration data. We call this the Resource Management Board Configuration or <b>RM boardcfg</b>.</p>
-<h1><a class="anchor" id="autotoc_md295"></a>
+<h1><a class="anchor" id="autotoc_md348"></a>
 Changing a particular resource</h1>
 <dl class="section note"><dt>Note</dt><dd>At the moment the changes need to made manually by editing C files, but soon a Sysconfig GUI based tool will be available to generate this C file.</dd></dl>
 <ul>
@@ -177,7 +177,7 @@ Resource Assignment Entries</div></div>
 <img src="resasg_2.png" alt=""/>
 <div class="caption">
 Resource Assignment Entries Size</div></div>
-<h1><a class="anchor" id="autotoc_md296"></a>
+<h1><a class="anchor" id="autotoc_md349"></a>
 Rebuilding the board configuration</h1>
 <ul>
 <li>Once the changes are made in the file, we need to generate a hex array corresponding to the file and make sure that the bootloader libraries and the <code>sciclient_set_boardcfg</code> application are updated with these changes. For this one can follow <a class="el" href="TOOLS_SYSFW.html#BOARCFG_GEN">SYSFW Board Config Generation</a> section </li>

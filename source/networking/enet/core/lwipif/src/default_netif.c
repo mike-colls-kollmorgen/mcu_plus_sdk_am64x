@@ -30,7 +30,6 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <lwip/mem.h>
 #include <lwip/tcpip.h>
 #include <lwip2lwipif.h>
 

@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_SOC_AM64X_H_
 #define BOOTLOADER_SOC_AM64X_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/hw_include/cslr_soc.h>
 
 /**
@@ -201,6 +207,24 @@ char* Bootloader_socGetCoreName(uint32_t cpuId);
 int32_t Bootloader_socMemInitCpu(uint32_t cpuId);
 
 /**
+ * \brief Obtain the Sciclient Proc Id corresponding to the CSL core ID
+ *
+ * \param cpuId [in] The CSL ID of the core
+ *
+ * \return CSL core ID of a CPU
+ */
+uint32_t Bootloader_socGetSciclientCpuProcId(uint32_t cpuId);
+
+/**
+ * \brief Obtain the Sciclient Device Id corresponding to the CSL core ID
+ *
+ * \param cpuId [in] The CSL ID of the core
+ *
+ * \return CSL core ID of a CPU
+ */
+uint32_t Bootloader_socGetSciclientCpuDevId(uint32_t cpuId);
+
+/**
  * \brief API to trigger the security handover from SYSFW
  *
  * \return SystemP_SUCCESS on success, else failure
@@ -213,6 +237,13 @@ int32_t Bootloader_socSecHandover(void);
  * \return SystemP_SUCCESS on success, else failure
  */
 int32_t Bootloader_socWaitForFWBoot(void);
+
+/**
+ * \brief API to open required firewalls using SYSFW
+ *
+ * \return SystemP_SUCCESS on success, else failure
+ */
+int32_t Bootloader_socOpenFirewalls(void);
 
 /**
  * \brief API to authenticate (and decrypt if needed) an appimage using SYSFW
@@ -230,5 +261,10 @@ int32_t Bootloader_socAuthImage(uint32_t certLoadAddr);
  * \return TRUE (1U) if authentication required, FALSE (0U) if not.
  */
 uint32_t Bootloader_socIsAuthRequired(void);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* BOOTLOADER_SOC_AM64X_H_ */

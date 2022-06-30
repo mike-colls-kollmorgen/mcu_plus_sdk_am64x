@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,17 +108,17 @@ $(document).ready(function(){initNavTree('DRIVERS_EQEP_PAGE.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md513">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md514">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md515">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md516">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md517">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md518">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md580">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md581">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md582">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md583">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md584">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md585">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_eqep"></a></p>
 <p>The eQEP driver provides API to configure eQEP module. Below are the high level features supported by the driver.</p>
-<h1><a class="anchor" id="autotoc_md513"></a>
+<h1><a class="anchor" id="autotoc_md580"></a>
 Features Supported</h1>
 <ul>
 <li>Configuration of position counter and control unit for position and direction measurement</li>
@@ -126,19 +126,19 @@ Features Supported</h1>
 <li>Configuration of quadrature edge capture unit for low-speed measurement</li>
 <li>Configuration of watchdog timer for detecting stalls</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md514"></a>
+<h1><a class="anchor" id="autotoc_md581"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure below parameters apart from common configuration like Clock, MPU, RAT and others.</p><ul>
 <li>EQEP instances and pin mux configurations.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md515"></a>
+<h1><a class="anchor" id="autotoc_md582"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md516"></a>
+<h1><a class="anchor" id="autotoc_md583"></a>
 Important Usage Guidelines</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md517"></a>
+<h1><a class="anchor" id="autotoc_md584"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="eqep_8h.html">drivers/eqep.h</a>&gt;</span></div>
 </div><!-- fragment --><p> EQEP Interrupt Registration </p><div class="fragment"><div class="line">    int32_t             status = <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>;</div>
@@ -231,7 +231,7 @@ Example Usage</h1>
 <div class="line">    <span class="comment">/* Clear EQEP Interrupt. */</span></div>
 <div class="line">    <a class="code" href="group__DRV__EQEP__MODULE.html#ga70c8a6af6b0da6849baa47cd1d4764db">EQEP_clearInterruptStatus</a>(gEqepBaseAddr, EQEP_INT_ALL);</div>
 </div><!-- fragment --><p> EQEP Interrupt De-Registration </p><div class="fragment"><div class="line">    <a class="code" href="group__KERNEL__DPL__HWI.html#ga9dac4d4990b599de54662b9e32c0b47b">HwiP_destruct</a>(&amp;gEqepHwiObject);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md518"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md585"></a>
 API</h1>
 <p><a class="el" href="group__DRV__EQEP__MODULE.html">APIs for EQEP</a> </p>
 </div></div><!-- contents -->

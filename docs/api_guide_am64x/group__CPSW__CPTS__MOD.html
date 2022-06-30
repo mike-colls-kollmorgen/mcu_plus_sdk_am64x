@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -135,6 +135,12 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpswCpts__Event.html">CpswCpts_Event</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPTS event.  <a href="structCpswCpts__Event.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpswCpts__EstEventMatchParams.html">CpswCpts_EstEventMatchParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPTS EST event match params.  <a href="structCpswCpts__EstEventMatchParams.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpswCpts__EstEvent.html">CpswCpts_EstEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPTS EST timestamp.  <a href="structCpswCpts__EstEvent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCpswCpts__RegisterStackInArgs.html">CpswCpts_RegisterStackInArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input args for <a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa7638dd208ee480d49157d03deec2af30" title="CPTS register stack.">CPSW_CPTS_IOCTL_REGISTER_STACK</a> command.  <a href="structCpswCpts__RegisterStackInArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,7 +193,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffab57afdaae1e084173e8abddb8dfbf22c">CPSW_CPTS_IOCTL_SET_ESTF_NUDGE</a> = CPSW_CPTS_PUBLIC_IOCTL(10U), 
 <a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa8491bc68f11147b215ca1758dac1dd9a">CPSW_CPTS_IOCTL_SELECT_TS_OUTPUT_BIT</a> = CPSW_CPTS_PUBLIC_IOCTL(11U), 
 <br />
-&#160;&#160;<a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa7b7d4822c6a1298a48390eb10fd83066">CPSW_CPTS_IOCTL_LOOKUP_EVENT</a> = CPSW_CPTS_PUBLIC_IOCTL(12U)
+&#160;&#160;<a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffa7b7d4822c6a1298a48390eb10fd83066">CPSW_CPTS_IOCTL_LOOKUP_EVENT</a> = CPSW_CPTS_PUBLIC_IOCTL(12U), 
+<a class="el" href="group__CPSW__CPTS__MOD.html#ggab788726fe114cfc32a32011edfa724ffac0a8dd0957cbe423b3b64dfea807c34d">CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT</a> = CPSW_CPTS_PUBLIC_IOCTL(13U)
 <br />
  }</td></tr>
 <tr class="memdesc:gab788726fe114cfc32a32011edfa724ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPSW CPTS IOCTL commands.  <a href="group__CPSW__CPTS__MOD.html#gab788726fe114cfc32a32011edfa724ff">More...</a><br /></td></tr>
@@ -515,6 +522,12 @@ Macros</h2></td></tr>
 <p>IOCTL parameters:</p><ul>
 <li>inArgs: <a class="el" href="structCpswCpts__Event.html" title="CPTS event.">CpswCpts_Event</a></li>
 <li>outArgs: <a class="el" href="structCpswCpts__Event.html" title="CPTS event.">CpswCpts_Event</a> </li>
+</ul>
+</td></tr>
+<tr><td class="fieldname"><a id="ggab788726fe114cfc32a32011edfa724ffac0a8dd0957cbe423b3b64dfea807c34d"></a>CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT&#160;</td><td class="fielddoc"><p>CPTS lookup EST event/. </p>
+<p>IOCTL parameters:</p><ul>
+<li>inArgs: <a class="el" href="structCpswCpts__EstEventMatchParams.html" title="CPTS EST event match params.">CpswCpts_EstEventMatchParams</a></li>
+<li>outArgs: <a class="el" href="structCpswCpts__EstEvent.html" title="CPTS EST timestamp.">CpswCpts_EstEvent</a> </li>
 </ul>
 </td></tr>
 </table>

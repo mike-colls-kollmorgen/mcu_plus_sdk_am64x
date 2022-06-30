@@ -45,6 +45,12 @@
  */
 #ifndef _TI_STD_TYPES
 #define _TI_STD_TYPES
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
 
 /* If the CSL header files are getting included through the MAKEFILE builds we don't want
@@ -221,4 +227,9 @@ typedef double        Float64;
     #endif
 
     #endif /* DEVICE_XXXXX */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -183,6 +183,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1444b0d35694d4bbd4076f60b75374fa"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga1444b0d35694d4bbd4076f60b75374fa">Bootloader_runSelfCpuWithLinux</a> ()</td></tr>
 <tr class="memdesc:ga1444b0d35694d4bbd4076f60b75374fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to boot self CPU with Linux.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga1444b0d35694d4bbd4076f60b75374fa">More...</a><br /></td></tr>
 <tr class="separator:ga1444b0d35694d4bbd4076f60b75374fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63c0b10a5110cbf256ba86b853894389"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga63c0b10a5110cbf256ba86b853894389">Bootloader_getMulticoreImageSize</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle)</td></tr>
+<tr class="memdesc:ga63c0b10a5110cbf256ba86b853894389"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to fetch the size of the multicore image.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga63c0b10a5110cbf256ba86b853894389">More...</a><br /></td></tr>
+<tr class="separator:ga63c0b10a5110cbf256ba86b853894389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga204681c31a9a2aefc21f898e5506b9c3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga204681c31a9a2aefc21f898e5506b9c3">Bootloader_isCorePresent</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle, uint32_t cslCoreId)</td></tr>
+<tr class="memdesc:ga204681c31a9a2aefc21f898e5506b9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to check if a particular core's RPRC image is present in the multicore image.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga204681c31a9a2aefc21f898e5506b9c3">More...</a><br /></td></tr>
+<tr class="separator:ga204681c31a9a2aefc21f898e5506b9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga88acad431f45d32987fdd9a0318f79a9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga88acad431f45d32987fdd9a0318f79a9">Bootloader_getBootMedia</a> (<a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a> handle)</td></tr>
+<tr class="memdesc:ga88acad431f45d32987fdd9a0318f79a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">API to get the selected boot media in the bootloader instance.  <a href="group__DRV__BOOTLOADER__MODULE.html#ga88acad431f45d32987fdd9a0318f79a9">More...</a><br /></td></tr>
+<tr class="separator:ga88acad431f45d32987fdd9a0318f79a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -202,6 +211,10 @@ Macros</h2></td></tr>
 <tr class="separator:ga65c56429a6d2aab7780f370b147c4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga25742c00c254eac8c87c2a681d257920"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga25742c00c254eac8c87c2a681d257920">BOOTLOADER_MEDIA_EMMC</a>&#160;&#160;&#160;(0xB0070003)</td></tr>
 <tr class="separator:ga25742c00c254eac8c87c2a681d257920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad029e37d57b29cfa2bf9addf8a304a1f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#gad029e37d57b29cfa2bf9addf8a304a1f">BOOTLOADER_MEDIA_SD</a>&#160;&#160;&#160;(0xB0070004)</td></tr>
+<tr class="separator:gad029e37d57b29cfa2bf9addf8a304a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f998332cc5f2dd0241e9ad6b9129a43"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga0f998332cc5f2dd0241e9ad6b9129a43">BOOTLOADER_MEDIA_BUFIO</a>&#160;&#160;&#160;(0xB0070005)</td></tr>
+<tr class="separator:ga0f998332cc5f2dd0241e9ad6b9129a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
 Bootloader driver implementation callbacks</h2></td></tr>
@@ -276,6 +289,34 @@ Bootloader driver implementation callbacks</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define BOOTLOADER_MEDIA_EMMC&#160;&#160;&#160;(0xB0070003)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad029e37d57b29cfa2bf9addf8a304a1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad029e37d57b29cfa2bf9addf8a304a1f">&#9670;&nbsp;</a></span>BOOTLOADER_MEDIA_SD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOOTLOADER_MEDIA_SD&#160;&#160;&#160;(0xB0070004)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga0f998332cc5f2dd0241e9ad6b9129a43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0f998332cc5f2dd0241e9ad6b9129a43">&#9670;&nbsp;</a></span>BOOTLOADER_MEDIA_BUFIO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOOTLOADER_MEDIA_BUFIO&#160;&#160;&#160;(0xB0070005)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -965,6 +1006,101 @@ NULL in case of failure </dd></dl>
 <p>API to boot self CPU with Linux. </p>
 <p>This API will boot self CPU, i.e a CPU on which the bootloader application is running. It is expected that this API be called after <a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga91ac1314f99b816aa05b86ec40912639">Bootloader_loadSelfCpu</a> API. This API does not perform a security handoff</p>
 <dl class="section return"><dt>Returns</dt><dd>SystemP_SUCCESS on success, else failure </dd></dl>
+
+</div>
+</div>
+<a id="ga63c0b10a5110cbf256ba86b853894389"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga63c0b10a5110cbf256ba86b853894389">&#9670;&nbsp;</a></span>Bootloader_getMulticoreImageSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Bootloader_getMulticoreImageSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a>&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API to fetch the size of the multicore image. </p>
+<p>This API simply returns the internal global variable which gets updated everytime a section is loaded. So this API should only be called after all the rprc loading is complete.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>Bootloader driver handle from <a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga9456896dc1df25051d0ad6467767a39f">Bootloader_open</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the multicore image size </dd></dl>
+
+</div>
+</div>
+<a id="ga204681c31a9a2aefc21f898e5506b9c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga204681c31a9a2aefc21f898e5506b9c3">&#9670;&nbsp;</a></span>Bootloader_isCorePresent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Bootloader_isCorePresent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a>&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cslCoreId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API to check if a particular core's RPRC image is present in the multicore image. </p>
+<p>This API checks the csl core id against an internally maintained bitmap which will be populated after parsing the image. So this API should be called only after the multicore image is parsed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>Bootloader driver handle from <a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga9456896dc1df25051d0ad6467767a39f">Bootloader_open</a></td></tr>
+    <tr><td class="paramname">cslCoreId</td><td>CSL core ID of the interested core</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the given core's rprc is present in the multicore image </dd></dl>
+
+</div>
+</div>
+<a id="ga88acad431f45d32987fdd9a0318f79a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga88acad431f45d32987fdd9a0318f79a9">&#9670;&nbsp;</a></span>Bootloader_getBootMedia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Bootloader_getBootMedia </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga8c2fc1e55aeabdc0aeb19b979fa8d662">Bootloader_Handle</a>&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API to get the selected boot media in the bootloader instance. </p>
+<p>This API returns the selected boot media. This data will be filled by sysconfig</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>[in] Bootloader driver handle from <a class="el" href="group__DRV__BOOTLOADER__MODULE.html#ga9456896dc1df25051d0ad6467767a39f">Bootloader_open</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Boot media ID of the selected media </dd></dl>
 
 </div>
 </div>

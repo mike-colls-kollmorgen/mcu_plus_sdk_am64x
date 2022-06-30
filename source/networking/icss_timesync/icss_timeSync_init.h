@@ -33,6 +33,12 @@
 #ifndef ICSS_TIMESYNC_INIT_H_
 #define ICSS_TIMESYNC_INIT_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  \defgroup NETWORKING_ICSS_TIMESYNC_MODULE APIs for ICSS TimeSync
  *  \ingroup NETWORKING_MODULE
@@ -326,5 +332,10 @@ void TimeSync_initializeFollowUp(TimeSync_ParamsHandle_t timeSyncHandle);
 void TimeSync_addIP(TimeSync_ParamsHandle_t timeSyncHandle, uint32_t IP);
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_TIMESYNC_INIT_H_ */

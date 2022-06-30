@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,40 +108,40 @@ $(document).ready(function(){initNavTree('DRIVERS_CRC_PAGE.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md495">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md496">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md497">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md498">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md499">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md500">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md562">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md563">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md564">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md565">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md566">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md567">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_crc"></a></p>
 <p>CRC (Cyclic Redundancy Check) driver provide API to perform CRC operation</p>
-<h1><a class="anchor" id="autotoc_md495"></a>
+<h1><a class="anchor" id="autotoc_md562"></a>
 Features Supported</h1>
 <ul>
 <li>Four channels</li>
 <li>8, 16, 32 and 64 bit data size</li>
 <li>CPU mode of operations</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md496"></a>
+<h1><a class="anchor" id="autotoc_md563"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
 <li>CRC instances selection</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md497"></a>
+<h1><a class="anchor" id="autotoc_md564"></a>
 Features NOT Supported</h1>
 <ul>
 <li>DMA mode of operation</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md498"></a>
+<h1><a class="anchor" id="autotoc_md565"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>None</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md499"></a>
+<h1><a class="anchor" id="autotoc_md566"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="crc_8h.html">drivers/crc.h</a>&gt;</span></div>
 </div><!-- fragment --><p> CRC Module Initialization Example </p><div class="fragment"><div class="line">    int32_t         status;</div>
@@ -182,7 +182,7 @@ Example Usage</h1>
 <div class="line">    <span class="comment">/* Get the calculated CRC signature value */</span></div>
 <div class="line">    status = <a class="code" href="group__DRV__CRC__MODULE.html#ga1fac2f8437113b2fbba2479d1316109b">CRC_getPSASectorSig</a>(gCrcBaseAddr, crcChNumber, &amp;sectSignVal);</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(status == <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md500"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md567"></a>
 API</h1>
 <p><a class="el" href="group__DRV__CRC__MODULE.html">APIs for CRC</a> </p>
 </div></div><!-- contents -->

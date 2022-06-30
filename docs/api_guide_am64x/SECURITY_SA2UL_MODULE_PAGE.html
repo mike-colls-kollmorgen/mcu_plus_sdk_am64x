@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,49 +108,49 @@ $(document).ready(function(){initNavTree('SECURITY_SA2UL_MODULE_PAGE.html',''); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md942">Features Supported In Hardware</a></li>
-<li class="level1"><a href="#autotoc_md943">Features Supported In Driver</a></li>
-<li class="level1"><a href="#autotoc_md944">Block diagram</a><ul><li class="level2"><a href="#autotoc_md945">PSI-L</a></li>
-<li class="level2"><a href="#autotoc_md946">Context Cache</a></li>
-<li class="level2"><a href="#autotoc_md947">Encryption Engine</a></li>
-<li class="level2"><a href="#autotoc_md948">Authentication Engine</a></li>
-<li class="level2"><a href="#autotoc_md949">ECC Aggregator</a></li>
-<li class="level2"><a href="#autotoc_md950">CBASS</a></li>
-<li class="level2"><a href="#autotoc_md951">Context RAM</a></li>
-<li class="level2"><a href="#autotoc_md952">Packet RAM</a></li>
-<li class="level2"><a href="#autotoc_md953">TRNG</a></li>
-<li class="level2"><a href="#autotoc_md954">PKA</a></li>
+<ul><li class="level1"><a href="#autotoc_md1031">Features Supported In Hardware</a></li>
+<li class="level1"><a href="#autotoc_md1032">Features Supported In Driver</a></li>
+<li class="level1"><a href="#autotoc_md1033">Block diagram</a><ul><li class="level2"><a href="#autotoc_md1034">PSI-L</a></li>
+<li class="level2"><a href="#autotoc_md1035">Context Cache</a></li>
+<li class="level2"><a href="#autotoc_md1036">Encryption Engine</a></li>
+<li class="level2"><a href="#autotoc_md1037">Authentication Engine</a></li>
+<li class="level2"><a href="#autotoc_md1038">ECC Aggregator</a></li>
+<li class="level2"><a href="#autotoc_md1039">CBASS</a></li>
+<li class="level2"><a href="#autotoc_md1040">Context RAM</a></li>
+<li class="level2"><a href="#autotoc_md1041">Packet RAM</a></li>
+<li class="level2"><a href="#autotoc_md1042">TRNG</a></li>
+<li class="level2"><a href="#autotoc_md1043">PKA</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#Dma_flow">DMA Flow</a></li>
-<li class="level1"><a href="#autotoc_md955">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md956">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md957">Usage Overview</a><ul><li class="level2"><a href="#autotoc_md958">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md1044">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md1045">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md1046">Usage Overview</a><ul><li class="level2"><a href="#autotoc_md1047">Dependencies</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md959">SA2UL API&#39;s Supported</a><ul><li class="level2"><a href="#autotoc_md960">API Sequence for CBC abd ECB Algorithms</a></li>
-<li class="level2"><a href="#autotoc_md961">API Sequence for SHA Algorithms</a></li>
-<li class="level2"><a href="#autotoc_md962">API Sequence for HMAC-SHA Algorithms</a></li>
-<li class="level2"><a href="#autotoc_md963">API Sequence for AES-CMAC Algorithms</a></li>
-<li class="level2"><a href="#autotoc_md964">API Sequence for RNG (Random number generation)</a></li>
-<li class="level2"><a href="#autotoc_md965">Opening the SA2UL Driver</a></li>
-<li class="level2"><a href="#autotoc_md966">Ultra lite Security Accelerator</a></li>
-<li class="level2"><a href="#autotoc_md967">AES (Advanced Encryption Standard)</a></li>
-<li class="level2"><a href="#autotoc_md968">SHA (Secure Hash Algorithm)</a></li>
-<li class="level2"><a href="#autotoc_md969">HMAC-SHA (Keyed-Hash Message Authentication Code Secure Hash Algorithm)</a></li>
-<li class="level2"><a href="#autotoc_md970">AES-CMAC (Cipher-based Message Authentication Code)</a></li>
-<li class="level2"><a href="#autotoc_md971">RNG (Random number generation)</a></li>
-<li class="level2"><a href="#autotoc_md972">Closing the SA2UL Driver</a></li>
+<li class="level1"><a href="#autotoc_md1048">SA2UL API&#39;s Supported</a><ul><li class="level2"><a href="#autotoc_md1049">API Sequence for CBC abd ECB Algorithms</a></li>
+<li class="level2"><a href="#autotoc_md1050">API Sequence for SHA Algorithms</a></li>
+<li class="level2"><a href="#autotoc_md1051">API Sequence for HMAC-SHA Algorithms</a></li>
+<li class="level2"><a href="#autotoc_md1052">API Sequence for AES-CMAC Algorithms</a></li>
+<li class="level2"><a href="#autotoc_md1053">API Sequence for RNG (Random number generation)</a></li>
+<li class="level2"><a href="#autotoc_md1054">Opening the SA2UL Driver</a></li>
+<li class="level2"><a href="#autotoc_md1055">Ultra lite Security Accelerator</a></li>
+<li class="level2"><a href="#autotoc_md1056">AES (Advanced Encryption Standard)</a></li>
+<li class="level2"><a href="#autotoc_md1057">SHA (Secure Hash Algorithm)</a></li>
+<li class="level2"><a href="#autotoc_md1058">HMAC-SHA (Keyed-Hash Message Authentication Code Secure Hash Algorithm)</a></li>
+<li class="level2"><a href="#autotoc_md1059">AES-CMAC (Cipher-based Message Authentication Code)</a></li>
+<li class="level2"><a href="#autotoc_md1060">RNG (Random number generation)</a></li>
+<li class="level2"><a href="#autotoc_md1061">Closing the SA2UL Driver</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#Example_usage">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md973">Directory Structure</a></li>
-<li class="level1"><a href="#autotoc_md974">API</a></li>
+<li class="level1"><a href="#autotoc_md1062">Directory Structure</a></li>
+<li class="level1"><a href="#autotoc_md1063">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_security_crypto_sa2ul"></a></p>
 <p>The SA2_UL subsystem is designed to provide a generic cryptographic acceleration for different use cases such as secure boot, secure content, key exchange etc.</p>
-<h1><a class="anchor" id="autotoc_md942"></a>
+<h1><a class="anchor" id="autotoc_md1031"></a>
 Features Supported In Hardware</h1>
 <ul>
 <li>Compatible with ARM Trustzone operations</li>
@@ -215,7 +215,7 @@ Features Supported In Hardware</h1>
 <li>Fully pipelined engines for parallel processing</li>
 <li><b>DMA</b> support for Cryptographic acceleration</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md943"></a>
+<h1><a class="anchor" id="autotoc_md1032"></a>
 Features Supported In Driver</h1>
 <ul>
 <li>Encryption and authentication</li>
@@ -256,60 +256,60 @@ Features Supported In Driver</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md944"></a>
+<h1><a class="anchor" id="autotoc_md1033"></a>
 Block diagram</h1>
 <dl class="section note"><dt>Note</dt><dd>This block diagram referred from Sa2ul functional specification.</dd></dl>
 <p> <style>div.image img[src="security_crypto_block_diagram.png"]{width:60%}</style> </p><div class="image">
 <img src="security_crypto_block_diagram.png" alt=""/>
 <div class="caption">
 Sa2ul block diagram</div></div>
-<h2><a class="anchor" id="autotoc_md945"></a>
+<h2><a class="anchor" id="autotoc_md1034"></a>
 PSI-L</h2>
 <ul>
 <li>The PSI-L(Packet Streaming Interface Link) is used to transfer words of packet data and control information between two peer entities via direct connection. There are credits used for flow control to guarantee that blocking does not occur between threads. Multiple packet transfers can be ongoing simultaneously across a PSI-L interface each on a separate logical thread but all sharing a single data path through time division multiplexing. Each packet which is transferred is accompanied by a destination thread ID which indicates the logical destination thread to which the packet is being sent.</li>
 <li>SA2_UL accepts packets from <b>Streaming interface (PSI-L)</b> port with 8 ingress threads where each thread is a <b>UDMA Tx channel</b>. Each packet destined to SA2_UL must be prefixed with three extended packet info words (software words) that hold information about security context that is required to uniquely identify security connection and associated security parameters. The coherency is expected to be maintained by the <b>UDMA-P</b>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md946"></a>
+<h2><a class="anchor" id="autotoc_md1035"></a>
 Context Cache</h2>
 <ul>
 <li>Context cache fetch process involves two primary levels of security checks for the fetch to be successful. The first level of check is for SA2_UL to translate the security attributes from the incoming packets to the attributes on the <b>VBUSP DMA</b> master interface. The firewall IP near the external memory will then check these attributes before allowing access. The second level check is done after SA2_UL fetches and caches the context. SA2_UL compares the security attributes from the packets and the attributes stored inside the security context. If the attributes satisfy the check requirements, the context is used by the encryption and/or authentication engine, otherwise SA2_UL does not process the packet (packet will pass through) and a security exception will be generated.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md947"></a>
+<h2><a class="anchor" id="autotoc_md1036"></a>
 Encryption Engine</h2>
 <ul>
 <li>It carries out the task of encrypting/decrypting payload from desired offset using hardware encryption cryptographic cores. Encryption engine has AES core, 3DES core and Galois multiplier core which is operated in conjunction with MCE (mode control engine). Mode control engine implements various encryption modes like ECB, CBC, CTR, OFB, GCM etc.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md948"></a>
+<h2><a class="anchor" id="autotoc_md1037"></a>
 Authentication Engine</h2>
 <ul>
 <li>It caters the requirement of providing integrity protection. Authentication engine is equipped with SHA1 core, MD5 core, SHA2 core (up to 512 bits) to support keyed (HMAC) and non-keyed hash calculation.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md949"></a>
+<h2><a class="anchor" id="autotoc_md1038"></a>
 ECC Aggregator</h2>
 <ul>
 <li>To increase functional and system reliability the memories (for example, FIFOs, queues, SRAMs and others) in many device modules and subsystems are protected by error correcting code (ECC). This is accomplished through an ECC aggregator.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md950"></a>
+<h2><a class="anchor" id="autotoc_md1039"></a>
 CBASS</h2>
 <ul>
 <li>CBASS is the interconnection technique used to communicate between modules and subsystems in the device for any memory map accesses.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md951"></a>
+<h2><a class="anchor" id="autotoc_md1040"></a>
 Context RAM</h2>
 <ul>
 <li>Each engine/subsystem has a <b>Context RAM</b> to store the control information pertaining to the logical connection. The <b>context RAM</b> holds the information like Keys, IV, partial data etc. for each active context. The SA2_UL subsystem provides the option to store 4 contexts on-chip. <b>Context RAM</b> is coupled with <b>Context Cache</b> module to fetch the context information from external memory to populate the active context on real-time demand basis.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md952"></a>
+<h2><a class="anchor" id="autotoc_md1041"></a>
 Packet RAM</h2>
 <ul>
 <li>Packet RAM used to store Chunks of packets for processing sa2ul operations normally size of packet RAM is 2 banks (1KB or 2 chunks).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md953"></a>
+<h2><a class="anchor" id="autotoc_md1042"></a>
 TRNG</h2>
 <ul>
 <li>TRNG (True Random number generator) used to create initialization vector required for certain encryption modes. The random numbers are accessible to the host in four 32-bit registers allowing 128-bit random number to be read with a single burst read.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md954"></a>
+<h2><a class="anchor" id="autotoc_md1043"></a>
 PKA</h2>
 <ul>
 <li>The PKA(Public Key Accelerator) module provides a high-performance public key engine to accelerate the large vector math processing that is required for Public Key computations. It also includes hw acceleration for Elliptic Curve Cryptography such as binary field ECC point addition, inversion, multiplication and ECC prime field point addition, inversion and multiplication.</li>
@@ -323,27 +323,27 @@ DMA Flow</h1>
 <img src="sa2ul_dma_flow.png" alt=""/>
 <div class="caption">
 sa2ul dma flow</div></div>
-<h1><a class="anchor" id="autotoc_md955"></a>
+<h1><a class="anchor" id="autotoc_md1044"></a>
 SysConfig Features</h1>
 <ul>
 <li>Select Crypto instance, it automatically create sa2ul and Dma with PKTDMA instances.</li>
 <li>We can not create more then one instances due to Dma limitations.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md956"></a>
+<h1><a class="anchor" id="autotoc_md1045"></a>
 Features NOT Supported</h1>
 <ul>
 <li>Context fetch using the MMR is no longer supported to ensure data security.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md957"></a>
+<h1><a class="anchor" id="autotoc_md1046"></a>
 Usage Overview</h1>
-<h2><a class="anchor" id="autotoc_md958"></a>
+<h2><a class="anchor" id="autotoc_md1047"></a>
 Dependencies</h2>
 <ul>
 <li><a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> should be populated for intended cryptographic operation. Please see this <a class="el" href="SECURITY_SA2UL_MODULE_PAGE.html#Example_usage">Example Usage</a> for AES and SHA.</li>
 <li>DMA initialization is required.</li>
 <li>DMA Tx and Rx Channels need to be initialized. Please refer <a class="el" href="SECURITY_SA2UL_MODULE_PAGE.html#Dma_flow">DMA Flow</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md959"></a>
+<h1><a class="anchor" id="autotoc_md1048"></a>
 SA2UL API's Supported</h1>
 <ul>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#gae15d14375610b71e0e4f23fe8e4aae4c" title="This function initializes the SA2UL module.">SA2UL_init()</a> : Initialize the SA2UL module.</li>
@@ -357,7 +357,7 @@ SA2UL API's Supported</h1>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga63ff574ab3703d2f10c6433a439cb8f8" title="Function to close a SA2UL module specified by the SA2UL handle.">SA2UL_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma.</li>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga1e872dce5d605ff48ba08df7c4428a4a" title="This function de-initializes the SA2UL module.">SA2UL_deinit()</a> : De-Initialize the SA2UL module.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md960"></a>
+<h2><a class="anchor" id="autotoc_md1049"></a>
 API Sequence for CBC abd ECB Algorithms</h2>
 <p>This sequence performs Encryption and decryption operations for AES-CBC/ECB algorithms. Supported key lengths are 128 and 256 bit.</p>
 <ul>
@@ -367,7 +367,7 @@ API Sequence for CBC abd ECB Algorithms</h2>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a> : Function to free secure context configuration.</li>
 <li><a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma and clears context.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md961"></a>
+<h2><a class="anchor" id="autotoc_md1050"></a>
 API Sequence for SHA Algorithms</h2>
 <p>This sequence performs SHA-512 and SHA-256.</p>
 <ul>
@@ -377,7 +377,7 @@ API Sequence for SHA Algorithms</h2>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a> : Function to free secure context configuration.</li>
 <li><a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma and clears context.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md962"></a>
+<h2><a class="anchor" id="autotoc_md1051"></a>
 API Sequence for HMAC-SHA Algorithms</h2>
 <p>This sequence performs HMAC SHA-512, SHA-256 and SHA1.</p>
 <ul>
@@ -388,7 +388,7 @@ API Sequence for HMAC-SHA Algorithms</h2>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a> : Function to free secure context configuration.</li>
 <li><a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma and clears context.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md963"></a>
+<h2><a class="anchor" id="autotoc_md1052"></a>
 API Sequence for AES-CMAC Algorithms</h2>
 <p>This sequence performs AES CMAC-128 and CMAC-256.</p>
 <ul>
@@ -399,7 +399,7 @@ API Sequence for AES-CMAC Algorithms</h2>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a> : Function to free secure context configuration.</li>
 <li><a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma and clears context.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md964"></a>
+<h2><a class="anchor" id="autotoc_md1053"></a>
 API Sequence for RNG (Random number generation)</h2>
 <p>This sequence to get RNG (Random number generation).</p>
 <ul>
@@ -408,42 +408,42 @@ API Sequence for RNG (Random number generation)</h2>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html#gae21e4344caac28734ecbe492170e943a" title="Read random numbers into the output buffer.">SA2UL_rngRead()</a> : Read random numbers into the output buffer.</li>
 <li><a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a> : De-initialize the SA2UL instance, disable Sa2ul hw engines and de-initialize dma and clears context.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md965"></a>
+<h2><a class="anchor" id="autotoc_md1054"></a>
 Opening the SA2UL Driver</h2>
 <ul>
 <li>The application can open a SA2UL instance by calling <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a>. Please note that opening SA2UL driver is taken care by the SysConfig generated code. This function takes an index into the gSa2ulConfig[] array, and the SA2UL parameters data structure. The SA2UL instance is specified by the index of the SA2UL in gSa2ulConfig[]. Calling <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> second time with the same index previously passed to <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> will result in an error. Re-use the index if the instance is closed via <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md966"></a>
+<h2><a class="anchor" id="autotoc_md1055"></a>
 Ultra lite Security Accelerator</h2>
 <ul>
 <li>Set the ctx parameters using <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> structure, all necessary parameters set to <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> variables and allocate sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga729624305afca681e8471f73b98d21c7" title="Function to configure secure context.">SA2UL_contextAlloc()</a>, to get expected result by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3ac69e2913b96fda424018136a5b8f89" title="Function to transfer and recieve data buffer.">SA2UL_contextProcess()</a> with input buffer and output buffer as parameters, final output will stored in output buffer. Close sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md967"></a>
+<h2><a class="anchor" id="autotoc_md1056"></a>
 AES (Advanced Encryption Standard)</h2>
 <ul>
 <li>For enabling Sa2ul Aes engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> and it also do initialize Crypto context, set the ctx parameters using <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> structure, all necessary parameters set to <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> variables and allocate sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga729624305afca681e8471f73b98d21c7" title="Function to configure secure context.">SA2UL_contextAlloc()</a>, to get expected result by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3ac69e2913b96fda424018136a5b8f89" title="Function to transfer and recieve data buffer.">SA2UL_contextProcess()</a> with input buffer and output buffer as parameters, final output will stored in output buffer. Close sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a>. For closing sa2ul Aes engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md968"></a>
+<h2><a class="anchor" id="autotoc_md1057"></a>
 SHA (Secure Hash Algorithm)</h2>
 <ul>
 <li>For enabling Sa2ul Sha engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> and it also do initialize Crypto context, set the ctx parameters using <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> structure, all necessary parameters set to <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> variables and allocate sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga729624305afca681e8471f73b98d21c7" title="Function to configure secure context.">SA2UL_contextAlloc()</a>, to get expected result by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3ac69e2913b96fda424018136a5b8f89" title="Function to transfer and recieve data buffer.">SA2UL_contextProcess()</a> with input buffer and output buffer as parameters, final output will stored in gSa2ulCtxObj(computedHash) buffer. Close sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a>. For closing sa2ul Sha engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md969"></a>
+<h2><a class="anchor" id="autotoc_md1058"></a>
 HMAC-SHA (Keyed-Hash Message Authentication Code Secure Hash Algorithm)</h2>
 <ul>
 <li>For enabling Sa2ul Sha engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> and it also do initialize Crypto context, set the ctx parameters using <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> structure, all necessary parameters set to <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> variables and allocate sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga729624305afca681e8471f73b98d21c7" title="Function to configure secure context.">SA2UL_contextAlloc()</a>, for ipad and opad call <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#gad224127ab228a0206a852f10e0b39f3b" title="This function calculates oPad &amp; iPad for HMAC.">Crypto_hmacSha()</a>, to get expected result by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3ac69e2913b96fda424018136a5b8f89" title="Function to transfer and recieve data buffer.">SA2UL_contextProcess()</a> with input buffer and output buffer as parameters, final output will stored in computedHash buffer (present in Sa2ul Ctx Obj). Close sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a>. For closing sa2ul Sha engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md970"></a>
+<h2><a class="anchor" id="autotoc_md1059"></a>
 AES-CMAC (Cipher-based Message Authentication Code)</h2>
 <ul>
 <li>For enabling Sa2ul Aes engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a> and it also do initialize Crypto context, set the ctx parameters using <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> structure, all necessary parameters set to <a class="el" href="structSA2UL__ContextParams.html" title="Parameters passed to SA2UL_contextAlloc()">SA2UL_ContextParams</a> variables and allocate sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga729624305afca681e8471f73b98d21c7" title="Function to configure secure context.">SA2UL_contextAlloc()</a>, for key1 and key2 call <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#gad77fd1f38c3801e9b7e69953cb8e97ff" title="This function Generate Sub keys for CMAC calculation.">Crypto_cmacGenSubKeys()</a>, to get expected result by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3ac69e2913b96fda424018136a5b8f89" title="Function to transfer and recieve data buffer.">SA2UL_contextProcess()</a> with input buffer and output buffer as parameters, final output will stored in output buffer. Close sa2ul context by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga30ed3b63c0f9269b24fc6e3ed785448a" title="Function to free secure context configuration.">SA2UL_contextFree()</a>. For closing sa2ul Sha engine use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md971"></a>
+<h2><a class="anchor" id="autotoc_md1060"></a>
 RNG (Random number generation)</h2>
 <ul>
 <li>For enabling SA2UL RNG use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7f8ef72370ba6a238931006d2669b64d" title="This function opens a Crypto module.">Crypto_open()</a>, Setup rng module by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#ga3636949e50982c1e51080e40c9ff23a7" title="setup the SA2UL RNG module.">SA2UL_rngSetup()</a>, to get 128 bit random number by calling <a class="el" href="group__SECURITY__SA2UL__MODULE.html#gae21e4344caac28734ecbe492170e943a" title="Read random numbers into the output buffer.">SA2UL_rngRead()</a> with output buffer as parameters, final 128 bit random number will stored in output buffer. For disabling SA2UL RNG use <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md972"></a>
+<h2><a class="anchor" id="autotoc_md1061"></a>
 Closing the SA2UL Driver</h2>
 <ul>
 <li>The application can Close a SA2UL instance by calling <a class="el" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0" title="Function to close a Crypto module.">Crypto_close()</a>, it close the sa2ul instance passed by the user.</li>
@@ -570,7 +570,7 @@ Example Usage</h1>
 <div class="line">    status = <a class="code" href="group__SECURITY__CRYPTO__MODULE.html#ga7bf778bf0057cdd8cdea70b55ba77eb0">Crypto_close</a>(aesHandle);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span>;</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md973"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md1062"></a>
 Directory Structure</h1>
 <p>Given below is a overview of the directory structure to help you navigate the Crypto structure. </p><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -584,7 +584,7 @@ Directory Structure</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">examples/security  </td><td class="markdownTableBodyNone">Contains all Security examples   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md974"></a>
+<h1><a class="anchor" id="autotoc_md1063"></a>
 API</h1>
 <ul>
 <li><a class="el" href="group__SECURITY__SA2UL__MODULE.html">APIs for SA2UL</a> </li>

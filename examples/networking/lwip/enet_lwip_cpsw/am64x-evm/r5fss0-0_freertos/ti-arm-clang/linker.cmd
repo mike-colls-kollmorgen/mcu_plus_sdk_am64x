@@ -1,3 +1,4 @@
+#include "generated/ti_enet_config.h"
 
 /* This is the stack that is used by code running within main()
  * In case of NORTOS,
@@ -98,13 +99,16 @@ SECTIONS
     /* this is used only when IPC RPMessage is enabled, else this is not used */
     .bss.ipc_vring_mem   (NOLOAD) : {} > RTOS_NORTOS_IPC_SHM_MEM
 
-    /* For NDK packet memory*/
-    .bss:ENET_DMA_DESC_MEMPOOL (NOLOAD) {} ALIGN (128) > DDR
-    .bss:ENET_DMA_RING_MEMPOOL (NOLOAD) {} ALIGN (128) > DDR
-    .bss:ENET_DMA_PKT_MEMPOOL  (NOLOAD) {} ALIGN (128) > DDR
-    .bss:ENET_DMA_OBJ_MEM      (NOLOAD) {} ALIGN (128) > DDR
-    .bss:ENET_DMA_PKT_INFO_MEMPOOL (NOLOAD) {} ALIGN (128) > DDR
+    .enet_dma_mem {
+        *(*ENET_DMA_DESC_MEMPOOL)
+        *(*ENET_DMA_RING_MEMPOOL)
+#if (ENET_SYSCFG_PKT_POOL_ENABLE == 1)
+        *(*ENET_DMA_PKT_MEMPOOL)
+#endif
+    } (NOLOAD) {} ALIGN (128) > DDR
 
+    .bss:ENET_DMA_OBJ_MEM (NOLOAD) {} ALIGN (128) > MSRAM
+    .bss:ENET_DMA_PKT_INFO_MEMPOOL (NOLOAD) {} ALIGN (128) > MSRAM
     .bss:ENET_ICSSG_OCMC_MEM (NOLOAD) {} ALIGN (128) > MSRAM
 }
 

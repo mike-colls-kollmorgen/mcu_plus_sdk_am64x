@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-2022 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -98,6 +98,7 @@ TaskP_Object gIpcTask[IPC_RPMESSAGE_NUM_RECV_TASKS];
 /* number of iterations of message exchange to do */
 uint32_t gMsgEchoCount = 100000u;
 /* non-Linux cores that exchange messages among each other */
+#if defined (SOC_AM64X)
 uint32_t gRemoteCoreId[] = {
     CSL_CORE_ID_R5FSS0_0,
     CSL_CORE_ID_R5FSS0_1,
@@ -106,6 +107,14 @@ uint32_t gRemoteCoreId[] = {
     CSL_CORE_ID_M4FSS0_0,
     CSL_CORE_ID_MAX /* this value indicates the end of the array */
 };
+#endif
+
+#if defined (SOC_AM62X)
+uint32_t gRemoteCoreId[] = {
+    CSL_CORE_ID_M4FSS0_0,
+    CSL_CORE_ID_MAX /* this value indicates the end of the array */
+};
+#endif
 
 void ipc_recv_task_main(void *args)
 {

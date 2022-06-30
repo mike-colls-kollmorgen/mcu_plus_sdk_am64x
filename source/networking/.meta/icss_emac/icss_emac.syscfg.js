@@ -38,9 +38,9 @@ function validate(instance, report) {
     common.validate.checkNumberRange(instance, report, "phyAddr0", 0, 31);
     common.validate.checkNumberRange(instance, report, "phyAddr1", 0, 31);
     common.validate.checkNumberRange(instance, report, "pktBufSizeKB", 16, 1024);
-    common.validate.checkNumberRange(instance, report, "linkTaskPriority", 0, 15);
-    common.validate.checkNumberRange(instance, report, "rxTaskPriority", 0, 15);
-    common.validate.checkNumberRange(instance, report, "txTaskPriority", 0, 15);
+    common.validate.checkNumberRange(instance, report, "linkTaskPriority", 0, 31);
+    common.validate.checkNumberRange(instance, report, "rxTaskPriority", 0, 31);
+    common.validate.checkNumberRange(instance, report, "txTaskPriority", 0, 31);
 }
 
 function getConfigurables()
@@ -112,14 +112,14 @@ function getConfigurables()
         {
             name: "linkTaskPriority",
             displayName: "Link Task Priority",
-            description: "Value MUST be between 0 (lowest priority) .. 15 (highest priority)",
-            default: 12,
+            description: "Value MUST be between 0 (lowest priority) .. 31 (highest priority)",
+            default: 28,
         },
         {
             name: "rxTaskPriority",
             displayName: "RX Task Priority",
-            description: "Value MUST be between 0 (lowest priority) .. 15 (highest priority)",
-            default: 10,
+            description: "Value MUST be between 0 (lowest priority) .. 31 (highest priority)",
+            default: 26,
         },
         {
             name: "txInterruptEnable",
@@ -129,8 +129,8 @@ function getConfigurables()
         {
             name: "txTaskPriority",
             displayName: "TX Task Priority",
-            description: "Valid only if TX Interrupt Enable is checked. Value MUST be between 0 (lowest priority) .. 15 (highest priority)",
-            default: 10,
+            description: "Valid only if TX Interrupt Enable is checked. Value MUST be between 0 (lowest priority) .. 31 (highest priority)",
+            default: 26,
         },
         {
             name: "halfDuplexEnable",
@@ -181,6 +181,7 @@ function getConfigurables()
 let icss_emac_module = {
 
     displayName: "ICSS-EMAC",
+	longDescription: "Driver for ICSS-EMAC which provide APIs for end point and switch that has been implemented on PRU-ICSS cores at at 100 Mbps.",
     defaultInstanceName: "CONFIG_ICSS_EMAC",
     templates: {
         "/drivers/system/system_config.c.xdt": {

@@ -31,7 +31,6 @@
  */
 
 #include <assert.h>
-#include "lwip/mem.h"
 #include "lwip/pbuf.h"
 #include "pbufQ.h"
 #include <networking/enet/core/include/core/enet_utils.h>

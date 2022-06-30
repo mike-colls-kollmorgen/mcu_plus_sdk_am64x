@@ -61,6 +61,7 @@
 #include <include/phy/enetphy.h>
 #include <include/core/enet_mod_phy.h>
 #include <priv/core/enet_rm_priv.h>
+#include <drivers/pruicss/g_v0/pruicss.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -113,17 +114,11 @@ extern "C" {
 /*! \brief Number of port buffer pools required for Dual-MAC. */
 #define ICSSG_DUALMAC_PORT_BUFFER_POOL_NUM  (0U)
 
-/*! \brief Number of host buffer pools required for Dual-MAC. */
-#define ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM  (8U)
-
 /*! \brief Number of host egress queues required for Dual-MAC. */
 #define ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM (2U)
 
 /*! \brief Number of port buffer pools required for Dual-MAC. */
 #define ICSSG_SWITCH_PORT_BUFFER_POOL_NUM   (8U)
-
-/*! \brief Number of host buffer pools required for Dual-MAC. */
-#define ICSSG_SWITCH_HOST_BUFFER_POOL_NUM   (16U)
 
 /*! \brief Number of host egress queues required for Dual-MAC. */
 #define ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM  (2U)
@@ -286,6 +281,12 @@ extern "C" {
 #define ICCSG_RX_CLASS_DATA_FT_RX_BC          (29U)
 #define ICCSG_RX_CLASS_DATA_FT_RX_MC          (30U)
 #define ICCSG_RX_CLASS_DATA_FT_RX_SAV         (31U)
+
+/*! \brief Minimum cycle time supported by implementation (in ns). */
+#define ICSSG_TAS_MIN_CYCLE_TIME_NS           (1000000)
+
+/*! \brief Minimum TAS window duration supported by implementation (in ns). */
+#define ICSSG_TAS_MIN_WINDOW_DURATION_NS      (10000)
 
 /* ========================================================================== */
 /*                         Structures and Enums                               */
@@ -700,6 +701,7 @@ typedef enum Icssg_Ioctl_e
      * Type: Synchronous.
      */
     ICSSG_MACPORT_IOCTL_SET_INGRESS_RATE_LIM = ICSSG_PUBLIC_IOCTL(34U),
+
 } Icssg_Ioctl;
 
 /*!
@@ -1053,6 +1055,54 @@ typedef struct Icssg_FwPoolMem_s
 } Icssg_FwPoolMem;
 
 /*!
+ * \brief PHY link status change event information.
+ */
+typedef struct Icssg_MdioLinkStateChangeInfo_s
+{
+    /*! PHY address */
+    uint32_t phyAddr;
+
+    /*! Whether PHY alive status changed.
+     *  Applicable only for Status Change Mode */
+    bool aliveChanged;
+
+    /*! Whether PHY is alive or not.
+     *  Applicable only for Status Change Mode */
+    bool isAlive;
+
+    /*! Whether PHY link status changed */
+    bool linkChanged;
+
+    /*! Whether PHY is linked or not */
+    bool isLinked;
+} Icssg_MdioLinkStateChangeInfo;
+
+/*!
+ * \brief Icssg PHY link state change callback function.
+ *
+ * Callback for PHY link state change interrupt (MDIO_LINKINT).
+ * This callback is invoked from interrupt context.
+ */
+typedef void (*Icssg_MdioLinkStateChangeCb)(Icssg_MdioLinkStateChangeInfo *info,
+                                           void *appArg);
+
+
+typedef struct Icssg_mdioLinkIntCfg_s
+{
+    /*! MDIO Link state change callback function pointer */
+    Icssg_MdioLinkStateChangeCb mdioLinkStateChangeCb;
+
+    /*! Application data to be passed to the MDIO link state change callback */
+    void *mdioLinkStateChangeCbArg;
+    /*! INTC Module mapping data passed by application for configuring PRU to R5F interrupts */
+    const PRUICSS_IntcInitData  *prussIntcInitData;
+    int32_t                      coreIntrNum;
+    uint32_t                     pruEvtNum;
+    uint32_t                     isPulseIntr;
+    uint32_t                     intrPrio;
+} Icssg_mdioLinkIntCfg;
+
+/*!
  * \brief ICSSG peripheral configuration parameters.
  */
 typedef struct Icssg_Cfg_s
@@ -1083,6 +1133,27 @@ typedef struct Icssg_Cfg_s
 
     /*! Cycle time in nanoseconds */
     uint32_t cycleTimeNs;
+
+    /*! Mdio link interrupt config */
+    Icssg_mdioLinkIntCfg mdioLinkIntCfg;
+
+    /*! Disable Enet LLD PHY driver - Disables use on PHY driver inside the
+     *  Enet LLD. All PHY functionality including PHY state machine is bypassed
+     *  Application will use this mode if ethernet PHY is managed outside the Enet LLD
+     *  Application is responsible for PHY management. Application can register 
+     *  with Enet LLD to get mdioLinkStateChangeCb callback.
+     *  Application _must_ use Enet LLD IOCTLs to access MDIO as MDIO ownership 
+     *  is still with Enet LLD and there should not be multiple masters for the
+     *  MDIO peripheral
+     */
+    bool disablePhyDriver;
+
+    /*!  Max number of QoS Level supported. Used to determine number of hostBufferPoolNum */
+    uint32_t qosLevels;
+
+    /*! Whether premption Queue is enabled or not  */
+    uint32_t isPremQueEnable;
+
 } Icssg_Cfg;
 
 /*!
@@ -1114,22 +1185,44 @@ typedef struct IccsgMacPort_Cfg_s
     uint8_t specialFramePrio;
 } IcssgMacPort_Cfg;
 
+
 /* ========================================================================== */
 /*                         Global Variables Declarations                      */
 /* ========================================================================== */
 
 /*!
  * \brief ICSSG memory pool callback function.
+ *
+ * Initializes the ICSSG memory pool callback function.
+ *
+ * \param enetType  Enet Peripheral type
+ * \param instId    Instance Number
  */
-Icssg_FwPoolMem* EnetCb_getFwPoolMem(Enet_Type enetType,
+const Icssg_FwPoolMem *EnetCb_GetFwPoolMem(Enet_Type enetType,
                                       uint32_t instId);
 
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
+/*!
+ * \brief Initialises Mac Port COnfiguration
+ *
+ * Gets Application configuration related to ICSSG.
+ *
+ *  \param macPortCfg  Pointer to ICSSG mac port configuration structure
+ */
 void IcssgMacPort_initCfg(IcssgMacPort_Cfg *macPortCfg);
 
+/*!
+ * \brief ICSSG memory pool callback function.
+ *
+ * Initializes the ICSSG memory pool callback function.
+ *
+ * \param enetType  Enet Peripheral type
+ * \param instId    Instance Number
+ * \param macPort   Enet Mac Port
+ */
 uint32_t Icssg_getSliceNum(Enet_Type enetType,
                            uint32_t instId,
                            Enet_MacPort macPort);

@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_MMCSD_RAW_H
 #define BOOTLOADER_MMCSD_RAW_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/bootloader.h>
 #include <drivers/mmcsd.h>
 
@@ -74,5 +80,10 @@ int32_t Bootloader_MmcsdRaw_readFromOffset(MMCSD_Handle handle, void *dst, uint3
  * \return SystemP_SUCCESS on success, else failure
  */
 int32_t Bootloader_MmcsdRaw_writeToOffset(MMCSD_Handle handle, void *buf, uint32_t len, uint32_t offset);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* BOOTLOADER_MMCSD_RAW_H */

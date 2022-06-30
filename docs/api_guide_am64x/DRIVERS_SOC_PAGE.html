@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,37 +108,45 @@ $(document).ready(function(){initNavTree('DRIVERS_SOC_PAGE.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md656">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md657">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md658">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md659">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md660">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md661">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md739">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md740">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md741">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md742">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md743">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md744">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_device_am64x_am243x_soc"></a></p>
 <p>The SOC driver provides API to configure SOC specific features like clocks.</p>
-<h1><a class="anchor" id="autotoc_md656"></a>
+<h1><a class="anchor" id="autotoc_md739"></a>
 Features Supported</h1>
 <ul>
 <li>API to enable/disable a module clock</li>
 <li>API to set clock frequency for module</li>
 <li>Generic utility API like get CPU clock, get core name string, control module MMR lock/unlock API</li>
+<li>Address Translation APIs for all the R5F cores</li>
+<li>SOC Software Warm Reset/POR Reset APIs</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md657"></a>
+<h1><a class="anchor" id="autotoc_md740"></a>
 SysConfig Features</h1>
 <ul>
 <li>SOC driver is integrated with each of the drivers. User need not perform any explicit configuration for this driver</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md658"></a>
+<h1><a class="anchor" id="autotoc_md741"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md659"></a>
+<h1><a class="anchor" id="autotoc_md742"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>Most of these APIs are already integrated with SysConfig tool and the generated code does the required call to enable a module, set the required clock and so on. User need to use these APIs in their application only for exceptional scenarios.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md660"></a>
+<dl class="section note"><dt>Note</dt><dd>The <a class="el" href="group__DRV__SOC__MODULE.html#ga38a189038389b315104384f5d591cae8">SOC_controlModuleLockMMR</a> API will be ineffective in the case of AM64x SOC, since AM64x is mostly used in conjunction with Linux, and the linux kernel assumes MMRs to be unlocked. This is protected with a <code>#if</code> statement in the SOC driver. Please remove this condition if the SDK is used without linux.</dd></dl>
+<ul>
+<li>All MCU domain resets act as a master reset to the whole device. (MAIN and MCU domains)</li>
+<li>MAIN domain resets will only reset the MAIN domain.</li>
+<li>Please refer "Reset" chapter in techical reference manual for more details.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md743"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;drivers/soc.h&gt;</span></div>
 </div><!-- fragment --><p> Get Core Name String </p><div class="fragment"><div class="line">    <span class="keyword">const</span> <span class="keywordtype">char</span> *coreName;</div>
@@ -149,7 +157,7 @@ Example Usage</h1>
 <div class="line"> </div>
 <div class="line">    cpuClockRate = <a class="code" href="group__DRV__SOC__MODULE.html#ga33bb19e70642cf4aa8bfab89b52b49d6">SOC_getSelfCpuClk</a>();</div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a>(<span class="stringliteral">&quot;CPU Clock Frequency: %u\r\n&quot;</span>, cpuClockRate);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md661"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md744"></a>
 API</h1>
 <p><a class="el" href="group__DRV__SOC__MODULE.html">APIs for SOC Specific Functions</a> </p>
 </div></div><!-- contents -->

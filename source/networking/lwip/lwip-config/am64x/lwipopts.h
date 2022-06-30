@@ -32,6 +32,12 @@
 #ifndef LWIP_LWIPOPTS_H
 #define LWIP_LWIPOPTS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 
 #ifdef LWIP_OPTTEST_FILE
@@ -129,7 +135,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
-#define MEMP_NUM_PBUF           16
+#define MEMP_NUM_PBUF           128
 /* MEMP_NUM_RAW_PCB: the number of UDP protocol control blocks. One
    per active RAW "connection". */
 #define MEMP_NUM_RAW_PCB        3
@@ -152,7 +158,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* The following four are used only with the sequential API and can be
    set to 0 if the application only will use the raw API. */
 /* MEMP_NUM_NETBUF: the number of struct netbufs. */
-#define MEMP_NUM_NETBUF         2
+#define MEMP_NUM_NETBUF         128
 /* MEMP_NUM_NETCONN: the number of struct netconns. */
 #define MEMP_NUM_NETCONN        10
 /* MEMP_NUM_TCPIP_MSG_*: the number of struct tcpip_msg, which is used
@@ -167,7 +173,7 @@ a lot of data that needs to be copied, this should be set high. */
 
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
-#define PBUF_POOL_SIZE          16U*3U
+#define PBUF_POOL_SIZE          (30U)
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
 #define PBUF_POOL_BUFSIZE       1536
@@ -201,15 +207,16 @@ a lot of data that needs to be copied, this should be set high. */
    order. Define to 0 if your device is low on memory. */
 #define TCP_QUEUE_OOSEQ         1
 
+#define TCP_CALCULATE_EFF_SEND_MSS      1
 /* TCP Maximum segment size. */
-#define TCP_MSS                 1024
+#define TCP_MSS                 1460
 
 /* TCP sender buffer space (bytes). */
-#define TCP_SND_BUF             2048
+#define TCP_SND_BUF             (8 * TCP_MSS)
 
 /* TCP sender buffer space (pbufs). This must be at least = 2 *
    TCP_SND_BUF/TCP_MSS for things to work. */
-#define TCP_SND_QUEUELEN       (10 * TCP_SND_BUF/TCP_MSS)
+#define TCP_SND_QUEUELEN       (8 * TCP_SND_BUF/TCP_MSS)
 
 /* TCP writable space (bytes). This must be less than or equal
    to TCP_SND_BUF. It is the amount of space which must be
@@ -217,7 +224,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_SNDLOWAT           (TCP_SND_BUF/2)
 
 /* TCP receive window. */
-#define TCP_WND                 (20 * 1024)
+#define TCP_WND                 (TCP_SND_BUF)
 
 /* Maximum number of retransmissions of data segments. */
 #define TCP_MAXRTX              12
@@ -274,7 +281,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define LWIP_UDPLITE            LWIP_UDP
 #define UDP_TTL                 255
 
-#define DEFAULT_UDP_RECVMBOX_SIZE (MEMP_NUM_TCP_SEG)
+#define DEFAULT_UDP_RECVMBOX_SIZE 320
 
 /* ---------- RAW options ---------- */
 #define LWIP_RAW                1
@@ -408,6 +415,11 @@ void sys_unlock_tcpip_core(void);
     _TI_PROPRIETARY_PRAGMA("CHECK_MISRA(\"-19.4\")") /* macro expands to parenthesized */
     #define errno errno
     _TI_PROPRIETARY_PRAGMA("diag_pop")
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* LWIP_LWIPOPTS_H */

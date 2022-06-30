@@ -54,7 +54,7 @@ mpu_armv74.accessPermissions = "Supervisor RD+WR, User RD";
 mpu_armv75.$name        = "CONFIG_MPU_REGION4";
 mpu_armv75.baseAddr     = 0x701D0000;
 mpu_armv75.size         = 16;
-mpu_armv75.attributes   = "Device";
+mpu_armv75.attributes   = "NonCached";
 mpu_armv75.allowExecute = false;
 
 mpu_armv76.$name             = "CONFIG_MPU_REGION5";

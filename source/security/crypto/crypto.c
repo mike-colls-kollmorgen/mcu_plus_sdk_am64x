@@ -166,7 +166,7 @@ int32_t Crypto_hmacSha(Crypto_Params *params)
         {
             inputKeyLengthInBytes = ((uint32_t)params->keySizeInBytes);
             /* Check for KeyLength */
-            if ( inputKeyLengthInBytes > maxKeyLengthInBytes)
+            if (inputKeyLengthInBytes > maxKeyLengthInBytes)
             {
                 status = SystemP_FAILURE;
             }
@@ -178,22 +178,41 @@ int32_t Crypto_hmacSha(Crypto_Params *params)
         }
         if(SystemP_SUCCESS == status)
         {
-            /* Initialize the remaining bytes to zero */
-            memset(hmacKey + inputKeyLengthInBytes, 0, maxKeyLengthInBytes - inputKeyLengthInBytes);
-
-            /* Stack optimization resue hmackey and tempOut buffers */
-            pIpad = hmacKey;
-            pOpad = tempOut;
-
-            /* Compute Inner/Outer Padding  */
-            for (i = 0; i < maxKeyLengthInBytes; i++)
+            inputKeyLengthInBytes = ((uint32_t)params->keySizeInBytes);
+            /* Check for KeyLength */
+            if (inputKeyLengthInBytes > maxKeyLengthInBytes)
             {
-                keybyte = hmacKey[i];
-                pIpad[i] = keybyte ^ CRYPTO_HMAC_SHA_IPAD;
-                pOpad[i] = keybyte ^ CRYPTO_HMAC_SHA_OPAD;
+                status = SystemP_FAILURE;
             }
-            memcpy(&params->iPad, pIpad, maxKeyLengthInBytes);
-            memcpy(&params->oPad, pOpad, maxKeyLengthInBytes);
+            else
+            {
+                /* Copy input Key */
+                memcpy(hmacKey, (uint8_t *)&params->key, inputKeyLengthInBytes);
+
+                /* Initialize the remaining bytes to zero if there are remaining bytes*/
+                if(maxKeyLengthInBytes != inputKeyLengthInBytes)
+                {
+                    memset(hmacKey + inputKeyLengthInBytes, 0, maxKeyLengthInBytes - inputKeyLengthInBytes);
+                }
+                else
+                {
+                    /* Do nothing */
+                }
+
+                /* Stack optimization resue hmackey and tempOut buffers */
+                pIpad = hmacKey;
+                pOpad = tempOut;
+
+                /* Compute Inner/Outer Padding  */
+                for (i = 0; i < maxKeyLengthInBytes; i++)
+                {
+                    keybyte = hmacKey[i];
+                    pIpad[i] = keybyte ^ CRYPTO_HMAC_SHA_IPAD;
+                    pOpad[i] = keybyte ^ CRYPTO_HMAC_SHA_OPAD;
+                }
+                memcpy(&params->iPad, pIpad, maxKeyLengthInBytes);
+                memcpy(&params->oPad, pOpad, maxKeyLengthInBytes);
+            }
         }
     }
     return (status);

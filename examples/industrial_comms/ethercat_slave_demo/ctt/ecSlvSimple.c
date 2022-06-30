@@ -98,7 +98,7 @@ void oled_init(void)
 {
     /* Oled Init */
     const char oled_line1[] = "Kunbus GmbH";
-    const char oled_line2[] = "EtherCAT DTK Demo";
+    const char oled_line2[] = "EtherCAT SDK Demo";
     Board_oledInit();
 
     clear();
@@ -113,7 +113,7 @@ void oled_init(void)
 
 void oled_run(uint8_t i8uState)
 {
-    const char oled_line1[] = "EtherCAT DTK Demo";
+    const char oled_line1[] = "EtherCAT SDK Demo";
     clear();
     setline(0);
     setOrientation(1);
@@ -1720,7 +1720,7 @@ void EC_SLV_APP_applicationInit(EC_SLV_APP_Sapplication_t* pAppInstance_p)
         goto Exit;
     }
 
-    // Initialize DTK
+    // Initialize SDK
     pAppInstance_p->ptEcSlvApi = EC_API_SLV_new();
     if (!pAppInstance_p->ptEcSlvApi)
     {

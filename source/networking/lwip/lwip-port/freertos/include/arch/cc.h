@@ -32,6 +32,12 @@
 #ifndef LWIP_ARCH_CC_H
 #define LWIP_ARCH_CC_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* std.h functions required */
 #include <stdint.h>
 #include <kernel/dpl/DebugP.h>
@@ -102,5 +108,10 @@ typedef struct sio_status_s sio_status_t;
 #define __sio_fd_t_defined
 
 typedef uint32_t sys_prot_t;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LWIP_ARCH_CC_H */

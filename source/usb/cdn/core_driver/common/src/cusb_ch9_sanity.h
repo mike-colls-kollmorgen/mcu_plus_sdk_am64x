@@ -55,6 +55,12 @@
 #ifndef CUSB_CH9_SANITY_H
 #define CUSB_CH9_SANITY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_errno.h"
 #include "cusb_ch9_if.h"
@@ -81,6 +87,11 @@ uint32_t CH9_UsbSSPlusDescriptorSF(const CH9_UsbSSPlusDescriptor *obj);
 uint32_t CH9_UsbSSPlusIsocEndpointComSF(const CH9_UsbSSPlusIsocEndpointCompanionDescriptor *obj);
 uint32_t CH9_UsbSetupSF(const CH9_UsbSetup *obj);
 uint32_t CH9_UsbStringDescriptorSF(const CH9_UsbStringDescriptor *obj);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSB_CH9_SANITY_H */
 

@@ -33,6 +33,12 @@
 #ifndef IRTCDRV_H_
 #define IRTCDRV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -432,5 +438,10 @@ void PN_clearMrpFlag(PN_Handle pnHandle);
  */
 void PN_setListToggleReq(PN_Handle pnHandle, uint8_t enable);
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IRTCDRV_H_ */

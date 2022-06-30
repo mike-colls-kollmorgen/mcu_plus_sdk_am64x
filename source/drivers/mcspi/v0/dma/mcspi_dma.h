@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -148,11 +148,14 @@ typedef struct MCSPI_DmaFxns_s
 	MCSPI_dmaChInitFxn              dmaChInitFxn;
     MCSPI_dmaTransferMasterFxn      dmaTransferMasterFxn;
     MCSPI_dmaStopFxn                dmaStopFxn;
-    
+
 } MCSPI_DmaFxns;
 
-#if defined (DRV_VERSION_MCSPI_V0)
+#if defined (DMA_VERSION_MCSPI_UDMA)
 extern MCSPI_DmaFxns gMcspiDmaUdmaFxns;
+#endif
+#if defined (DMA_VERSION_MCSPI_EDMA)
+extern MCSPI_DmaFxns gMcspiDmaEdmaFxns;
 #endif
 
 /**
@@ -163,7 +166,7 @@ typedef struct MCSPI_DmaConfig_s
 	MCSPI_DmaFxns *fxns;
 	/* Registered callbacks for a particular DMA driver. This will be set by Sysconfig depending on the DMA driver selected*/
 	void *mcspiDmaArgs;
-	/* Arguments specific to a DMA driver. This will be typecasted to the specific DMA driver args struct 
+	/* Arguments specific to a DMA driver. This will be typecasted to the specific DMA driver args struct
 	 * when used by the appropriate callback. This struct will be defined in the specific DMA driver header file.
 	 * Allocation of this struct will be done statically using Sysconfig code generation in the example code
 	 */
@@ -176,7 +179,7 @@ typedef struct MCSPI_DmaConfig_s
  *
  * \param index [in] Index of the DMA Config selected for this particular MCSPI driver instance
  *
- * \return Handle to the MCSPI DMA Config Object 
+ * \return Handle to the MCSPI DMA Config Object
  */
 MCSPI_DmaHandle MCSPI_dmaOpen(int32_t index);
 

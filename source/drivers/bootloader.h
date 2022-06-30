@@ -72,6 +72,8 @@ extern "C"
 #define BOOTLOADER_MEDIA_MEM       (0xB0070001)
 #define BOOTLOADER_MEDIA_FLASH     (0xB0070002)
 #define BOOTLOADER_MEDIA_EMMC      (0xB0070003)
+#define BOOTLOADER_MEDIA_SD        (0xB0070004)
+#define BOOTLOADER_MEDIA_BUFIO     (0xB0070005)
 
 /**
  * \brief Handle to the Bootloader driver returned by Bootloader_open()
@@ -85,6 +87,15 @@ typedef struct Bootloader_Params_s
 {
     uint32_t memArgsAppImageBaseAddr;
     /* Base address of the appimage in case of a memory bootloader */
+
+    uint8_t *bufIoTempBuf;
+    /* Temporary buffer to be used if the boot media is a buffered IO */
+
+    uint32_t bufIoTempBufSize;
+    /* Size of the temporary buffer to be used if the boot media is a buffered IO */
+
+    uint32_t bufIoDeviceIndex;
+    /* Instance index of the IO device driver (UART) */
 
 } Bootloader_Params;
 
@@ -184,11 +195,14 @@ typedef struct Bootloader_Config_s
     Bootloader_Fxns *fxns;
     void *args;
     uint32_t bootMedia;
+    uint32_t bootImageSize;
+    uint32_t coresPresentMap;
 
 } Bootloader_Config;
 
 #include <drivers/bootloader/bootloader_flash.h>
 #include <drivers/bootloader/bootloader_mem.h>
+#include <drivers/bootloader/bootloader_buf_io.h>
 
 /**
  * \brief Data structure containing information related to a particular CPU, required for RPRC loading
@@ -208,6 +222,7 @@ typedef struct Bootloader_CpuInfo_s
 typedef struct Bootloader_BootImageInfo_s
 {
     Bootloader_CpuInfo cpuInfo[CSL_CORE_ID_MAX];
+
 } Bootloader_BootImageInfo;
 
 /**
@@ -393,6 +408,43 @@ int32_t Bootloader_parseAndLoadLinuxAppImage(Bootloader_Handle handle, Bootloade
  * \return SystemP_SUCCESS on success, else failure
  */
 int32_t Bootloader_runSelfCpuWithLinux();
+
+/**
+ * \brief API to fetch the size of the multicore image
+ *
+ * This API simply returns the internal global variable which gets updated everytime a section is loaded.
+ * So this API should only be called after all the rprc loading is complete.
+ *
+ * \param handle Bootloader driver handle from \ref Bootloader_open
+ * 
+ * \return Size of the multicore image size
+ */
+uint32_t Bootloader_getMulticoreImageSize(Bootloader_Handle handle);
+
+/**
+ * \brief API to check if a particular core's RPRC image is present in the multicore image
+ *
+ * This API checks the csl core id against an internally maintained bitmap which will be populated
+ * after parsing the image. So this API should be called only after the multicore image is parsed.
+ *
+ * \param handle Bootloader driver handle from \ref Bootloader_open
+ * 
+ * \param cslCoreId CSL core ID of the interested core
+ *
+ * \return TRUE if the given core's rprc is present in the multicore image
+ */
+uint32_t Bootloader_isCorePresent(Bootloader_Handle handle, uint32_t cslCoreId);
+
+/**
+ * \brief API to get the selected boot media in the bootloader instance
+ *
+ * This API returns the selected boot media. This data will be filled by sysconfig
+ * 
+ * \param handle [in] Bootloader driver handle from \ref Bootloader_open
+ *
+ * \return Boot media ID of the selected media
+ */
+uint32_t Bootloader_getBootMedia(Bootloader_Handle handle);
 /** @} */
 
 #ifdef __cplusplus

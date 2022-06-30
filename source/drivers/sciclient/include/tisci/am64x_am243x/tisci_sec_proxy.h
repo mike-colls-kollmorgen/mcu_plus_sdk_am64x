@@ -55,6 +55,12 @@
 #ifndef AM64X_TISCI_SEC_PROXY_H
 #define AM64X_TISCI_SEC_PROXY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /*
  * Secure Proxy configurations for MAIN_0_R5_0 host
  */
@@ -251,6 +257,11 @@
 /** Num messages macro for ICSSG_0 low_priority */
 #define TISCI_SEC_PROXY_ICSSG_0_WRITE_LOW_PRIORITY_NUM_MESSAGES (1U)
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AM64X_TISCI_SEC_PROXY_H */
 

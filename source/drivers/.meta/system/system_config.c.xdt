@@ -36,7 +36,7 @@
     let cpuName = system.getScript('/common').getSelfSysCfgCoreName();
 %%}
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 
 #include "ti_drivers_config.h"

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,26 +108,44 @@ $(document).ready(function(){initNavTree('TOOLS_FLASH.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md879">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md880">Tool requirements on host PC</a></li>
-<li class="level1"><a href="#autotoc_md881">Important files and folders</a></li>
-<li class="level1"><a href="#BASIC_STEPS_TO_FLASH_FILES">Basic steps to flash files</a><ul><li class="level2"><a href="#autotoc_md882">Getting ready to flash</a></li>
-<li class="level2"><a href="#autotoc_md883">Flash configuration file</a></li>
-<li class="level2"><a href="#autotoc_md884">Flash configuration file for flashing to eMMC</a></li>
-<li class="level2"><a href="#autotoc_md885">Flashing the files</a></li>
-<li class="level2"><a href="#autotoc_md886">Flash tool options</a></li>
+<ul><li class="level1"><a href="#autotoc_md963">Introduction</a></li>
+<li class="level1"><a href="#TOOLS_FLASH_UART_UNIFLASH">UART Uniflash</a><ul><li class="level2"><a href="#autotoc_md964">Tool requirements on host PC</a></li>
+<li class="level2"><a href="#autotoc_md965">Important files and folders</a></li>
+<li class="level2"><a href="#BASIC_STEPS_TO_FLASH_FILES">Basic steps to flash files</a><ul><li class="level3"><a href="#autotoc_md966">Getting ready to flash</a></li>
+<li class="level3"><a href="#autotoc_md967">Flash configuration file</a></li>
+<li class="level3"><a href="#autotoc_md968">Flash configuration file for flashing to eMMC</a></li>
+<li class="level3"><a href="#autotoc_md969">Flashing the files</a></li>
+<li class="level3"><a href="#autotoc_md970">Flash tool options</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#TOOLS_FLASH_ERROR_MESSAGES">Flash tool error messages and solutions</a></li>
-<li class="level1"><a href="#autotoc_md887">Detailed sequence of steps that happen when flashing files</a></li>
+<li class="level2"><a href="#TOOLS_FLASH_ERROR_MESSAGES">Flash tool error messages and solutions</a></li>
+<li class="level2"><a href="#autotoc_md971">Detailed sequence of steps that happen when flashing files</a></li>
+<li class="level2"><a href="#TOOLS_UART_UNIFLASH_GUI">GUI for UART Uniflash (Experimental)</a><ul><li class="level3"><a href="#autotoc_md972">Pre-Requisites for UART Uniflash GUI</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md973">Using the UART Uniflash GUI</a></li>
+<li class="level2"><a href="#autotoc_md974">Important Notes and Common Pitfalls in UART Uniflash GUI</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#TOOLS_FLASH_JTAG_UNIFLASH">JTAG Uniflash</a><ul><li class="level2"><a href="#autotoc_md975">Important files and folders</a></li>
+<li class="level2"><a href="#autotoc_md976">Basic steps to flash files</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_tools_tools_flash"></a></p>
-<h1><a class="anchor" id="autotoc_md879"></a>
+<h1><a class="anchor" id="autotoc_md963"></a>
 Introduction</h1>
-<p>Flashing tools allow to flash binaries to the flash on a EVM. UART is used as the transport or interface to send the file to flash to the EVM.</p>
-<h1><a class="anchor" id="autotoc_md880"></a>
-Tool requirements on host PC</h1>
+<p>Flashing tools allow to flash binaries to the flash on a EVM.</p>
+<ul>
+<li><a class="el" href="TOOLS_FLASH.html#TOOLS_FLASH_UART_UNIFLASH">UART Uniflash</a></li>
+<li><a class="el" href="TOOLS_FLASH.html#TOOLS_FLASH_JTAG_UNIFLASH">JTAG Uniflash</a></li>
+</ul>
+<h1><a class="anchor" id="TOOLS_FLASH_UART_UNIFLASH"></a>
+UART Uniflash</h1>
+<p>UART is used as the transport or interface to send the file to flash to the EVM.</p>
+<h2><a class="anchor" id="autotoc_md964"></a>
+Tool requirements on host PC</h2>
 <ul>
 <li>The tool is implemented using python and needs python version 3.x</li>
 <li>The tool uses additional python packages as listed below.<ul>
@@ -138,8 +156,8 @@ Tool requirements on host PC</h1>
 </li>
 <li>Refer to the page, <a class="el" href="SDK_DOWNLOAD_PAGE.html#INSTALL_PYTHON3">Python3</a> , to install python and the required python packages on your PC.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md881"></a>
-Important files and folders</h1>
+<h2><a class="anchor" id="autotoc_md965"></a>
+Important files and folders</h2>
 <table class="doxtable">
 <tr>
 <th>Folder/Files </th><th>Description  </th></tr>
@@ -162,10 +180,10 @@ Important files and folders</h1>
 <tr>
 <td>sbl_null </td><td>SOC init bootloader application that can be used to init the SOC when working in CCS IDE environment.  </td></tr>
 </table>
-<h1><a class="anchor" id="BASIC_STEPS_TO_FLASH_FILES"></a>
-Basic steps to flash files</h1>
-<h2><a class="anchor" id="autotoc_md882"></a>
-Getting ready to flash</h2>
+<h2><a class="anchor" id="BASIC_STEPS_TO_FLASH_FILES"></a>
+Basic steps to flash files</h2>
+<h3><a class="anchor" id="autotoc_md966"></a>
+Getting ready to flash</h3>
 <ul>
 <li>Make sure the flashing application (<code>sbl_uart_uniflash</code>), OSPI bootloader (<code>sbl_ospi</code>), and the user application (<code>*.appimage</code>) you want to flash is built for the EVM.<ul>
 <li>For every supported EVM pre-built flashing application and OSPI bootloader can be found below <pre class="fragment">{SDK_INSTALL_PATH}/tools/boot/sbl_prebuilt/{board}
@@ -179,8 +197,8 @@ Getting ready to flash</h2>
 <li>Make sure you have installed python as mention in <a class="el" href="SDK_DOWNLOAD_PAGE.html#INSTALL_PYTHON3">Python3</a></li>
 <li>Make sure you have identified the UART port on the EVM as mentioned in <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md883"></a>
-Flash configuration file</h2>
+<h3><a class="anchor" id="autotoc_md967"></a>
+Flash configuration file</h3>
 <ul>
 <li>Create a flash configuration file, using the default flash configuration file present at below as reference <pre class="fragment">  ${SDK_INSTALL_PATH}/tools/boot/sbl_prebuilt/{board}/default_sbl_ospi.cfg
 </pre></li>
@@ -192,8 +210,8 @@ Flash configuration file</h2>
 <li>Edit below line to point to the user application XIP image (<code>.appimage_xip</code>) file. When not using XIP mode, this file input is optional. <pre class="fragment">  --file={path to your application .appimage_xip file} --operation=flash-xip
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md884"></a>
-Flash configuration file for flashing to eMMC</h2>
+<h3><a class="anchor" id="autotoc_md968"></a>
+Flash configuration file for flashing to eMMC</h3>
 <ul>
 <li>Create a flash configuration file, check the flash configuration file preset at below as reference <pre class="fragment">  ${SDK_INSTALL_PATH}/examples/drivers/boot/sbl_emmc_linux/am64x-evm/r5fss0-0_nortos/default_sbl_emmc_linux.cfg
 </pre></li>
@@ -203,8 +221,8 @@ Flash configuration file for flashing to eMMC</h2>
 <li>The user application (<code>.appimage</code>) file needs to be specified in the configuration file as <pre class="fragment">  --file={path to your application .appimage file} --operation=flash-emmc --flash-offset=0x800000
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md885"></a>
-Flashing the files</h2>
+<h3><a class="anchor" id="autotoc_md969"></a>
+Flashing the files</h3>
 <ul>
 <li>Set EVM in <a class="el" href="EVM_SETUP_PAGE.html#BOOTMODE_UART">UART BOOT MODE</a> and power on the EVM</li>
 <li>Run below python command on the Windows command prompt (<code>cmd.exe</code>) or Linux bash shell to flash the files. <pre class="fragment">  cd ${SDK_INSTALL_PATH}/tools/boot
@@ -214,15 +232,15 @@ Flashing the files</h2>
 <li>If flashing is successful, power OFF the EVM, set the EVM to <a class="el" href="EVM_SETUP_PAGE.html#BOOTMODE_OSPI">OSPI BOOT MODE</a> and power ON the EVM to run the flashed application.</li>
 <li>If flashing is not successful, then check the error messages and take appropriate action (See <a class="el" href="TOOLS_FLASH.html#TOOLS_FLASH_ERROR_MESSAGES">Flash tool error messages and solutions</a>).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md886"></a>
-Flash tool options</h2>
+<h3><a class="anchor" id="autotoc_md970"></a>
+Flash tool options</h3>
 <ul>
 <li>Type below to see all the possible options with the flashing tool and also see the default .cfg file for syntax and options possible in the config file <pre class="fragment">  cd ${SDK_INSTALL_PATH}/tools/boot
   python uart_uniflash.py --help
 </pre></li>
 </ul>
-<h1><a class="anchor" id="TOOLS_FLASH_ERROR_MESSAGES"></a>
-Flash tool error messages and solutions</h1>
+<h2><a class="anchor" id="TOOLS_FLASH_ERROR_MESSAGES"></a>
+Flash tool error messages and solutions</h2>
 <p>If the flashing fails, the error message will give a hint as to why it failed. Some common error messages, reasons and potential solutions are listed below.</p>
 <table class="doxtable">
 <tr>
@@ -241,8 +259,8 @@ Flash tool error messages and solutions</h1>
 <td>Parsing config file error </td><td>SBL binaries are missing from the prebuilt folder </td><td>Build sbl using below command:<div class="fragment"><div class="line">gmake -s sbl DEVICE=am243x </div>
 </div><!-- fragment -->  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md887"></a>
-Detailed sequence of steps that happen when flashing files</h1>
+<h2><a class="anchor" id="autotoc_md971"></a>
+Detailed sequence of steps that happen when flashing files</h2>
 <dl class="section note"><dt>Note</dt><dd>This section has more detailed sequence of steps that happen underneath the tools and on the EVM for reference.</dd></dl>
 <p>The detailed sequence of steps that happen when flashing files is listed below, refer to the <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a> page to see how to setup the EVM in different boot modes that are needed for this sequence of steps.</p>
 <ul>
@@ -268,8 +286,108 @@ Detailed sequence of steps that happen when flashing files</h1>
 <li>And the OSPI bootloader will boot the application by reading from offset 0x80000.</li>
 </ul>
 </li>
-<li>The initial flashing application and the subsequent commands to send and flash the OSPI bootloader and application files are all specified in a single configuration file which is provided as input to the tool. </li>
+<li>The initial flashing application and the subsequent commands to send and flash the OSPI bootloader and application files are all specified in a single configuration file which is provided as input to the tool.</li>
 </ul>
+<h2><a class="anchor" id="TOOLS_UART_UNIFLASH_GUI"></a>
+GUI for UART Uniflash (Experimental)</h2>
+<p>UART Uniflash GUI is a GUI wrapper around the UART Uniflash tool already present (<code>uart_uniflash.py</code>). This is a strictly experimental feature with minimal testing from TI side. Can be used if GUI is more comfortable. Since most of the CLI tool is used underneath, it is the same functionality wise</p>
+<h3><a class="anchor" id="autotoc_md972"></a>
+Pre-Requisites for UART Uniflash GUI</h3>
+<p>This GUI is built on top of the python based UART Uniflash CLI tool already mentioned, and specifically based on the PyQt5 binding of the QT5 framework. So it is expected that python3 and other dependencies (xmodem, pyserial etc) are already installed. In addition to this, one also needs to install the PyQt5 python library for the GUI to work.</p>
+<ul>
+<li><p class="startli">In windows, you can install PyQt5 by doing below:</p>
+<p class="startli"><code>python -m pip install pyqt5</code></p>
+</li>
+<li><p class="startli">In Ubuntu (or other Debian based distros) you can install PyQt5 by doing below:</p>
+<p class="startli"><code>sudo apt install python3-pyqt5</code></p>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md973"></a>
+Using the UART Uniflash GUI</h2>
+<p>The UART Uniflash GUI can be used to flash files arbitrarily into the device flash</p>
+<p> <style>div.image img[src="uniflash_gui_manual_config_sport.png"]{width:40%}</style> </p><div class="image">
+<img src="uniflash_gui_manual_config_sport.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : Serial Port Selection</div></div>
+<p>At the top there is a drop down to select the UART COM port which will be used for flashing. Please connect the target to the EVM before running the GUI so that the serial port we are interested will show up here.</p>
+<ul>
+<li>For choosing what to flash and how to flash there are two high level choices in UART Uniflash GUI:<ul>
+<li>Manual Config</li>
+<li>From File</li>
+</ul>
+</li>
+</ul>
+<p> <style>div.image img[src="uniflash_gui_manual_config.png"]{ width:50%}</style>  <style>div.image img[src="uniflash_gui_file_config.png"]{ width:50%}</style></p>
+<table style="border: 0 px">
+<tr>
+<td><div class="image">
+<img src="uniflash_gui_manual_config.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : Manual Config based flashing</div></div>
+  </td><td><div class="image">
+<img src="uniflash_gui_file_config.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : Config file based flashing</div></div>
+   </td></tr>
+</table>
+<ul>
+<li><b>Manual Config</b> : Manual configuration of the files to be flashed. There will be drop down file browse options to select the various files you will need to flash/send to the target. It provides options / slots to select below:<ul>
+<li><b>Flash writer binary</b> : This is the sbl_uart_uniflash binary. This needs to be send first for the ROM to receive and boot. Once this boots up you can send any number of files arbitrarily for flashing.</li>
+<li><b>Bootloader binary</b> : It is assumed that the eventual goal of the flashing process is to boot your application from the flash device. For this a bootloader capable of reading an image from flash device needs to be flashed at offset 0 (generally) of the flash. This would be the <code>sbl_ospi</code> or <code>sbl_qspi</code>. Although this is no different than flashing any other file to a particular offset, we have decided to keep it a separate option for better clarity. Although the offset is almost always 0, we have provided an offset edit box as well if there is any change whatsoever.</li>
+<li><b>Appimage binary</b> : You can select the application image to be flashed from this slot. SDK convention is to flash at a 512 KB offset (0x80000). This can be changed, but keep in mind that the bootloader booting this application should be aware of this offset as well. It is a configurable option in the Sysconfig of the bootloader.</li>
+<li><b>Appimage XIP binary</b> : You can select the XIP component to your application from this slot. These files will be of the format (<code>*.appimage_xip</code>). These files already contain details as to where these need to be flashed, so no need to provide any offset in this case.</li>
+<li><b>Custom data</b> : This slot can be used to flash any custom data file at an arbitrary offset. Don't forget to provide the offset</li>
+<li><b>Flash PHY tuning data</b> : In certain NOR SPI drivers, for tuning the PHY, known data needs to be present in the flash. This is a fixed size (usually 128 bytes) array written to the last block of the flash. This check box needs to be ticked if you're flashing for the first time to the target so that this known data can be written to the flash.</li>
+</ul>
+</li>
+</ul>
+<p> <style>div.image img[src="uniflash_gui_manual_config_flash_phy_tuning.png"]{width:40%}</style> </p><div class="image">
+<img src="uniflash_gui_manual_config_flash_phy_tuning.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : Saving the manual configuration</div></div>
+<ul>
+<li>There is an option to save the settings you selected manually as a config file using the <b>Save CFG</b> button towards the bottom right of the Manual Config group.</li>
+</ul>
+<p> <style>div.image img[src="uniflash_gui_manual_config_save_cfg.png"]{width:40%}</style> </p><div class="image">
+<img src="uniflash_gui_manual_config_save_cfg.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : Saving the manual configuration</div></div>
+<ul>
+<li><b>From File</b> : Flash using a configuration file (<code>*.cfg</code> extension) specifying what needs to be flashed. This is a convenient option if the files to be flashed are pretty much the same for every try. In fact even in the manual config case, a cfg file is created internally and used for flashing. This <code>cfg</code> follows the same format used by the CLI script.</li>
+</ul>
+<p>After selecting the config options and files, just press the <b>FLASH</b> button to start the flashing. A progress bar will show the flashing progress.</p>
+<p>There is also a log area which will show detailed logs in addition to the pop up messages.</p>
+<p> <style>div.image img[src="uniflash_gui_manual_config_log_area.png"]{width:40%}</style> </p><div class="image">
+<img src="uniflash_gui_manual_config_log_area.png" alt=""/>
+<div class="caption">
+UART Uniflash GUI : LOGS</div></div>
+<h2><a class="anchor" id="autotoc_md974"></a>
+Important Notes and Common Pitfalls in UART Uniflash GUI</h2>
+<ul>
+<li>Make sure that the target device is powered ON and is in UART boot mode before attempting to flash</li>
+<li>Make sure that the correct COM port is selected from the drop down. If the wrong port is selected, the flasher might take time to exit out as it will wait for the device to send the XMODEM control character.</li>
+<li>If the GUI seems to hang, re-check the selected COM port and make sure the EVM is <b>powered ON</b> and in <b>UART boot mode</b></li>
+<li>The GUI is based on the <code>uart_uniflash.py</code> CLI script, and reuses a lot of objects and functions, so core functionality is the same among both.</li>
+<li>In manual config case, if a drop down is non blank it is assumed that the file provided there needs to be flashed. So it will be picked up and used when <code>FLASH</code> button is clicked. If this is not required, make sure to delete it and keep it blank, the drop down is editable. This is true for the config file drop down as well, but the mishap is more probable in manual config case.</li>
+</ul>
+<h1><a class="anchor" id="TOOLS_FLASH_JTAG_UNIFLASH"></a>
+JTAG Uniflash</h1>
+<p>JTAG is used as the transport or interface to send the file to flash to the EVM.</p>
+<h2><a class="anchor" id="autotoc_md975"></a>
+Important files and folders</h2>
+<table class="doxtable">
+<tr>
+<th>Folder/Files </th><th>Description  </th></tr>
+<tr>
+<td colspan="2" bgcolor="#F0F0F0">${SDK_INSTALL_PATH}/examples/drivers/boot/ </td></tr>
+<tr>
+<td>sbl_jtag_uniflash </td><td><p class="starttd">Flash-writer example which uses JTAG to write files or erase flash </p>
+<p class="endtd"></p>
+</td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md976"></a>
+Basic steps to flash files</h2>
+<p>Refer the example <a class="el" href="EXAMPLES_DRIVERS_SBL_JTAG_UNIFLASH.html">SBL JTAG Uniflash</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

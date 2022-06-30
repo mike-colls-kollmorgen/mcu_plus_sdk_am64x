@@ -54,6 +54,10 @@ extern "C"
 #include <drivers/hw_include/awr294x/soc_config.h>
 #endif
 
+#if defined (SOC_AM62X)
+#include <drivers/hw_include/am62x/soc_config.h>
+#endif
+
 #ifdef __cplusplus
 }
 #endif

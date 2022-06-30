@@ -31,6 +31,8 @@ var NAVTREE =
       [ "Known Issues", "known_issues.html", null ],
       [ "Overview", "releasenotes.html#releasenotesoverview", null ],
       [ "Licensing", "releasenotes.html#releasenoteslicensing", null ],
+      [ "Release Version 1.07.00", "releasenotes.html#version_release10700", null ],
+      [ "Release Version 1.06.01", "releasenotes.html#version_release10601", null ],
       [ "Release Version 1.06.00", "releasenotes.html#version_release10600", null ],
       [ "Release Version 1.05.02", "releasenotes.html#version_release10502", null ],
       [ "Release Version 1.05.01", "releasenotes.html#version_release10501", null ],
@@ -61,7 +63,8 @@ var NAVTREE =
       [ "References", "references.html", null ]
     ] ],
     [ "IO-Link Master Example Project", "usergroup0.html", [
-      [ "CCS Example Project", "page_quickstart.html#page_example_am64x", null ]
+      [ "CCS Example Project", "page_quickstart.html#page_example_am64x", null ],
+      [ "SMI - Graphical User Interface", "page_quickstart.html#page_gui_am64x", null ]
     ] ],
     [ "SMI", "page_smi.html", [
       [ "Architecture", "page_smi.html#sect_smi_arch", null ],
@@ -107,8 +110,8 @@ var NAVTREEINDEX =
 [
 "_implementation.html",
 "group__group__iolm__port__definition.html#gac47c82feaba5f29fea82045df8c60631",
-"struct_i_o_l___s_direct_param1.html#aee512e17f507e3b3ff82c64622a938b2",
-"struct_i_o_l_m___s_m_i___s_port_config_list.html#aabd2af3148304c548b0df2aa54747c2f"
+"struct_i_o_l___s_direct_param1.html#ab3546ee7e081cc5b07f2b2b2d5f86857",
+"struct_i_o_l_m___s_m_i___s_port_config_list.html#a2f5ac35ab16de691887311a043208489"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

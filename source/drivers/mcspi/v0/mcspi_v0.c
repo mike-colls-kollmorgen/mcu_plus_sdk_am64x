@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -340,7 +340,7 @@ void MCSPI_close(MCSPI_Handle handle)
     MCSPI_Config   *config;
     MCSPI_Object   *obj;
     uint32_t        baseAddr;
-    const MCSPI_Attrs   *attrs;
+
 
     if(NULL != handle)
     {
@@ -348,7 +348,6 @@ void MCSPI_close(MCSPI_Handle handle)
         obj = config->object;
         DebugP_assert(NULL != obj);
         DebugP_assert(NULL != config->attrs);
-        attrs = config->attrs;
 
         DebugP_assert(NULL != gMcspiDrvObj.lock);
         SemaphoreP_pend(&gMcspiDrvObj.lockObj, SystemP_WAIT_FOREVER);
@@ -503,8 +502,8 @@ int32_t MCSPI_transfer(MCSPI_Handle handle, MCSPI_Transaction *transaction)
             /* Reset counter and other params */
             chNum = transaction->channel;
             chObj = &obj->chObj[chNum];
-            chObj->curTxBufPtr = transaction->txBuf;
-            chObj->curRxBufPtr = transaction->rxBuf;
+            chObj->curTxBufPtr = (const uint8_t *) transaction->txBuf;
+            chObj->curRxBufPtr = (uint8_t *) transaction->rxBuf;
             chObj->curTxWords  = 0U;
             chObj->curRxWords  = 0U;
             transaction->status = MCSPI_TRANSFER_STARTED;
@@ -593,7 +592,7 @@ int32_t MCSPI_transfer(MCSPI_Handle handle, MCSPI_Transaction *transaction)
                         status = MCSPI_dmaTransfer(obj, chObj, attrs, transaction);
                     }
                     if (status == SystemP_SUCCESS)
-                    {                    
+                    {
                         if (obj->openPrms.transferMode == MCSPI_TRANSFER_MODE_BLOCKING)
                         {
                             /* Block on transferSem till the transfer completion. */
@@ -1773,22 +1772,13 @@ static void MCSPI_setSlaveFifoConfig(MCSPI_ChObject *chObj,
                                      uint32_t baseAddr,
                                      uint32_t numWordsTxRx)
 {
-    uint32_t txFifoTrigLvl, rxFifoTrigLvl, reminder;
+    uint32_t txFifoTrigLvl, rxFifoTrigLvl;
     uint32_t regVal;
 
     /* Find Fifo depth to configure to be multiple of number of words to transfer. */
     chObj->effTxFifoDepth = MCSPI_getFifoTrigLvl(numWordsTxRx, chObj->txFifoTrigLvl >> chObj->bufWidthShift);
     chObj->effRxFifoDepth = MCSPI_getFifoTrigLvl(numWordsTxRx, chObj->rxFifoTrigLvl >> chObj->bufWidthShift);
 
-    /* Start transferring only multiple of FIFO trigger level */
-    if(MCSPI_TR_MODE_RX_ONLY != chObj->chCfg.trMode)
-    {
-        reminder = (numWordsTxRx & (chObj->effTxFifoDepth - 1U));
-    }
-    else
-    {
-        reminder = (numWordsTxRx & (chObj->effRxFifoDepth - 1U));
-    }
 
     txFifoTrigLvl = chObj->effTxFifoDepth << chObj->bufWidthShift;
     rxFifoTrigLvl = chObj->effRxFifoDepth << chObj->bufWidthShift;
@@ -1959,6 +1949,7 @@ static void MCSPI_fifoReadDiscard(uint32_t baseAddr,
     for(i = 0; i < transferLength; i++)
     {
         rxData = MCSPI_readRxDataReg(baseAddr, chNum);
+        (void) rxData;
     }
 
     return;
@@ -2077,7 +2068,7 @@ static void MCSPI_setChDataSize(uint32_t baseAddr, MCSPI_ChObject *chObj,
 {
     uint32_t chNum, regVal;
 
-    
+
     chNum = chObj->chCfg.chNum;
     regVal = CSL_REG32_RD(baseAddr + MCSPI_CHCONF(chNum));
     CSL_FINS(regVal, MCSPI_CH0CONF_WL, (dataSize - 1U));

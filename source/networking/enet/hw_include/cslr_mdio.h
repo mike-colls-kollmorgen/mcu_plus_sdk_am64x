@@ -39,6 +39,12 @@
 #ifndef CSLR_MDIO_TOP_H
 #define CSLR_MDIO_TOP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 
 #if defined(SOC_K2K)
@@ -78,5 +84,10 @@
 #include <mdio/V4/cslr_mdio.h>
 
 #endif /* DEVICE_XXXXX */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSLR_MDIO_H_ */

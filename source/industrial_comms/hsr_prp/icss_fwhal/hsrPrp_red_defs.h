@@ -39,6 +39,12 @@
 #ifndef RED_DEFS_H_
 #define RED_DEFS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
@@ -56,5 +62,10 @@
 
 #define IEC62439_CONST_TRANSPARENT_RECEPTION_REMOVE_RCT (1)
 #define IEC62439_CONST_TRANSPARENT_RECEPTION_PASS_RCT   (2)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_DEFS_H_ */

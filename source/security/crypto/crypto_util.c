@@ -123,7 +123,7 @@ void Crypto_bigIntToUint32(uint32_t *source, uint32_t sourceLengthInWords, uint3
 
 void Crypto_PKCSPaddingForSign(const uint8_t *shaHash, uint32_t keyLengthInBytes, uint32_t typeOfAlgo, uint8_t *output)
 {
-	uint32_t  i, shaLen, psLen, offset = 0;
+	uint32_t  i, shaLen = 0, psLen = 0, offset = 0;
 	
 	switch(typeOfAlgo)
 	{

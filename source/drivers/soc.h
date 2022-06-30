@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-2022 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -44,6 +44,7 @@ extern "C"
 
 #if defined (SOC_AM263X)
 #include <drivers/soc/am263x/soc.h>
+#include <drivers/soc/am263x/soc_rcm.h>
 #endif
 
 #if defined (SOC_AM273X)
@@ -52,6 +53,10 @@ extern "C"
 
 #if defined (SOC_AWR294X)
 #include <drivers/soc/awr294x/soc.h>
+#endif
+
+#if defined (SOC_AM62X)
+#include <drivers/soc/am62x/soc.h>
 #endif
 
 #ifdef __cplusplus

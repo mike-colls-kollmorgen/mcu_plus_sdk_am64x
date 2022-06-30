@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,23 +108,23 @@ $(document).ready(function(){initNavTree('DRIVERS_WATCHDOG_PAGE.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md662">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md663">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md664">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md665">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md666">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md667">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md745">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md746">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md747">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md748">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md749">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md750">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_watchdog"></a></p>
 <p>The WATCHDOG driver provides API for safety diagnostic which can detect a runaway CPU and generate either a reset or NMI (non-maskable interrupt) response. It generates resets or NMIs after a programmable period, or if no correct key sequence was written to the RTIWDKEY register.</p>
-<h1><a class="anchor" id="autotoc_md662"></a>
+<h1><a class="anchor" id="autotoc_md745"></a>
 Features Supported</h1>
 <ul>
 <li>Supports Watchdog interrupt mode.</li>
 <li>Supports digital windowed Watchdog feature.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md663"></a>
+<h1><a class="anchor" id="autotoc_md746"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
@@ -132,14 +132,14 @@ SysConfig Features</h1>
 <li>Option to select Watchdog Window size.</li>
 <li>Option to select Watchdog expiry time in millisecond.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md664"></a>
+<h1><a class="anchor" id="autotoc_md747"></a>
 Features NOT Supported</h1>
-<h1><a class="anchor" id="autotoc_md665"></a>
+<h1><a class="anchor" id="autotoc_md748"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>Important Usage Guildelines</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md666"></a>
+<h1><a class="anchor" id="autotoc_md749"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="watchdog_8h.html">drivers/watchdog.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Instance Open Example </p><div class="fragment"><div class="line">    <a class="code" href="structWatchdog__Params.html">Watchdog_Params</a>      params;</div>
@@ -152,7 +152,7 @@ Example Usage</h1>
 <div class="line">    }</div>
 </div><!-- fragment --><p> Instance Close Example </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__WDT__MODULE.html#ga1c0dfea7011b06f303d01afb631ffbdd">Watchdog_close</a>(gWatchdogHandle);</div>
 </div><!-- fragment --><p> Watchdog Service Example </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__WDT__MODULE.html#ga396decd6b1807db10c636f9987c3be4c">Watchdog_clear</a>(gWatchdogHandle);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md667"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md750"></a>
 API</h1>
 <p><a class="el" href="group__DRV__WDT__MODULE.html">APIs for WDT</a> </p>
 </div></div><!-- contents -->

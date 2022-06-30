@@ -203,6 +203,13 @@ typedef struct EnetPhy_Drv_s
     void (*printRegs)(EnetPhy_Handle hPhy);
 } EnetPhy_Drv;
 
+
+typedef struct EnetPhy_DrvInfoTbl_s
+{
+    uint32_t numHandles;
+    const EnetPhyDrv_Handle *hPhyDrvList;
+} EnetPhy_DrvInfoTbl;
+
 /* ========================================================================== */
 /*                         Global Variables Declarations                      */
 /* ========================================================================== */

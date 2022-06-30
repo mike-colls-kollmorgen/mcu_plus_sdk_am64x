@@ -45,6 +45,12 @@
 #ifndef CSL_SERDES_USB_TOP_H_
 #define CSL_SERDES_USB_TOP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #include <drivers/hw_include/tistdtypes.h>
 
@@ -56,6 +62,11 @@
 #include <serdes_cd/V1/csl_serdes3_usb.h>
 #elif defined(SOC_J74202) || defined(SOC_J721S2)
 #include <serdes_cd/V2/csl_serdes3_usb.h>
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* CSL_SERDES_USB_H_ */

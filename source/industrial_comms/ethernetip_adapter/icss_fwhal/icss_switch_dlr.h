@@ -40,6 +40,12 @@
 #ifndef ICSS_DLR_SWITCH_H_
 #define ICSS_DLR_SWITCH_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 //This file contains Ethernet/IP specific definitions
 // Target switches: PRU / ARM
 // Protocol switches: EIP
@@ -285,5 +291,10 @@
 #define DLR_TRIGGER_WORD        0x1
 
 #define DMTIME2_OFFSET          c1
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* ICSS_DLR_SWITCH_H_ */
 

@@ -38,6 +38,12 @@
 #ifndef RED_TX_H_
 #define RED_TX_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -86,5 +92,10 @@ RED_STATUS RedTxPacketHsrModeM(ICSS_EMAC_Handle icssEmacHandle,
  */
 RED_STATUS RedTxPacketEnqueue(hsrPrpHandle *, ICSS_EMAC_Handle icssEmacHandle,
                               RED_FRAME *pRedFrame, int32_t portNumber, int32_t queuePriority);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_TX_H_ */

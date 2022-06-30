@@ -193,6 +193,10 @@ static int32_t Cpsw_validateDfltFlow(Cpsw_Handle hCpsw,
                                      Enet_DfltFlowInfo *dfltFlowInfo,
                                      uint32_t flowId);
 
+static int32_t Cpsw_handleExternalPhyLinkUp(Cpsw_Handle hCpsw,
+                                             Enet_MacPort macPort,
+                                             const EnetPhy_LinkCfg *phyLinkCfg);
+
 static int32_t Cpsw_validateFlowId(Cpsw_Handle hCpsw,
                                    uint32_t coreKey,
                                    uint32_t startIdx,
@@ -202,7 +206,7 @@ static int32_t Cpsw_validateFlowId(Cpsw_Handle hCpsw,
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 static const char *Cpsw_gSpeedNames[] =
 {
     [ENET_SPEED_10MBIT]  = "10-Mbps",
@@ -329,6 +333,7 @@ void Cpsw_initCfg(EnetPer_Handle hPer,
 
     cpswCfg->enableQsgmii0RDC = false;
     cpswCfg->enableQsgmii1RDC = false;
+    cpswCfg->disablePhyDriver = false;
 }
 
 int32_t Cpsw_open(EnetPer_Handle hPer,
@@ -439,6 +444,9 @@ int32_t Cpsw_open(EnetPer_Handle hPer,
     if (status == ENET_SOK)
     {
         hCpsw->selfCoreId = cpswCfg->resCfg.selfCoreId;
+#if ENET_CFG_IS_ON(CPSW_EST)
+        hCpsw->cptsRftClkFreq = cpswCfg->cptsCfg.cptsRftClkFreq;
+#endif
     }
     else if (status != ENET_EALREADYOPEN)
     {
@@ -584,6 +592,11 @@ int32_t Cpsw_ioctl(EnetPer_Handle hPer,
                  * MAC port IOCTL input args have macPort as their first member */
                 EnetPhy_GenericInArgs *inArgs = (EnetPhy_GenericInArgs *)prms->inArgs;
                 uint32_t portNum = ENET_MACPORT_NORM(inArgs->macPort);
+
+                /* Assert if port number is not correct */
+                Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                            "Invalid Port Id: %u\r\n", portNum);
+
                 EnetPhy_Handle hPhy = hCpsw->hPhy[portNum];
 
                 if (hPhy != NULL)
@@ -771,7 +784,7 @@ static int32_t Cpsw_openInternal(Cpsw_Handle hCpsw,
     linkIntCtx->linkStateChangeCbArg = cfg->mdioLinkStateChangeCbArg;
     hCpsw->portLinkStatusChangeCb    = cfg->portLinkStatusChangeCb;
     hCpsw->portLinkStatusChangeCbArg = cfg->portLinkStatusChangeCbArg;
-
+    hCpsw->disablePhyDriver          = cfg->disablePhyDriver;
     /* Host port and MAC port MTUs should not be greater than largest of the port
      * egress per priority MTU as packet would get dropped by switch.
      * Though it is valid from hardware configuration, we return an error as it
@@ -1058,6 +1071,10 @@ static int32_t Cpsw_ioctlInternal(EnetPer_Handle hPer,
             bool *linkUp = (bool *)prms->outArgs;
             uint32_t portNum = ENET_MACPORT_NORM(macPort);
 
+            /* Assert if port number is not correct */
+            Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                        "Invalid Port Id: %u\r\n", portNum);
+
             *linkUp = hCpsw->portLinkState[portNum].isLinkUp;
         }
         break;
@@ -1276,6 +1293,33 @@ static int32_t Cpsw_ioctlInternal(EnetPer_Handle hPer,
         }
         break;
 
+        case ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT:
+        {
+            Enet_ExtPhyLinkUpEventInfo *linkInfo = (Enet_ExtPhyLinkUpEventInfo *)prms->inArgs;
+
+            status = Cpsw_handleExternalPhyLinkUp(hCpsw, linkInfo->macPort, &linkInfo->phyLinkCfg);
+            ENETTRACE_ERR_IF((status != ENET_SOK),
+                             "%s: Link Up Event Handling failed: %d\r\n",
+                             ENET_PER_NAME(hCpsw), status);
+        }
+        break;
+
+        case ENET_PER_IOCTL_HANDLE_EXTPHY_LINKDOWN_EVENT:
+        {
+            Enet_MacPort macPort = *((Enet_MacPort *)prms->inArgs);
+            uint32_t portNum = ENET_MACPORT_NORM(macPort);
+
+            status = Cpsw_handleLinkDown(hCpsw, macPort);
+            if (ENET_SOK == status)
+            {
+                hCpsw->portLinkState[portNum].isLinkUp = false;
+            }
+            ENETTRACE_ERR_IF((status != ENET_SOK),
+                             "%s: Link Down Event Handling failed: %d\r\n",
+                             ENET_PER_NAME(hCpsw), status);
+        }
+        break;
+
         default:
         {
             status = ENET_EINVALIDPARAMS;
@@ -1460,7 +1504,7 @@ static void Cpsw_statsIsr(uintptr_t arg)
     int32_t status;
 
     ENET_IOCTL_SET_NO_ARGS(&prms);
-    status = EnetMod_ioctl(hStats, CPSW_STATS_IOCTL_SYNC, &prms);
+    status = EnetMod_ioctlFromIsr(hStats, CPSW_STATS_IOCTL_SYNC, &prms);
 
     /* TODO: Add ISR safe error:
      * ("Failed to sync statistics counters: %d\r\n", status); */
@@ -1481,7 +1525,7 @@ static void Cpsw_mdioIsr(uintptr_t arg)
     int32_t status;
 
     ENET_IOCTL_SET_IN_ARGS(&prms, &callbacks);
-    status = EnetMod_ioctl(hMdio, MDIO_IOCTL_HANDLE_INTR, &prms);
+    status = EnetMod_ioctlFromIsr(hMdio, MDIO_IOCTL_HANDLE_INTR, &prms);
 
     /* TODO: Add ISR safe error:
      * ("Failed to handle MDIO intr: %d\r\n", status); */
@@ -1496,7 +1540,7 @@ static void Cpsw_cptsIsr(uintptr_t arg)
     int32_t status;
 
     ENET_IOCTL_SET_NO_ARGS(&prms);
-    status = EnetMod_ioctl(hCpts, CPSW_CPTS_IOCTL_HANDLE_INTR, &prms);
+    status = EnetMod_ioctlFromIsr(hCpts, CPSW_CPTS_IOCTL_HANDLE_INTR, &prms);
 
     /* TODO: Add ISR safe error:
      * ("Failed to handle CPTS intr: %d\r\n", status); */
@@ -1525,6 +1569,7 @@ static void Cpsw_handleMdioLinkStateChange(EnetMdio_Group group,
 
         if (info.aliveChanged || info.linkChanged)
         {
+
             info.phyAddr  = i;
             info.isAlive  = ENET_IS_BIT_SET(phyStatus->aliveMask, i);
             info.isLinked = ENET_IS_BIT_SET(phyStatus->linkedMask, i);
@@ -1539,7 +1584,10 @@ static void Cpsw_handleMdioLinkStateChange(EnetMdio_Group group,
                 }
             }
 
-            linkIntCtx->linkStateChangeCb(&info, linkIntCtx->linkStateChangeCbArg);
+            if (linkIntCtx->linkStateChangeCb != NULL)
+            {
+                linkIntCtx->linkStateChangeCb(&info, linkIntCtx->linkStateChangeCbArg);
+            }
         }
     }
 
@@ -1584,6 +1632,10 @@ static int32_t Cpsw_openPortLinkWithPhy(Cpsw_Handle hCpsw,
     uint32_t macPortCaps;
     int32_t status;
 
+    /* Assert if port number is not correct */
+    Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                "Invalid Port Id: %u\r\n", portNum);
+
     ENETTRACE_VAR(portId);
     /* Enet module takes a single config structure, which in CPSW MAC port case is
      * EnetMacPort_ModCfg. This structure contains the initial MAC specific configuration
@@ -1599,20 +1651,27 @@ static int32_t Cpsw_openPortLinkWithPhy(Cpsw_Handle hCpsw,
     /* Open PHY */
     if (status == ENET_SOK)
     {
-        /* Convert MII and link configuration from Enet to ENETPHY types */
-        phyMii = EnetUtils_macToPhyMii(mii);
-        phyLinkCfg.speed = (EnetPhy_Speed)linkCfg->speed;
-        phyLinkCfg.duplexity = (EnetPhy_Duplexity)linkCfg->duplexity;
-
-        /* Get MAC port capabilities from SoC standpoint */
-        macPortCaps = EnetSoc_getMacPortCaps(hPer->enetType, hPer->instId, macPort);
-
-        /* Open ENETPHY driver */
-        hCpsw->hPhy[portNum] = EnetPhy_open(phyCfg, phyMii, &phyLinkCfg, macPortCaps, hPhyMdio, hCpsw->hMdio);
-        if (hCpsw->hPhy[portNum] == NULL)
+        if (hCpsw->disablePhyDriver != true)
         {
-            ENETTRACE_ERR("Port %u: Failed to open PHY\r\n", portId);
-            CpswMacPort_close(hMacPort);
+	        /* Convert MII and link configuration from Enet to ENETPHY types */
+	        phyMii = EnetUtils_macToPhyMii(mii);
+	        phyLinkCfg.speed = (EnetPhy_Speed)linkCfg->speed;
+	        phyLinkCfg.duplexity = (EnetPhy_Duplexity)linkCfg->duplexity;
+
+	        /* Get MAC port capabilities from SoC standpoint */
+	        macPortCaps = EnetSoc_getMacPortCaps(hPer->enetType, hPer->instId, macPort);
+
+	        /* Open ENETPHY driver */
+	        hCpsw->hPhy[portNum] = EnetPhy_open(phyCfg, phyMii, &phyLinkCfg, macPortCaps, hPhyMdio, hCpsw->hMdio);
+	        if (hCpsw->hPhy[portNum] == NULL)
+	        {
+	            ENETTRACE_ERR("Port %u: Failed to open PHY\r\n", portId);
+	            CpswMacPort_close(hMacPort);
+            }
+        }
+        else
+        {
+            hCpsw->hPhy[portNum] = NULL;
         }
     }
 
@@ -1634,6 +1693,10 @@ static int32_t Cpsw_openPortLinkNoPhy(Cpsw_Handle hCpsw,
     Enet_IoctlPrms prms;
     CpswAle_SetPortStateInArgs setPortStateInArgs;
     int32_t status = ENET_SOK;
+
+    /* Assert if port number is not correct */
+    Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                "Invalid Port Id: %u\r\n", portNum);
 
     ENETTRACE_VAR(portId);
     hCpsw->hPhy[portNum] = NULL;
@@ -1826,6 +1889,7 @@ static void Cpsw_closePortLink(Cpsw_Handle hCpsw,
 static int32_t Cpsw_handleLinkUp(Cpsw_Handle hCpsw,
                                  Enet_MacPort macPort)
 {
+    EnetPer_Handle hPer = (EnetPer_Handle)hCpsw;
     uint32_t portNum = ENET_MACPORT_NORM(macPort);
     uint32_t portId = ENET_MACPORT_ID(macPort);
     EnetMod_Handle hMacPort = hCpsw->hMacPort[portNum];
@@ -1836,6 +1900,10 @@ static int32_t Cpsw_handleLinkUp(Cpsw_Handle hCpsw,
     EnetMacPort_LinkCfg macLinkCfg;
     bool isPortLinked = false;
     int32_t status;
+
+    /* Assert if port number is not correct */
+    Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                "Invalid Port Id: %u\r\n", portNum);
 
     ENETTRACE_VAR(portId);
     /* Check that port status also detected link up */
@@ -1909,6 +1977,7 @@ static int32_t Cpsw_handleLinkUp(Cpsw_Handle hCpsw,
 static int32_t Cpsw_handleLinkDown(Cpsw_Handle hCpsw,
                                    Enet_MacPort macPort)
 {
+    EnetPer_Handle hPer = (EnetPer_Handle)hCpsw;
     uint32_t portNum = ENET_MACPORT_NORM(macPort);
     uint32_t portId = ENET_MACPORT_ID(macPort);
     EnetMod_Handle hMacPort = hCpsw->hMacPort[portNum];
@@ -1917,6 +1986,10 @@ static int32_t Cpsw_handleLinkDown(Cpsw_Handle hCpsw,
     uint32_t alePortNum;
     uint32_t numEntries = 0U;
     int32_t status;
+
+    /* Assert if port number is not correct */
+    Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                "Invalid Port Id: %u\r\n", portNum);
 
     ENETTRACE_VAR(portId);
     ENETTRACE_INFO("Port %d: Link down\r\n", portId);
@@ -2169,6 +2242,7 @@ static int32_t Cpsw_setSgmiiMode(Cpsw_Handle hCpsw,
 static int32_t Cpsw_validateTxShortIpgCfg(const Cpsw_Handle hCpsw,
                                           const Cpsw_SetTxShortIpgCfgInArgs *inArgs)
 {
+    EnetPer_Handle hPer = (EnetPer_Handle)hCpsw;
     const CpswMacPort_PortTxShortIpgCfg *portShortIpgCfg;
     uint32_t macPortList = 0U;
     uint32_t portNum;
@@ -2202,6 +2276,10 @@ static int32_t Cpsw_validateTxShortIpgCfg(const Cpsw_Handle hCpsw,
             portNum = ENET_MACPORT_NORM(portShortIpgCfg->macPort);
             ENETTRACE_VAR(portId);
             portId = ENET_MACPORT_ID(portShortIpgCfg->macPort);
+
+            /* Assert if port number is not correct */
+            Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                        "Invalid Port Id: %u\r\n", portNum);
 
             if ((portNum >= hCpsw->macPortNum) ||
                 !EnetMod_isOpen(hCpsw->hMacPort[portNum]))
@@ -2263,6 +2341,9 @@ static int32_t Cpsw_setTxShortIpgCfg(const Cpsw_Handle hCpsw,
             portId = ENET_MACPORT_ID(portShortIpgCfg->macPort);
             ENETTRACE_VAR(portId);
 
+            /* Assert if port number is not correct */
+            Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                        "Invalid Port Id: %u\r\n", portNum);
             ENET_IOCTL_SET_IN_ARGS(&prms, portShortIpgCfg);
 
             status = EnetMod_ioctl(hCpsw->hMacPort[portNum], CPSW_MACPORT_IOCTL_SET_SHORT_IPG, &prms);
@@ -2423,3 +2504,89 @@ static int32_t Cpsw_validateDfltFlow(Cpsw_Handle hCpsw,
 
     return status;
 }
+
+static int32_t Cpsw_handleExternalPhyLinkUp(Cpsw_Handle hCpsw,
+                                             Enet_MacPort macPort,
+                                             const EnetPhy_LinkCfg *phyLinkCfg)
+{
+    EnetPer_Handle hPer = (EnetPer_Handle)hCpsw;
+    uint32_t portNum = ENET_MACPORT_NORM(macPort);
+    uint32_t portId = ENET_MACPORT_ID(macPort);
+    EnetMod_Handle hMacPort = hCpsw->hMacPort[portNum];
+    Enet_IoctlPrms prms;
+    CpswAle_SetPortStateInArgs setPortStateInArgs;
+    EnetMacPort_LinkCfg macLinkCfg;
+    bool isPortLinked = false;
+    int32_t status;
+
+    /* Assert if port number is not correct */
+    Enet_assert(portNum < EnetSoc_getMacPortMax(hPer->enetType, hPer->instId),
+                "Invalid Port Id: %u\r\n", portNum);
+
+    ENETTRACE_VAR(portId);
+    /* Check that port status also detected link up */
+    do
+    {
+        /* Need to repeatedly check port status as it does not reflect
+         * PHY status immediately */
+        status = Cpsw_isPortLinkUp(hCpsw, macPort, &isPortLinked);
+    }
+    while ((status == ENET_SOK) && !isPortLinked);
+
+    if (status == ENET_SOK)
+    {
+        if (!isPortLinked)
+        {
+            ENETTRACE_ERR("Port %d: Link indicator detected link down\r\n", portId);
+            Enet_devAssert(false, "Port %d: Link indicator detected link down\r\n", portId);
+            status = ENET_EUNEXPECTED;
+        }
+    }
+    else if (status == ENET_ENOTSUPPORTED)
+    {
+        /* It's not an error if port interface doesn't support link indicator */
+        status = ENET_SOK;
+    }
+    else
+    {
+        ENETTRACE_ERR("Port %u: Failed to get link indicator: %d\r\n", portId, status);
+    }
+
+
+    /* Enable MAC port */
+    if (status == ENET_SOK)
+    {
+    macLinkCfg.speed = (Enet_Speed)phyLinkCfg->speed;
+    macLinkCfg.duplexity = (Enet_Duplexity)phyLinkCfg->duplexity;
+        ENET_IOCTL_SET_IN_ARGS(&prms, &macLinkCfg);
+
+        status = EnetMod_ioctl(hMacPort, CPSW_MACPORT_IOCTL_ENABLE, &prms);
+        ENETTRACE_ERR_IF(status != ENET_SOK, "Port %u: Failed to enable MAC: %d\r\n", portId, status);
+    }
+
+    /* Set ALE port state to 'Forward' */
+    if (status == ENET_SOK)
+    {
+        setPortStateInArgs.portNum   = CPSW_ALE_MACPORT_TO_ALEPORT(portNum);
+        setPortStateInArgs.portState = CPSW_ALE_PORTSTATE_FORWARD;
+        ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
+
+        status = EnetMod_ioctl(hCpsw->hAle, CPSW_ALE_IOCTL_SET_PORT_STATE, &prms);
+        ENETTRACE_ERR_IF(status != ENET_SOK,
+                         "Port %u: Failed to set ALE port %u to forward state: %d\r\n",
+                         portId, setPortStateInArgs.portNum, status);
+    }
+
+    if (ENET_SOK == status)
+    {
+        hCpsw->portLinkState[portNum].isLinkUp = true;
+    }
+    ENETTRACE_INFO_IF(status == ENET_SOK,
+                      "Port %d: Link up: %s %s\r\n",
+                      portId,
+                      Cpsw_gSpeedNames[phyLinkCfg->speed],
+                      Cpsw_gDuplexNames[phyLinkCfg->duplexity]);
+
+    return status;
+}
+

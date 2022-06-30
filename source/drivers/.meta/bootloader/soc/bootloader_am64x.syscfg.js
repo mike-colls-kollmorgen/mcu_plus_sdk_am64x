@@ -11,6 +11,7 @@ const bootloader_bootmedia = [
     { name: "FLASH", displayName: "Flash" },
     { name: "MEM", displayName: "SOC Memory" },
     { name: "EMMC", displayName: "EMMC"},
+    { name: "BUFIO", displayName: "Buffered IO Device (UART)"},
 ];
 
 function getDefaultConfig()

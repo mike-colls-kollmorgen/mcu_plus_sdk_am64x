@@ -149,7 +149,7 @@ RED_FRAME *PrpSupFrameAllocate(hsrPrpHandle *hsrPrphandle)
     PRP_SUP_FRAME *pSupFrame = NULL;
 
     /* Allocate the HSR frame structure */
-    pRedFrame = malloc(sizeof(RED_FRAME));
+    pRedFrame = (RED_FRAME *) malloc(sizeof(RED_FRAME));
 
     if(!pRedFrame)
     {
@@ -158,7 +158,7 @@ RED_FRAME *PrpSupFrameAllocate(hsrPrpHandle *hsrPrphandle)
     }
 
     pRedFrame->bufferLen = sizeof(PRP_SUP_FRAME);
-    pRedFrame->pDataBuffer = malloc(sizeof(PRP_SUP_FRAME));
+    pRedFrame->pDataBuffer = (uint8_t *) malloc(sizeof(PRP_SUP_FRAME));
 
     if(!pRedFrame->pDataBuffer)
     {

@@ -33,6 +33,12 @@
 #ifndef IPTCPUTILS_H_
 #define IPTCPUTILS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -674,5 +680,10 @@ void PN_PTCP_triggerMeasurement(PN_Handle pnHandle);
 /**
 @}
 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /*PTCP_UTILS*/

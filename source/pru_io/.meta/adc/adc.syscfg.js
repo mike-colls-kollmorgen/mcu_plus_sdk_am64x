@@ -2,46 +2,66 @@
 //
 let common = system.getScript("/common");
 
+const baseDirName = "/pru_io/adc/"
+
+/*
+    ADCs List with reference to their implementation syscfg files
+*/
+const adcList = {
+    "ADS8598H": {
+        "AM64xAdapterBoard": baseDirName + "ads85x8/am64x_adapter",
+        "TandMAdapterBoard": baseDirName + "ads85x8/t_and_m_adapter",
+    },
+    "ADS8598S": {
+        "AM64xAdapterBoard": baseDirName + "ads85x8/am64x_adapter",
+        "TandMAdapterBoard": baseDirName + "ads85x8/t_and_m_adapter",
+    },
+    "ADS8588H": {
+        "AM64xAdapterBoard": baseDirName + "ads85x8/am64x_adapter",
+        "TandMAdapterBoard": baseDirName + "ads85x8/t_and_m_adapter",
+    },
+    "ADS8588S": {
+        "AM64xAdapterBoard": baseDirName + "ads85x8/am64x_adapter",
+        "TandMAdapterBoard": baseDirName + "ads85x8/t_and_m_adapter",
+    },
+    "ADS127L11": {
+        "AM64xAdapterBoard": baseDirName + "ads127/am64x_adapter",
+    },
+}
+
+function modifyAdcConfigOptions(inst) {
+    for (let adc of Object.keys(adcList)) {
+        for (option of Object.keys(adcList[inst.adcIC])) {
+            inst.adaptor.readOnly = true;
+        };
+    };
+}
+
 function getInstanceConfig(moduleInstance) {
     return {
         ...moduleInstance
     }
 }
 
-// ------------------------------------------------------------------------
-//  TODO: Make functions to return config array according to the selected ADC IC
-// ------------------------------------------------------------------------
-var getAdcConfig = function (inst, ui) {
-    let hideConfig = true;
-    if(inst.adcIC == "ADS8598H" || inst.adcIC == "ADS8588H" || inst.adcIC == "ADS8598S") {
-        ui.overSampling.hidden = !hideConfig;
-        ui.inputRange.hidden   = !hideConfig;
-        ui.reference.hidden    = !hideConfig;
-        }
-    };
-
 function onValidate(inst, report) {
     /* None. Verified by SYSCFG based on selected pin */
 }
 
-function sharedModuleInstances(instance) {
-    let modInstances = new Array();
+function getSubmodulePath(instance) {
+    return adcList[`${instance.adcIC}`][`${instance.adaptor}`];
+}
 
-    // should this come under sharedModuleInstances or moduleInstances?
-    modInstances.push({
-        name: "icss",
-        displayName: "PRU Configuration",
-        moduleName: '/drivers/pruicss/pruicss',
-        requiredArgs: {
-            instance: instance.icssInstance,
-            // clock speeds fixed for now
-            coreClk: 333333333,
-            iepSyncMode: false,
-            iepClk: 500*1000000,
-        },
-    });
+function getAdcOptions() {
+    let options = [];
+    for (let adc of Object.keys(adcList)){
+        let option = { name: adc };
+        options.push(option);
+    }
+    return options;
+}
 
-    return (modInstances);
+function getDisabledAdapterOptions(instance) {
+    return [];
 }
 
 function moduleInstances(instance) {
@@ -50,31 +70,15 @@ function moduleInstances(instance) {
     modInstances.push({
         name: "adcConfig",
         displayName: "ADC Configuration",
-        moduleName: '/pru_io/adc/ads8598h_pinmux',
+        moduleName: getSubmodulePath(instance),
         useArray: true,
         minInstanceCount : 1,
         defaultInstanceCount: 1,
         maxInstanceCount : 1,
         requiredArgs: {
             icssInstance: instance.icssInstance,
-            adaptor: instance.adaptor,
         },
         collapsed: false,
-    });
-
-    modInstances.push({
-        name: "pruIpc",
-        displayName: "PRU IPC",
-        moduleName: '/pru_io/pru_ipc/pru_ipc',
-        collapsed: false,
-        useArray: true,
-        minInstanceCount : 0,
-        defaultInstanceCount: 0,
-        args: {
-            icssInstance: instance.icssInstance,
-            noOfBuffers: parseInt(instance.channelsInUse),
-            pruCore: "PRU0",
-        },
     });
 
     return (modInstances);
@@ -95,46 +99,42 @@ let adc_top_module = {
             pru_io_config: "/pru_io/adc/templates/adc_config.inc.xdt",
             moduleName: adc_top_module_name,
         },
+        "/drivers/system/system_config.h.xdt": {
+            driver_config: "/pru_io/adc/templates/pru_adc.h.xdt",
+            moduleName: adc_top_module_name,
+        },
     },
     defaultInstanceName: "CONFIG_ADC",
     config: [
         {
             name: "adcIC",
             displayName: "ADC IC",
-            options: [{
-                name: "ADS8598H",
-            },
-            {
-                name: "ADS8598S",
-            },
-            {
-                name: "ADS8588H",
-            },
-            {
-                name: "ADS8588S",
-            }],
+            options: getAdcOptions(),
             default: "ADS8598H",
-            // onChange: getAdcConfig,
+            onChange: (inst, ui) => {
+                if(inst.adcIC === "ADS127L11"){
+                    inst.adaptor = "AM64xAdapterBoard";
+                    ui.adaptor.readOnly = true;
+                } else {
+                    ui.adaptor.readOnly = false;
+                }
+            },
         },
         {
-            name: "adaptor",
-            displayName: "Adaptor Card",
+            name: "adaptor",    // change it to "adapter"
+            displayName: "Adapter Card",
             options: [{
-                name: "initialAdapterBoard",
-                displayName: "T&M SEM Adapter Board",
-                description: "Adaptor Board with both ADC and DAC interface options",
+                name: "AM64xAdapterBoard",
+                displayName: "ADC-PHI-PRU-EVM Adapter Board",
             },
             {
-                name: "upgradedAdapterBoard",
-                displayName: "AM64x Adapter Board",
+                name: "TandMAdapterBoard",
+                displayName: "T&M SEM Adapter Board (Obsolete)",
+                description: "Adapter Board with both ADC and DAC interface options",
             }],
-            default: "initialAdapterBoard",
-            getDisabledOptions: () => {
-                return [{
-                    name: "upgradedAdapterBoard",
-                    reason: "The board is yet to be released"
-                }]
-            },
+            default: "AM64xAdapterBoard",
+            getDisabledOptions: getDisabledAdapterOptions,
+                // TODO: As we add more adcs, remove TandMAdapterBoard option
         },
         {
             name: "icssInstance",
@@ -149,29 +149,12 @@ let adc_top_module = {
             getDisabledOptions: () => {
                 return [{
                     name: "ICSSG1",
-                    reason: "The T&M SEM Adapter Board only supports ICSSG0"
+                    reason: "The Adapter Board only supports ICSSG0"
                 }]
             },
         },
-        {
-            name: "channelsInUse",
-            displayName: "Channels In Use",
-            description: "Number of adc channels to use for sampling from 1 to n",
-            options: [
-                { name: "1", },
-                { name: "2", },
-                { name: "3", },
-                { name: "4", },
-                { name: "5", },
-                { name: "6", },
-                { name: "7", },
-                { name: "8", },
-            ],
-            default: "1",
-        },
     ],
     validate: onValidate,
-    sharedModuleInstances,
     moduleInstances,
     getInstanceConfig,
 };

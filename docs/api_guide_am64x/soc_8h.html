@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -161,6 +161,33 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf58c32a05571e2e722842e5a327afa2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#gaf58c32a05571e2e722842e5a327afa2b">SOC_setDevStat</a> (uint32_t bootMode)</td></tr>
 <tr class="memdesc:gaf58c32a05571e2e722842e5a327afa2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change boot mode by setting devstat register.  <a href="group__DRV__SOC__MODULE.html#gaf58c32a05571e2e722842e5a327afa2b">More...</a><br /></td></tr>
 <tr class="separator:gaf58c32a05571e2e722842e5a327afa2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7785b90319b11fb60282c60fda62803e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#ga7785b90319b11fb60282c60fda62803e">SOC_isR5FDualCoreMode</a> (<a class="el" href="structCSL__ArmR5CPUInfo.html">CSL_ArmR5CPUInfo</a> *cpuInfo)</td></tr>
+<tr class="memdesc:ga7785b90319b11fb60282c60fda62803e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return R5SS supporting single or dual core mode.  <a href="group__DRV__SOC__MODULE.html#ga7785b90319b11fb60282c60fda62803e">More...</a><br /></td></tr>
+<tr class="separator:ga7785b90319b11fb60282c60fda62803e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabfae83163d8d08bedfe81e76d1ac0fac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#gabfae83163d8d08bedfe81e76d1ac0fac">SOC_generateSwWarmResetMainDomain</a> (void)</td></tr>
+<tr class="memdesc:gabfae83163d8d08bedfe81e76d1ac0fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate SW Warm Reset Main Domain.  <a href="group__DRV__SOC__MODULE.html#gabfae83163d8d08bedfe81e76d1ac0fac">More...</a><br /></td></tr>
+<tr class="separator:gabfae83163d8d08bedfe81e76d1ac0fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68ad222c0086223c6915af9b5a5077a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#ga68ad222c0086223c6915af9b5a5077a8">SOC_generateSwPORResetMainDomain</a> (void)</td></tr>
+<tr class="memdesc:ga68ad222c0086223c6915af9b5a5077a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate SW POR Reset Main Domain.  <a href="group__DRV__SOC__MODULE.html#ga68ad222c0086223c6915af9b5a5077a8">More...</a><br /></td></tr>
+<tr class="separator:ga68ad222c0086223c6915af9b5a5077a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad4549e8fe280bd0bf5d46d09d37ae8fd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#gad4549e8fe280bd0bf5d46d09d37ae8fd">SOC_getWarmResetCauseMainDomain</a> (void)</td></tr>
+<tr class="memdesc:gad4549e8fe280bd0bf5d46d09d37ae8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the reset reason source for Main Domain.  <a href="group__DRV__SOC__MODULE.html#gad4549e8fe280bd0bf5d46d09d37ae8fd">More...</a><br /></td></tr>
+<tr class="separator:gad4549e8fe280bd0bf5d46d09d37ae8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9dc41ce8b58cc2e1e0c026887565992a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#ga9dc41ce8b58cc2e1e0c026887565992a">SOC_generateSwWarmResetMcuDomain</a> (void)</td></tr>
+<tr class="memdesc:ga9dc41ce8b58cc2e1e0c026887565992a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate SW WARM Reset Mcu Domain.  <a href="group__DRV__SOC__MODULE.html#ga9dc41ce8b58cc2e1e0c026887565992a">More...</a><br /></td></tr>
+<tr class="separator:ga9dc41ce8b58cc2e1e0c026887565992a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae2cf935a5964605fee355f2e99def47d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#gae2cf935a5964605fee355f2e99def47d">SOC_generateSwWarmResetMainDomainFromMcuDomain</a> (void)</td></tr>
+<tr class="memdesc:gae2cf935a5964605fee355f2e99def47d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate SW WARM Reset Main Domain from Mcu Domain.  <a href="group__DRV__SOC__MODULE.html#gae2cf935a5964605fee355f2e99def47d">More...</a><br /></td></tr>
+<tr class="separator:gae2cf935a5964605fee355f2e99def47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga751821835b36128abffbc1480b84dc5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#ga751821835b36128abffbc1480b84dc5a">SOC_generateSwPORResetMainDomainFromMcuDomain</a> (void)</td></tr>
+<tr class="memdesc:ga751821835b36128abffbc1480b84dc5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate SW POR Reset Main Domain from Mcu Domain.  <a href="group__DRV__SOC__MODULE.html#ga751821835b36128abffbc1480b84dc5a">More...</a><br /></td></tr>
+<tr class="separator:ga751821835b36128abffbc1480b84dc5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd0bd887589429840445272c568008f3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#gacd0bd887589429840445272c568008f3">SOC_getWarmResetCauseMcuDomain</a> (void)</td></tr>
+<tr class="memdesc:gacd0bd887589429840445272c568008f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the reset reason source for Mcu Domain.  <a href="group__DRV__SOC__MODULE.html#gacd0bd887589429840445272c568008f3">More...</a><br /></td></tr>
+<tr class="separator:gacd0bd887589429840445272c568008f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga50d09affae77c3d926674a0f28aea462"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__SOC__MODULE.html#ga50d09affae77c3d926674a0f28aea462">SOC_clearResetCauseMainMcuDomain</a> (uint32_t resetCause)</td></tr>
+<tr class="memdesc:ga50d09affae77c3d926674a0f28aea462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears reason for Warm and Main/Mcu Domain Power On Resets. CTRLMMR_RST_SRC is just a mirror of CTRLMMR_MCU_RST_SRC register. It is read only. So we need to write 1 to CTRLMMR_MCU_RST_SRC to clear the reset reason.  <a href="group__DRV__SOC__MODULE.html#ga50d09affae77c3d926674a0f28aea462">More...</a><br /></td></tr>
+<tr class="separator:ga50d09affae77c3d926674a0f28aea462"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

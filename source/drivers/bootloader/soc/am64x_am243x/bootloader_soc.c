@@ -530,9 +530,8 @@ uint64_t Bootloader_socCpuGetClock(uint32_t cpuId)
 int32_t Bootloader_socCpuPowerOnResetM4f(uint32_t cpuId, uint32_t initRam)
 {
     int32_t status = SystemP_SUCCESS;
-    uint32_t sciclientCpuProcId, sciclientCpuDevId;
+    uint32_t sciclientCpuDevId;
 
-    sciclientCpuProcId = Bootloader_socGetSciclientCpuProcId(cpuId);
     sciclientCpuDevId = Bootloader_socGetSciclientCpuDevId(cpuId);
 
     status = Sciclient_pmSetModuleState(sciclientCpuDevId,
@@ -981,7 +980,7 @@ uint32_t Bootloader_socIsAuthRequired(void)
     uint32_t devSubtype = CSL_REG32_RD(BOOTLOADER_SYS_STATUS_REG) & BOOTLOADER_SYS_STATUS_DEV_SUBTYPE_MASK;
 
     if((devType == BOOTLOADER_SYS_STATUS_DEV_TYPE_GP)   ||
-       (devType == BOOTLOADER_SYS_STATUS_DEV_TYPE_TEST) || 
+       (devType == BOOTLOADER_SYS_STATUS_DEV_TYPE_TEST) ||
        (devSubtype == BOOTLOADER_SYS_STATUS_DEV_SUBTYPE_FS))
     {
         isAuthRequired = FALSE;
@@ -997,6 +996,135 @@ uint32_t Bootloader_socIsAuthRequired(void)
 int32_t Bootloader_socWaitForFWBoot(void)
 {
     return Sciclient_waitForBootNotification();
+}
+
+static int32_t Bootloader_socOpenFirewallRegion(uint16_t fwl, uint16_t region, uint32_t control, uint32_t startAddr, uint32_t endAddr)
+{
+    int32_t status = SystemP_FAILURE;
+
+    /* Change ownership of firewall to R5F0-0 (Host ID = TISCI_HOST_ID_MAIN_0_R5_0 because SBL would be secure host) */
+    const struct tisci_msg_fwl_change_owner_info_req fwl_owner_req =
+    {
+        .fwl_id = fwl,
+        .region = region,
+        .owner_index = TISCI_HOST_ID_MAIN_0_R5_0,
+    };
+
+    struct tisci_msg_fwl_change_owner_info_resp fwl_owner_resp = { {0} };
+    status = Sciclient_firewallChangeOwnerInfo(&fwl_owner_req, &fwl_owner_resp, SystemP_TIMEOUT);
+
+    if(SystemP_SUCCESS == status)
+    {
+        /* Unlock MSRAM firewalls */
+        const struct tisci_msg_fwl_set_firewall_region_req fwl_set_req =
+        {
+            .fwl_id = fwl,
+            .region = region,
+            .n_permission_regs = 3,
+            /*
+             * The firewall control register layout is
+             *  ---------------------------------------------------------------------------
+             * |  31:10   |      9     |     8      |     7:5    |      4      |   3:0     |
+             *  ---------------------------------------------------------------------------
+             * | Reserved | Cache Mode | Background |  Reserved  | Lock Config |  Enable   |
+             *  ---------------------------------------------------------------------------
+             *
+             * Enable = 0xA implies firewall is enabled. Any other value means not enabled
+             *
+             */
+            .control = control,
+            /*
+             * The firewall permission register layout is
+             *  ---------------------------------------------------------------------------
+             * |  31:24   |    23:16   |  15:12     |   11:8     |   7:4      |   3:0      |
+             *  ---------------------------------------------------------------------------
+             * | Reserved |   Priv ID  | NSUSR-DCRW | NSPRI-DCRW | SUSER-DCRW | SPRIV-DCRW |
+             *  ---------------------------------------------------------------------------
+             *
+             * PRIV_ID = 0xC3 implies all.
+             * In each of the 4 nibbles from 15:0 the 4 bits means Debug, Cache, Read, Write Access for
+             * Non-secure user, Non-secure Priv, Secure user, Secure Priv respectively. To enable all access
+             * bits for all users, we set each of these nibbles to 0b1111 = 0xF. So 15:0 becomes 0xFFFF
+             *
+             */
+            .permissions[0] = 0xC3FFFF,
+            .permissions[1] = 0xC3FFFF,
+            .permissions[2] = 0xC3FFFF,
+            .start_address  = startAddr,
+            .end_address    = endAddr,
+        };
+        struct tisci_msg_fwl_set_firewall_region_resp fwl_set_resp = { 0 };
+
+        status = Sciclient_firewallSetRegion(&fwl_set_req, &fwl_set_resp, SystemP_TIMEOUT);
+    }
+
+    return status;
+}
+
+int32_t Bootloader_socOpenFirewalls(void)
+{
+    int32_t status = SystemP_FAILURE;
+    uint32_t i;
+
+    /* There are 8 firewalls, 1 per MSRAM memory bank. We need to open all these banks.
+
+        FWL 14 : 0x70000000 -> 0x7003FFFF BANK0
+        FWL 15 : 0x70040000 -> 0x7007FFFF BANK1
+        FWL 16 : 0x70080000 -> 0x7007FFFF BANK2
+        FWL 19 : 0x700C0000 -> 0x700FFFFF BANK3
+        FWL 18 : 0x70100000 -> 0x7013FFFF BANK4
+        FWL 17 : 0x70140000 -> 0x7017FFFF BANK5
+        FWL 23 : 0x70180000 -> 0x701BFFFF BANK6
+        FWL 24 : 0x701C0000 -> 0x701FFFFF BANK7
+
+        FWL 24 doesn't need any configuration, already done for applicable region by SYSFW
+        FWL 23 - Disable region 1, re-configure region 0
+    */
+    uint8_t fwlIds[] = { 14, 15, 16, 19, 18, 17 };
+    uint32_t startAddr = CSL_MSRAM_256K0_RAM_BASE;
+
+    uint32_t fwlControl = 0x30A;
+    /* Nibbles from left to right, 3 implies cached, background region, 0 implies config is unlocked, and A implies enable firewall  */
+
+    for(i = 0U; i < 6; i++)
+    {
+        status = Bootloader_socOpenFirewallRegion(fwlIds[i], 0, fwlControl, startAddr, (startAddr + CSL_MSRAM_256K0_RAM_SIZE - 1));
+
+        if(SystemP_SUCCESS == status)
+        {
+            /* Update start address */
+            startAddr += CSL_MSRAM_256K0_RAM_SIZE;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    /* FWL 23 : Disable region 1, and reprogram region 0 */
+    if(SystemP_SUCCESS == status)
+    {
+        fwlControl = 0x300;
+        /* Here we are disabling the firewall, so the addresses don't matter */
+        status = Bootloader_socOpenFirewallRegion(23, 1, fwlControl, 0, 0);
+    }
+    else
+    {
+        status = SystemP_FAILURE;
+    }
+    if(SystemP_SUCCESS == status)
+    {
+        fwlControl = 0x30A;
+        /* Open firewalls for MSRAM BANK6 */
+        status = Bootloader_socOpenFirewallRegion(23, 0, fwlControl, startAddr, (startAddr + CSL_MSRAM_256K0_RAM_SIZE - 1));
+    }
+    else
+    {
+        status = SystemP_FAILURE;
+    }
+    /* FWL 24 is already configured, first 128 KB is accessible to all. Last 128 KB will be used by SYSFW */
+
+    return status;
 }
 
 int32_t Bootloader_socAuthImage(uint32_t certLoadAddr)

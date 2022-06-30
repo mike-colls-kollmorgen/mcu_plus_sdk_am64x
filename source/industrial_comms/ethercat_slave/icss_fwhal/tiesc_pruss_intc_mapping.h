@@ -33,6 +33,12 @@
 #ifndef TIESC_PRUSS_INTC_MAPPING_H_
 #define TIESC_PRUSS_INTC_MAPPING_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 //SYS_EVT_16-31 can be used for generating interrupts for IPC with hosts/prus etc
 
 #define PD_WD_EXPIRY_EVENT   9
@@ -142,5 +148,10 @@
         { {CHANNEL0,PRU0}, {CHANNEL1, PRU1}, {CHANNEL2, PRU_EVTOUT0}, {CHANNEL3, PRU_EVTOUT1}, {CHANNEL4, PRU_EVTOUT2}, {CHANNEL5, PRU_EVTOUT3}, {CHANNEL6, PRU_EVTOUT4}, {0xFF,0xFF} },\
         (PRU0_HOSTEN_MASK | PRU1_HOSTEN_MASK | PRU_EVTOUT0_HOSTEN_MASK | PRU_EVTOUT1_HOSTEN_MASK | PRU_EVTOUT2_HOSTEN_MASK | PRU_EVTOUT3_HOSTEN_MASK | PRU_EVTOUT4_HOSTEN_MASK)\
     }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TIESC_PRUSS_INTC_MAPPING_H_ */

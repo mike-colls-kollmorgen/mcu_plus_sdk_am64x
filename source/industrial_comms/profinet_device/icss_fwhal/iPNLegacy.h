@@ -33,6 +33,12 @@
 #ifndef IPNLEGACY_H_
 #define IPNLEGACY_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -499,5 +505,10 @@ uint8_t *relPpmBuff(t_rtcPacket *pkt);
  * \brief               Legacy API, Used to call \ref PN_RTC_disableISR
  */
 int32_t rtcDisableISR();
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IPNLEGACY_H_ */

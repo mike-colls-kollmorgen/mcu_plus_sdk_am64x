@@ -1998,50 +1998,57 @@ static void CpswAle_setAleCfg(CpswAle_Handle hAle,
 
     hAle->aleFreqHz = EnetSoc_getClkFreq(hAle->enetType, hAle->instId, CPSW_CPPI_CLK);
 
-    CpswAle_initAleRegs(regs);
-
-    CpswAle_setAleModeFlags(regs, aleCfg->modeFlags);
-
-    CpswAle_setAleAging(regs,
-                        &aleCfg->agingCfg,
-                        hAle->aleFreqHz,
-                        &hAle->softTimerActive,
-                        &hAle->tickTimeoutCnt,
-                        &hAle->softTickCnt);
-
-    CpswAle_setUnknownVlanCfg(regs,
-                              vlanCfg->unknownVlanMemberListMask,
-                              vlanCfg->unknownForceUntaggedEgressMask,
-                              vlanCfg->unknownRegMcastFloodMask,
-                              vlanCfg->unknownUnregMcastFloodMask);
-
-    CpswAle_setPolicerControl(regs,
-                              hAle->aleFreqHz,
-                              polCfg->policingEn,
-                              polCfg->yellowDropEn,
-                              polCfg->redDropEn,
-                              polCfg->yellowThresh,
-                              polCfg->policerNoMatchMode,
-                              &polCfg->noMatchPolicer);
-
-    /* Clear all policers on init */
-    CpswAle_clearGlobalPolicerStats(regs, true, true, true);
-
-    /* By default disable default thread enable */
-    CpswAle_setPolicerDefaultThreadCfg(hAle, regs, false, 0U, false, false);
-
-    /* Configure ALE port control register */
-    for (i = 0U; i < hAle->numPorts; i++)
+    if(hAle->aleFreqHz != 0U)
     {
-        macAuthDisable = ((secCfg->macAuthCfg.macAuthDisMask & (1U << i)) == 1U);
-        CpswAle_setAlePortCfg(regs, i, &aleCfg->portCfg[i], macAuthDisable);
-        hAle->pvid[i] = aleCfg->portCfg[i].pvidCfg;
-    }
+    	CpswAle_initAleRegs(regs);
 
-    CpswAle_setNetSecCfg(regs, secCfg);
-    CpswAle_initVlanCfg(regs, vlanCfg);
-    hAle->pvidEn = vlanCfg->cpswVlanAwareMode;
-    hAle->rxFilter = CPSW_ALE_RXFILTER_DIRECT;
+    	CpswAle_setAleModeFlags(regs, aleCfg->modeFlags);
+
+    	CpswAle_setAleAging(regs,
+    			&aleCfg->agingCfg,
+				hAle->aleFreqHz,
+				&hAle->softTimerActive,
+				&hAle->tickTimeoutCnt,
+				&hAle->softTickCnt);
+
+    	CpswAle_setUnknownVlanCfg(regs,
+    			vlanCfg->unknownVlanMemberListMask,
+				vlanCfg->unknownForceUntaggedEgressMask,
+				vlanCfg->unknownRegMcastFloodMask,
+				vlanCfg->unknownUnregMcastFloodMask);
+
+    	CpswAle_setPolicerControl(regs,
+    			hAle->aleFreqHz,
+				polCfg->policingEn,
+				polCfg->yellowDropEn,
+				polCfg->redDropEn,
+				polCfg->yellowThresh,
+				polCfg->policerNoMatchMode,
+				&polCfg->noMatchPolicer);
+
+    	/* Clear all policers on init */
+		CpswAle_clearGlobalPolicerStats(regs, true, true, true);
+
+    	/* By default disable default thread enable */
+		CpswAle_setPolicerDefaultThreadCfg(hAle, regs, false, 0U, false, false);
+
+    	/* Configure ALE port control register */
+		for (i = 0U; i < hAle->numPorts; i++)
+		{
+			macAuthDisable = ((secCfg->macAuthCfg.macAuthDisMask & (1U << i)) == 1U);
+			CpswAle_setAlePortCfg(regs, i, &aleCfg->portCfg[i], macAuthDisable);
+			hAle->pvid[i] = aleCfg->portCfg[i].pvidCfg;
+		}
+
+		CpswAle_setNetSecCfg(regs, secCfg);
+		CpswAle_initVlanCfg(regs, vlanCfg);
+		hAle->pvidEn = vlanCfg->cpswVlanAwareMode;
+		hAle->rxFilter = CPSW_ALE_RXFILTER_DIRECT;
+    }
+    else
+    {
+        Enet_devAssert(false);
+    }
 }
 
 static int32_t CpswAle_addDefaultEntries(CpswAle_Handle hAle)
@@ -7359,6 +7366,8 @@ static int32_t CpswAle_getVlanMaskMuxFreeEntry(CpswAle_Handle hAle,
                 case CSL_ALE_POLICER_ENTRYTYPE_VLAN:
                 {
                     CSL_CPSW_ALE_VLAN_ENTRY vlanEntry;
+
+                    memset(&vlanEntry, 0, sizeof(vlanEntry));
 
                     CSL_CPSW_getAleVlanEntry(regs, i, &vlanEntry, tableType);
                     if (vlanEntry.unRegMcastFloodIndex > 0)

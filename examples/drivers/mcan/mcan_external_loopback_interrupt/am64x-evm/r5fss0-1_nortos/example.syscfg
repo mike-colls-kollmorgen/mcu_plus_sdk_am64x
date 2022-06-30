@@ -68,7 +68,7 @@ mpu_armv77.$name        = "CONFIG_MPU_REGION6";
 mpu_armv77.baseAddr     = 0x701D0000;
 mpu_armv77.size         = 16;
 mpu_armv77.allowExecute = false;
-mpu_armv77.attributes   = "Device";
+mpu_armv77.attributes   = "NonCached";
 
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future

@@ -52,25 +52,25 @@ typedef struct EI_APP_PERM_SCfgHeader
 
 typedef struct EI_APP_PERM_SCfgData
 {
-    EI_APP_PERM_SCfgHeader_t tPermHdr;
+    EI_APP_PERM_SCfgHeader_t permHdr;
 
     // TCP/IP object 0xF5 attribute 5
-    uint32_t i32uIpAddr;                 // IP address
-    uint32_t i32uIpNwMask;               // Network mask
-    uint32_t i32uIpGateway;              // Gateway address
-    uint32_t i32uNameServer1;            // First name server address
-    uint32_t i32uNameServer2;            // Second name server address
-    char szDomainName[48];               // Domain name
+    uint32_t ipAddr;                 // IP address
+    uint32_t ipNwMask;               // Network mask
+    uint32_t ipGateway;              // Gateway address
+    uint32_t nameServer1;            // First name server address
+    uint32_t nameServer2;            // Second name server address
+    char aDomainName[48];               // Domain name
 
     // TCP/IP object 0xF5
-    uint8_t i8uConfigurationMethod;     // attribute 3
-    char szHostName[64];                 // Attribute 6
-    uint8_t i8uTtlValue;                 // attribute 8
-    bool bAcdActive;                     // Attribute 10, select acd
-    uint8_t i8uAcdState;                 // Attribute 11, state of acd
-    uint8_t ai8uAcdAddr[6];              // Attribute 11, acd remote mac
-    uint8_t ai8uAcdHdr[28];              // Attribute 11, arp pdu
-    uint16_t i16uEncapInactTimeout;      // attribute 13
+    uint8_t configurationMethod;     // attribute 3
+    char aHostName[64];                 // Attribute 6
+    uint8_t ttlValue;                 // attribute 8
+    bool acdActive;                     // Attribute 10, select acd
+    uint8_t acdState;                 // Attribute 11, state of acd
+    uint8_t aAcdAddr[6];              // Attribute 11, acd remote mac
+    uint8_t aAcdHdr[28];              // Attribute 11, arp pdu
+    uint16_t encapInactTimeout;      // attribute 13
 
     // Ethernet Link object 0xF6
     EI_API_ADP_UIntfConf_t intfConfig[2];  // attribute 6
@@ -83,11 +83,11 @@ typedef struct EI_APP_PERM_SCfgData
     uint8_t domainNumber;
     char aUserDescription[128];
     // QoS object 0x48
-    EI_API_ADP_SQos_t tQoSParameter;         // QoS Object 0x48
+    EI_API_ADP_SQos_t qosParameter;         // QoS Object 0x48
 
-    EI_API_ADP_SMcastConfig_t tMcastConfig; // Multicast Configuration 0xF5 Attribute 9
+    EI_API_ADP_SMcastConfig_t mcastConfig; // Multicast Configuration 0xF5 Attribute 9
 
-    bool bQuickConnectEnabled;
+    bool quickConnectEnabled;
 
 } EI_APP_PERM_SCfgData_t;
 
@@ -98,7 +98,6 @@ extern "C" {
 bool EI_APP_PERM_init(EI_API_ADP_T *pAdpNode_p);
 bool EI_APP_PERM_write(void);
 bool EI_APP_PERM_read(void);
-EI_APP_PERM_SCfgData_t *EI_APP_PERM_get(void);
 bool EI_APP_PERM_factoryReset(int16_t serviceFlag_p);
 void EI_APP_PERM_configCb(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uint16_t instanceId_p, uint16_t attrId_p, EI_API_CIP_ESc_t serviceCode_p, int16_t serviceFlag_p);
 void EI_APP_PERM_reset(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uint16_t instanceId_p, uint16_t attrId_p, EI_API_CIP_ESc_t serviceCode_p, int16_t serviceFlag_p);

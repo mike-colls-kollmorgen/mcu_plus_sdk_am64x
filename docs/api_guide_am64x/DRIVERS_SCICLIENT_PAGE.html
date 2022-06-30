@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,42 +108,58 @@ $(document).ready(function(){initNavTree('DRIVERS_SCICLIENT_PAGE.html',''); init
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md625">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md626">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md627">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md628">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md629">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md630">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md702">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md703">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md704">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md705">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md706">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md707">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_sciclient"></a></p>
-<p>The Sciclient driver provides API to communicate with the SYSFW to do system level tasks like resource allocation, peripheral power on/off, peripheral clock setting and so on. Below are the high level features supported by the driver</p>
-<h1><a class="anchor" id="autotoc_md625"></a>
+<p>Devices AM64x and AM243x fall under the K3 SoC family and has a concept of centralized Power, Resource and Security management to allow mitigating the challenges of the traditional approach to system control. System Firmware (hereafter referred to as SYSFW) is the collective name for the security and device management firmware which offers these centralized services. In this concept a processing unit (for example an R5F) can request the SYSFW to control power, grant resources or provide secure services. This is done via a special messaging channel called a <b>secure proxy</b>. The messages are sent obeying a proprietary protocol called TISCI (TI System Controller Interface) protocol. For more information on TISCI protocol you can refer to the <a href="https://software-dl.ti.com/tisci/esd/latest/index.html"><b>TISCI Public Documentation</b></a>.</p>
+<p>Sciclient as a software block has multiple functional sub-blocks inside it, as shown in the below image:</p>
+<p> <style>div.image img[src="sciclient_block.png"]{width:60%}</style> </p><div class="image">
+<img src="sciclient_block.png" alt=""/>
+<div class="caption">
+Sciclient Sub-blocks</div></div>
+<p>More details on the APIs provided on these layers can be found in the API section, linked towards the end of this page.</p>
+<p>Generally speaking, the Sciclient driver provides API to communicate with the SYSFW using the TISCI protocol. As mentioned above, this would be for system level tasks like resource allocation, peripheral power on/off, peripheral clock setting, secure services and so on. The sciclient will be part of the application code running on each core.</p>
+<p> <style>div.image img[src="sciclient_sysfw.png"]{width:60%}</style> </p><div class="image">
+<img src="sciclient_sysfw.png" alt=""/>
+<div class="caption">
+Typical Sciclient Operation</div></div>
+<p>The above image shows the operation for only one core, but the same thing happens for all the cores. SYSFW deals with all the requests coming from each of the cores.</p>
+<p>Sciclient is mostly used by other drivers, like DMA, GPIO etc. Sciclient acts as an interface to the SYSFW for these drivers when they need say a resource like DMA channel, or configure an interrupt route. Below are the high level features supported by the driver:</p>
+<h1><a class="anchor" id="autotoc_md702"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to load the SYSFW onto the DMSC core</li>
 <li>APIs to pass a specific board configuration to the SYSFW</li>
 <li>Abstracted APIs for Power and Resource Management</li>
+<li>APIs for Processor Boot including secure boot</li>
+<li>APIs for configuring firewalls</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md626"></a>
+<h1><a class="anchor" id="autotoc_md703"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
 <li>There are no user programmable features for Sciclient SysConfig. However, adding any module makes the PowerClock_init() initialize the module power and clock. This is indirectly done using Sciclient APIs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md627"></a>
+<h1><a class="anchor" id="autotoc_md704"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md628"></a>
+<h1><a class="anchor" id="autotoc_md705"></a>
 Important Usage Guidelines</h1>
 <ul>
-<li>Typical usage of Sciclient from user perspective would be for powering on/off a peripheral, or to get/set a particular clock</li>
+<li>Sciclient is mostly used by other peripheral drivers, and mostly not directly by an application. From an application point of view, major usage of Sciclient APIs would be to power on/off a module, set/get the clock of a module, etc.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md629"></a>
+<p>This is abstracted in the SOC specific layer.</p>
+<h1><a class="anchor" id="autotoc_md706"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="sciclient_8h.html">drivers/sciclient.h</a>&gt;</span></div>
-</div><!-- fragment --><p> Module Power ON Example </p><div class="fragment"><div class="line">    int32_t  status = <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>;</div>
+</div><!-- fragment --><p> <b>Module Power ON Example</b> </p><div class="fragment"><div class="line">    int32_t  status = <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>;</div>
 <div class="line">    uint32_t moduleId = <a class="code" href="group__tisci__devices.html#gadfab6d622729d597a2930e1cfe548b96">TISCI_DEV_TIMER0</a>;</div>
 <div class="line">    uint32_t moduleState, resetState, contextLossState;</div>
 <div class="line"> </div>
@@ -169,7 +185,68 @@ Example Usage</h1>
 <div class="line">                                               <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga376db5d2fbbc54611736778be8e15431">SystemP_WAIT_FOREVER</a>);</div>
 <div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(status == <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a>);</div>
 <div class="line">    }</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md630"></a>
+</div><!-- fragment --><p><b>Interrupt configuration Example</b></p>
+<p>Since interrupt router outputs are shared resources, we need Sciclient to configure interrupt routers for certain peripherals like GPIO. Here is a snippet explaining this with an example of configuring a GPIO interrupt. For more details on the ideas used below, refer <a href="https://www.ti.com/lit/ug/spruim2c/spruim2c.pdf">AM64x/AM243x TRM</a> Chapter 9 on interrupts. The <code>INTRTR Integration</code> subsection explains the routing with a diagram. </p><div class="fragment"><div class="line">    <span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__irq__set__req.html">tisci_msg_rm_irq_set_req</a>     rmIrqReq;</div>
+<div class="line">    <span class="keyword">struct </span><a class="code" href="structtisci__msg__rm__irq__set__resp.html">tisci_msg_rm_irq_set_resp</a>    rmIrqResp;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">/* Here we specify the core specific interrupt router number which we want to tie to the GPIO peripheral interrupt.</span></div>
+<div class="line"><span class="comment">     * In this example we are considering the MAIN GPIO instance, which 54 interrupt router outputs, out of which first 16</span></div>
+<div class="line"><span class="comment">     * are routed to all the R5 cores. Since these are shared resources, we will need to decide before hand which outputs will</span></div>
+<div class="line"><span class="comment">     * be used by which core, and specify this in the sciclient_defaultBoardCfg_rm.c file. In the current configuration,</span></div>
+<div class="line"><span class="comment">     * outputs 8 and 9 are allocated to R50-0 core, we can choose either of these to configure the interrupt configuration</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">    uint32_t gpioIntrNumber = CSLR_R5FSS0_CORE0_INTR_MAIN_GPIOMUX_INTROUTER0_OUTP_8;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">/* Among the GPIOMUX_INTRRTR0 input pins, 0:86 comes from GPIO0 and 90:177 from GPIO1. We are configuring GPIO1 pin in this example, so</span></div>
+<div class="line"><span class="comment">     * we define a base interrupt number to be used later.</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">    uint32_t gpioIntrRtrInputGpio1_Base = 90;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">/* The user interrupt button SW5 is tied to interrupt num 54 among the 88 GPIO interrupt lines of GPIO1 instance */</span></div>
+<div class="line">    uint32_t gpioPushButtonPinNum = 54;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">/* For setting the IRQ for GPIO using sciclient APIs, we need to populate</span></div>
+<div class="line"><span class="comment">     * a structure, tisci_msg_rm_irq_set_req instantiated above. The definition</span></div>
+<div class="line"><span class="comment">     * of this struct and details regarding the struct members can be found in </span></div>
+<div class="line"><span class="comment">     * the tisci_rm_irq.h.</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">    <span class="comment">/* Initialize all flags to zero since we&#39;ll be setting only a few */</span></div>
+<div class="line">    rmIrqReq.valid_params           = 0U; </div>
+<div class="line">    <span class="comment">/* Our request has a destination id, so enable the flag for DST ID */</span></div>
+<div class="line">    rmIrqReq.valid_params          |= <a class="code" href="group__tisci__rm__irq.html#gae309074218959da90a5978304c34e916">TISCI_MSG_VALUE_RM_DST_ID_VALID</a>;</div>
+<div class="line">    <span class="comment">/* DST HOST IRQ is the output index of the interrupt router. We need to make sure this is also enabled as a valid param */</span></div>
+<div class="line">    rmIrqReq.valid_params          |= <a class="code" href="group__tisci__rm__irq.html#ga69aa4a4b3a5e99a86adbc6a0ccf74560">TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID</a>;</div>
+<div class="line">    <span class="comment">/* This is not a global event */</span></div>
+<div class="line">    rmIrqReq.global_event           = 0U;</div>
+<div class="line">    <span class="comment">/* Our interrupt source would be the GPIO peripheral. The source id has to be a device id recognizable by the SYSFW.</span></div>
+<div class="line"><span class="comment">     * The list of device IDs can be found in tisci_devices.h file under source/drivers/sciclient/include/tisci/am64x_am243x/.</span></div>
+<div class="line"><span class="comment">     * In GPIO case there are 3 possible options - TISCI_DEV_GPIO0, TISCI_DEV_GPIO1, TISCI_DEV_MCU_GPIO0. For input interrupt,</span></div>
+<div class="line"><span class="comment">     * we need to choose the TISCI_DEV_GPIO1</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">    rmIrqReq.src_id                 = <a class="code" href="group__tisci__devices.html#gaaaf75da2aa60d929411f0b42e8458897">TISCI_DEV_GPIO1</a>;</div>
+<div class="line">    <span class="comment">/* This is the interrupt source index within the GPIO peripheral */</span></div>
+<div class="line">    rmIrqReq.src_index              = gpioIntrRtrInputGpio1_Base + <a class="code" href="group__DRV__GPIO__MODULE.html#ga67230e311672673fe87fb8c4c2d34561">GPIO_GET_BANK_INDEX</a>(gpioPushButtonPinNum);</div>
+<div class="line">    <span class="comment">/* This is the destination of the interrupt, usually a CPU core. Here we choose the TISCI device ID for R5F0-0 core.</span></div>
+<div class="line"><span class="comment">     * For a different core, the corresponding TISCI device id has to be provided */</span></div>
+<div class="line">    rmIrqReq.dst_id                 = <a class="code" href="group__tisci__devices.html#ga7e5435686b3513b972fd92b9dd5c252d">TISCI_DEV_R5FSS0_CORE0</a>;</div>
+<div class="line">    <span class="comment">/* This is the output index of the interrupt router. This depends on the core and board configuration */</span></div>
+<div class="line">    rmIrqReq.dst_host_irq           = gpioIntrNumber;</div>
+<div class="line">    <span class="comment">/* Rest of the struct members are unused for GPIO interrupt */</span></div>
+<div class="line">    rmIrqReq.ia_id                  = 0U;</div>
+<div class="line">    rmIrqReq.vint                   = 0U;</div>
+<div class="line">    rmIrqReq.vint_status_bit_index  = 0U;</div>
+<div class="line">    rmIrqReq.secondary_host         = <a class="code" href="group__tisci__rm__shared.html#gac51e9c42d3222adeb43ea574aaebed28">TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST</a>;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">/* To set the interrupt we now invoke the Sciclient_rmIrqSet function which</span></div>
+<div class="line"><span class="comment">     * will find out the route to configure the interrupt and request DMSC to</span></div>
+<div class="line"><span class="comment">     * grant the resource</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">    <span class="keywordflow">if</span>(0 != <a class="code" href="group__SCICLIENT__FMW__RM__IF.html#ga7f6e37561daa8837b8a68452da5853b0">Sciclient_rmIrqSet</a>(&amp;rmIrqReq, &amp;rmIrqResp, <a class="code" href="group__KERNEL__DPL__SYSTEM.html#ga376db5d2fbbc54611736778be8e15431">SystemP_WAIT_FOREVER</a>))</div>
+<div class="line">    {</div>
+<div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a>(<span class="stringliteral">&quot;[Error] Sciclient event config failed!!!\r\n&quot;</span>);</div>
+<div class="line">        <a class="code" href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a>(FALSE);</div>
+<div class="line">    }</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md707"></a>
 API</h1>
 <p><a class="el" href="group__DRV__SCICLIENT__MODULE.html">APIs for SCI Client or SYSFW/DMSC FW</a> </p>
 </div></div><!-- contents -->
@@ -177,17 +254,27 @@ API</h1>
 </div><!-- doc-content -->
 <div class="ttc" id="asciclient_8h_html"><div class="ttname"><a href="sciclient_8h.html">sciclient.h</a></div><div class="ttdoc">This file contains prototypes for APIs contained as a part of SCICLIENT as well as the structures of ...</div></div>
 <div class="ttc" id="agroup__SCICLIENT__FMW__PM__IF_html_ga329b967edc51edad7a5ac1a1b86a2035"><div class="ttname"><a href="group__SCICLIENT__FMW__PM__IF.html#ga329b967edc51edad7a5ac1a1b86a2035">Sciclient_pmSetModuleState</a></div><div class="ttdeci">int32_t Sciclient_pmSetModuleState(uint32_t moduleId, uint32_t state, uint32_t reqFlag, uint32_t timeout)</div><div class="ttdoc">Message to set the hardware block/module state This is used to request or release a device....</div></div>
+<div class="ttc" id="astructtisci__msg__rm__irq__set__req_html"><div class="ttname"><a href="structtisci__msg__rm__irq__set__req.html">tisci_msg_rm_irq_set_req</a></div><div class="ttdoc">Configures peripherals within the interrupt subsystem according to the valid configuration provided....</div><div class="ttdef"><b>Definition:</b> tisci_rm_irq.h:198</div></div>
+<div class="ttc" id="agroup__tisci__rm__shared_html_gac51e9c42d3222adeb43ea574aaebed28"><div class="ttname"><a href="group__tisci__rm__shared.html#gac51e9c42d3222adeb43ea574aaebed28">TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST</div><div class="ttdef"><b>Definition:</b> tisci_rm_shared.h:75</div></div>
 <div class="ttc" id="agroup__KERNEL__DPL__SYSTEM_html_ga376db5d2fbbc54611736778be8e15431"><div class="ttname"><a href="group__KERNEL__DPL__SYSTEM.html#ga376db5d2fbbc54611736778be8e15431">SystemP_WAIT_FOREVER</a></div><div class="ttdeci">#define SystemP_WAIT_FOREVER</div><div class="ttdoc">Value to use when needing a timeout of infinity or wait forver until resource is available.</div><div class="ttdef"><b>Definition:</b> SystemP.h:83</div></div>
-<div class="ttc" id="agroup__tisci__pm__device_html_ga9ac5b4f39457e8305802d231b98420b2"><div class="ttname"><a href="group__tisci__pm__device.html#ga9ac5b4f39457e8305802d231b98420b2">TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:93</div></div>
-<div class="ttc" id="agroup__tisci__devices_html_gadfab6d622729d597a2930e1cfe548b96"><div class="ttname"><a href="group__tisci__devices.html#gadfab6d622729d597a2930e1cfe548b96">TISCI_DEV_TIMER0</a></div><div class="ttdeci">#define TISCI_DEV_TIMER0</div><div class="ttdef"><b>Definition:</b> tisci_devices.h:84</div></div>
-<div class="ttc" id="agroup__tisci__protocol_html_ga1922bd4a21b63c38721323bc1d70d664"><div class="ttname"><a href="group__tisci__protocol.html#ga1922bd4a21b63c38721323bc1d70d664">TISCI_MSG_FLAG_AOP</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_AOP</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:69</div></div>
+<div class="ttc" id="agroup__SCICLIENT__FMW__RM__IF_html_ga7f6e37561daa8837b8a68452da5853b0"><div class="ttname"><a href="group__SCICLIENT__FMW__RM__IF.html#ga7f6e37561daa8837b8a68452da5853b0">Sciclient_rmIrqSet</a></div><div class="ttdeci">int32_t Sciclient_rmIrqSet(const struct tisci_msg_rm_irq_set_req *req, const struct tisci_msg_rm_irq_set_resp *resp, uint32_t timeout)</div><div class="ttdoc">Configures a peripheral to processor IRQ.</div></div>
+<div class="ttc" id="agroup__tisci__devices_html_ga7e5435686b3513b972fd92b9dd5c252d"><div class="ttname"><a href="group__tisci__devices.html#ga7e5435686b3513b972fd92b9dd5c252d">TISCI_DEV_R5FSS0_CORE0</a></div><div class="ttdeci">#define TISCI_DEV_R5FSS0_CORE0</div><div class="ttdef"><b>Definition:</b> tisci_devices.h:174</div></div>
+<div class="ttc" id="agroup__KERNEL__DPL__DEBUG_html_gafe348ab5badd2c15118f95e21bb192c6"><div class="ttname"><a href="group__KERNEL__DPL__DEBUG.html#gafe348ab5badd2c15118f95e21bb192c6">DebugP_log</a></div><div class="ttdeci">#define DebugP_log(format,...)</div><div class="ttdoc">Function to log a string to the enabled console.</div><div class="ttdef"><b>Definition:</b> DebugP.h:211</div></div>
+<div class="ttc" id="agroup__tisci__pm__device_html_ga9ac5b4f39457e8305802d231b98420b2"><div class="ttname"><a href="group__tisci__pm__device.html#ga9ac5b4f39457e8305802d231b98420b2">TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:99</div></div>
+<div class="ttc" id="agroup__tisci__devices_html_gadfab6d622729d597a2930e1cfe548b96"><div class="ttname"><a href="group__tisci__devices.html#gadfab6d622729d597a2930e1cfe548b96">TISCI_DEV_TIMER0</a></div><div class="ttdeci">#define TISCI_DEV_TIMER0</div><div class="ttdef"><b>Definition:</b> tisci_devices.h:90</div></div>
+<div class="ttc" id="astructtisci__msg__rm__irq__set__resp_html"><div class="ttname"><a href="structtisci__msg__rm__irq__set__resp.html">tisci_msg_rm_irq_set_resp</a></div><div class="ttdoc">Response to setting a peripheral to processor interrupt.</div><div class="ttdef"><b>Definition:</b> tisci_rm_irq.h:218</div></div>
+<div class="ttc" id="agroup__tisci__protocol_html_ga1922bd4a21b63c38721323bc1d70d664"><div class="ttname"><a href="group__tisci__protocol.html#ga1922bd4a21b63c38721323bc1d70d664">TISCI_MSG_FLAG_AOP</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_AOP</div><div class="ttdef"><b>Definition:</b> tisci_protocol.h:75</div></div>
 <div class="ttc" id="agroup__SCICLIENT__FMW__PM__IF_html_gaf2b388a610f9b39a89c07f139bbf0e85"><div class="ttname"><a href="group__SCICLIENT__FMW__PM__IF.html#gaf2b388a610f9b39a89c07f139bbf0e85">Sciclient_pmGetModuleState</a></div><div class="ttdeci">int32_t Sciclient_pmGetModuleState(uint32_t moduleId, uint32_t *moduleState, uint32_t *resetState, uint32_t *contextLossState, uint32_t timeout)</div><div class="ttdoc">Message to get the hardware block/Module state. This request does not require the processing entity t...</div></div>
 <div class="ttc" id="agroup__KERNEL__DPL__SYSTEM_html_ga47e638d7c694e6d42e57b96b071b8a6f"><div class="ttname"><a href="group__KERNEL__DPL__SYSTEM.html#ga47e638d7c694e6d42e57b96b071b8a6f">SystemP_SUCCESS</a></div><div class="ttdeci">#define SystemP_SUCCESS</div><div class="ttdoc">Return status when the API execution was successful.</div><div class="ttdef"><b>Definition:</b> SystemP.h:56</div></div>
-<div class="ttc" id="agroup__tisci__pm__device_html_ga3136023bc61a27255bc726f58f472f26"><div class="ttname"><a href="group__tisci__pm__device.html#ga3136023bc61a27255bc726f58f472f26">TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:74</div></div>
-<div class="ttc" id="agroup__tisci__pm__device_html_gaef556164ca9c61b92b8766a580ad2b4a"><div class="ttname"><a href="group__tisci__pm__device.html#gaef556164ca9c61b92b8766a580ad2b4a">TISCI_MSG_VALUE_DEVICE_SW_STATE_ON</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_DEVICE_SW_STATE_ON</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:87</div></div>
+<div class="ttc" id="agroup__tisci__pm__device_html_ga3136023bc61a27255bc726f58f472f26"><div class="ttname"><a href="group__tisci__pm__device.html#ga3136023bc61a27255bc726f58f472f26">TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:80</div></div>
+<div class="ttc" id="agroup__tisci__rm__irq_html_gae309074218959da90a5978304c34e916"><div class="ttname"><a href="group__tisci__rm__irq.html#gae309074218959da90a5978304c34e916">TISCI_MSG_VALUE_RM_DST_ID_VALID</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_RM_DST_ID_VALID</div><div class="ttdoc">This file contains:</div><div class="ttdef"><b>Definition:</b> tisci_rm_irq.h:68</div></div>
+<div class="ttc" id="agroup__DRV__GPIO__MODULE_html_ga67230e311672673fe87fb8c4c2d34561"><div class="ttname"><a href="group__DRV__GPIO__MODULE.html#ga67230e311672673fe87fb8c4c2d34561">GPIO_GET_BANK_INDEX</a></div><div class="ttdeci">#define GPIO_GET_BANK_INDEX(pinNum)</div><div class="ttdoc">Returns the bank index based on pin number.</div><div class="ttdef"><b>Definition:</b> gpio/v0/gpio.h:126</div></div>
+<div class="ttc" id="agroup__tisci__pm__device_html_gaef556164ca9c61b92b8766a580ad2b4a"><div class="ttname"><a href="group__tisci__pm__device.html#gaef556164ca9c61b92b8766a580ad2b4a">TISCI_MSG_VALUE_DEVICE_SW_STATE_ON</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_DEVICE_SW_STATE_ON</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:93</div></div>
 <div class="ttc" id="agroup__KERNEL__DPL__DEBUG_html_ga552e9055ca7eab5fe6c224c6cd5a9d4c"><div class="ttname"><a href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a></div><div class="ttdeci">#define DebugP_assert(expression)</div><div class="ttdoc">Function to call for assert check.</div><div class="ttdef"><b>Definition:</b> DebugP.h:159</div></div>
-<div class="ttc" id="agroup__tisci__pm__device_html_ga2c0b41d91a7b71a8af09bc72ed108538"><div class="ttname"><a href="group__tisci__pm__device.html#ga2c0b41d91a7b71a8af09bc72ed108538">TISCI_MSG_FLAG_DEVICE_RESET_ISO</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_DEVICE_RESET_ISO</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:65</div></div>
+<div class="ttc" id="agroup__tisci__pm__device_html_ga2c0b41d91a7b71a8af09bc72ed108538"><div class="ttname"><a href="group__tisci__pm__device.html#ga2c0b41d91a7b71a8af09bc72ed108538">TISCI_MSG_FLAG_DEVICE_RESET_ISO</a></div><div class="ttdeci">#define TISCI_MSG_FLAG_DEVICE_RESET_ISO</div><div class="ttdef"><b>Definition:</b> tisci_pm_device.h:71</div></div>
+<div class="ttc" id="agroup__tisci__rm__irq_html_ga69aa4a4b3a5e99a86adbc6a0ccf74560"><div class="ttname"><a href="group__tisci__rm__irq.html#ga69aa4a4b3a5e99a86adbc6a0ccf74560">TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID</a></div><div class="ttdeci">#define TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID</div><div class="ttdef"><b>Definition:</b> tisci_rm_irq.h:73</div></div>
 <div class="ttc" id="agroup__SCICLIENT__FMW__PM__IF_html_gadafc6cad3aeb1ad306e57183034689f7"><div class="ttname"><a href="group__SCICLIENT__FMW__PM__IF.html#gadafc6cad3aeb1ad306e57183034689f7">Sciclient_pmSetModuleRst</a></div><div class="ttdeci">int32_t Sciclient_pmSetModuleRst(uint32_t moduleId, uint32_t resetBit, uint32_t timeout)</div><div class="ttdoc">Set the device reset state. This is used to set or release various resets of the hardware block/modul...</div></div>
+<div class="ttc" id="agroup__tisci__devices_html_gaaaf75da2aa60d929411f0b42e8458897"><div class="ttname"><a href="group__tisci__devices.html#gaaaf75da2aa60d929411f0b42e8458897">TISCI_DEV_GPIO1</a></div><div class="ttdeci">#define TISCI_DEV_GPIO1</div><div class="ttdef"><b>Definition:</b> tisci_devices.h:131</div></div>
 <!-- HTML footer for doxygen 1.8.11-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

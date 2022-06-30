@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('I2C_MIGRATION_GUIDE.html',''); initRes
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_migration_guides_i2c_migration_guide"></a> This section describes the differences between I2C APIs of MCU+ SDK and Processor SDK RTOS (PDK). This can be used as a migration aid when moving from Processor SDK RTOS (PDK) to MCU+ SDK.</p>
 <p>In MCU+ SDK, the I2C module provides higher level driver APIs.Refer <a class="el" href="DRIVERS_I2C_PAGE.html">I2C</a> for more details.</p>
-<h1><a class="anchor" id="autotoc_md325"></a>
+<h1><a class="anchor" id="autotoc_md381"></a>
 API changes</h1>
 <p>There are changes in functions names, structure names and macro names. The changes in function names are listed below.</p>
 <table class="doxtable">
@@ -144,12 +144,12 @@ API changes</h1>
 <tr>
 <td>I2C_control </td><td>None </td><td>In MCU+SDK, this API is separated into 3 sub APIs. I2C_probe, I2C_setBusFrequency and I2C_recoverBus.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md326"></a>
+<h1><a class="anchor" id="autotoc_md382"></a>
 Important Notes</h1>
 <ul>
 <li>In MCU+ SDK, Users are recommended to use SysConfig to configure driver parameters as this will greatly simplify the task of driver configuration.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md327"></a>
+<h1><a class="anchor" id="autotoc_md383"></a>
 See Also</h1>
 <ul>
 <li><a class="el" href="DRIVERS_I2C_PAGE.html">I2C</a></li>

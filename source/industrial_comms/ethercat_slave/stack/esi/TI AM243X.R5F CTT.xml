@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <EtherCATInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="EtherCATInfo.xsd" Version="1.15">
-	<Vendor>
-		<Id>#xE000059D</Id>
-		<Name>Texas Instruments Incorporated</Name>
-	</Vendor>
-	<Descriptions>
-		<Groups>
-			<Group SortOrder="-1">
-				<Type>EtherCAT Toolkit</Type>
-				<Name LcId="0">EtherCAT Toolkit</Name>
-			</Group>
-		</Groups>
-		<Devices>
-			<Device Physics="YY">
-				<Type ProductCode="#x54490023" RevisionNo="#x10000">TI EtherCAT Toolkit Conformance for AM243X.R5F</Type>
-				<Name LcId="0">TI EtherCAT Toolkit Conformance for AM243X.R5F</Name>
-				<Info>
-					<Mailbox>
-						<Timeout>
-							<RequestTimeout>100</RequestTimeout>
-							<ResponseTimeout>1000</ResponseTimeout>
-						</Timeout>
-					</Mailbox>
-				</Info>
-				<GroupType>EtherCAT Toolkit</GroupType>
+    <Vendor>
+        <Id>#xE000059D</Id>
+        <Name>Texas Instruments Incorporated</Name>
+        <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
+    </Vendor>
+    <Descriptions>
+        <Groups>
+            <Group SortOrder="-1">
+                <Type>EtherCAT Toolkit</Type>
+                <Name LcId="0">EtherCAT Toolkit</Name>
+                <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
+            </Group>
+        </Groups>
+        <Devices>
+            <Device Physics="YY">
+                <Type ProductCode="#x54490023" RevisionNo="#x10000">TI EtherCAT Toolkit Conformance for AM243X.R5F</Type>
+                <Name LcId="0">TI EtherCAT Toolkit Conformance for AM243X.R5F</Name>
+                                <Info>
+                    <Mailbox>
+                        <Timeout>
+                            <RequestTimeout>100</RequestTimeout>
+                            <ResponseTimeout>1000</ResponseTimeout>
+                        </Timeout>
+                    </Mailbox>
+                </Info>
+                <GroupType>EtherCAT Toolkit</GroupType>
                 <Profile>
                 <Dictionary>
                     <DataTypes>
@@ -1977,44 +1979,45 @@
                     </Objects>
                 </Dictionary>
                 </Profile>
-				<Fmmu>Outputs</Fmmu>
-				<Fmmu>Inputs</Fmmu>
-				<Fmmu>MBoxState</Fmmu>
-				<Sm DefaultSize="256" StartAddress="#x1000" ControlByte="#x26" Enable="1">MBoxOut</Sm>
-				<Sm DefaultSize="256" StartAddress="#x1100" ControlByte="#x22" Enable="1">MBoxIn</Sm>
-				<Sm DefaultSize="128" StartAddress="#x1200" ControlByte="#x64" Enable="1">Outputs</Sm>
-				<Sm DefaultSize="128" StartAddress="#x1e00" ControlByte="#x20" Enable="1">Inputs</Sm>
-				<Mailbox DataLinkLayer="true">
-					<EoE/>
-					<CoE SdoInfo="true" PdoConfig="true" PdoUpload="true" CompleteAccess="true"/>
-					<FoE/>
-				</Mailbox>
-				<Dc>
-					<OpMode>
-						<Name>SM-Synchron</Name>
-						<Desc>SM-Synchron</Desc>
-						<AssignActivate>#x0</AssignActivate>
-						<CycleTimeSync0 Factor="1">0</CycleTimeSync0>
-						<ShiftTimeSync0>0</ShiftTimeSync0>
-						<CycleTimeSync1 Factor="2">0</CycleTimeSync1>
-						<ShiftTimeSync1>0</ShiftTimeSync1>
-					</OpMode>
-					<OpMode>
-						<Name>DC-Synchron</Name>
-						<Desc>DC-Synchron</Desc>
-						<AssignActivate>#x300</AssignActivate>
-						<CycleTimeSync0 Factor="1">0</CycleTimeSync0>
-						<ShiftTimeSync0>0</ShiftTimeSync0>
-						<CycleTimeSync1 Factor="2">0</CycleTimeSync1>
-						<ShiftTimeSync1>0</ShiftTimeSync1>
-					</OpMode>
-				</Dc>
-				<Eeprom>
-					<ByteSize>2048</ByteSize>
-					<ConfigData>800ce088e8030000000000000000</ConfigData>
-					<BootStrap>0010000100120001</BootStrap>
-				</Eeprom>
-			</Device>
-		</Devices>
-	</Descriptions>
+                <Fmmu>Outputs</Fmmu>
+                <Fmmu>Inputs</Fmmu>
+                <Fmmu>MBoxState</Fmmu>
+                <Sm DefaultSize="256" StartAddress="#x1000" ControlByte="#x26" Enable="1">MBoxOut</Sm>
+                <Sm DefaultSize="256" StartAddress="#x1100" ControlByte="#x22" Enable="1">MBoxIn</Sm>
+                <Sm StartAddress="#x1200" ControlByte="#x64" Enable="1">Outputs</Sm>
+                <Sm StartAddress="#x1e00" ControlByte="#x20" Enable="1">Inputs</Sm>
+                <Mailbox DataLinkLayer="true">
+                    <EoE/>
+                    <CoE SdoInfo="true" PdoConfig="true" PdoUpload="true" CompleteAccess="true"/>
+                    <FoE/>
+                </Mailbox>
+                <Dc>
+                    <OpMode>
+                        <Name>SM-Synchron</Name>
+                        <Desc>SM-Synchron</Desc>
+                        <AssignActivate>#x0</AssignActivate>
+                        <CycleTimeSync0 Factor="1">0</CycleTimeSync0>
+                        <ShiftTimeSync0>0</ShiftTimeSync0>
+                        <CycleTimeSync1 Factor="2">0</CycleTimeSync1>
+                        <ShiftTimeSync1>0</ShiftTimeSync1>
+                    </OpMode>
+                    <OpMode>
+                        <Name>DC-Synchron</Name>
+                        <Desc>DC-Synchron</Desc>
+                        <AssignActivate>#x300</AssignActivate>
+                        <CycleTimeSync0 Factor="1">0</CycleTimeSync0>
+                        <ShiftTimeSync0>0</ShiftTimeSync0>
+                        <CycleTimeSync1 Factor="2">0</CycleTimeSync1>
+                        <ShiftTimeSync1>0</ShiftTimeSync1>
+                    </OpMode>
+                </Dc>
+                <Eeprom>
+                    <ByteSize>2048</ByteSize>
+                    <ConfigData>800ce088e8030000000000000000</ConfigData>
+                    <BootStrap>0010000100120001</BootStrap>
+                </Eeprom>
+                <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
+            </Device>
+        </Devices>
+    </Descriptions>
 </EtherCATInfo>

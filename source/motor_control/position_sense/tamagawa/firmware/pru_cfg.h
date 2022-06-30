@@ -33,6 +33,12 @@
 #ifndef _PRU_CFG_H_
 #define _PRU_CFG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* PRU CFG register set */
 typedef struct
 {
@@ -562,5 +568,10 @@ typedef struct
 
 volatile __far pruCfg CT_CFG __attribute__((cregister("PRU_CFG", near),
         peripheral));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PRU_CFG_H_ */

@@ -75,7 +75,7 @@ mpu_armv76.size     = 31;
 mpu_armv77.$name        = "CONFIG_MPU_REGION6";
 mpu_armv77.baseAddr     = 0x701D0000;
 mpu_armv77.size         = 16;
-mpu_armv77.attributes   = "Device";
+mpu_armv77.attributes   = "NonCached";
 mpu_armv77.allowExecute = false;
 
 /**

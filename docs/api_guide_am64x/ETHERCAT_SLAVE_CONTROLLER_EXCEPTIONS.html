@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS.h
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_components_industrial_comms_ethercat_slave_exceptions"></a> This page lists the exceptions TI's EtherCAT Slave Controller implementation when compared with ET1100 ASIC.</p>
-<h1><a class="anchor" id="autotoc_md720"></a>
+<h1><a class="anchor" id="ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS_REGISTER_EXCEPTIONS"></a>
 Register Exceptions</h1>
 <p>TI ESC register map is fully compatible with ET1100 ASIC register map except for the registers and register fields documented below.</p>
 <table class="doxtable">
@@ -130,7 +130,27 @@ Register Exceptions</h1>
 <tr>
 <td>On-chip bus extended configuration (0x0152:0x0153) </td><td><b>Not available in TI ESC</b>  </td></tr>
 <tr>
-<td>RX Error Counter of Port 0 &amp; 1 (0x0301 and 0x303) </td><td>TI ESC does not count RX_ER in MII_CLK units (counts number of frames encountered RX_ER). RX_ERs outside frame is not counted. (This will be fixed)  </td></tr>
+<td>RX Error Counter of Port 0 &amp; 1 (0x0301 and 0x303) </td><td><ul>
+<li>
+During frame (when RX_DV is asserted)<br  />
+ <ul>
+<li>
+TI ESC increments the counter by reading the PHY register to count RX Error (RX_ERR) during frame (when RX_DV is asserted) in MII_CLK units. </li>
+</ul>
+</li>
+<li>
+Outside frame (when RX_DV is not asserted)<br  />
+ <ul>
+<li>
+TI ESC polls for RX_ERR interrupt, and interpolates clock cycles based on polling duration. Therefore it does not count RX_ERR in MII_CLK units precisely. </li>
+<li>
+When only one port is connected, the polling interval is ~120 ns. </li>
+<li>
+When both ports are connected, the polling interval for Port 0 is ~120 ns and the polling interval for Port 1 is ~680 ns. </li>
+</ul>
+</li>
+</ul>
+<b>NOTE : Address of PHY register which counts RX Errors should be configured in vendor specific 0x0E28 register in TI ESC for the counting to work during frame</b>  </td></tr>
 <tr>
 <td>ECAT Processing Unit Error Counter(0x030C) </td><td>Physical layer errors are not counted by TI ESC.  </td></tr>
 <tr>
@@ -188,7 +208,7 @@ If one programs &gt; 13 bits, upper 3-bits are lost as firmware shifts 3-bits (2
 <td>Digital Outputs (0x0F00:0x0F03) </td><td>Digital Outputs are updated at the end of an EtherCAT frame which triggered the Process Data Watchdog in ET1100 with typical SyncManager configuration: a frame containing a write <br  />
  access to at least one of the registers 0x0F00:0x0F03. TI ESC firmware requires SyncManager address to be higher than or equal to 0x1000.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md721"></a>
+<h1><a class="anchor" id="autotoc_md806"></a>
 Known Issues with no plans to fix</h1>
 <table class="doxtable">
 <tr>
@@ -221,7 +241,7 @@ Known Issues with no plans to fix</h1>
   </p>
 </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md722"></a>
+<h1><a class="anchor" id="autotoc_md807"></a>
 Known Functional Differences</h1>
 <table class="doxtable">
 <tr>

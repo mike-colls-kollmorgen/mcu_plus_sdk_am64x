@@ -33,6 +33,12 @@
 #ifndef ICSS_DLR_H_
 #define ICSS_DLR_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -166,10 +172,8 @@
 #define DEFAULT_BEACON_INTERVAL_VARIABLE 400 /*in microseconds*/
 #define DEFAULT_BEACON_TIMEOUT_VARIABLE (DEFAULT_BEACON_INTERVAL_VARIABLE * 4) /*in microseconds*/
 
-/**The actual time is 100ms but since system tick period is half, this is twice of what it should be*/
-#define DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL   200 /*in milliseconds*/
+#define DEFAULT_NEIGHBOR_TIMEOUT_INTERVAL   100 /*in milliseconds*/
 
-/**The actual time is 100ms but since system tick period is half, this is twice of what it should be*/
 #define DEFAULT_DLR_PERIODIC_INTERVAL   100 /*in milliseconds*/
 
 /**Number of neighbor retries before a neighbor status message is sent*/
@@ -698,7 +702,7 @@ void EIP_DLR_switchToNormal(EIP_DLRHandle dlrHandle);
 int32_t EIP_DLR_isrInit(EIP_DLRHandle dlrHandle);
 /**
 *  \internal
-*  \brief   This is called periodically every 100ms or whatever the NDK tick period is
+*  \brief   This is called periodically at DEFAULT_DLR_PERIODIC_INTERVAL
 *
 *  \param  obj      [in] Clock object associated with this callback
 *  \param  userArg  [in] DLR handle is passed to this parameter
@@ -803,4 +807,9 @@ void EIP_DLR_set_pdi_wd_trigger_mode(EIP_DLRHandle dlrHandle, uint32_t mode);
 /**
 @}
 */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* ICSS_DLR_H_ */

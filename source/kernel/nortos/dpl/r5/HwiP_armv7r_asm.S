@@ -38,6 +38,7 @@
         .type HwiP_disable,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_disable:
         mrs     r0, cpsr
         orr     r12, r0, #0x80
@@ -49,6 +50,7 @@ HwiP_disable:
         .type HwiP_disableFIQ,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_disableFIQ:
         mrs     r0, cpsr
         orr     r12, r0, #0x40
@@ -60,6 +62,7 @@ HwiP_disableFIQ:
         .type HwiP_enable,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_enable:
         mrs     r0, cpsr
         bic     r12, r0, #0x80
@@ -71,6 +74,7 @@ HwiP_enable:
         .type   HwiP_enableFIQ,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_enableFIQ:
         mrs     r0, cpsr
         bic     r12, r0, #0x40
@@ -82,6 +86,7 @@ HwiP_enableFIQ:
         .type   HwiP_restore,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_restore:
         msr     cpsr_cf, r0
         bx      LR
@@ -91,6 +96,7 @@ HwiP_restore:
         .type   HwiP_enableVIC,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_enableVIC:
         MRC     p15, #0, r0, c1, c0, #0  /* Read SCTLR */
         ORR     r0, r0, #(1<<24)         /* Set VE mask (VIC controller provides handler address for IRQ) */
@@ -102,6 +108,7 @@ HwiP_enableVIC:
         .type   HwiP_disableVIC,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_disableVIC:
         MRC     p15, #0, r0, c1, c0, #0  /* Read SCTLR */
         BIC     r0, r0, #(1<<24)         /* Clear VE mask (VIC controller provides handler address for IRQ) */
@@ -113,6 +120,7 @@ HwiP_disableVIC:
         .type   HwiP_getCPSR,%function
         .section ".text.hwi","ax",%progbits
         .arm
+        .align 2
 HwiP_getCPSR:
         mrs     r0, cpsr
         bx      LR

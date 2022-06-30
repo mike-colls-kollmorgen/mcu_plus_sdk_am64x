@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,22 +108,22 @@ $(document).ready(function(){initNavTree('SECURE_BOOT.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md211">Secure Devices and Secure Boot: An Introduction</a></li>
-<li class="level1"><a href="#autotoc_md212">Secure Boot Process</a></li>
-<li class="level1"><a href="#autotoc_md213">Secure Boot Support in SDK</a><ul><li class="level2"><a href="#autotoc_md214">Device configuration file</a></li>
-<li class="level2"><a href="#autotoc_md215">Signing tool</a></li>
-<li class="level2"><a href="#autotoc_md216">Signing steps in an HS-SE device</a><ul><li class="level3"><a href="#autotoc_md217">Signing the SBL</a></li>
-<li class="level3"><a href="#autotoc_md218">Signing the HSM Runtime binary (SYSFW)</a></li>
-<li class="level3"><a href="#autotoc_md219">Signing the application image</a></li>
+<ul><li class="level1"><a href="#autotoc_md264">Secure Devices and Secure Boot: An Introduction</a></li>
+<li class="level1"><a href="#autotoc_md265">Secure Boot Process</a></li>
+<li class="level1"><a href="#autotoc_md266">Secure Boot Support in SDK</a><ul><li class="level2"><a href="#autotoc_md267">Device configuration file</a></li>
+<li class="level2"><a href="#autotoc_md268">Signing tool</a></li>
+<li class="level2"><a href="#autotoc_md269">Signing steps in an HS-SE device</a><ul><li class="level3"><a href="#autotoc_md270">Signing the SBL</a></li>
+<li class="level3"><a href="#autotoc_md271">Signing the HSM Runtime binary (SYSFW)</a></li>
+<li class="level3"><a href="#autotoc_md272">Signing the application image</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md220">Limitations in Secure Boot</a></li>
+<li class="level1"><a href="#autotoc_md273">Limitations in Secure Boot</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_secure_boot"></a></p>
-<h1><a class="anchor" id="autotoc_md211"></a>
+<h1><a class="anchor" id="autotoc_md264"></a>
 Secure Devices and Secure Boot: An Introduction</h1>
 <p>To put it simply, <b>secure boot</b> refers to booting application images in a secure way. Secure boot is a feature/service available in <b>secure devices</b>. Out of the device types <b>GP</b> and <b>HS</b>, HS device type can do secure boot. In secure devices there are two subtypes:</p>
 <ol type="1">
@@ -131,13 +131,13 @@ Secure Devices and Secure Boot: An Introduction</h1>
 <li>Security Enforced (SE)</li>
 </ol>
 <p>HS device type have FS and SE subtypes. Out of the two subtypes, FS and SE, this guide talks about secure boot in an <b>HS-SE</b> device. If the secure device received is an <b>HS-FS</b> subtype, it needs to be converted to an HS-SE variant with the customer keys burnt into the device eFUSEs. This is done using a special piece of software called an OTP keywriter. Keywriter documentation is out of scope for this guide.</p>
-<h1><a class="anchor" id="autotoc_md212"></a>
+<h1><a class="anchor" id="autotoc_md265"></a>
 Secure Boot Process</h1>
 <p>Secure boot process, like the normal boot, consists of two stages - ROM loading and SBL loading. ROM loading is when the boot ROM loads the HSM runtime binary onto the HSM core, and the signed SBL binary into the primary boot core, which in most cases is an ARM Cortex R5F. SBL loading is when the SBL reads the signed application image from a boot media, authenticates it, decrypts it, and boots it. Here we describe how the secure process takes place in an HS-SE device.</p>
 <dl class="section note"><dt>Note</dt><dd>In AM243x/AM64x devices, the HSM runtime binary mentioned is the System Firmware (SYSFW) and HSM core is the DMSC Cortex M3 core. Hereafter for generality sake we'll use the terms 'HSMRt' and 'HSM core' but understand that for AM64x/AM243x this means the SYSFW and Cortex M3 core.</dd></dl>
-<h1><a class="anchor" id="autotoc_md213"></a>
+<h1><a class="anchor" id="autotoc_md266"></a>
 Secure Boot Support in SDK</h1>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h2><a class="anchor" id="autotoc_md267"></a>
 Device configuration file</h2>
 <p>To make the secure/non-secure differences seamless for the user, a configuration file is provided at <code>${SDK_INSTALL_PATH}/devconfig/devconfig.mak</code>. In this configuration file, you can set certain options like the device type, keys to be used for signing and encryption etc. By default they will point to the dummy customer MPKs and MEKs but if you're using a production device with your own keys burned into the eFUSEs, please change the paths here to point to the right key files. Configuration of this file is currently manual, this will be made configurable by a GUI in an upcoming release.</p>
 <p>The devconfig.mak file looks something like this:</p>
@@ -166,7 +166,7 @@ Device configuration file</h2>
 <div class="line">    APP_SIGNING_KEY=$(ROM_DEGENERATE_KEY)</div>
 <div class="line">endif</div>
 </div><!-- fragment --><p>This file will be included in all example makefiles</p>
-<h2><a class="anchor" id="autotoc_md215"></a>
+<h2><a class="anchor" id="autotoc_md268"></a>
 Signing tool</h2>
 <p>For signing the binaries, two different scripts are used:</p>
 <ol type="1">
@@ -175,20 +175,20 @@ Signing tool</h2>
 <p class="startli">For more details on the usage of the script, see <a class="el" href="TOOLS_BOOT.html#TOOLS_BOOT_SIGNING">Signing Scripts</a></p>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md269"></a>
 Signing steps in an HS-SE device</h2>
-<h3><a class="anchor" id="autotoc_md217"></a>
+<h3><a class="anchor" id="autotoc_md270"></a>
 Signing the SBL</h3>
 <p>In AM64x/AM243x devices, a combined boot method is employed, by virtue of which the SBL, SYSFW and the SYSFW-BoardConfig are combined and signed with the same certificate. This is built into the make system of the SBL applications in the SDK - SBL_UART, SBL_OSPI, SBL_SD, SBL_NULL, etc. So whenever an SBL application is built, the loadable <code>*.tiimage</code> will be a concatenation of the x509 certificate, SBL binary, SYSFW binary and the boardcfg binary blob. In case of HS devices, the SYSFW inner certificate will also be concatenated.</p>
 <p>The SBL is signed with a dummy customer MPK in the SDK. This is supposed to be used only with the devices with the same dummy customer MPK burnt into the eFUSEes. If the SDK is supposed to be used with a production/development device with actual customer MPKs burnt into the device, please replace the file at ${SDK_INSTALL_PATH}/tools/boot/signing/custMpk_${SOC}.pem. This is true for also the encryption key used, which can also be found at ${SDK_INSTALL_PATH}/tools/boot/signing/custMek_${SOC}.txt. Whenever any SBL is built, it will be signed with dummy customer MPK, and the signed image generated will have an extension of <code>*.hs.tiimage</code>. There is no extra step required other than making sure that the MPK used is indeed the one burnt into the eFUSEs.</p>
 <dl class="section note"><dt>Note</dt><dd>We have enabled full debug while signing the ROM image. This is intentional as this is helpful for debug. Once moved from development to production please remove this option from the makefile. For more details see <a class="el" href="TOOLS_BOOT.html#TOOLS_BOOT_SIGNING">Signing Scripts</a></dd></dl>
-<h3><a class="anchor" id="autotoc_md218"></a>
+<h3><a class="anchor" id="autotoc_md271"></a>
 Signing the HSM Runtime binary (SYSFW)</h3>
 <p>As mentioned above, since we follow a combined boot method, SYSFW and SBL is signed with the same certificate using the same key. In case of a GP device this will be a degenerate key for easy parsing from ROM. In the case of an HS device, SYSFW will be already signed with TI MPK (and encrypted). This is then countersigned again with dummy customer MPK during the combined image generation process.</p>
-<h3><a class="anchor" id="autotoc_md219"></a>
+<h3><a class="anchor" id="autotoc_md272"></a>
 Signing the application image</h3>
 <p>Depending on the options given in the device configuration file (<code>devconfig.mak</code> mentioned above), appimage is generated for HS devices. If encryption is enabled in the configuration file, the binary will be first encrypted with the key specified and then the certificate will be generated using the customer MPK specified. If the device type is set as HS in the configuration file, nothing extra needs to be done for the appimage generation. The final <code>*.appimage.hs</code> file generated would be signed with customer MPK (and encrypted with customer MEK if that option is selected). To dig into the details of the process, one can refer to <a href="https://software-dl.ti.com/tisci/esd/latest/6_topic_user_guides/secure_boot_signing.html">https://software-dl.ti.com/tisci/esd/latest/6_topic_user_guides/secure_boot_signing.html</a></p>
-<h1><a class="anchor" id="autotoc_md220"></a>
+<h1><a class="anchor" id="autotoc_md273"></a>
 Limitations in Secure Boot</h1>
 <ul>
 <li><b>XIP boot</b> : Secure boot is yet to be supported for XIP applications. This is due to the fact that the XIP sections are loaded before the SBL parses the other sections. Secure boot of XIP applications will be made available in an upcoming release.</li>

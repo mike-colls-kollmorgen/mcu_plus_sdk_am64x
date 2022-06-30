@@ -33,6 +33,12 @@
 #ifndef ICSS_TIMESYNC_OSAL_H_
 #define ICSS_TIMESYNC_OSAL_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "icss_timeSync.h"
 #include "icss_timeSyncApi.h"
 #include "icss_timeSync_init.h"
@@ -190,5 +196,10 @@ void TimeSync_FollowUpTxTask(void *args);
  * \return none
  */
 void TimeSync_txTSIsr(uintptr_t arg);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_TIMESYNC_OSAL_H_ */

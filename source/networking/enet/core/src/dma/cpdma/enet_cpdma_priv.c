@@ -59,11 +59,8 @@
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-/* Currently only channel 0 is supported, hence set this to 1 instead of max 8 */ 
-//#define ENET_CPDMA_RX_CHANNELS_NUM         ENET_CPDMA_CPSW_MAX_RX_CH
-//#define ENET_CPDMA_TX_CHANNELS_NUM         ENET_CPDMA_CPSW_MAX_TX_CH
-#define ENET_CPDMA_RX_CHANNELS_NUM         1U
-#define ENET_CPDMA_TX_CHANNELS_NUM         1U
+#define ENET_CPDMA_RX_CHANNELS_NUM         ENET_CPDMA_CPSW_MAX_RX_CH
+#define ENET_CPDMA_TX_CHANNELS_NUM         ENET_CPDMA_CPSW_MAX_TX_CH
 
 typedef EnetQ EnetCpdma_RxChObjMemQ;
 

@@ -34,6 +34,12 @@
 #ifndef CSLR_DMSS_DEFINES_H_
 #define CSLR_DMSS_DEFINES_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  \anchor CSL_Dmss
  *  \name Configuration parameters for dmss
@@ -224,5 +230,10 @@
 /* @} */
 
 /* @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

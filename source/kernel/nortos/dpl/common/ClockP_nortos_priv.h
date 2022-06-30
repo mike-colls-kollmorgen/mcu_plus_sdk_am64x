@@ -33,6 +33,12 @@
 #ifndef CLOCKP_NORTOS_H
 #define CLOCKP_NORTOS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <kernel/dpl/HwiP.h>
 #include <kernel/dpl/ClockP.h>
 #include <kernel/dpl/DebugP.h>
@@ -66,5 +72,10 @@ extern ClockP_Config gClockConfig;
 void ClockP_timerClearOverflowInt(uint32_t timerBaseAddr);
 uint32_t ClockP_getTimerCount(uint32_t timerBaseAddr);
 void ClockP_timerTickIsr(void *args);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CLOCKP_NORTOS_H */

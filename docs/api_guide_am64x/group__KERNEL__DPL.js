@@ -1,5 +1,6 @@
 var group__KERNEL__DPL =
 [
+    [ "APIs for CPU ID", "group__KERNEL__DPL__CPU.html", "group__KERNEL__DPL__CPU" ],
     [ "APIs for Cache", "group__KERNEL__DPL__CACHE.html", "group__KERNEL__DPL__CACHE" ],
     [ "APIs for Clock", "group__KERNEL__DPL__CLOCK.html", "group__KERNEL__DPL__CLOCK" ],
     [ "APIs for Counting CPU Cycles", "group__KERNEL__DPL__CYCLE__COUNTER.html", "group__KERNEL__DPL__CYCLE__COUNTER" ],
@@ -9,6 +10,7 @@ var group__KERNEL__DPL =
     [ "APIs for Heap management", "group__KERNEL__DPL__HEAP.html", "group__KERNEL__DPL__HEAP" ],
     [ "APIs for MMU for ARMv8 (ARM A53)", "group__KERNEL__DPL__MMU__ARMV8.html", "group__KERNEL__DPL__MMU__ARMV8" ],
     [ "APIs for MPU for ARMv7 (ARM R5, ARM M4)", "group__KERNEL__DPL__MPU__ARMV7.html", "group__KERNEL__DPL__MPU__ARMV7" ],
+    [ "APIs for Queue", "group__KERNEL__DPL__QUEUE.html", "group__KERNEL__DPL__QUEUE" ],
     [ "APIs for Region based address translation (RAT) module", "group__KERNEL__DPL__ADDR__TRANSLATE.html", "group__KERNEL__DPL__ADDR__TRANSLATE" ],
     [ "APIs for Semaphore", "group__KERNEL__DPL__SEMAPHORE.html", "group__KERNEL__DPL__SEMAPHORE" ],
     [ "APIs for Task", "group__KERNEL__DPL__TASK.html", "group__KERNEL__DPL__TASK" ],

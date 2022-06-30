@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('EXAMPLES_KERNEL_DPL_XIP_BENCHMARK.html
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1002">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1003">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1004">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1005">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1006">Sample Output</a></li>
+<ul><li class="level1"><a href="#autotoc_md1117">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1118">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1119">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1120">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1121">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_kernel_xip_benchmark"></a></p>
-<h1><a class="anchor" id="autotoc_md1002"></a>
+<h1><a class="anchor" id="autotoc_md1117"></a>
 Introduction</h1>
 <p>This example shows a application running in XIP (eXecute In Place) mode. This example can be used to check and evaluate the performance of the SOC when running in XIP mode.</p>
 <p>The example does the below</p><ul>
@@ -140,7 +140,7 @@ Introduction</h1>
 <li>Each function is run multiple times and the worst case, best case and average case performance is printed on the UART terminal in units of cycles.</li>
 <li>There is a compile time flag <code>ENABLE_CPU_SYNC</code> to "sync" all the CPUs such that all execute and access the code and data from flash at the approximately the same time. This allows to simulate the worst case simultaneous access to the flash device in multi CPU environment. <b>NOTE</b>, by default, <code>ENABLE_CPU_SYNC</code> is <code>0</code>, i.e the CPUs are not synced.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1003"></a>
+<h1><a class="anchor" id="autotoc_md1118"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -156,11 +156,11 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Toolchain  </td><td class="markdownTableBodyNone">ti-arm-clang   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm   </td></tr>
+<td class="markdownTableBodyNone">Board  </td><td class="markdownTableBodyNone">am64x-evm, am64x-sk   </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/kernel/dpl/xip_benchmark/   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1004"></a>
+<h1><a class="anchor" id="autotoc_md1119"></a>
 Steps to Run the Example</h1>
 <dl class="section note"><dt>Note</dt><dd>This is a <code>system</code> or multi-core project, so refer to system project build instructions for CCS project or makefiles when building the example.</dd></dl>
 <ul>
@@ -173,10 +173,10 @@ Steps to Run the Example</h1>
 <li>Now flash to EVM using the steps mention here, only use the config file mentioned above, <a class="el" href="GETTING_STARTED_FLASH.html">Flash a Hello World example</a></li>
 <li>This is a multi-core example. Above steps will flash applications for all the CPUs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1005"></a>
+<h1><a class="anchor" id="autotoc_md1120"></a>
 See Also</h1>
 <p><a class="el" href="BOOTFLOW_XIP.html">Enabling XIP or eXecute In Place</a></p>
-<h1><a class="anchor" id="autotoc_md1006"></a>
+<h1><a class="anchor" id="autotoc_md1121"></a>
 Sample Output</h1>
 <p>Shown below is a screenshot, after R5F is halted and symbols loaded, on AM64x. You can see the code execution is at flash region (<code>0x60xxxxxx</code>).</p>
 <p> <style>div.image img[src="xip_benchmark.png"]{width:50%}</style> </p><div class="image">

@@ -151,7 +151,7 @@ def get_cert(args):
 				v_TEST_IMAGE_ENC_RS = binascii.hexlify(enc_rs).decode('ascii')
 
 				# Pad zeros to a temporary binary to make the size multiple of 16
-				zeros_to_pad = 16 - (os.path.getsize(bin_file) % 16)
+				zeros_pad = bytearray(16 - (os.path.getsize(bin_file) % 16))
 				tempfile_name = "tmpfile" + str(randint(1111, 9999))
 				encbin_name = args.bin + "-enc"
 				
@@ -159,8 +159,7 @@ def get_cert(args):
 
 				# append zeros to tempfile
 				with open(tempfile_name, "ab") as f:
-					for i in range(0, zeros_to_pad):
-						f.write(b'\x00')
+					f.write(zeros_pad)
 					# append the enc_rs value to the padded tempfile
 					f.write(enc_rs)
 

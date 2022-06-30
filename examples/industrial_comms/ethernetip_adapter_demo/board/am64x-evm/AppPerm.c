@@ -38,42 +38,45 @@
  */
 
 
-#include <errno.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
+#include <portmacro.h>
+#include <FreeRTOSConfig.h>
 #include <ti_board_open_close.h>
 
 #include <api/EI_API.h>
 #include "AppPerm.h"
 
-void EI_APP_PERM_clearFlash(void);
+#define WRITE_FLASH_STACK_SIZE_BYTE     4096
+#define WRITE_FLASH_STACK_SIZE          (WRITE_FLASH_STACK_SIZE_BYTE/sizeof(configSTACK_DEPTH_TYPE))
+static StackType_t writeFlashTaskStack_s[WRITE_FLASH_STACK_SIZE] __attribute__((aligned(32), section(".threadstack"))) = {0};
+static void* writeFlashTaskHandle = NULL;
+
+void EI_APP_PERM_writeFlash(void *arg);
 bool EI_APP_PERM_factoryReset(int16_t serviceFlag_p);
 
 Flash_Handle EI_APP_PERM_flashHandle_g;
 static EI_API_ADP_T *pAdp_s = NULL;
-static bool bResetRequired_s = false;
-static bool bConfigChanged_s = false;
+static bool resetRequired_s = false;
+static bool configChanged_s = false;
 static uint32_t resetTime_s = 0;
 static int16_t resetServiceFlag_s;
+static bool flashWritten_s = true;
 
-static EI_APP_PERM_SCfgData_t tPermData_s;
-static EI_APP_PERM_SCfgData_t tDefaultPermData_s =
+static EI_APP_PERM_SCfgData_t permData_s;
+static EI_APP_PERM_SCfgData_t defaultPermData_s =
 {
-    .i32uIpAddr =       0xc0a8010a,
-    .i32uIpNwMask =     0xffffff00,
-    .i32uIpGateway =    0xc0a80101,
-    .i32uNameServer1 =  0x00000000,
-    .i32uNameServer2 =  0x00000000,
-    .szDomainName = "",
-    .szHostName = "",
-    .i8uConfigurationMethod = EIP_eCFGMETHOD_STATIC,
-    .i8uTtlValue = 1,
-    .bAcdActive = true,
-    .ai8uAcdAddr = { 0,0,0,0,0,0 },
-    .ai8uAcdHdr = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    .ipAddr =       0xc0a8010a,
+    .ipNwMask =     0xffffff00,
+    .ipGateway =    0xc0a80101,
+    .nameServer1 =  0x00000000,
+    .nameServer2 =  0x00000000,
+    .aDomainName = "",
+    .aHostName = "",
+    .configurationMethod = EIP_eCFGMETHOD_STATIC,
+    .ttlValue = 1,
+    .acdActive = true,
+    .aAcdAddr = { 0,0,0,0,0,0 },
+    .aAcdHdr = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     .intfConfig[0].bit.ETHIntfActive = 1,
     .intfConfig[0].bit.ETHIntfAutoNeg = 1,
     .intfConfig[0].bit.ETHIntfFDuplex = 0,
@@ -82,17 +85,17 @@ static EI_APP_PERM_SCfgData_t tDefaultPermData_s =
     .intfConfig[1].bit.ETHIntfAutoNeg = 1,
     .intfConfig[1].bit.ETHIntfFDuplex = 0,
     .intfConfig[1].bit.ETHIntf100MB = 0,
-    .tQoSParameter.Q_Tag_Enable = EI_API_ADP_DEFAULT_8021Q,
-    .tQoSParameter.DSCP_PTP_Event = EI_API_ADP_DEFAULT_DSCP_PTP_EVENT,
-    .tQoSParameter.DSCP_PTP_General = EI_API_ADP_DEFAULT_DSCP_PTP_GENERAL,
-    .tQoSParameter.DSCP_Urgent = EI_API_ADP_DEFAULT_DSCP_URGENT,
-    .tQoSParameter.DSCP_Scheduled = EI_API_ADP_DEFAULT_DSCP_SCHEDULED,
-    .tQoSParameter.DSCP_High = EI_API_ADP_DEFAULT_DSCP_HIGH,
-    .tQoSParameter.DSCP_Low = EI_API_ADP_DEFAULT_DSCP_LOW,
-    .tQoSParameter.DSCP_Explicit = EI_API_ADP_DEFAULT_DSCP_EXPLICIT,
+    .qosParameter.Q_Tag_Enable = EI_API_ADP_DEFAULT_8021Q,
+    .qosParameter.DSCP_PTP_Event = EI_API_ADP_DEFAULT_DSCP_PTP_EVENT,
+    .qosParameter.DSCP_PTP_General = EI_API_ADP_DEFAULT_DSCP_PTP_GENERAL,
+    .qosParameter.DSCP_Urgent = EI_API_ADP_DEFAULT_DSCP_URGENT,
+    .qosParameter.DSCP_Scheduled = EI_API_ADP_DEFAULT_DSCP_SCHEDULED,
+    .qosParameter.DSCP_High = EI_API_ADP_DEFAULT_DSCP_HIGH,
+    .qosParameter.DSCP_Low = EI_API_ADP_DEFAULT_DSCP_LOW,
+    .qosParameter.DSCP_Explicit = EI_API_ADP_DEFAULT_DSCP_EXPLICIT,
 
-    .i16uEncapInactTimeout = 120,
-    .tMcastConfig.allocControl = 0,
+    .encapInactTimeout = 120,
+    .mcastConfig.allocControl = 0,
 
 #if defined(TIME_SYNC)
     .ptpEnable                  = 1,
@@ -111,9 +114,9 @@ static EI_APP_PERM_SCfgData_t tDefaultPermData_s =
 #endif
 
 #if defined(QUICK_CONNECT)
-    .bQuickConnectEnabled       = true,
+    .quickConnectEnabled       = true,
 #else
-    .bQuickConnectEnabled       = false,
+    .quickConnectEnabled       = false,
 #endif
 
 };
@@ -137,7 +140,6 @@ bool EI_APP_PERM_init(EI_API_ADP_T *pAdpNode_p)
     return (true);
 }
 
-
 /*!
  *  <!-- Description: -->
  *
@@ -150,27 +152,25 @@ bool EI_APP_PERM_init(EI_API_ADP_T *pAdpNode_p)
  */
 bool EI_APP_PERM_write(void)
 {
-    int32_t  err_l;
+    static EI_APP_PERM_SCfgData_t permData;
 
-    tPermData_s.tPermHdr.magicNumber = (('M' << 8) | 'R');
-    tPermData_s.tPermHdr.version = APP_PERM_DATA_VERSION;
-    tPermData_s.tPermHdr.checksum = 0;
-
-    EI_APP_PERM_clearFlash ();
-
-    err_l = Flash_write (EI_APP_PERM_flashHandle_g, EI_APP_PERM_DATA_OFFSET, (uint8_t *)&tPermData_s, sizeof (EI_APP_PERM_SCfgData_t));
-    if (err_l < 0)
+    // Wait until last write to flash is done
+    while(flashWritten_s == false)
     {
-        OSAL_printf ("\r\nFlash_write failed");
-        goto laError;
+        OSAL_SCHED_sleep(100);
     }
 
+    flashWritten_s = false;
+
+    // Make a copy of the permanent data so that the following calls can make their changes
+    OSAL_MEMORY_memcpy(&permData, &permData_s, sizeof(permData));
+
+    // Start writing the flash in a thread so that the main task is not blocked
+    writeFlashTaskHandle = OSAL_SCHED_startTask (EI_APP_PERM_writeFlash, &permData, OSAL_TASK_ePRIO_8,
+                          (uint8_t*) writeFlashTaskStack_s, WRITE_FLASH_STACK_SIZE_BYTE,
+                          OSAL_OS_START_TASK_FLG_NONE, "WriteFlash");
+
     return true;
-
-    //-------------------------------------------------------------------------------------------------
-    laError:
-
-        exit (-1);
 }
 
 /*!
@@ -190,7 +190,7 @@ bool EI_APP_PERM_read(void)
     uint32_t checkSum;
     EIP_SConfigurationControl_t configurationControl;
 
-    err_l = Flash_read (EI_APP_PERM_flashHandle_g, EI_APP_PERM_DATA_OFFSET, (uint8_t *)&tPermData_s, sizeof (EI_APP_PERM_SCfgData_t));
+    err_l = Flash_read (EI_APP_PERM_flashHandle_g, EI_APP_PERM_DATA_OFFSET, (uint8_t *)&permData_s, sizeof (EI_APP_PERM_SCfgData_t));
     if (err_l < 0)
     {
         OSAL_printf ("\r\nFlash_read failed");
@@ -199,80 +199,64 @@ bool EI_APP_PERM_read(void)
 
     checkSum = 0;  // TBD calculate a proper checksum
 
-    if (   (tPermData_s.tPermHdr.magicNumber != (('M' << 8) | 'R'))
-        || (tPermData_s.tPermHdr.version != APP_PERM_DATA_VERSION)
-        || (tPermData_s.tPermHdr.checksum != checkSum)
+    if (   (permData_s.permHdr.magicNumber != (('M' << 8) | 'R'))
+        || (permData_s.permHdr.version != APP_PERM_DATA_VERSION)
+        || (permData_s.permHdr.checksum != checkSum)
        )
-    {   // Data are corrupt -> write default values
-        OSAL_printf ("Data are corrupted, write default values.");
+    {
+        OSAL_printf ("The data is corrupted, write default values.\r\n");
         EI_APP_PERM_factoryReset(1);
     }
 
-    EI_API_ADP_setHostName(pAdp_s, tPermData_s.szHostName);
-    EI_API_ADP_setIpTTL(pAdp_s, tPermData_s.i8uTtlValue);
-    EI_API_ADP_setACD(pAdp_s, tPermData_s.bAcdActive);
-    EI_API_ADP_setIntfConfig(pAdp_s, 0, tPermData_s.intfConfig[0]);
-    EI_API_ADP_setIntfConfig(pAdp_s, 1, tPermData_s.intfConfig[1]);
-    EI_API_ADP_setEnipAcdState(pAdp_s, tPermData_s.i8uAcdState);
-    EI_API_ADP_SParam_t acdAddr = { 6, (uint8_t*)&tPermData_s.ai8uAcdAddr };
-    EI_API_ADP_setEnipAcdAddr(pAdp_s, &acdAddr);
-    EI_API_ADP_SParam_t acdHdr = { 28, (uint8_t*)&tPermData_s.ai8uAcdHdr };
-    EI_API_ADP_setEnipAcdHdr(pAdp_s, &acdHdr);
-    EI_API_ADP_setEncapInactTimeout(pAdp_s, tPermData_s.i16uEncapInactTimeout);
-    EI_API_ADP_setQoS(pAdp_s, &tPermData_s.tQoSParameter);
-    EI_API_ADP_setMcastConfiguration(pAdp_s, &tPermData_s.tMcastConfig);
+    EI_API_ADP_setHostName(pAdp_s, permData_s.aHostName);
+    EI_API_ADP_setIpTTL(pAdp_s, permData_s.ttlValue);
+    EI_API_ADP_setACD(pAdp_s, permData_s.acdActive);
+    EI_API_ADP_setIntfConfig(pAdp_s, 0, permData_s.intfConfig[0]);
+    EI_API_ADP_setIntfConfig(pAdp_s, 1, permData_s.intfConfig[1]);
+    EI_API_ADP_setEnipAcdState(pAdp_s, permData_s.acdState);
+    EI_API_ADP_SParam_t aAcdAddr = { 6, (uint8_t*)&permData_s.aAcdAddr };
+    EI_API_ADP_setEnipAcdAddr(pAdp_s, &aAcdAddr);
+    EI_API_ADP_SParam_t aAcdHdr = { 28, (uint8_t*)&permData_s.aAcdHdr };
+    EI_API_ADP_setEnipAcdHdr(pAdp_s, &aAcdHdr);
+    EI_API_ADP_setEncapInactTimeout(pAdp_s, permData_s.encapInactTimeout);
+    EI_API_ADP_setQoS(pAdp_s, &permData_s.qosParameter);
+    EI_API_ADP_setMcastConfiguration(pAdp_s, &permData_s.mcastConfig);
 
-    if(tPermData_s.tPermHdr.version == APP_PERM_DATA_VERSION)
+    if(permData_s.permHdr.version == APP_PERM_DATA_VERSION)
     {
-        EI_API_ADP_setPtpEnable(pAdp_s, tPermData_s.ptpEnable);
-        EI_API_ADP_setPortEnable(pAdp_s, tPermData_s.portEnable);
-        EI_API_ADP_setPortLogAnnounceInterval(pAdp_s, tPermData_s.portLogAnnounceInterval);
-        EI_API_ADP_setPortLogSyncInterval(pAdp_s, tPermData_s.portLogSyncInterval);
-        EI_API_ADP_setDomainNumber(pAdp_s, tPermData_s.domainNumber);
-        EI_API_ADP_setTimeSyncUserDescription(pAdp_s, tPermData_s.aUserDescription);
+        EI_API_ADP_setPtpEnable(pAdp_s, permData_s.ptpEnable);
+        EI_API_ADP_setPortEnable(pAdp_s, permData_s.portEnable);
+        EI_API_ADP_setPortLogAnnounceInterval(pAdp_s, permData_s.portLogAnnounceInterval);
+        EI_API_ADP_setPortLogSyncInterval(pAdp_s, permData_s.portLogSyncInterval);
+        EI_API_ADP_setDomainNumber(pAdp_s, permData_s.domainNumber);
+        EI_API_ADP_setTimeSyncUserDescription(pAdp_s, permData_s.aUserDescription);
      }
     else
     {
-        EI_API_ADP_setPtpEnable(pAdp_s, tDefaultPermData_s.ptpEnable);
-        EI_API_ADP_setPortEnable(pAdp_s, tDefaultPermData_s.portEnable);
-        EI_API_ADP_setPortLogAnnounceInterval(pAdp_s, tDefaultPermData_s.portLogAnnounceInterval);
-        EI_API_ADP_setPortLogSyncInterval(pAdp_s, tDefaultPermData_s.portLogSyncInterval);
-        EI_API_ADP_setDomainNumber(pAdp_s, tDefaultPermData_s.domainNumber);
-        EI_API_ADP_setTimeSyncUserDescription(pAdp_s, tDefaultPermData_s.aUserDescription);
+        EI_API_ADP_setPtpEnable(pAdp_s, defaultPermData_s.ptpEnable);
+        EI_API_ADP_setPortEnable(pAdp_s, defaultPermData_s.portEnable);
+        EI_API_ADP_setPortLogAnnounceInterval(pAdp_s, defaultPermData_s.portLogAnnounceInterval);
+        EI_API_ADP_setPortLogSyncInterval(pAdp_s, defaultPermData_s.portLogSyncInterval);
+        EI_API_ADP_setDomainNumber(pAdp_s, defaultPermData_s.domainNumber);
+        EI_API_ADP_setTimeSyncUserDescription(pAdp_s, defaultPermData_s.aUserDescription);
     }
 
 #if defined(QUICK_CONNECT)
     // Enable QuickConnect
-    EI_API_ADP_setQuickConnectEnabled(pAdp_s, tPermData_s.bQuickConnectEnabled);
+    EI_API_ADP_setQuickConnectEnabled(pAdp_s, permData_s.quickConnectEnabled);
 #endif
 
-    configurationControl.configurationMethod = tPermData_s.i8uConfigurationMethod;
+    configurationControl.configurationMethod = permData_s.configurationMethod;
     configurationControl.dnsEnable = 0;
     configurationControl.reserved = 0;
-    EI_API_ADP_setIpConfig(pAdp_s, configurationControl, tPermData_s.i32uIpAddr, tPermData_s.i32uIpNwMask, tPermData_s.i32uIpGateway,
-                           tPermData_s.i32uNameServer1, tPermData_s.i32uNameServer2, tPermData_s.szDomainName, false);
+    EI_API_ADP_setIpConfig(pAdp_s, configurationControl, permData_s.ipAddr, permData_s.ipNwMask, permData_s.ipGateway,
+                           permData_s.nameServer1, permData_s.nameServer2, permData_s.aDomainName, false);
     return true;
 
     //-------------------------------------------------------------------------------------------------
     laError:
 
         exit (-1);
-}
-
-
-/*!
- *  <!-- Description: -->
- *
- *  \brief
- *  Returns a pointer to the permanent data.
- *
- *  \details
- *  Returns a pointer to the permanent data area in Flash.
- *
- */
-EI_APP_PERM_SCfgData_t *EI_APP_PERM_get(void)
-{
-    return (&tPermData_s);
 }
 
 
@@ -295,40 +279,39 @@ bool EI_APP_PERM_factoryReset(int16_t serviceFlag_p)
     {
     case 1:
         // Restore default data.
-        memcpy(&tPermData_s, &tDefaultPermData_s, sizeof(EI_APP_PERM_SCfgData_t));
+        OSAL_MEMORY_memcpy(&permData_s, &defaultPermData_s, sizeof(EI_APP_PERM_SCfgData_t));
         break;
     case 2:
         // Restore default data, except communication link attributes, these are:
         // TCP/IP object 0xF5, attributes 3, 5 and 6.
         // Ethernet Link object 0xF6, attribute 6.
-        tPermData_s.i8uTtlValue = tDefaultPermData_s.i8uTtlValue;
-        tPermData_s.bAcdActive  = tDefaultPermData_s.bAcdActive;
-        tPermData_s.i8uAcdState = tDefaultPermData_s.i8uAcdState;
+        permData_s.ttlValue = defaultPermData_s.ttlValue;
+        permData_s.acdActive  = defaultPermData_s.acdActive;
+        permData_s.acdState = defaultPermData_s.acdState;
 
-        memcpy(tPermData_s.ai8uAcdAddr, tDefaultPermData_s.ai8uAcdAddr, sizeof(tDefaultPermData_s.ai8uAcdAddr));
-        memcpy(tPermData_s.ai8uAcdHdr,  tDefaultPermData_s.ai8uAcdHdr,  sizeof(tDefaultPermData_s.ai8uAcdHdr));
+        OSAL_MEMORY_memcpy(permData_s.aAcdAddr, defaultPermData_s.aAcdAddr, sizeof(defaultPermData_s.aAcdAddr));
+        OSAL_MEMORY_memcpy(permData_s.aAcdHdr,  defaultPermData_s.aAcdHdr,  sizeof(defaultPermData_s.aAcdHdr));
 
-        tPermData_s.i16uEncapInactTimeout = tDefaultPermData_s.i16uEncapInactTimeout;
-        memcpy(&tPermData_s.tQoSParameter, &tDefaultPermData_s.tQoSParameter, sizeof(tDefaultPermData_s.tQoSParameter));
+        permData_s.encapInactTimeout = defaultPermData_s.encapInactTimeout;
+        OSAL_MEMORY_memcpy(&permData_s.qosParameter, &defaultPermData_s.qosParameter, sizeof(defaultPermData_s.qosParameter));
 
         //timeSync attributes
-        tPermData_s.ptpEnable                = tDefaultPermData_s.ptpEnable;
-        tPermData_s.portEnable               = tDefaultPermData_s.portEnable;
-        tPermData_s.portLogSyncInterval      = tDefaultPermData_s.portLogSyncInterval;
-        tPermData_s.portLogAnnounceInterval  = tDefaultPermData_s.portLogAnnounceInterval;
-        tPermData_s.domainNumber             = tDefaultPermData_s.domainNumber;
-        memcpy(tPermData_s.aUserDescription, tDefaultPermData_s.aUserDescription, 128);
-
+        permData_s.ptpEnable                = defaultPermData_s.ptpEnable;
+        permData_s.portEnable               = defaultPermData_s.portEnable;
+        permData_s.portLogSyncInterval      = defaultPermData_s.portLogSyncInterval;
+        permData_s.portLogAnnounceInterval  = defaultPermData_s.portLogAnnounceInterval;
+        permData_s.domainNumber             = defaultPermData_s.domainNumber;
+        OSAL_MEMORY_memcpy(permData_s.aUserDescription, defaultPermData_s.aUserDescription, 128);
 
 #if defined(QUICK_CONNECT)
-        tPermData_s.bQuickConnectEnabled = tDefaultPermData_s.bQuickConnectEnabled;
+        permData_s.quickConnectEnabled = defaultPermData_s.quickConnectEnabled;
 #endif
         break;
     default:
         return false;
     }
-
-    return EI_APP_PERM_write();
+    EI_APP_PERM_writeFlash(&permData_s);
+    return true;
 }
 
 
@@ -340,32 +323,34 @@ bool EI_APP_PERM_factoryReset(int16_t serviceFlag_p)
  *
  *  \details
  *  Callback function for write accesses of several attributes. Saves the new permanent data.
- *  Sets new network configuration, if necessary. Sets hostname, if necessary.
+ *  Sets new network configuration, if necessary. Sets aHostName, if necessary.
  */
 void EI_APP_PERM_configCb(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uint16_t instanceId_p, uint16_t attrId_p, EI_API_CIP_ESc_t serviceCode_p, int16_t serviceFlag_p)
 {
-   EI_API_ADP_SQos_t qos;
-   EI_API_ADP_SParam_t acdAddr;
-   EI_API_ADP_SParam_t acdHdr;
-
-   bool hwConfigEnabled;
-   char domainName[49];
-   char hostName[65];
-
-   uint32_t ipAddr;                 // IP address
-   uint32_t ipNwMask;               // Network mask
-   uint32_t ipGateway;              // Gateway address
-   uint32_t nameServer1;            // First name server address
-   uint32_t nameServer2;            // Second name server address
-   EIP_SConfigurationControl_t configurationControl; // TCP/IP object attribute 3
+   static uint32_t lastCalled;
 
    // Early exit, because we are only interested if Set_Attribute was executed.
    if (serviceCode_p != EI_API_CIP_eSC_SETATTRSINGLE) return;
+
+   if ((OSAL_getMsTick() - lastCalled) < 100)
+   {
+       OSAL_SCHED_sleep(100);
+   }
+   lastCalled = OSAL_getMsTick();
 
    if (classId_p == 0xf5)
    {
        if (attrId_p == 3 || attrId_p == 5)
        {
+           bool hwConfigEnabled;
+           char aDomainName[49];
+           uint32_t ipAddr;                 // IP address
+           uint32_t ipNwMask;               // Network mask
+           uint32_t ipGateway;              // Gateway address
+           uint32_t nameServer1;            // First name server address
+           uint32_t nameServer2;            // Second name server address
+           EIP_SConfigurationControl_t configurationControl; // TCP/IP object attribute 3
+
            EI_API_ADP_isHwSettingEnabled(pAdp_s, &hwConfigEnabled);
            if (hwConfigEnabled)
            {
@@ -380,125 +365,197 @@ void EI_APP_PERM_configCb(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uin
            EI_API_ADP_getIpGateway(pAdp_s, &ipGateway);
            EI_API_ADP_getIpPriNameServer(pAdp_s, &nameServer1);
            EI_API_ADP_getIpSecNameServer(pAdp_s, &nameServer2);
-           EI_API_ADP_getDomainName(pAdp_s, domainName);
+           EI_API_ADP_getDomainName(pAdp_s, aDomainName);
            EI_API_ADP_getConfigurationControl(pAdp_s, &configurationControl);
 
-           if ( (ipAddr      != tPermData_s.i32uIpAddr)      ||
-                (ipNwMask    != tPermData_s.i32uIpNwMask)    ||
-                (ipGateway   != tPermData_s.i32uIpGateway)   ||
-                (nameServer1 != tPermData_s.i32uIpGateway)   ||
-                (nameServer2 != tPermData_s.i32uNameServer1) ||
-                (configurationControl.configurationMethod != tPermData_s.i8uConfigurationMethod) ||
-                (strncmp(domainName, tPermData_s.szDomainName, sizeof(tPermData_s.szDomainName)) != 0) )
+           if ( (ipAddr      != permData_s.ipAddr)      ||
+                (ipNwMask    != permData_s.ipNwMask)    ||
+                (ipGateway   != permData_s.ipGateway)   ||
+                (nameServer1 != permData_s.nameServer1) ||
+                (nameServer2 != permData_s.nameServer2) ||
+                (configurationControl.configurationMethod != permData_s.configurationMethod) ||
+                (strncmp(aDomainName, permData_s.aDomainName, sizeof(permData_s.aDomainName)) != 0) )
            {
                // Attribute 3 (configuration control) or
                // Attribute 5 (interface configuration) is set.
-               tPermData_s.i32uIpAddr      = ipAddr;
-               tPermData_s.i32uIpNwMask    = ipNwMask;
-               tPermData_s.i32uIpGateway   = ipGateway;
-               tPermData_s.i32uNameServer1 = nameServer1;
-               tPermData_s.i32uNameServer2 = nameServer2;
-               tPermData_s.i8uConfigurationMethod = configurationControl.configurationMethod;
+               permData_s.ipAddr      = ipAddr;
+               permData_s.ipNwMask    = ipNwMask;
+               permData_s.ipGateway   = ipGateway;
+               permData_s.nameServer1 = nameServer1;
+               permData_s.nameServer2 = nameServer2;
+               permData_s.configurationMethod = configurationControl.configurationMethod;
 
-               strncpy(tPermData_s.szDomainName, domainName, sizeof(tPermData_s.szDomainName));
+               strncpy(permData_s.aDomainName, aDomainName, sizeof(permData_s.aDomainName));
 
-               bConfigChanged_s = true;
+               configChanged_s = true;
            }
        }
        else if (attrId_p == 6)
        {
-           // TCP/IP Object 0xF5,
-           // Attribute 6 (Host Name)
-           EI_API_ADP_getHostName(pAdp_s, hostName);
-           strncpy(tPermData_s.szHostName, hostName, sizeof(tPermData_s.szHostName));
-           bConfigChanged_s = true;
+           char aHostName[65];
+           EI_API_ADP_getHostName(pAdp_s, aHostName);
+           if(0 != strcmp(aHostName, permData_s.aHostName))
+           {
+               strncpy(permData_s.aHostName, aHostName, sizeof(permData_s.aHostName));
+               configChanged_s = true;
+           }
 
        }
        else if (attrId_p == 8)
        {
-           EI_API_ADP_getIpTTL(pAdp_s, &tPermData_s.i8uTtlValue);
-           bConfigChanged_s = true;
+           uint8_t ttlValue;
+           EI_API_ADP_getIpTTL(pAdp_s, &ttlValue);
+           if(ttlValue != permData_s.ttlValue)
+           {
+               permData_s.ttlValue = ttlValue;
+               configChanged_s = true;
+           }
        }
        else if (attrId_p == 9)
        {
-           EI_API_ADP_getMcastConfiguration(pAdp_s, &tPermData_s.tMcastConfig);
-           bConfigChanged_s = true;
+           EI_API_ADP_SMcastConfig_t mcastConfig;
+           EI_API_ADP_getMcastConfiguration(pAdp_s, &mcastConfig);
+
+           if(OSAL_MEMORY_memcmp(&mcastConfig, &permData_s.mcastConfig, sizeof(permData_s.mcastConfig)) != 0)
+           {
+               OSAL_MEMORY_memcpy (&permData_s.mcastConfig, &mcastConfig, sizeof(permData_s.mcastConfig));
+               configChanged_s = true;
+           }
        }
        else if (attrId_p == 10)
        {
-           EI_API_ADP_getACD(pAdp_s, &tPermData_s.bAcdActive);
-           bConfigChanged_s = true;
+           bool acdActive;
+           EI_API_ADP_getACD(pAdp_s, &acdActive);
+           if(acdActive != permData_s.acdActive)
+           {
+               permData_s.acdActive = acdActive;
+               configChanged_s = true;
+           }
        }
        else if (attrId_p == 11)
        {
-           EI_API_ADP_getEnipAcdState(pAdp_s, &tPermData_s.i8uAcdState);
+           uint8_t acdState;                 // Attribute 11, state of acd
+           EI_API_ADP_SParam_t aAcdAddr;
+           EI_API_ADP_SParam_t aAcdHdr;
 
-           EI_API_ADP_getEnipAcdAddr(pAdp_s, &acdAddr);
-           memcpy(tPermData_s.ai8uAcdAddr, acdAddr.data, sizeof(tPermData_s.ai8uAcdAddr));
+           EI_API_ADP_getEnipAcdState(pAdp_s, &acdState);
+           EI_API_ADP_getEnipAcdAddr(pAdp_s, &aAcdAddr);
+           EI_API_ADP_getEnipAcdHdr(pAdp_s, &aAcdHdr);
 
-           EI_API_ADP_getEnipAcdHdr(pAdp_s, &acdHdr);
-           memcpy(tPermData_s.ai8uAcdHdr, acdHdr.data, sizeof(tPermData_s.ai8uAcdHdr));
-           bConfigChanged_s = true;
+           if(acdState != permData_s.acdState ||
+              OSAL_MEMORY_memcmp(aAcdAddr.data, permData_s.aAcdAddr, sizeof(permData_s.aAcdAddr) != 0) ||
+              OSAL_MEMORY_memcmp(aAcdHdr.data, permData_s.aAcdHdr, sizeof(permData_s.aAcdHdr) != 0)
+             )
+           {
+               permData_s.acdState = acdState;
+               OSAL_MEMORY_memcpy(permData_s.aAcdAddr, aAcdAddr.data, sizeof(permData_s.aAcdAddr));
+               OSAL_MEMORY_memcpy(permData_s.aAcdHdr, aAcdHdr.data, sizeof(permData_s.aAcdHdr));
+               configChanged_s = true;
+           }
        }
 #if defined(QUICK_CONNECT)
        else if (attrId_p == 12)
        {
+           bool quickConnectEnabled;
            // Enable/Disable QuickConnect
-           EI_API_ADP_getQuickConnectEnabled(pAdp_s, &tPermData_s.bQuickConnectEnabled);
-           bConfigChanged_s = true;
+           EI_API_ADP_getQuickConnectEnabled(pAdp_s, &quickConnectEnabled);
+           if(quickConnectEnabled != permData_s.quickConnectEnabled)
+           {
+               permData_s.quickConnectEnabled = quickConnectEnabled;
+               configChanged_s = true;
+           }
        }
 #endif
        else if (attrId_p == 13)
        {
-           EI_API_ADP_getEncapInactTimeout(pAdp_s, &tPermData_s.i16uEncapInactTimeout);
-           bConfigChanged_s = true;
+           uint16_t encapInactTimeout;
+           EI_API_ADP_getEncapInactTimeout(pAdp_s, &encapInactTimeout);
+           if(encapInactTimeout != permData_s.encapInactTimeout)
+           {
+               permData_s.encapInactTimeout = encapInactTimeout;
+               configChanged_s = true;
+           }
        }
        else
        {
            // Nothing has changed.
-           bConfigChanged_s = false;
+           configChanged_s = false;
        }
    }
    else if (classId_p == 0x43)
-    {
-        // timeSync object has changed.
-        if (attrId_p == 1)
+   {
+       if (attrId_p == 1)
         {
-            EI_API_ADP_getPtpEnable(pAdp_s, &tPermData_s.ptpEnable);
-            bConfigChanged_s = true;
+            bool ptpEnable;
+            EI_API_ADP_getPtpEnable(pAdp_s, &ptpEnable);
+            if(ptpEnable != permData_s.ptpEnable)
+            {
+                permData_s.ptpEnable = ptpEnable;
+                configChanged_s = true;
+            }
         }
         else if (attrId_p == 13)
         {
-            EI_API_ADP_getPortEnable(pAdp_s, &tPermData_s.portEnable);
-            bConfigChanged_s = true;
+            bool portEnable;
+            EI_API_ADP_getPortEnable(pAdp_s, &portEnable);
+            if(portEnable != permData_s.portEnable)
+            {
+                permData_s.portEnable = portEnable;
+                configChanged_s = true;
+            }
         }
         else if (attrId_p == 14)
         {
-            EI_API_ADP_getPortLogAnnounceInterval(pAdp_s, &tPermData_s.portLogAnnounceInterval);
-            bConfigChanged_s = true;
+            uint16_t portLogAnnounceInterval;
+            EI_API_ADP_getPortLogAnnounceInterval(pAdp_s, &portLogAnnounceInterval);
+            if(portLogAnnounceInterval != permData_s.portLogAnnounceInterval)
+            {
+                permData_s.portLogAnnounceInterval = portLogAnnounceInterval;
+                configChanged_s = true;
+            }
         }
         else if (attrId_p == 15)
         {
-            EI_API_ADP_getPortLogSyncInterval(pAdp_s, &tPermData_s.portLogSyncInterval);
-            bConfigChanged_s = true;
+            int16_t portLogSyncInterval;
+            EI_API_ADP_getPortLogSyncInterval(pAdp_s, &portLogSyncInterval);
+            if(portLogSyncInterval != permData_s.portLogSyncInterval)
+            {
+                permData_s.portLogSyncInterval = portLogSyncInterval;
+                configChanged_s = true;
+            }
         }
         else if (attrId_p == 18)
         {
-            EI_API_ADP_getDomainNumber(pAdp_s, &tPermData_s.domainNumber);
-             bConfigChanged_s = true;
+            uint8_t domainNumber;
+
+            EI_API_ADP_getDomainNumber(pAdp_s, &domainNumber);
+            if(domainNumber != permData_s.domainNumber)
+            {
+                permData_s.domainNumber = domainNumber;
+                configChanged_s = true;
+            }
         }
         else if (attrId_p == 23)
         {
-            EI_API_ADP_getTimeSyncUserDescription(pAdp_s, tPermData_s.aUserDescription);
-             bConfigChanged_s = true;
+            char aUserDescription[128];
+            EI_API_ADP_getTimeSyncUserDescription(pAdp_s, aUserDescription);
+            if(OSAL_MEMORY_memcmp(aUserDescription, permData_s.aUserDescription, sizeof(permData_s.aUserDescription)) != 0)
+            {
+                OSAL_MEMORY_memcpy (permData_s.aUserDescription, aUserDescription, sizeof(permData_s.aUserDescription));
+                configChanged_s = true;
+            }
         }
     }
    else if (classId_p == 0x48)
    {
-       // QoS object has changed.
+       EI_API_ADP_SQos_t qos;
+
        EI_API_ADP_getQoS(pAdp_s, &qos);
-       memcpy (&tPermData_s.tQoSParameter, &qos, sizeof(EI_API_ADP_SQos_t));
-       bConfigChanged_s = true;
+       if(OSAL_MEMORY_memcmp(&permData_s.qosParameter, &qos, sizeof(EI_API_ADP_SQos_t)) != 0)
+       {
+           OSAL_MEMORY_memcpy (&permData_s.qosParameter, &qos, sizeof(EI_API_ADP_SQos_t));
+           configChanged_s = true;
+       }
    }
 
    else if (classId_p == 0xf6)
@@ -508,28 +565,32 @@ void EI_APP_PERM_configCb(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uin
        {
            EI_API_ADP_UIntfConf_t intfConf;
            EI_API_ADP_getIntfConfig(pAdp_s, 0, &intfConf);
-
-           tPermData_s.intfConfig[0] = intfConf;
-           bConfigChanged_s = true;
+           if(intfConf.all != permData_s.intfConfig[0].all)
+           {
+               permData_s.intfConfig[0] = intfConf;
+               configChanged_s = true;
+           }
        }
        else if (instanceId_p == 2)
        {
            EI_API_ADP_UIntfConf_t intfConf;
            EI_API_ADP_getIntfConfig(pAdp_s, 1, &intfConf);
-
-           tPermData_s.intfConfig[1] = intfConf;
-           bConfigChanged_s = true;
+           if(intfConf.all != permData_s.intfConfig[1].all)
+           {
+               permData_s.intfConfig[1] = intfConf;
+               configChanged_s = true;
+           }
        }
        else
        {
            // Nothing has changed.
-           bConfigChanged_s = false;
+           configChanged_s = false;
        }
    }
    else
    {
        // Nothing has changed.
-       bConfigChanged_s = false;
+       configChanged_s = false;
    }
 
 }
@@ -553,7 +614,7 @@ void EI_APP_PERM_reset(EI_API_CIP_NODE_T *pCipNode_p, uint16_t classId_p, uint16
     }
 
     resetTime_s  = OSAL_getMsTick();
-    bResetRequired_s = true;
+    resetRequired_s = true;
     resetServiceFlag_s = serviceFlag_p;
 }
 
@@ -572,7 +633,7 @@ int16_t EI_APP_PERM_getResetRequired(void)
     uint32_t actTime = OSAL_getMsTick();
     uint32_t difTime = 0;
 
-    if (bResetRequired_s)
+    if (resetRequired_s)
     {
         // Wait 2 seconds for reset:
         if (actTime < resetTime_s)
@@ -586,7 +647,7 @@ int16_t EI_APP_PERM_getResetRequired(void)
 
         if (difTime > 2000)
         {
-            bResetRequired_s = false;
+            resetRequired_s = false;
             return resetServiceFlag_s;
         }
     }
@@ -595,9 +656,9 @@ int16_t EI_APP_PERM_getResetRequired(void)
 
 bool EI_APP_PERM_getConfigChanged(void)
 {
-    if (bConfigChanged_s)
+    if (configChanged_s)
     {
-        bConfigChanged_s = false;
+        configChanged_s = false;
         return true;
     }
     else
@@ -616,8 +677,8 @@ bool EI_APP_PERM_getConfigChanged(void)
  *  CLears a flash block. This must be done before writing to this block.
  +
  */
-void EI_APP_PERM_clearFlash (
-    void)
+void EI_APP_PERM_writeFlash (
+    void *arg)
 
 {
     Flash_Attrs *pAttr;
@@ -625,6 +686,11 @@ void EI_APP_PERM_clearFlash (
     uint32_t iOffset;
     uint32_t block;
     uint32_t page;
+    EI_APP_PERM_SCfgData_t *pPermData = (EI_APP_PERM_SCfgData_t *)arg;
+
+    pPermData->permHdr.magicNumber = (('M' << 8) | 'R');
+    pPermData->permHdr.version = APP_PERM_DATA_VERSION;
+    pPermData->permHdr.checksum = 0;
 
     pAttr = Flash_getAttrs (CONFIG_FLASH0);
 
@@ -645,6 +711,14 @@ void EI_APP_PERM_clearFlash (
         }
     }
 
+    err = Flash_write (EI_APP_PERM_flashHandle_g, EI_APP_PERM_DATA_OFFSET, (uint8_t *)pPermData, sizeof (EI_APP_PERM_SCfgData_t));
+    if (err < 0)
+    {
+        OSAL_printf ("\r\nFlash_write failed");
+        goto laError;
+    }
+
+    flashWritten_s = true;
     return;
 
 //-------------------------------------------------------------------------------------------------

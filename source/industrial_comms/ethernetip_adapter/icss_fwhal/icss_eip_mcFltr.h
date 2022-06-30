@@ -33,6 +33,12 @@
 #ifndef ICSS_EIP_MCFLTR_H_
 #define ICSS_EIP_MCFLTR_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -97,5 +103,10 @@ void eip_multicast_filter_override_hashmask(PRUICSS_Handle  pruicssHandle,
  *
  */
 void eip_multicast_filter_init(PRUICSS_Handle pruicssHandle);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_EIP_MCFLTR_H_ */

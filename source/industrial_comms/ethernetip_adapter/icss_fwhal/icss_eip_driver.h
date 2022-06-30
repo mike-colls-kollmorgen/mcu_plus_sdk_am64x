@@ -32,6 +32,12 @@
 #ifndef ICSS_EIP_DRIVER_H_
 #define ICSS_EIP_DRIVER_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                          Doxygen                                           */
 /* ========================================================================== */
@@ -308,11 +314,10 @@ typedef struct eip_Config_s
 /**
  *  \brief  Initialization routine for Ethernet/IP driver functions
  *
- *          This API does the following functionalities
- *              Register the Real Time Rx Call back
- *              Enable Storm prevention
+ *          This API does the following functionalities:
+ *              Loads the firmware on PRU0 and PRU1 cores
  *              Call DLR init API
- *              Call PTP init API
+ *              Call TimeSync(PTP) init API
  *
  *  \param  icssEipHandle [in] EIP handle
  *
@@ -366,5 +371,10 @@ int8_t EIP_initializeCIPSync(EIP_Handle icssEipHandle);
 */
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_EIP_DRIVER_H_ */

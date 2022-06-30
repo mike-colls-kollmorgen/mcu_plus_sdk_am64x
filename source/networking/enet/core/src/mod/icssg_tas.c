@@ -257,23 +257,23 @@ int32_t IcssgTas_setState(IcssgTas_Handle hTas,
     IcssgUtils_ioctlR30Cmd cmd;
     int32_t status = ENET_SOK;
 
-    if (state == TAS_ENABLE)
+    if (state == ENET_TAS_ENABLE)
     {
         cmd = ICSSG_UTILS_R30_CMD_TAS_ENABLE;
-        hTas->state = TAS_ENABLE;
+        hTas->state = ENET_TAS_ENABLE;
     }
 
-    if (state == TAS_DISABLE)
+    if (state == ENET_TAS_DISABLE)
     {
         cmd = ICSSG_UTILS_R30_CMD_TAS_DISABLE;
-        hTas->state = TAS_DISABLE;
+        hTas->state = ENET_TAS_DISABLE;
     }
 
-    if (state == TAS_RESET)
+    if (state == ENET_TAS_RESET)
     {
         IcssgTas_reset(hTas);
         cmd = ICSSG_UTILS_R30_CMD_TAS_RESET;
-        hTas->state = TAS_RESET;
+        hTas->state = ENET_TAS_RESET;
     }
 
     status = Icssg_R30SendAsyncIoctl(hIcssg,
@@ -447,7 +447,7 @@ int32_t IcssgTas_setTriggerForListChange(IcssgTas_Handle hTas,
 
 EnetTas_OperStatus IccsgTas_updateOperListStatus(IcssgTas_Handle hTas)
 {
-    EnetTas_OperStatus operStatus = TAS_OPER_LIST_NOT_YET_UPDATED;
+    EnetTas_OperStatus operStatus = ENET_TAS_OPER_LIST_NOT_YET_UPDATED;
 
     if (hTas->configStatus->configChange == 0U)
     {
@@ -460,7 +460,7 @@ EnetTas_OperStatus IccsgTas_updateOperListStatus(IcssgTas_Handle hTas)
         Icssg_Handle hIcssg = (Icssg_Handle)hTas->hIcssg;
         hIcssg->cycleTimeNs = hTas->operList.cycleTime;
 
-        operStatus = TAS_OPER_LIST_UPDATED;
+        operStatus = ENET_TAS_OPER_LIST_UPDATED;
     }
 
     return operStatus;

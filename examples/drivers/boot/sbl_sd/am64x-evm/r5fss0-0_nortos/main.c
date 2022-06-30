@@ -31,7 +31,7 @@
  */
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file  
  */
 
 #include <stdlib.h>
@@ -65,6 +65,8 @@ int main()
     Bootloader_profileReset();
 
     Bootloader_socWaitForFWBoot();
+    Bootloader_profileAddProfilePoint("SYSFW init");
+    Bootloader_socOpenFirewalls();
 
     System_init();
     Bootloader_profileAddProfilePoint("System_init");
@@ -82,7 +84,7 @@ int main()
     Bootloader_profileAddProfilePoint("Board_driversOpen");
 
     status = Sciclient_getVersionCheck(1);
-
+    Bootloader_profileAddProfilePoint("Sciclient Get Version");
     /* File I/O */
     if(SystemP_SUCCESS == status)
     {
@@ -133,32 +135,53 @@ int main()
         {
             status = Bootloader_parseMultiCoreAppImage(bootHandle, &bootImageInfo);
             /* Load CPUs */
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_M4FSS0_0)))
             {
                 bootImageInfo.cpuInfo[CSL_CORE_ID_M4FSS0_0].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_M4FSS0_0);
+                Bootloader_profileAddCore(CSL_CORE_ID_M4FSS0_0);
                 status = Bootloader_loadCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_M4FSS0_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS1_0)))
             {
                 bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_0].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_R5FSS1_0);
+                Bootloader_profileAddCore(CSL_CORE_ID_R5FSS1_0);
                 status = Bootloader_loadCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS1_1)))
             {
                 bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_1].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_R5FSS1_1);
+                Bootloader_profileAddCore(CSL_CORE_ID_R5FSS1_1);
                 status = Bootloader_loadCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_1]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_A53SS0_0)))
             {
                 bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_0].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_A53SS0_0);
+                Bootloader_profileAddCore(CSL_CORE_ID_A53SS0_0);
                 status = Bootloader_loadCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_A53SS0_1)))
             {
                 bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_1].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_A53SS0_1);
+                Bootloader_profileAddCore(CSL_CORE_ID_A53SS0_1);
                 status = Bootloader_loadCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_1]);
             }
-            if(status == SystemP_SUCCESS)
+
+            /* Assume self boot for either of the cores of R50 cluster */
+            uint32_t isSelfBoot = FALSE;
+            if(TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS0_0))
+            {
+                isSelfBoot = TRUE;
+                Bootloader_profileAddCore(CSL_CORE_ID_R5FSS0_0);
+            }
+
+            if(TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS0_1))
+            {
+                isSelfBoot = TRUE;
+                Bootloader_profileAddCore(CSL_CORE_ID_R5FSS0_1);
+            }
+
+            /* Self cores has to be reset together, so check for both */
+            if(status == SystemP_SUCCESS && (TRUE == isSelfBoot))
             {
                 /* Set clocks for self cluster */
                 bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS0_0].clkHz = Bootloader_socCpuGetClkDefault(CSL_CORE_ID_R5FSS0_0);
@@ -172,35 +195,42 @@ int main()
                 }
             }
             Bootloader_profileAddProfilePoint("CPU load");
+            Bootloader_profileUpdateAppimageSize(Bootloader_getMulticoreImageSize(bootHandle));
+            Bootloader_profileUpdateMediaAndClk(BOOTLOADER_MEDIA_SD, 0);
+
+            if(status == SystemP_SUCCESS)
+            {
+                /* Print SBL Profiling logs to UART as other cores may use the UART for logging */
+                Bootloader_profileAddProfilePoint("SBL End");
+                Bootloader_profilePrintProfileLog();
+                DebugP_log("Image loading done, switching to application ...\r\n");
+                UART_flushTxFifo(gUartHandle[CONFIG_UART0]);
+            }
 
             /* Run CPUs */
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_M4FSS0_0)))
             {
                 status = Bootloader_runCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_M4FSS0_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS1_0)))
             {
                 status = Bootloader_runCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_R5FSS1_1)))
             {
                 status = Bootloader_runCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_R5FSS1_1]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_A53SS0_0)))
             {
                 status = Bootloader_runCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_0]);
             }
-            if(status == SystemP_SUCCESS)
+            if(status == SystemP_SUCCESS && (TRUE == Bootloader_isCorePresent(bootHandle, CSL_CORE_ID_A53SS0_1)))
             {
                 status = Bootloader_runCpu(bootHandle, &bootImageInfo.cpuInfo[CSL_CORE_ID_A53SS0_1]);
             }
             if(status == SystemP_SUCCESS)
             {
                 /* Reset self cluster, both Core0 and Core 1. Init RAMs and run the app  */
-                Bootloader_profileAddProfilePoint("SBL End");
-                Bootloader_profilePrintProfileLog();
-                DebugP_log("Image loading done, switching to application ...\r\n");
-                UART_flushTxFifo(gUartHandle[CONFIG_UART0]);
                 status = Bootloader_runSelfCpu(bootHandle, &bootImageInfo);
             }
 

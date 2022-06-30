@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_IRQ_H
 #define RM_TISCI_IRQ_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * The dst_id parameter is valid for any RM IRQ TISCI message
@@ -338,6 +344,11 @@ struct tisci_msg_rm_irq_release_req {
 struct tisci_msg_rm_irq_release_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_IRQ_H */
 

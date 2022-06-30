@@ -332,7 +332,6 @@ static void App_udmaRxHpdInit(Udma_ChHandle rxChHandle,
 {
     CSL_UdmapCppi5HMPD *pHpd = (CSL_UdmapCppi5HMPD *) pHpdMem;
     uint32_t descType = (uint32_t)CSL_UDMAP_CPPI5_PD_DESCINFO_DTYPE_VAL_HOST;
-    uint32_t cqRingNum = Udma_chGetCqRingNum(rxChHandle);
 
     /* Setup descriptor */
     CSL_udmapCppi5SetDescType(pHpd, descType);
@@ -344,13 +343,14 @@ static void App_udmaRxHpdInit(Udma_ChHandle rxChHandle,
     CSL_udmapCppi5SetIds(pHpd, descType, 0x321, UDMA_DEFAULT_FLOW_ID);
     CSL_udmapCppi5SetSrcTag(pHpd, 0x0000);     /* Not used */
     CSL_udmapCppi5SetDstTag(pHpd, 0x0000);     /* Not used */
+    /* Return Policy descriptors are reserved in case of AM243X/Am64X */
     CSL_udmapCppi5SetReturnPolicy(
         pHpd,
         descType,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPOLICY_VAL_ENTIRE_PKT,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_EARLYRET_VAL_NO,
-        CSL_UDMAP_CPPI5_PD_PKTINFO2_RETPUSHPOLICY_VAL_TO_TAIL,
-        cqRingNum);
+        0U,
+        0U,
+        0U,
+        0U);
     CSL_udmapCppi5LinkDesc(pHpd, 0U);
     CSL_udmapCppi5SetBufferAddr(pHpd, (uint64_t) Udma_defaultVirtToPhyFxn(destBuf, 0U, NULL));
     CSL_udmapCppi5SetBufferLen(pHpd, length);

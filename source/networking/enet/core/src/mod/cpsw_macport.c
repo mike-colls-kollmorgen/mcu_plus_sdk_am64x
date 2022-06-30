@@ -46,11 +46,15 @@
 #include <enet_cfg.h>
 #include <include/core/enet_utils.h>
 #include <include/core/enet_soc.h>
+#include <include/core/enet_mod_tas.h>
 #include <include/mod/cpsw_macport.h>
 #include <priv/core/enet_trace_priv.h>
 #include <priv/mod/cpsw_macport_priv.h>
 #include <priv/mod/cpsw_clks.h>
 #include "cpsw_macport_intervlan.h"
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+#include "cpsw_macport_est.h"
+#endif
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
@@ -372,6 +376,14 @@ static Enet_IoctlValidate gCpswMacPort_privIoctlValidate[] =
     ENET_IOCTL_VALID_PRMS(CPSW_MACPORT_IOCTL_GET_SGMII_LINK_STATUS,
                           sizeof(EnetMacPort_GenericInArgs),
                           sizeof(bool)),
+
+    ENET_IOCTL_VALID_PRMS(CPSW_MACPORT_IOCTL_EST_ENABLE_TIMESTAMP,
+                          sizeof(CpswMacPort_EstTimestampCfg),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(CPSW_MACPORT_IOCTL_EST_DISABLE_TIMESTAMP,
+                          sizeof(EnetMacPort_GenericInArgs),
+                          0U),
 };
 #endif
 
@@ -460,6 +472,7 @@ int32_t CpswMacPort_open(EnetMod_Handle hMod,
     /* Save peripheral info to use it later to query SoC parameters */
     hPort->enetType = enetType;
     hPort->instId = instId;
+    hPort->enabled = true;
 
     /* Check if SoC settings (if any) matches the requested MII config */
     status = CpswMacPort_checkSocCfg(enetType, instId, macPort, mii);
@@ -579,6 +592,16 @@ int32_t CpswMacPort_open(EnetMod_Handle hMod,
         if (ENET_FEAT_IS_EN(hMod->features, CPSW_MACPORT_FEATURE_INTERVLAN))
         {
             CpswMacPort_openInterVlan(hMod);
+        }
+    }
+#endif
+
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+    if (status == ENET_SOK)
+    {
+        if (ENET_FEAT_IS_EN(hMod->features, CPSW_MACPORT_FEATURE_EST))
+        {
+            CpswMacPort_openEst(hMod);
         }
     }
 #endif
@@ -901,6 +924,11 @@ int32_t CpswMacPort_ioctl(EnetMod_Handle hMod,
                     else
                     {
                         status = CpswMacPort_enablePort(regs, macPort, &mii, linkCfg);
+                        if (status == ENET_SOK)
+                        {
+                            hPort->linkCfg = *linkCfg;
+                            hPort->enabled = true;
+                        }
                     }
                 }
 
@@ -912,6 +940,7 @@ int32_t CpswMacPort_ioctl(EnetMod_Handle hMod,
             case CPSW_MACPORT_IOCTL_DISABLE:
             {
                 CpswMacPort_disablePort(regs, macPort);
+                hPort->enabled = false;
             }
             break;
 
@@ -1007,6 +1036,51 @@ int32_t CpswMacPort_ioctl(EnetMod_Handle hMod,
                     status = ENET_ENOTSUPPORTED;
                 }
 #else
+                status = ENET_ENOTSUPPORTED;
+#endif
+            }
+            break;
+
+            case ENET_TAS_IOCTL_SET_ADMIN_LIST:
+            case ENET_TAS_IOCTL_GET_OPER_LIST_STATUS:
+            case ENET_TAS_IOCTL_SET_STATE:
+            case ENET_TAS_IOCTL_GET_STATE:
+            case ENET_TAS_IOCTL_GET_ADMIN_LIST:
+            case ENET_TAS_IOCTL_GET_OPER_LIST:
+            case ENET_TAS_IOCTL_CONFIG_CHANGE_STATUS_PARAMS:
+            {
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+                if (ENET_FEAT_IS_EN(hMod->features, CPSW_MACPORT_FEATURE_EST))
+                {
+                    status = CpswMacPort_ioctlEst(hMod, cmd, prms);
+                }
+                else
+                {
+                    ENETTRACE_ERR("MAC %u: EST is not supported\n", portId);
+                    status = ENET_ENOTSUPPORTED;
+                }
+#else
+                ENETTRACE_ERR("EST is not enabled (see CPSW_MACPORT_EST)\n");
+                status = ENET_ENOTSUPPORTED;
+#endif
+            }
+            break;
+
+            case CPSW_MACPORT_IOCTL_EST_ENABLE_TIMESTAMP:
+            case CPSW_MACPORT_IOCTL_EST_DISABLE_TIMESTAMP:
+            {
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+                if (ENET_FEAT_IS_EN(hMod->features, CPSW_MACPORT_FEATURE_EST))
+                {
+                    status = CpswMacPort_ioctlEst(hMod, cmd, prms);
+                }
+                else
+                {
+                    ENETTRACE_ERR("MAC %u: EST is not supported\n", portId);
+                    status = ENET_ENOTSUPPORTED;
+                }
+#else
+                ENETTRACE_ERR("EST is not enabled (see CPSW_MACPORT_EST)\n");
                 status = ENET_ENOTSUPPORTED;
 #endif
             }
@@ -1450,20 +1524,24 @@ static void CpswMacPort_printRegs(CSL_Xge_cpswRegs *regs,
 {
     uint32_t portNum = ENET_MACPORT_NORM(macPort);
     uint32_t portId = ENET_MACPORT_ID(macPort);
-    CSL_Xge_cpswEnetportRegs *macPortRegs = &regs->ENETPORT[portNum];
-    uint32_t *regAddr = (uint32_t *)((uintptr_t)macPortRegs + CPSW_MACPORT_START_REG_OFFSET);
-    uint32_t regIdx = 0U;
 
-    ENETTRACE_VAR(portId);
-    while (((uintptr_t)regAddr) <= ((uintptr_t)macPortRegs + CPSW_MACPORT_END_REG_OFFSET))
+    if(portNum < ENET_ARRAYSIZE(regs->ENETPORT))
     {
-        if (*regAddr != 0U)
-        {
-            ENETTRACE_INFO("MACPORT %u: %u: 0x%08x\n", portId, regIdx, *regAddr);
-        }
+        CSL_Xge_cpswEnetportRegs *macPortRegs = &regs->ENETPORT[portNum];
+        uint32_t *regAddr = (uint32_t *)((uintptr_t)macPortRegs + CPSW_MACPORT_START_REG_OFFSET);
+        uint32_t regIdx = 0U;
 
-        regAddr++;
-        regIdx++;
+        ENETTRACE_VAR(portId);
+        while (((uintptr_t)regAddr) <= ((uintptr_t)macPortRegs + CPSW_MACPORT_END_REG_OFFSET))
+        {
+            if (*regAddr != 0U)
+            {
+                ENETTRACE_INFO("MACPORT %u: %u: 0x%08x\n", portId, regIdx, *regAddr);
+            }
+
+            regAddr++;
+            regIdx++;
+        }
     }
 }
 

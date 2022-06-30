@@ -53,6 +53,12 @@
 #ifndef TISCI_PM_TISCI_DEVICE_H
 #define TISCI_PM_TISCI_DEVICE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * Configure the device to be a wake source. The meaning of this flag will
@@ -245,6 +251,11 @@ struct tisci_msg_device_drop_powerup_ref_req {
 struct tisci_msg_device_drop_powerup_ref_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_PM_TISCI_DEVICE_H */
 

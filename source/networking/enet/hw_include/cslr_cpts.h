@@ -39,6 +39,12 @@
 #ifndef CSLR_CPTS_TOP_H
 #define CSLR_CPTS_TOP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #if defined(SOC_K2K) || defined(SOC_K2H)
 
@@ -69,5 +75,10 @@
 #include <cpts/V0/cslr_cpts.h>
 
 #endif /* SOC_XXXXX */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSLR_CPTS_H_ */

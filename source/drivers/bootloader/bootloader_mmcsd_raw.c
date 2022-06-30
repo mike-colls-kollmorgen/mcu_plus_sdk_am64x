@@ -158,7 +158,7 @@ int32_t Bootloader_MmcsdRaw_readFromOffset(MMCSD_Handle handle, void *dst, uint3
                 /* Copy required data from the first block to the destination */
                 memcpy(dst, tmpDst + offsetFromBlock, blockSize - offsetFromBlock);
 
-                dst += blockSize - offsetFromBlock;
+                dst = (uint8_t *)(dst) + (blockSize - offsetFromBlock);
             }
         }
 
@@ -167,14 +167,14 @@ int32_t Bootloader_MmcsdRaw_readFromOffset(MMCSD_Handle handle, void *dst, uint3
         {
             if(i != 1)
             {
-                status = MMCSD_read(handle, dst, blockStart + 1, numBlocks - 2);
+                status = MMCSD_read(handle, (uint8_t *)dst, blockStart + 1, numBlocks - 2);
                 if(status != SystemP_SUCCESS)
                 {
                     status = SystemP_FAILURE;
                 }
                 else
                 {
-                    dst += ((numBlocks -2) * blockSize);
+                    dst = (uint8_t *)(dst) + ((numBlocks -2) * blockSize);
                 }
             }
         }
@@ -259,7 +259,7 @@ int32_t Bootloader_MmcsdRaw_writeToOffset(MMCSD_Handle handle, void *buf, uint32
                 }
                 else
                 {
-                    buf += blockSize - offsetFromBlock;
+                    buf = (uint8_t *)(buf) + (blockSize - offsetFromBlock);
                     i--;
                 }
             }
@@ -270,14 +270,14 @@ int32_t Bootloader_MmcsdRaw_writeToOffset(MMCSD_Handle handle, void *buf, uint32
         {
             if(i != 1)
             {
-                status = MMCSD_write(handle, buf, blockStart + 1, numBlocks - 2);
+                status = MMCSD_write(handle, (uint8_t *)buf, blockStart + 1, numBlocks - 2);
                 if(status != SystemP_SUCCESS)
                 {
                     status = SystemP_FAILURE;
                 }
                 else
                 {
-                    buf += ((numBlocks -2) * blockSize);
+                    buf = (uint8_t *)(buf) + ((numBlocks -2) * blockSize);
                 }
             }
         }

@@ -45,6 +45,9 @@
 /*                             Include Files                                  */
 /* ========================================================================== */
 
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+#include <include/core/enet_mod_tas.h>
+#endif
 #include <include/core/enet_mod_macport.h>
 #include <include/mod/cpsw_macport.h>
 
@@ -67,6 +70,9 @@ extern "C" {
 
 /*! \brief InterVLAN feature mask. */
 #define CPSW_MACPORT_FEATURE_INTERVLAN        (ENET_BIT(1U))
+
+/*! \brief EST feature mask. */
+#define CPSW_MACPORT_FEATURE_EST              (ENET_BIT(2U))
 
 /*! \brief Base InterVLAN Route Id. */
 #define CPSW_MACPORT_INTERVLAN_ROUTEID_BASE   (1U)
@@ -267,6 +273,29 @@ typedef struct CpswMacPort_Obj_s
 
     /*! Peripheral instance number. Required to query SoC parameters (clock freq) */
     uint32_t instId;
+
+    /*! Whether MAC port is enabled (i.e. PHY is linked) */
+    bool enabled;
+
+    /*! Current speed and duplexity. Valid when 'enabled' field is true */
+    EnetMacPort_LinkCfg linkCfg;
+
+#if ENET_CFG_IS_ON(CPSW_MACPORT_EST)
+    /*! Current EST module state (enabled or disabled) */
+    EnetTas_TasState state;
+
+    /*! Last administrative list successfully set */
+    EnetTas_ControlList adminList;
+
+    /*! Current operational list */
+    EnetTas_ControlList operList;
+
+    /*! Admin EST buffer bank: lower or upper */
+    bool estBufUpper;
+
+    /*! Config state machine status */
+    EnetTas_ConfigStatus configStatus;
+#endif
 } CpswMacPort_Obj;
 
 /*!

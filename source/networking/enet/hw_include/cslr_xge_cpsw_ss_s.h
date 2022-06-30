@@ -38,6 +38,12 @@
 #ifndef CSLR_XGE_CPSW_SS_S_TOP_H
 #define CSLR_XGE_CPSW_SS_S_TOP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #if defined(SOC_K2K)
 
@@ -72,5 +78,10 @@
 #include <xge/V6/cslr_xge_cpsw_ss_s.h>
 
 #endif /* SOC_XXXXX */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSLR_XGE_CPSW_H_ */

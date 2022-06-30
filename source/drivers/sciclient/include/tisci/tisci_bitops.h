@@ -54,6 +54,12 @@
 #ifndef BITOPS_H
 #define BITOPS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /** TISCI_BIT macro for easily calculating a bit at offset (n) */
 #define TISCI_BIT(n)  (((uint32_t) 1U) << (n))
@@ -118,6 +124,11 @@ static inline uint32_t set_field(uint32_t tgt, uint32_t end, uint32_t start, uin
 
     return ret;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

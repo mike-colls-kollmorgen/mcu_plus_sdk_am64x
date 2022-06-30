@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('PINMUX_MIGRATION_GUIDE.html',''); init
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_migration_guides_pinmux_migration_guide"></a> This section describes the differences between PINMUX APIs of MCU+ SDK and Processor SDK RTOS (PDK). This can be used as a migration aid when moving from Processor SDK RTOS (PDK) to MCU+ SDK. In PDK, these APIs are part of the board module in header files board_pinmux.h and AM64x_pinmux.h.</p>
-<h1><a class="anchor" id="autotoc_md331"></a>
+<h1><a class="anchor" id="autotoc_md387"></a>
 API changes</h1>
 <p>There are few changes in API names, structure names and macro names along with few behaviour changes with respect to SysConfig integration. These are listed in below table.</p>
 <table class="doxtable">
@@ -121,10 +121,10 @@ API changes</h1>
 <tr>
 <td>pinmuxModuleCfg_t and pinmuxBoardCfg_t </td><td>NA </td><td>Removed. User should use the granular <a class="el" href="group__DRV__PINMUX__MODULE.html#ga416b7b8c652a8c2abc8a5ce6510f7b4d">Pinmux_config</a> API instead  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md332"></a>
+<h1><a class="anchor" id="autotoc_md388"></a>
 Important Notes</h1>
 <p>Pinmux configuration is already integrated with each driver SysConfig code generation. Typically user need not explicitly call this pinmux API.</p>
-<h1><a class="anchor" id="autotoc_md333"></a>
+<h1><a class="anchor" id="autotoc_md389"></a>
 See Also</h1>
 <ul>
 <li><a class="el" href="DRIVERS_PINMUX_PAGE.html">PINMUX</a> </li>

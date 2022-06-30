@@ -111,7 +111,7 @@ m_pru_tasks_mgr_global_cfg_reg      .macro  TEMP_REG, TM_BASE, value
 ;************************************************************************************
 m_pru_tm_rst    .macro  TEMP_REG, TM_BASE
     ; clear task manager status which is sticky after debug halt
-    m_pru_tasks_mgr_global_cfg_reg  TEMP_REG, TM_BASE, 0x0fff   ; shouldn't this be 0x0ffe
+    m_pru_tasks_mgr_global_cfg_reg  TEMP_REG, TM_BASE, 0x0ffe
     ; m_pru_tm_yield
     xin     TM_YIELD_XID, &R0.b3, 1
     m_pru_tasks_mgr_global_cfg_reg  TEMP_REG, TM_BASE, 0

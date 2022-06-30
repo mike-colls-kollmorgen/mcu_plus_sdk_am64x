@@ -756,17 +756,17 @@ void bsp_esc_reg_perm_init(PRUICSS_Handle pruIcssHandle)
 
     for(i = 0; i < 8; i++)    //8 FMMUs
     {
-        tiesc_memset((void *)&pRegPerm->reg_properties[0x600 + i * 16], TIESC_PERM_RW,
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties[0x600 + i * 16], TIESC_PERM_RW,
                13);
     }
 
     for(i = 0; i < 8; i++)    //8 SMs
     {
-        tiesc_memset((void *)&pRegPerm->reg_properties[0x800 + i * 8], TIESC_PERM_RW, 5);
-        tiesc_memset((void *)&pRegPerm->reg_properties[0x805 + i * 8],
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties[0x800 + i * 8], TIESC_PERM_RW, 5);
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties[0x805 + i * 8],
                TIESC_PERM_READ_ONLY, 1);
-        tiesc_memset((void *)&pRegPerm->reg_properties[0x806 + i * 8], TIESC_PERM_RW, 1);
-        tiesc_memset((void *)&pRegPerm->reg_properties[0x807 + i * 8],
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties[0x806 + i * 8], TIESC_PERM_RW, 1);
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties[0x807 + i * 8],
                TIESC_PERM_READ_ONLY, 1);
     }
 
@@ -1334,6 +1334,8 @@ void bsp_params_init(bsp_params *init_params)
     init_params->pdi_isr = NULL;
     init_params->sync0_isr = NULL;
     init_params->sync1_isr = NULL;
+    init_params->phy_rx_err_reg = 0;
+    init_params->pruicssClkFreq = TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ;
 }
 
 int32_t bsp_init(bsp_params *init_params)
@@ -1512,6 +1514,23 @@ int32_t bsp_init(bsp_params *init_params)
 
     if(status == SystemP_SUCCESS)
     {
+        g_bsp_params.phy_rx_err_reg = init_params->phy_rx_err_reg;
+    }
+
+    if(status == SystemP_SUCCESS)
+    {
+        if(init_params->pruicssClkFreq > TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ)
+        {
+            status = SystemP_FAILURE;
+        }
+        else
+        {
+            g_bsp_params.pruicssClkFreq = init_params->pruicssClkFreq;
+        }
+    }
+
+    if(status == SystemP_SUCCESS)
+    {
 
         pruicssHwAttrs = (PRUICSS_HwAttrs const *)(pruIcssHandle->hwAttrs);
 
@@ -1538,21 +1557,32 @@ int32_t bsp_init(bsp_params *init_params)
 
         /* initialize ESC DPRAM pointer microcontroller specific to the beginning of the physical memory of the ESC,
         the macro MAKE_PTR_TO_ESC should be defined in tieschw.h */
-        tiesc_memset((void *)sm_properties, 0, sizeof(sm_properties));
+        tiesc_memset((uint8_t *)sm_properties, 0, sizeof(sm_properties));
 
         PRUICSS_initMemory(pruIcssHandle, PRUICSS_SHARED_RAM);
         PRUICSS_initMemory(pruIcssHandle, PRUICSS_DATARAM(0));
         PRUICSS_initMemory(pruIcssHandle, PRUICSS_DATARAM(1));
-        tiesc_memset((void *)&pRegPerm->reg_properties, 3,
+        tiesc_memset((uint8_t *)&pRegPerm->reg_properties, 3,
             4 * 1024);  //Init PRU1 data ram
         ASSERT_DMB();
 
         bsp_pruss_cmd_intfc_write_word(0xFF, &pHost2PruIntfc->cmdlow);
 
-        bsp_write_word(pruIcssHandle, TIESC_PORT0_TX_DELAY,
-                    ESC_ADDR_TI_PORT0_TX_START_DELAY);
-        bsp_write_word(pruIcssHandle, TIESC_PORT1_TX_DELAY,
-                    ESC_ADDR_TI_PORT1_TX_START_DELAY);
+        if(g_bsp_params.pruicssClkFreq == TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ)
+        {
+            bsp_write_word(pruIcssHandle, TIESC_PORT0_TX_DELAY_200_MHZ_CLOCK,
+                        ESC_ADDR_TI_PORT0_TX_START_DELAY);
+            bsp_write_word(pruIcssHandle, TIESC_PORT0_TX_DELAY_200_MHZ_CLOCK,
+                        ESC_ADDR_TI_PORT1_TX_START_DELAY);
+        }
+        else if(g_bsp_params.pruicssClkFreq == TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ)
+        {
+            bsp_write_word(pruIcssHandle, TIESC_PORT0_TX_DELAY_333_MHZ_CLOCK,
+                        ESC_ADDR_TI_PORT0_TX_START_DELAY);
+            bsp_write_word(pruIcssHandle, TIESC_PORT0_TX_DELAY_333_MHZ_CLOCK,
+                        ESC_ADDR_TI_PORT1_TX_START_DELAY);
+        }
+
 
         mdioParamsInit.clkdiv = TIESC_MDIO_CLKDIV * 2;
 
@@ -1577,6 +1607,8 @@ int32_t bsp_init(bsp_params *init_params)
         bsp_pruss_mdio_init(pruIcssHandle, &mdioParamsInit);
 
         bsp_write_word(pruIcssHandle, 0x00, ESC_ADDR_TI_EDMA_LATENCY_ENHANCEMENT);
+        bsp_write_word(pruIcssHandle, g_bsp_params.phy_rx_err_reg, ESC_ADDR_TI_PHY_RX_ER_REG);
+        bsp_write_word(pruIcssHandle, g_bsp_params.pruicssClkFreq, ESC_ADDR_TI_PRU_CLK_FREQUENCY);
 
         bsp_esc_reg_perm_init(pruIcssHandle);
         //Trigger PDI WD on  LATCH_IN or every command send to firmware

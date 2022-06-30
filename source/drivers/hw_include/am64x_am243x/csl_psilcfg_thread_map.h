@@ -34,6 +34,12 @@
 #ifndef CSL_PSILCFG_THREAD_MAP_H_
 #define CSL_PSILCFG_THREAD_MAP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /*-----------------------------------------------------------------------------
  *  The following nomenclature is used in this file:
  *
@@ -309,5 +315,10 @@
 /* @} */
 
 /* @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -49,6 +49,12 @@
 #ifndef CDN_XHCI_SANITY_H
 #define CDN_XHCI_SANITY_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cdn_errno.h"
 #include "cdn_xhci_if.h"
@@ -108,6 +114,11 @@ uint32_t USBSSP_SanityFunction33(const USBSSP_DriverResourcesT* res, const USBSS
 #define USBSSP_RestoreStateSF USBSSP_SanityFunction33
 #define USBSSP_GetPortConnectedSF USBSSP_SanityFunction20
 #define USBSSP_GetDevAddressStateSF USBSSP_SanityFunction20
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CDN_XHCI_SANITY_H */
 

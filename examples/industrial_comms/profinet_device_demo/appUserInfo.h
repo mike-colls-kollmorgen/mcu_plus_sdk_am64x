@@ -52,9 +52,9 @@
 
 #define PNC_DEVICE_SERIAL_NUMBER                123456
 #define PNC_DEVICE_HARDWARE_REVISION            1
-#define PNC_DEVICE_SW_REV_FUNC_ENHANCEMENT      0
+#define PNC_DEVICE_SW_REV_FUNC_ENHANCEMENT      2
 #define PNC_DEVICE_SW_REV_BUG_FIX               1
-#define PNC_DEVICE_SW_REV_INTERNAL_CHANGE       2
+#define PNC_DEVICE_SW_REV_INTERNAL_CHANGE       0
 
 #define PNC_MAC_ADDR_LEN                        6
 

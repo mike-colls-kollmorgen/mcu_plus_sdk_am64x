@@ -37,6 +37,7 @@
         .type CacheP_disableL1d,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_disableL1d:
         push    {r0-r7, r9-r11, lr}
         mrc     p15, #0, r0, c1, c0, #0 // read SCR register
@@ -55,6 +56,7 @@ CacheP_disableL1d:
         .type CacheP_disableL1p,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_disableL1p:
         mrc     p15, #0, r0, c1, c0, #0 // read SCR register
         bic     r0, r0, #0x1000         // clear I bit
@@ -68,6 +70,7 @@ CacheP_disableL1p:
         .type CacheP_enableL1d,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_enableL1d:
         mrc     p15, #0, r0, c1, c0, #0  // read SCR register
         orr     r0, r0, #0x0004          // set C bit (bit 2) to 1
@@ -81,6 +84,7 @@ CacheP_enableL1d:
         .type CacheP_enableL1p,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_enableL1p:
         mrc     p15, #0, r0, c1, c0, #0 // read SCR register
         orr     r0, r0, #0x1000         // set I bit (bit 12) to 1
@@ -98,6 +102,7 @@ CacheP_enableL1p:
         .type CacheP_invL1d,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_invL1d:
         push    {r4}
         add     r1, r0, r1              // calculate last address
@@ -126,6 +131,7 @@ l1dCacheLineSizeInvL1dAddr: .long  gCacheL1dCacheLineSize
         .type CacheP_invL1p,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_invL1p:
         push    {r4}
         add     r1, r0, r1              // calculate last address
@@ -156,6 +162,7 @@ l1pCacheLineSizeAddr:  .word   gCacheL1pCacheLineSize
         .type CacheP_invL1dAll,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_invL1dAll:
         mcr     p15, #0, r0, c15, c5, #0 // Invalidate entire data cache
         bx      lr                       // return
@@ -166,6 +173,7 @@ CacheP_invL1dAll:
         .type CacheP_invL1pAll,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_invL1pAll:
         mcr     p15, #0, r0, c7, c5, #0 // invalidate all entries in ICache
         bx      lr                      // return
@@ -183,6 +191,7 @@ CacheP_invL1pAll:
         .type CacheP_wb,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_wb:
         push    {r4, r5}
         dmb                              // Ensure all previous memory accesses
@@ -217,6 +226,7 @@ l1dCacheLineSizeWbAddr: .long gCacheL1dCacheLineSize
         .type CacheP_wbInv,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_wbInv:
         push    {r4, r5}
         dmb                              // Ensure all previous memory accesses
@@ -246,6 +256,7 @@ l1dCacheLineSizeWbInvAddr: .long gCacheL1dCacheLineSize
         .type CacheP_wbAll,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_wbAll:
         stmfd   sp!, {r0-r7, r9-r11, lr}
         dmb                             // Ensure all previous memory accesses
@@ -311,6 +322,7 @@ wbafinished:
         .type CacheP_wbInvAll,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_wbInvAll:
         push    {r0-r7, r9-r11, lr}
         movw    r0, :lower16:CacheP_wbInvAllAsm
@@ -327,6 +339,7 @@ CacheP_wbInvAll:
         .type CacheP_wbInvAllAsm,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_wbInvAllAsm:
         dmb                             // Ensure all previous memory accesses
                                         // complete
@@ -388,6 +401,7 @@ finished:
         .type CacheP_getEnabled,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_getEnabled:
         mov     r0, #0
                                         // Do L1 first
@@ -420,6 +434,7 @@ getEnabledDone:
         .type CacheP_getCacheLevelInfo,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_getCacheLevelInfo:
         mcr     p15, #2, r0, c0, c0, #0 // write to Cache Size Selection Reg
         mrc     p15, #1, r0, c0, c0, #0 // read Cache Size Id Reg
@@ -431,6 +446,7 @@ CacheP_getCacheLevelInfo:
         .type CacheP_configForceWrThru,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_configForceWrThru:
         mrc     p15, #0, r1, c1, c0, #1 // fetch Auxiliary Ctrl Register into r1
         cmp     r0, #0
@@ -452,6 +468,7 @@ FWT_exit:
         .type CacheP_setDLFO,%function
         .section ".text.cache","ax",%progbits
         .arm
+        .align 2
 CacheP_setDLFO:
         mrc     p15, #0, r1, c1, c0, #1 // fetch Auxiliary Ctrl Register into r1
         orr     r1, r1, #(1 << 13)      // set DLFO to disable LF optimization

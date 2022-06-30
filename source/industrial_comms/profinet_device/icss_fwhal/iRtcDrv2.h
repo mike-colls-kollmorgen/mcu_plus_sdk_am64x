@@ -33,6 +33,12 @@
 #ifndef IRTCDRV2_H_
 #define IRTCDRV2_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                          Doxygen                                           */
 /* ========================================================================== */
@@ -598,5 +604,10 @@ void PN_clearPruIRQ(PRUICSS_HwAttrs const *pruicssHwAttrs,
 int32_t PN_setBaseClock(PN_Handle pnHandle, uint16_t factor);
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IRTCDRV2_H_ */

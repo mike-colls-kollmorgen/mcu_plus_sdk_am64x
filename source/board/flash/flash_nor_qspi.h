@@ -34,6 +34,12 @@
 #ifndef FLASH_NOR_QSPI_H_
 #define FLASH_NOR_QSPI_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/qspi.h>
 
 typedef struct {
@@ -71,12 +77,17 @@ typedef struct {
 } Flash_NorQspiObject;
 
 /* FLash Device specific extern */
-extern Flash_NorQspiDevDefines gFlashNorQspiDeviceDefines_MX25V1635F;
-extern Flash_Attrs gFlashNorQspiAttrs_MX25V1635F;
+extern Flash_NorQspiDevDefines gFlashNorQspiDeviceDefines_GD25B64C;
+extern Flash_Attrs gFlashNorQspiAttrs_GD25B64C;
 extern Flash_NorQspiDevDefines gFlashNorQspiDeviceDefines_S25FL128SA;
 extern Flash_Attrs gFlashNorQspiAttrs_S25FL128SA;
 
 /* FLash specific externs */
 extern Flash_Fxns gFlashNorQspiFxns;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FLASH_NOR_QSPI_H_ */

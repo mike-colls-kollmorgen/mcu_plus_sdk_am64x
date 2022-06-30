@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 MCU_PLUS_SDK_PATH?=$(abspath ../../../../..)
-CCS_PATH?=C:/ti/ccs1110/ccs/ccs_base/pru/include
+CCS_PATH?=C:/ti/ccs1120/ccs/ccs_base/pru/include
 CG_TOOL_ROOT := C:/ti/ti-cgt-pru_2.3.3
 
 #Set the default mode

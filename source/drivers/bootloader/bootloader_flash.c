@@ -67,12 +67,12 @@ static int32_t Flash_imgRead(void *dst, uint32_t len, void *args)
         uint32_t flashSize = attrs->blockCount * attrs->pageCount * attrs->pageSize;
         if(flashArgs->curOffset + len < flashSize)
         {
-            Flash_read(handle, flashArgs->curOffset, dst, len);
+            Flash_read(handle, flashArgs->curOffset, (uint8_t *) dst, len);
             CacheP_wb(dst, len, CacheP_TYPE_ALL);
             flashArgs->curOffset += len;
         }
     }
-    
+
     return SystemP_SUCCESS;
 }
 

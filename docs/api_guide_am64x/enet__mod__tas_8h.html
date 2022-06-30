@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -137,7 +137,7 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input args for <a class="el" href="group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2a2d555672c01e2a6720fd139936844561" title="Set the admin list parameters of the TAS module.">ENET_TAS_IOCTL_SET_ADMIN_LIST</a> commands.  <a href="structEnetTas__SetAdminListInArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnetTas__SetStateInArgs.html">EnetTas_SetStateInArgs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input args for <a class="el" href="group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2aa50cd9fdb7cb503427624610d7b3db61" title="Set the State of the TAS module.">ENET_TAS_IOCTL_SET_STATE</a> commands.  <a href="structEnetTas__SetStateInArgs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input args for <a class="el" href="group__ENET__MOD__TAS.html#ggada0ad2c0a7a0c6530e49a3dd78c09ab2aa50cd9fdb7cb503427624610d7b3db61" title="Set the state of the TAS module.">ENET_TAS_IOCTL_SET_STATE</a> commands.  <a href="structEnetTas__SetStateInArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -145,18 +145,15 @@ Macros</h2></td></tr>
 <tr class="memitem:ga646b5827ab5887372fd16785d585f58b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga646b5827ab5887372fd16785d585f58b">ENET_TAS_PUBLIC_IOCTL</a>(x)</td></tr>
 <tr class="memdesc:ga646b5827ab5887372fd16785d585f58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to create IOCTL commands for TAS module.  <a href="group__ENET__MOD__TAS.html#ga646b5827ab5887372fd16785d585f58b">More...</a><br /></td></tr>
 <tr class="separator:ga646b5827ab5887372fd16785d585f58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57cb11fc0e96db077b99f64bad7651c2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga57cb11fc0e96db077b99f64bad7651c2">ENET_TAS_GATE_MASK</a>(tc7,  tc6,  tc5,  tc4,  tc3,  tc2,  tc1,  tc0)</td></tr>
+<tr class="memdesc:ga57cb11fc0e96db077b99f64bad7651c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro to create a gate mask.  <a href="group__ENET__MOD__TAS.html#ga57cb11fc0e96db077b99f64bad7651c2">More...</a><br /></td></tr>
+<tr class="separator:ga57cb11fc0e96db077b99f64bad7651c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5c58e8bfd260feeb2b2bd6073cec3ba1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga5c58e8bfd260feeb2b2bd6073cec3ba1">ENET_TAS_MAX_CMD_LISTS</a>&#160;&#160;&#160;(16)</td></tr>
 <tr class="memdesc:ga5c58e8bfd260feeb2b2bd6073cec3ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of gate command entries in each list.  <a href="group__ENET__MOD__TAS.html#ga5c58e8bfd260feeb2b2bd6073cec3ba1">More...</a><br /></td></tr>
 <tr class="separator:ga5c58e8bfd260feeb2b2bd6073cec3ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9bbc7336ba01460b29e7a0d28c269c44"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga9bbc7336ba01460b29e7a0d28c269c44">ENET_TAS_MAX_NUM_QUEUES</a>&#160;&#160;&#160;(8)</td></tr>
-<tr class="memdesc:ga9bbc7336ba01460b29e7a0d28c269c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of transmit queues supported by implementation.  <a href="group__ENET__MOD__TAS.html#ga9bbc7336ba01460b29e7a0d28c269c44">More...</a><br /></td></tr>
+<tr class="memdesc:ga9bbc7336ba01460b29e7a0d28c269c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of transmit queues.  <a href="group__ENET__MOD__TAS.html#ga9bbc7336ba01460b29e7a0d28c269c44">More...</a><br /></td></tr>
 <tr class="separator:ga9bbc7336ba01460b29e7a0d28c269c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad958544fab14da48d8437ffaa8928b73"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#gad958544fab14da48d8437ffaa8928b73">ENET_TAS_MIN_CYCLE_TIME_NS</a>&#160;&#160;&#160;(1000000)</td></tr>
-<tr class="memdesc:gad958544fab14da48d8437ffaa8928b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum cycle time supported by implementation (in ns).  <a href="group__ENET__MOD__TAS.html#gad958544fab14da48d8437ffaa8928b73">More...</a><br /></td></tr>
-<tr class="separator:gad958544fab14da48d8437ffaa8928b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2da9a9c7148853d16f3bcd4608fbe466"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga2da9a9c7148853d16f3bcd4608fbe466">ENET_TAS_MIN_WINDOW_DURATION_NS</a>&#160;&#160;&#160;(10000)</td></tr>
-<tr class="memdesc:ga2da9a9c7148853d16f3bcd4608fbe466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum TAS window duration supported by implementation (in ns).  <a href="group__ENET__MOD__TAS.html#ga2da9a9c7148853d16f3bcd4608fbe466">More...</a><br /></td></tr>
-<tr class="separator:ga2da9a9c7148853d16f3bcd4608fbe466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -174,14 +171,14 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:gada0ad2c0a7a0c6530e49a3dd78c09ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">TAS module IOCTL commands.  <a href="group__ENET__MOD__TAS.html#gada0ad2c0a7a0c6530e49a3dd78c09ab2">More...</a><br /></td></tr>
 <tr class="separator:gada0ad2c0a7a0c6530e49a3dd78c09ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac07caadee47eaf55259b4afdf5b918aa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#gac07caadee47eaf55259b4afdf5b918aa">EnetTas_OperStatus</a> { <a class="el" href="group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa3d3f46d57079d5e768d89725d688b674">TAS_OPER_LIST_NOT_YET_UPDATED</a> = 0, 
-<a class="el" href="group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa58354fd65c30e1bee1a6098bc67ab49b">TAS_OPER_LIST_UPDATED</a> = 1
+<tr class="memitem:gac07caadee47eaf55259b4afdf5b918aa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#gac07caadee47eaf55259b4afdf5b918aa">EnetTas_OperStatus</a> { <a class="el" href="group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa6d1eafe0152c4d68ab48ea03e0989f95">ENET_TAS_OPER_LIST_NOT_YET_UPDATED</a> = 0, 
+<a class="el" href="group__ENET__MOD__TAS.html#ggac07caadee47eaf55259b4afdf5b918aaa1c2a33d1c552b4cc747878fe6b0959a4">ENET_TAS_OPER_LIST_UPDATED</a> = 1
  }</td></tr>
-<tr class="memdesc:gac07caadee47eaf55259b4afdf5b918aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG TAS state types.  <a href="group__ENET__MOD__TAS.html#gac07caadee47eaf55259b4afdf5b918aa">More...</a><br /></td></tr>
+<tr class="memdesc:gac07caadee47eaf55259b4afdf5b918aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">TAS state types.  <a href="group__ENET__MOD__TAS.html#gac07caadee47eaf55259b4afdf5b918aa">More...</a><br /></td></tr>
 <tr class="separator:gac07caadee47eaf55259b4afdf5b918aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3acb36109645d538c493fd97c7dc817c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga3acb36109645d538c493fd97c7dc817c">EnetTas_TasState</a> { <a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817caee08e8ace7e69f083c1db6dd000b851c">TAS_DISABLE</a> = 0, 
-<a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817cab1bf8f6ae57200e40fc9cddc3dd000eb">TAS_ENABLE</a> = 1, 
-<a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817cae743f0dcf884a0ee0a91b311f656e784">TAS_RESET</a> = 2
+<tr class="memitem:ga3acb36109645d538c493fd97c7dc817c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ENET__MOD__TAS.html#ga3acb36109645d538c493fd97c7dc817c">EnetTas_TasState</a> { <a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca09b78dc8dc4d5f4129f855271ee9d8cf">ENET_TAS_DISABLE</a> = 0, 
+<a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca22dfbd3f27824d920781a1e80e760e23">ENET_TAS_ENABLE</a> = 1, 
+<a class="el" href="group__ENET__MOD__TAS.html#gga3acb36109645d538c493fd97c7dc817ca292753a3b16c05651371772a1de565a1">ENET_TAS_RESET</a> = 2
  }</td></tr>
 <tr class="memdesc:ga3acb36109645d538c493fd97c7dc817c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TAS state types.  <a href="group__ENET__MOD__TAS.html#ga3acb36109645d538c493fd97c7dc817c">More...</a><br /></td></tr>
 <tr class="separator:ga3acb36109645d538c493fd97c7dc817c"><td class="memSeparator" colspan="2">&#160;</td></tr>

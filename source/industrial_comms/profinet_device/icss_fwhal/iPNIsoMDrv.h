@@ -33,6 +33,12 @@
 #ifndef IPNISOMDRV_H_
 #define IPNISOMDRV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                          Doxygen                                           */
 /* ========================================================================== */
@@ -137,4 +143,9 @@ void PN_ISO_deInitGPIOEvent(PN_Handle pnHandle,PNISOM_Handle isoHandle);
 /**
 @}
 */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* IPNISOMDRV_H_ */

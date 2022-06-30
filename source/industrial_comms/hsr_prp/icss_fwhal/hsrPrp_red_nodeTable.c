@@ -297,7 +297,7 @@ RED_STATUS RedNodetableSearchOp(uint8_t *srcMacId, uint8_t port,
     uint8_t macid[ETHER_ADDR_LEN];
     uint16_t i, hashVal, entries, index = 0;
     Bool searchStatus = 0;
-    RED_STATUS returnStatus = 0;;
+    RED_STATUS returnStatus = RED_OK;
 
     RED_INDEX_ARRAY_ENTRY *indexArrayBase = hsrPrphandle->indexArrayBase;
     RED_INDEX_ARRAY_ENTRY *pindexArrayNode;

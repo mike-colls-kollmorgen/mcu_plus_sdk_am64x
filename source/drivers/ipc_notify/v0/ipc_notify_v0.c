@@ -105,7 +105,7 @@ static inline uint32_t IpcNotify_makeMsg(uint16_t clientId, uint32_t msgValue)
 
 void IpcNotify_isr(void *args)
 {
-    IpcNotify_InterruptConfig *pInterruptConfig = args;
+    IpcNotify_InterruptConfig *pInterruptConfig = (IpcNotify_InterruptConfig *) args;
     uint32_t mailboxBaseAddr, hwFifoId, userId;
     uint32_t core, msg, value, numMsgs;
     uint16_t clientId;

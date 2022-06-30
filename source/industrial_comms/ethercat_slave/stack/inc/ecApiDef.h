@@ -8,7 +8,7 @@
 * KUNBUS GmbH
 *
 * \date
-* 2021-05-19
+* 2022-03-31
 *
 * \copyright
 * Copyright (c) 2021, KUNBUS GmbH<br /><br />
@@ -620,6 +620,7 @@ extern "C" {
 #define OBD_MAX_ACCELERATION_INDEX(x)                   (0x60C5 + x * OBD_CIA402_AXIS_OFFSET)
 #define OBD_MAX_DECELERATION_INDEX(x)                   (0x60C6 + x * OBD_CIA402_AXIS_OFFSET)
 
+#define OBD_TOUCH_PROBE_SOURCE(x)                       (0x60D0 + x * OBD_CIA402_AXIS_OFFSET)
 #define OBD_TOUCH_PROBE_1_POS_EDGE_CNT_INDEX(x)         (0x60D5 + x * OBD_CIA402_AXIS_OFFSET)
 #define OBD_TOUCH_PROBE_1_NEG_EDGE_CNT_INDEX(x)         (0x60D6 + x * OBD_CIA402_AXIS_OFFSET)
 #define OBD_TOUCH_PROBE_2_POS_EDGE_CNT_INDEX(x)         (0x60D7 + x * OBD_CIA402_AXIS_OFFSET)

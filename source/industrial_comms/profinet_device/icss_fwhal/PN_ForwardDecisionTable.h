@@ -33,6 +33,12 @@
 #ifndef PN_FORWARD_DECISION_TABLE_H_
 #define PN_FORWARD_DECISION_TABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -101,5 +107,10 @@ const uint32_t PN_Forward_Decision_Table[] =
     0x00000006, /* 01-15-4E-00-00-00  ..  01-15-4E-00-00-1F */
     0x00000001  /* 01-80-C2-00-00-00  ..  01-80-C2-00-00-1F */
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PN_FORWARD_DECISION_TABLE_H_ */

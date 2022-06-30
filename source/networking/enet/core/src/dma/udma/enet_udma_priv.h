@@ -65,6 +65,7 @@ extern "C" {
 /*! \brief UDMA teardown CQ ring memory size */
 #define ENET_UDMA_TDCQ_RING_ELE_CNT   (1U)
 
+
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
@@ -511,6 +512,21 @@ typedef struct EnetUdma_DrvObj_s
     /*! Number of RX channels */
     uint32_t numRxCh;
 } EnetUdma_DrvObj;
+
+/**
+ *  \brief DMA Object Memory Info
+ *
+ *  This structure is used to get Udma Driver handle from Application
+ */
+typedef struct EnetUdma_DrvObjMemInfo_s{
+
+    /*! Number of Udma Instance */
+    uint32_t numObjs;
+
+    /*! Pointer to EnetUdma_DrvObj */
+    EnetUdma_DrvObj *drvObjMem;
+
+}EnetUdma_DrvObjMemInfo;
 
 /* ========================================================================== */
 /*                         Global Variables                                   */

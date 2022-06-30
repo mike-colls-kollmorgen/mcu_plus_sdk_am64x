@@ -41,6 +41,12 @@
 #ifndef CUSB_CH9_IF_H
 #define CUSB_CH9_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_a_c90-2 "C90 - limits, DRV-3906" */
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_b_c90-2 "C90 - limits, DRV-3906" */
 
@@ -703,5 +709,10 @@ typedef enum {
 
 /* parasoft-end-suppress MISRA2012-RULE-1_1_b_c90-2 */
 /* parasoft-end-suppress MISRA2012-RULE-1_1_a_c90-2 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSB_CH9_IF_H */

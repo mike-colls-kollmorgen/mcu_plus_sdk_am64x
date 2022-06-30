@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,30 +108,30 @@ $(document).ready(function(){initNavTree('DRIVERS_PRUICSS_PAGE.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md610">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md611">SysConfig Features</a></li>
-<li class="level1"><a href="#PRUICSS_INTC">PRUICSS Interrupt Controller</a><ul><li class="level2"><a href="#autotoc_md612">Sysconfig for INTC</a></li>
-<li class="level2"><a href="#autotoc_md613">User Defined INTC Settings</a></li>
+<ul><li class="level1"><a href="#autotoc_md687">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md688">SysConfig Features</a></li>
+<li class="level1"><a href="#PRUICSS_INTC">PRUICSS Interrupt Controller</a><ul><li class="level2"><a href="#autotoc_md689">Sysconfig for INTC</a></li>
+<li class="level2"><a href="#autotoc_md690">User Defined INTC Settings</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md614">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md615">API</a></li>
+<li class="level1"><a href="#autotoc_md691">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md692">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_pruicss_g_v0"></a></p>
-<p>Programmable Real-Time Unit and Industrial Communication Subsystem(PRUICSS) driver provides a well-defined API layer which allows applications to use the PRUICSS. PRUICSS is firmware programmable and can take on various personalities like Industrial Communication Protocol Switch (for protocols like EtherCAT, Profinet, EtherNet/IP), Ethernet Switch, Ethernet MAC, Industrial Drives, etc.</p>
-<h1><a class="anchor" id="autotoc_md610"></a>
+<p>Programmable Real-Time Unit and Industrial Communication Subsystem(PRU-ICSS) driver provides a well-defined API layer which allows applications to use the PRU-ICSS. PRU-ICSS is firmware programmable and can take on various personalities like Industrial Communication Protocol Switch (for protocols like EtherCAT, Profinet, EtherNet/IP), Ethernet Switch, Ethernet MAC, Industrial Drives, etc.</p>
+<h1><a class="anchor" id="autotoc_md687"></a>
 Features Supported</h1>
 <ul>
 <li>PRU control features like enabling/disabling/resetting a Programmable Real-Time Units (PRU0 and PRU1), Auxiliary Programmable Real-Time Units (RTU_PRU0 and RTU_PRU1) or Transmit Programmable Real-Time Units (TX_PRU0 and TX_PRU1) core</li>
 <li>Loading the firmware in PRU cores</li>
-<li>Read/Write/Reset different memories inside PRUICSS</li>
+<li>Read/Write/Reset different memories inside PRU-ICSS</li>
 <li>PRU and Host Event management. It does mapping of sys_evt/channel/hosts in the INTC module. APIs to register interrupt handler for events, generate an event, wait for occurrence of an event, and clear an event.</li>
 <li>Basic configurations in registers like GPCFG, MII_RT_G_CFG, ICSSG_SA_MX</li>
 <li>IEP clock selection, IEP counter enable/disable, IEP counter increment configuration</li>
 <li>PRU Constant Table Configuration</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md611"></a>
+<h1><a class="anchor" id="autotoc_md688"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
@@ -151,7 +151,7 @@ SysConfig Features</h1>
 </ul>
 <h1><a class="anchor" id="PRUICSS_INTC"></a>
 PRUICSS Interrupt Controller</h1>
-<p>The interrupt controller (INTC) module maps interrupts coming from different parts of the device (mapped to PRUICSS instance) to a reduced set of interrupt channels.</p>
+<p>The interrupt controller (INTC) module maps interrupts coming from different parts of the device (mapped to PRU-ICSS instance) to a reduced set of interrupt channels.</p>
 <p>The interrupt controller has the following features:</p><ul>
 <li>Capturing up to 160 Events (inputs)<ul>
 <li>Upper 96 are external events</li>
@@ -181,13 +181,13 @@ PRUICSS Interrupt Controller</h1>
 <li>For interrupts on same channel, priority is determined by the hardware interrupt number. The lower the interrupt number, the higher the priority.</li>
 <li>Host Interrupt 0 is connected to bit 30 in register 31 (R31) of PRU0 and PRU1 in parallel.</li>
 <li>Host Interrupt 1 is connected to bit 31 in register 31 (R31) for PRU0 and PRU1 in parallel.</li>
-<li>Host Interrupts 2 through 9 exported from PRUICSS and mapped to device level interrupt controllers.</li>
+<li>Host Interrupts 2 through 9 exported from PRU-ICSS and mapped to device level interrupt controllers.</li>
 <li>Host Interrupt 10 is connected to bit 30 in register 31 (R31) to both RTU_PRU0 and RTU_PRU1 in parallel.</li>
 <li>Host Interrupt 11 is connected to bit 31 in register 31 (R31) to both RTU_PRU0 and RTU_PRU1 in parallel.</li>
 <li>Host Interrupts 12 through 19 are connected to each of the 4 Task Managers.</li>
 </ul>
-<p>For industrial communication protocol examples running on R5F, Host Interrupts 2 through 9 exported from PRUICSS are used for signalling an interrupt to R5F. As this mapping is programmable and varies from example to example, we have a <code>*_pruss_intc_mapping.h</code> file for different protocol examples which is used for passing <a class="el" href="structPRUICSS__IntcInitData.html">PRUICSS_IntcInitData</a> structure while calling <a class="el" href="group__DRV__PRUICSS__MODULE.html#gacb9fcd2e989376394c0c628ea9ddc39f">PRUICSS_intcInit</a> API.</p>
-<h2><a class="anchor" id="autotoc_md612"></a>
+<p>For industrial communication protocol examples running on R5F, Host Interrupts 2 through 9 exported from PRU-ICSS are used for signalling an interrupt to R5F. As this mapping is programmable and varies from example to example, we have a <code>*_pruss_intc_mapping.h</code> file for different protocol examples which is used for passing <a class="el" href="structPRUICSS__IntcInitData.html">PRUICSS_IntcInitData</a> structure while calling <a class="el" href="group__DRV__PRUICSS__MODULE.html#gacb9fcd2e989376394c0c628ea9ddc39f">PRUICSS_intcInit</a> API.</p>
+<h2><a class="anchor" id="autotoc_md689"></a>
 Sysconfig for INTC</h2>
 <p>You may use the sysconfig interface for PRU_ICSSG Local INTC mapping.  <style>div.image img[src="pruicss_intc_settings.png"]{width:60%}</style> </p><div class="image">
 <img src="pruicss_intc_settings.png" alt=""/>
@@ -195,7 +195,7 @@ Sysconfig for INTC</h2>
 <p>Sysconfig will create (see on right side generated code)</p><ul>
 <li><a class="el" href="structPRUICSS__IntcInitData.html">PRUICSS_IntcInitData</a> structures for interrupt mapping named <code>icss0_intc_initdata</code>, <code>icss1_intc_initdata</code> for ICSS0, ICSS1 instances respectively in <code>ti_drivers_config.c</code>. This is for use in main app to initialize interrupt settings by passing these to <a class="el" href="group__DRV__PRUICSS__MODULE.html#gacb9fcd2e989376394c0c628ea9ddc39f">PRUICSS_intcInit</a>. The previous interrupt settings are overwritten by this so please use it only once to initialize the interrupts.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md613"></a>
+<h2><a class="anchor" id="autotoc_md690"></a>
 User Defined INTC Settings</h2>
 <p>Following is an example of one mapping from <code>${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/icss_fwhal/tiesc_pruss_intc_mapping.h</code> used for EtherCAT Slave.</p>
 <p>The following line maps <code>PRU_ARM_EVENT2</code> to <code>CHANNEL6</code>.</p>
@@ -213,7 +213,7 @@ User Defined INTC Settings</h2>
 <div class="line">{CHANNEL1, PRU1}</div>
 </div><!-- fragment --><p>This configuration maps both Port 0 and Port 1 link interrupts to a single channel and in turn to a single host interrupt for PRU1 (Host Interrupt 1 out of 20).</p>
 <dl class="section note"><dt>Note</dt><dd>Please refer to section "6.4.7 PRU_ICSSG Local INTC" in Technical Reference Manual(TRM) of AM64x for more details on INTC module</dd></dl>
-<h1><a class="anchor" id="autotoc_md614"></a>
+<h1><a class="anchor" id="autotoc_md691"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="pruicss_8h.html">drivers/pruicss.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Instance Open Example </p><div class="fragment"><div class="line">    <span class="comment">/*Use CONFIG_PRU_ICSS1 macro as parameter to PRUICSS_open */</span></div>
@@ -244,7 +244,7 @@ Example Usage</h1>
 <div class="line">                        pruFirmwareLength);</div>
 <div class="line">    <span class="comment">/* Enable PRU */</span></div>
 <div class="line">    <a class="code" href="group__DRV__PRUICSS__MODULE.html#ga38b0b2f969a1f8f6fa7e7d911f07dc71">PRUICSS_enableCore</a>(gPruicssHandle, <a class="code" href="group__DRV__PRUICSS__MODULE.html#ga5d7a6d9f38b8cc1f8b15b9324c868fd8">PRUICSS_PRU0</a>);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md615"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md692"></a>
 API</h1>
 <p><a class="el" href="group__DRV__PRUICSS__MODULE.html">APIs for PRUICSS</a> </p>
 </div></div><!-- contents -->
@@ -253,12 +253,12 @@ API</h1>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga96adaeaa6576f836f15f28052c5d4c3a"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga96adaeaa6576f836f15f28052c5d4c3a">PRUICSS_resetCore</a></div><div class="ttdeci">int32_t PRUICSS_resetCore(PRUICSS_Handle handle, uint8_t pruNum)</div><div class="ttdoc">This function resets the PRU.</div></div>
 <div class="ttc" id="apruicss_8h_html"><div class="ttname"><a href="pruicss_8h.html">pruicss.h</a></div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga38b0b2f969a1f8f6fa7e7d911f07dc71"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga38b0b2f969a1f8f6fa7e7d911f07dc71">PRUICSS_enableCore</a></div><div class="ttdeci">int32_t PRUICSS_enableCore(PRUICSS_Handle handle, uint8_t pruNum)</div><div class="ttdoc">This function enables the PRU.</div></div>
-<div class="ttc" id="aicss__intc__defines_8h_html_adbe0ee9638d7cc7bf9b7986c71a9061c"><div class="ttname"><a href="icss__intc__defines_8h.html#adbe0ee9638d7cc7bf9b7986c71a9061c">SYS_EVT_POLARITY_HIGH</a></div><div class="ttdeci">#define SYS_EVT_POLARITY_HIGH</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:300</div></div>
+<div class="ttc" id="aicss__intc__defines_8h_html_adbe0ee9638d7cc7bf9b7986c71a9061c"><div class="ttname"><a href="icss__intc__defines_8h.html#adbe0ee9638d7cc7bf9b7986c71a9061c">SYS_EVT_POLARITY_HIGH</a></div><div class="ttdeci">#define SYS_EVT_POLARITY_HIGH</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:306</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga1a7f96fd81bc1502778e59372a5ec740"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga1a7f96fd81bc1502778e59372a5ec740">PRUICSS_IRAM_PRU</a></div><div class="ttdeci">#define PRUICSS_IRAM_PRU(n)</div><div class="ttdoc">IRAM for PRU0/PRU1. n = 0 for PRU0,n = 1 for PRU1.</div><div class="ttdef"><b>Definition:</b> pruicss/g_v0/pruicss.h:104</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga37cdf26e6f52377b9bc2806417c1d201"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga37cdf26e6f52377b9bc2806417c1d201">PRUICSS_disableCore</a></div><div class="ttdeci">int32_t PRUICSS_disableCore(PRUICSS_Handle handle, uint8_t pruNum)</div><div class="ttdoc">This function disables the PRU.</div></div>
-<div class="ttc" id="aicss__intc__defines_8h_html_a9ae78034b4bad2340f61f637b057ce4e"><div class="ttname"><a href="icss__intc__defines_8h.html#a9ae78034b4bad2340f61f637b057ce4e">SYS_EVT_TYPE_PULSE</a></div><div class="ttdeci">#define SYS_EVT_TYPE_PULSE</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:302</div></div>
+<div class="ttc" id="aicss__intc__defines_8h_html_a9ae78034b4bad2340f61f637b057ce4e"><div class="ttname"><a href="icss__intc__defines_8h.html#a9ae78034b4bad2340f61f637b057ce4e">SYS_EVT_TYPE_PULSE</a></div><div class="ttdeci">#define SYS_EVT_TYPE_PULSE</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:308</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga6779b9e50b38ea5061d7fe0803956024"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga6779b9e50b38ea5061d7fe0803956024">PRUICSS_open</a></div><div class="ttdeci">PRUICSS_Handle PRUICSS_open(uint32_t instance)</div><div class="ttdoc">This function creates the handle for a PRUICSS instance.</div></div>
-<div class="ttc" id="aicss__intc__defines_8h_html_a2f158391a4a9620ee7fb20ef55a67ba9"><div class="ttname"><a href="icss__intc__defines_8h.html#a2f158391a4a9620ee7fb20ef55a67ba9">SYS_EVT_TYPE_EDGE</a></div><div class="ttdeci">#define SYS_EVT_TYPE_EDGE</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:303</div></div>
+<div class="ttc" id="aicss__intc__defines_8h_html_a2f158391a4a9620ee7fb20ef55a67ba9"><div class="ttname"><a href="icss__intc__defines_8h.html#a2f158391a4a9620ee7fb20ef55a67ba9">SYS_EVT_TYPE_EDGE</a></div><div class="ttdeci">#define SYS_EVT_TYPE_EDGE</div><div class="ttdef"><b>Definition:</b> icss_intc_defines.h:309</div></div>
 <div class="ttc" id="agroup__KERNEL__DPL__DEBUG_html_ga552e9055ca7eab5fe6c224c6cd5a9d4c"><div class="ttname"><a href="group__KERNEL__DPL__DEBUG.html#ga552e9055ca7eab5fe6c224c6cd5a9d4c">DebugP_assert</a></div><div class="ttdeci">#define DebugP_assert(expression)</div><div class="ttdoc">Function to call for assert check.</div><div class="ttdef"><b>Definition:</b> DebugP.h:159</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_gacb9fcd2e989376394c0c628ea9ddc39f"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#gacb9fcd2e989376394c0c628ea9ddc39f">PRUICSS_intcInit</a></div><div class="ttdeci">int32_t PRUICSS_intcInit(PRUICSS_Handle handle, const PRUICSS_IntcInitData *intcInitData)</div><div class="ttdoc">This function does Interrupt-Channel-host mapping.</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_ga57ddb3591be2f0adf90894e715e52836"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#ga57ddb3591be2f0adf90894e715e52836">PRUICSS_writeMemory</a></div><div class="ttdeci">uint32_t PRUICSS_writeMemory(PRUICSS_Handle handle, uint32_t pruicssMem, uint32_t wordoffset, const uint32_t *source_mem, uint32_t bytelength)</div><div class="ttdoc">This function writes the given data to PRU memory.</div></div>

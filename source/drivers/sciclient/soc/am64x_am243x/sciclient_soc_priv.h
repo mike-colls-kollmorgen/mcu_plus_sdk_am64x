@@ -40,6 +40,12 @@
 #ifndef SCICLIENT_SOC_PRIV_AM64X_H_
 #define SCICLIENT_SOC_PRIV_AM64X_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  \anchor Sciclient_RomThreadIds
  *  \name Sciclient load firmware ROM Thread Ids.
@@ -57,5 +63,10 @@
 #define SCICLIENT_ROM_R5_RX_NORMAL_THREAD                           (5U)
 #endif
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ifndef SCICLIENT_SOC_PRIV_AM64X_H_ */

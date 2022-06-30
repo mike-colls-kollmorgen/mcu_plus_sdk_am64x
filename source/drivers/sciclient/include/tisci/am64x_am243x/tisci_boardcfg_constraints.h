@@ -59,9 +59,20 @@
 #ifndef TISCI_BOARDCFG_CONSTRAINTS_H
 #define TISCI_BOARDCFG_CONSTRAINTS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #define TISCI_BOARDCFG_MAX_MAIN_HOST_COUNT                            (8U)
 #define TISCI_BOARDCFG_MAX_MCU_HOST_COUNT                             (4U)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_BOARDCFG_CONSTRAINTS_H */
 

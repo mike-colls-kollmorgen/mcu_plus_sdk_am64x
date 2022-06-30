@@ -16,10 +16,10 @@
 
 /* This is the size of stack when R5 is in IRQ mode
  * In NORTOS,
- * - Here interrupt nesting is disabled as of now
+ * - Here interrupt nesting is enabled
  * - This is the stack used by ISRs registered as type IRQ
  * In FreeRTOS,
- * - Here interrupt nesting is enabled
+ * - Here interrupt nesting is disabled
  * - This is stack that is used initally when a IRQ is received
  * - But then the mode is switched to SVC mode and SVC stack is used for all user ISR callbacks
  * - Hence in FreeRTOS, IRQ stack size is less and SVC stack size is more

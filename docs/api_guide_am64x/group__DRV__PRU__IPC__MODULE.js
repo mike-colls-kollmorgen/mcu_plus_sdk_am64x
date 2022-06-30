@@ -1,12 +1,20 @@
 var group__DRV__PRU__IPC__MODULE =
 [
+    [ "Config_Mem_Struct", "structConfig__Mem__Struct.html", [
+      [ "blockId", "structConfig__Mem__Struct.html#a8328a7e064870d7698c23b9a3ce3e2d4", null ],
+      [ "dataSize", "structConfig__Mem__Struct.html#a9d852242bca05d07f11ef075c41f2bf5", null ],
+      [ "noOfBuffers", "structConfig__Mem__Struct.html#ab240e9a650f1e59149430ff99502f7e7", null ],
+      [ "blockSize", "structConfig__Mem__Struct.html#acfa4d5e9fae16a4a1390ea0efca4e09b", null ],
+      [ "noOfBlocks", "structConfig__Mem__Struct.html#afc940e6909d515188d915026d4eb53f4", null ],
+      [ "bufferAddrs", "structConfig__Mem__Struct.html#ac7c26062aa539f30a2ae41c7342d31d2", null ]
+    ] ],
     [ "PRU_IPC_Attrs", "structPRU__IPC__Attrs.html", [
       [ "dataSize", "structPRU__IPC__Attrs.html#ad7c2a86b77038844d93c6ab032149105", null ],
       [ "blockSize", "structPRU__IPC__Attrs.html#ae6758519163715b9eac0ba8a8df1f9c1", null ],
       [ "noOfBlocks", "structPRU__IPC__Attrs.html#a999c851b91d77276121f3672a1fcae01", null ],
       [ "noOfBuffers", "structPRU__IPC__Attrs.html#a95a35c47e1a83ce0fa77131ada909b57", null ],
       [ "bufferAddrs", "structPRU__IPC__Attrs.html#a47666c1569462e6eb503c6be1150f02f", null ],
-      [ "configMemAddr", "structPRU__IPC__Attrs.html#a8118861189cda502cf181957a710abe3", null ],
+      [ "config", "structPRU__IPC__Attrs.html#aeb4daf227d32b6e0d318a84da11fb8e9", null ],
       [ "enableRxInt", "structPRU__IPC__Attrs.html#afed066a74687ca84bdfa72745a634712", null ],
       [ "pruEvtoutNum", "structPRU__IPC__Attrs.html#abeb4cdf4b9e7b2f6625b5055eceddf41", null ],
       [ "sysEventNum", "structPRU__IPC__Attrs.html#aa3f98e58f385e5b89807cea1bcd877e5", null ],

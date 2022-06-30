@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('EXAMPLE_MOTORCONTROL_TAMAGAWA.html',''
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_examples_motorcontrol_tamagawa_example"></a> </p>
-<h1><a class="anchor" id="autotoc_md1043"></a>
+<h1><a class="anchor" id="autotoc_md1158"></a>
 Introduction</h1>
 <p>The Tamagawa receiver firmware running on ICSS-PRU provides a defined well interface to execute the Tamagawa protocol. The Tamagawa diagnostic application described here interacts with the Tamagawa receiver firmware interface.</p>
 <p>Tamagawa diagnostic application does below,</p><ul>
@@ -123,7 +123,7 @@ Introduction</h1>
 </ul>
 <p>It is necessary to provide 3.3V to the RS485 logic side. The receive transceiver is always kept enabled with bus side connected as in Tamagawa Specification.</p>
 <p>The Tamagawa receiver firmware running on ICSS0-PRU1 provides a defined interface. The Tamagawa diagnostic application interacts with the Tamagawa receiver firmware interface. It then presents the user with menu options to select Data ID code (as defined by Tamagawa) to be sent to the encoder. The application collects the data entered by the user and configures the relevant interface. Then via the Tamagawa receiver interface, the command is triggered. Once the command completion is indicated by the interface, the status of the transaction is checked. If the Status indicates success, the result is presented to the user.</p>
-<h2><a class="anchor" id="autotoc_md1044"></a>
+<h2><a class="anchor" id="autotoc_md1159"></a>
 Features Supported</h2>
 <ul>
 <li>PRU Tamagawa receiver Firmware source in C</li>
@@ -131,20 +131,20 @@ Features Supported</h2>
 <li>2.5Mbps encoder support</li>
 <li>Supports all Data readout &amp; Reset frames</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1045"></a>
+<h2><a class="anchor" id="autotoc_md1160"></a>
 SysConfig Features</h2>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure things mentioned below:</p><ul>
 <li>Selecting the ICSSG0PRUx instance.(Tested on ICSSG0-PRU1)</li>
 <li>Configuring PINMUX.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1046"></a>
+<h2><a class="anchor" id="autotoc_md1161"></a>
 Features Not Supported</h2>
 <p>In general, peripherals or features not mentioned as part of "Features Supported" section are not supported, including the below</p><ul>
 <li>EEPROM commands</li>
 <li>Other baud rates.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1047"></a>
+<h2><a class="anchor" id="autotoc_md1162"></a>
 Important files and directory structure</h2>
 <table class="doxtable">
 <tr>
@@ -176,22 +176,22 @@ Supported Combinations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/motorcontrol/tamagawa_example   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1048"></a>
+<h1><a class="anchor" id="autotoc_md1163"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1049"></a>
+<h2><a class="anchor" id="autotoc_md1164"></a>
 Hardware Prerequisites</h2>
 <ul>
 <li>AM64x/AM243x EVM.</li>
 <li>RS485 half-duplex EVM.</li>
 <li>Tamagawa Encoder.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1050"></a>
+<h2><a class="anchor" id="autotoc_md1165"></a>
 Hardware Setup</h2>
 <p> <style>div.image img[src="Tamagawa_Connections.png"]{width:80%}</style> </p><div class="image">
 <img src="Tamagawa_Connections.png" alt=""/>
 <div class="caption">
 Hardware Setup</div></div>
-<h2><a class="anchor" id="autotoc_md1051"></a>
+<h2><a class="anchor" id="autotoc_md1166"></a>
 Build, load and run</h2>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
@@ -199,7 +199,7 @@ Build, load and run</h2>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>Refer to UART terminal for user interface menu options.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1052"></a>
+<h1><a class="anchor" id="autotoc_md1167"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run:</p>
 <p> <style>div.image img[src="Tamagawa_SampleOutput.png"]{width:60%}</style> </p><div class="image">

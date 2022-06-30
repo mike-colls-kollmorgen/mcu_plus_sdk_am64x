@@ -39,6 +39,12 @@
 #ifndef BOOTLOADER_PROFILE_H_
 #define BOOTLOADER_PROFILE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -68,5 +74,32 @@ void Bootloader_profileAddProfilePoint(char *pointName);
  *  \brief  This function prints all the saved logs/profile points
  */
 void Bootloader_profilePrintProfileLog(void);
+/**
+ *  \brief  This function updates the profile data structure with appimage size
+ *
+ *  \param  size Size of the appimage in bytes
+ */
+void Bootloader_profileUpdateAppimageSize(uint32_t size);
+
+/**
+ *  \brief  This function updates the profile data structure with boot media and clock speed
+ * 
+ *  \param clk Clock speed of the boot media - OSPI, QSPI, MMCSD
+ * 
+ *  \param id Boot media ID, defined in bootloader.h
+ */
+void Bootloader_profileUpdateMediaAndClk(uint32_t clk, uint32_t id);
+
+/**
+ *  \brief  This function adds the core passed to the profile data structure
+ *
+ *  \param  coreId CSL Core Id of the CPU
+ */
+void Bootloader_profileAddCore(uint32_t coreId);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* BOOTLOADER_PROFILE_H_ */

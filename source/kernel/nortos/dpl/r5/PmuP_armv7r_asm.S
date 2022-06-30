@@ -38,6 +38,7 @@
         .type CycleCounterP_getCount32,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 CycleCounterP_getCount32:
         MRC     p15, #0, r0, c9, c13, 0  // read PMCCNTR
         bx      LR
@@ -47,6 +48,7 @@ CycleCounterP_getCount32:
         .type PmuP_setup,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 PmuP_setup:
         MCR     p15, #0, r0, c9, c12, 0 // write PMCR
         bx      LR
@@ -56,6 +58,7 @@ PmuP_setup:
         .type PmuP_enableCounters,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 PmuP_enableCounters:
         MCR     p15, #0, r0, c9, c12, 1  // write PMCNTENSET
         bx      LR
@@ -65,6 +68,7 @@ PmuP_enableCounters:
         .type PmuP_disableCounters,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 PmuP_disableCounters:
         MCR     p15, #0, r0, c9, c12, 2  // write PMCNTENCLR
         bx      LR
@@ -74,6 +78,7 @@ PmuP_disableCounters:
         .type PmuP_getOverflowStatus,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 PmuP_getOverflowStatus:
         MRC     p15, 0, r0, c9, c12, 3  // read PMOVSR
         bx      LR
@@ -83,6 +88,7 @@ PmuP_getOverflowStatus:
         .type PmuP_clearOverflowStatus,%function
         .section ".text.pmu","ax",%progbits
         .arm
+        .align 2
 PmuP_clearOverflowStatus:
         MCR     p15, 0, r0, c9, c12, 3  // write PMOVSR
         bx      LR

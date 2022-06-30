@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -146,6 +146,10 @@ Data Fields</h2></td></tr>
 <tr class="separator:a25ec4f9488ad3261c1a4bd81fe046312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a286c142923daefb17044cf9b210399d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__INDUSTRIAL__COMMS__ETHERCAT__SLAVE__FWHAL__MODULE.html#gadbc4af27c59b2763ac8ac263fbe3eef3">bsp_ethercat_stack_isr_function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsp__params.html#a286c142923daefb17044cf9b210399d9">sync1_isr</a></td></tr>
 <tr class="separator:a286c142923daefb17044cf9b210399d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c313696fb143fc5b3850d74a8dc6245"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsp__params.html#a7c313696fb143fc5b3850d74a8dc6245">phy_rx_err_reg</a></td></tr>
+<tr class="separator:a7c313696fb143fc5b3850d74a8dc6245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0b7fce1cb278d89da2e3da548eda840"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsp__params.html#aa0b7fce1cb278d89da2e3da548eda840">pruicssClkFreq</a></td></tr>
+<tr class="separator:aa0b7fce1cb278d89da2e3da548eda840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="ae0f76990406a9496fc69e8279cba89f5"></a>
@@ -389,6 +393,36 @@ PRU_ICSSG_PR1_HOST_INTR_PEND_4 : ESC Command Acknowledgement </p>
       </table>
 </div><div class="memdoc">
 <p>SYNC1 IRQ handler in the EtherCAT slave stack. Needed only if ENABLE_SYNC_TASK is not enabled </p>
+
+</div>
+</div>
+<a id="a7c313696fb143fc5b3850d74a8dc6245"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c313696fb143fc5b3850d74a8dc6245">&#9670;&nbsp;</a></span>phy_rx_err_reg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t bsp_params::phy_rx_err_reg</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Address of PHY register maintaining RX Error (RX_ERR) count during frame(when RX_DV is asserted). This value will be configured in TI ESC's PHY RX Error Counter Register (0x0E28-0x0E29) </p>
+
+</div>
+</div>
+<a id="aa0b7fce1cb278d89da2e3da548eda840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b7fce1cb278d89da2e3da548eda840">&#9670;&nbsp;</a></span>pruicssClkFreq</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t bsp_params::pruicssClkFreq</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>PRU-ICSS Core Clock and IEP Clock Frequency. Set TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ/TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ. Default is TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ. NOTE : Only applicable for PRU-ICSSG (AM64x/AM243x). Not applicable for PRU-ICSSM(AM263x). </p>
 
 </div>
 </div>

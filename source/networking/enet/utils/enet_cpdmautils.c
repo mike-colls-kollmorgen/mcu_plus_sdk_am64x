@@ -114,16 +114,6 @@ void *EnetAppUtils_phyToVirtFxn(uint64_t phyAddr,
     return((void *)temp);
 }
 
-void EnetAppUtils_setCommonRxChPrms(EnetCpdma_OpenRxChPrms *pRxChPrms)
-{
-    pRxChPrms->numRxPkts           = ENET_MEM_NUM_RX_PKTS;
-}
-
-void EnetAppUtils_setCommonTxChPrms(EnetCpdma_OpenTxChPrms *pTxChPrms)
-{
-    pTxChPrms->numTxPkts           = ENET_MEM_NUM_TX_PKTS;
-}
-
 void EnetAppUtils_openTxCh(Enet_Handle hEnet,
                            uint32_t coreKey,
                            uint32_t coreId,
@@ -136,8 +126,7 @@ void EnetAppUtils_openTxCh(Enet_Handle hEnet,
     EnetAppUtils_assert(hDma != NULL);
 
     pCpswTxChCfg->hEnet = hEnet;
-    /* TODO: only one channel is supported */
-    pCpswTxChCfg->chNum = *pTxChNum = 0U;
+    pCpswTxChCfg->chNum = *pTxChNum;
 
     *pTxChHandle = EnetDma_openTxCh(hDma, (void *)pCpswTxChCfg);
     EnetAppUtils_assert(NULL != *pTxChHandle);
@@ -166,18 +155,30 @@ void EnetAppUtils_openRxCh(Enet_Handle hEnet,
                            uint32_t coreId,
                            uint32_t *pRxChNum,
                            EnetDma_RxChHandle *pRxChHandle,
-                           EnetCpdma_OpenRxChPrms *pCpswRxChCfg)
+                           EnetCpdma_OpenRxChPrms *pCpswRxChCfg,
+                           bool allocHostMacAddr,
+                           uint8_t macAddr[])
 {
     EnetDma_Handle hDma = Enet_getDmaHandle(hEnet);
+    int32_t status;
 
     EnetAppUtils_assert(hDma != NULL);
 
     pCpswRxChCfg->hEnet = hEnet;
-    /* TODO: only one channel is supported */
-    pCpswRxChCfg->chNum = *pRxChNum = 0U;
+    pCpswRxChCfg->chNum = *pRxChNum;
 
     *pRxChHandle = EnetDma_openRxCh(hDma, (void *)pCpswRxChCfg);
     EnetAppUtils_assert(NULL != *pRxChHandle);
+
+    if (allocHostMacAddr)
+    {
+        status = EnetAppUtils_allocMac(hEnet,
+                                       coreKey,
+                                       coreId,
+                                       macAddr);
+        EnetAppUtils_assert(ENET_SOK == status);
+        EnetAppUtils_addHostPortEntry(hEnet, coreId, macAddr);
+    }
 }
 
 void EnetAppUtils_closeRxCh(Enet_Handle hEnet,
@@ -186,7 +187,9 @@ void EnetAppUtils_closeRxCh(Enet_Handle hEnet,
                             EnetDma_PktQ *pFqPktInfoQ,
                             EnetDma_PktQ *pCqPktInfoQ,
                             EnetDma_RxChHandle hRxChHandle,
-                            uint32_t rxChNum)
+                            uint32_t rxChNum,
+                            bool freeHostMacAddr,
+                            uint8_t macAddr[])
 {
     int32_t status;
 
@@ -195,6 +198,14 @@ void EnetAppUtils_closeRxCh(Enet_Handle hEnet,
 
     status = EnetDma_closeRxCh(hRxChHandle, pFqPktInfoQ, pCqPktInfoQ);
     EnetAppUtils_assert(ENET_SOK == status);
+    if (freeHostMacAddr)
+    {
+        EnetAppUtils_delAddrEntry(hEnet, coreId, macAddr);
+        EnetAppUtils_freeMac(hEnet,
+                             coreKey,
+                             coreId,
+                             macAddr);
+    }
 }
 
 int32_t EnetAppUtils_freeTxCh(Enet_Handle hEnet,

@@ -36,6 +36,12 @@
 #ifndef REG_LPDDR4_PHY_CORE_MACROS_H_
 #define REG_LPDDR4_PHY_CORE_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define LPDDR4__DENALI_PHY_1280_READ_MASK                            0x00000003U
 #define LPDDR4__DENALI_PHY_1280_WRITE_MASK                           0x00000003U
 #define LPDDR4__DENALI_PHY_1280__PHY_FREQ_SEL_MASK                   0x00000003U
@@ -1861,6 +1867,11 @@
 #define LPDDR4__DENALI_PHY_1405__PHY_CAL_SETTLING_PRD_0_WIDTH                 7U
 #define LPDDR4__PHY_CAL_SETTLING_PRD_0__REG DENALI_PHY_1405
 #define LPDDR4__PHY_CAL_SETTLING_PRD_0__FLD LPDDR4__DENALI_PHY_1405__PHY_CAL_SETTLING_PRD_0
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_LPDDR4_PHY_CORE_MACROS_H_ */
 

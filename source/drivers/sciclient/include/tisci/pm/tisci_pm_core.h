@@ -53,6 +53,12 @@
 #ifndef TISCI_PM_TISCI_CORE_H
 #define TISCI_PM_TISCI_CORE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Empty request for TISCI_MSG_WAKE_REASON.
@@ -175,6 +181,11 @@ struct tisci_msg_sys_reset_req {
 struct tisci_msg_sys_reset_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_PM_TISCI_CORE_H */
 

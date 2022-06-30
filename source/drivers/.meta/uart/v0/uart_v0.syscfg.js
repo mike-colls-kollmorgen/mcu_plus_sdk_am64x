@@ -81,13 +81,20 @@ function getClockFrequencies(inst) {
 
 
 let uart_module_name = "/drivers/uart/uart";
+let uart_driver_config_file = "/drivers/uart/templates/uart_config_am64x_am243x.c.xdt";
+let uart_driver_open_close_config = "/drivers/uart/templates/uart_open_close_config_am64x_am243x.c.xdt";
+if (common.getSocName() == "am62x")
+{
+    uart_driver_config_file = "/drivers/uart/templates/uart_config_am62x.c.xdt";
+    uart_driver_open_close_config = "/drivers/uart/templates/uart_open_close_config_am62x.c.xdt";
+}
 
 let uart_module = {
     displayName: "UART",
 
     templates: {
         "/drivers/system/system_config.c.xdt": {
-            driver_config: "/drivers/uart/templates/uart_config_am64x_am243x.c.xdt",
+            driver_config: uart_driver_config_file,
             driver_init: "/drivers/uart/templates/uart_init.c.xdt",
             driver_deinit: "/drivers/uart/templates/uart_deinit.c.xdt",
         },
@@ -95,7 +102,7 @@ let uart_module = {
             driver_config: "/drivers/uart/templates/uart.h.xdt",
         },
         "/drivers/system/drivers_open_close.c.xdt": {
-            driver_open_close_config: "/drivers/uart/templates/uart_open_close_config_am64x_am243x.c.xdt",
+            driver_open_close_config: uart_driver_open_close_config,
             driver_open: "/drivers/uart/templates/uart_open.c.xdt",
             driver_close: "/drivers/uart/templates/uart_close.c.xdt",
         },
@@ -358,7 +365,7 @@ function getConfigurables()
             description: "Transfer Mode",
             longDescription:`
 - **Polled Mode:** Driver blocks on the UART status registers for operation completion
-- **Interrupt Mode:** Driver registers the UART interrupts and Read/Write operations executed in the ISR 
+- **Interrupt Mode:** Driver registers the UART interrupts and Read/Write operations executed in the ISR
 - **User Managed Interrupt:** driver interrupt registration is skipped and user need to manage the interrupt
 - **DMA Mode:** Driver uses the EDMA fot the UART Read/Write operations`,
         },

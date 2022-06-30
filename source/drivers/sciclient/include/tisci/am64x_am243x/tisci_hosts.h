@@ -55,6 +55,12 @@
 #ifndef TISCI_HOSTS_H
 #define TISCI_HOSTS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /** DMSC(Secure): Device Management and Security Control */
 #define TISCI_HOST_ID_DMSC (0U)
 /** MAIN_0_R5_0(Secure): Cortex R5_0 context 0 on Main island(BOOT) */
@@ -94,6 +100,11 @@
 
 /** Number of unique hosts on the SoC */
 #define TISCI_HOST_ID_CNT (15U)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_HOSTS_H */
 

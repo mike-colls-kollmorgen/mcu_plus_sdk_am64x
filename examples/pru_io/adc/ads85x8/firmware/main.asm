@@ -45,6 +45,7 @@
     .include "icss_program_flow_macros.inc"
     .include "icss_pin_macros.inc"
 
+; For invoking Task Manager Macros
 tmp_reg_struct  .sassign r20, Struct_4_Reg
 
     .if    !$defined("ICSSG0")
@@ -146,9 +147,8 @@ task_manager:
     qba             IDLE
 
 sample_transfer:
-; Initialize Sample Transfer
-    m_pru_ipc_init   R0.b0
-    qba              IDLE
+    m_pru_ipc_init  R0.b0, R29, CONFIG_PRU_IPC0_CONFIG_MEM_OFFSET ; Initialize Sample Transfer
+    qba             IDLE
 
 iep:
 ; reset iep1 timer
@@ -168,7 +168,8 @@ iep:
     m_set_iep_cmp_cfg_reg      1, TEMP_REG_1, 0x0f  ; CMP2 + CMP1 + CMP0 + wrap around
 
 ; set CMP0 period - 40 kHZ 25000 ns, - cycle as we start from 0
-    m_set_iep_cmp0_reg0        1, TEMP_REG_1, 25000-2
+; This decides the trigerring period of conversion start signal to ADC
+    m_set_iep_cmp0_reg0        1, TEMP_REG_1, ADC_CONVST_IEP_PRD_CONST ; 25000-2
 
     qba             IDLE
 
@@ -207,8 +208,8 @@ START:
     m_sign_ext_32bit    ADC_DATA_REG_7
     m_sign_ext_32bit    ADC_DATA_REG_8
 
-    ldi        R1.b0, &R2
-    m_pru_ipc_send  R1.b0, R2, R0.b0, PRU_IPC_RX_INTR_ENABLE, PRU_IPC_RX_EVENT
+    ldi        R1.b0, &ADC_DATA_REG_1
+    m_pru_ipc_send      R1.b0, ADC_DATA_REG_1, R0.b0, R29, CONFIG_PRU_IPC0_RX_INTR_ENABLE, CONFIG_PRU_IPC0_RX_EVENT
 
     m_prgm_flow_jump_on_intr    PRGM_FLOW_EVENT, PRGM_FLOW_EVENT_BIT, 6, TEMP_REG_1, IDLE, task_manager, sample_transfer, iep, main_loop, reset
 
@@ -218,8 +219,7 @@ START:
 reset:
 ; reset iep1 timer
     m_set_iep_global_cfg_reg   1, TEMP_REG_1, 0x20
-; Reset Sample Transfer
-    m_pru_ipc_init   R0.b0
+    m_pru_ipc_init      R0.b0, R29, CONFIG_PRU_IPC0_CONFIG_MEM_OFFSET ; Reset Sample Transfer
 
 TM_IEP1_TASK:   .asmfunc
     m_set_iep_cmp_status_reg    1, TEMP_REG_1, 0x0f       ; clear cmp0, cmp1, cmp2 and cmp3 events

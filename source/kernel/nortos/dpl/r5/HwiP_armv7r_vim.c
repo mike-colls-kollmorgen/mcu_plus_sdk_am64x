@@ -34,6 +34,8 @@
 #include <kernel/nortos/dpl/r5/HwiP_armv7r_vim.h>
 #include <drivers/hw_include/csl_types.h>
 
+static volatile uint32_t gdummy;
+
 typedef struct HwiP_Struct_s {
 
     uint32_t intNum;
@@ -244,10 +246,8 @@ void HWI_SECTION HwiP_init()
 
     /* ACK and clear any pending request */
     {
-        uint32_t dummy;
-
-        dummy = HwiP_getIRQVecAddr();
-        dummy = HwiP_getFIQVecAddr();
+        gdummy = HwiP_getIRQVecAddr();
+        gdummy = HwiP_getFIQVecAddr();
         HwiP_ackIRQ(0);
         HwiP_ackFIQ(0);
     }
@@ -265,11 +265,10 @@ void HWI_SECTION HwiP_init()
     /* HwiP_enable(); */
 }
 
+uint32_t HwiP_getCPSR();
 
 uint32_t HWI_SECTION HwiP_inISR(void)
 {
-    uint32_t HwiP_getCPSR();
-
     uint32_t mode = (HwiP_getCPSR() & 0x1F);
 
     return (uint32_t)(mode != ARMV7R_SYSTEM_MODE);

@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_PSIL_H
 #define RM_TISCI_PSIL_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Pairs a PSI-L source thread to a destination thread
@@ -276,6 +282,11 @@ struct tisci_msg_rm_psil_write_req {
 struct tisci_msg_rm_psil_write_resp {
     struct tisci_header hdr;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_PSIL_H */
 

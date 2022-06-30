@@ -64,6 +64,9 @@ hotmenu StartUp()
     //CPSW SGMII config gel
     GEL_LoadGel("$(GEL_file_dir)//cpsw_sgmii_diag.gel");
 
+    //CPSW EST gel
+    GEL_LoadGel("$(GEL_file_dir)//cpsw_est_config.gel");
+
     GEL_TextOut("--->>> CPSW Gel Load DONE! <<<---\n");
 }
 

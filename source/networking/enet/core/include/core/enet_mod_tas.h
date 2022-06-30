@@ -63,21 +63,26 @@ extern "C" {
 /* ========================================================================== */
 
 /*! \brief Helper macro to create IOCTL commands for TAS module. */
-#define ENET_TAS_PUBLIC_IOCTL(x)             (ENET_IOCTL_TYPE_PUBLIC |   \
-                                                   ENET_IOCTL_TAS_BASE | \
-                                                   ENET_IOCTL_MIN(x))
+#define ENET_TAS_PUBLIC_IOCTL(x)             (ENET_IOCTL_TYPE_PUBLIC | \
+                                              ENET_IOCTL_TAS_BASE |    \
+                                              ENET_IOCTL_MIN(x))
+
+/*! \brief Helper macro to create a gate mask. */
+#define ENET_TAS_GATE_MASK(tc7, tc6, tc5, tc4, tc3, tc2, tc1, tc0)               \
+                                            (((((tc7) != 0U) ? 1U : 0U) << 7U) | \
+                                             ((((tc6) != 0U) ? 1U : 0U) << 6U) | \
+                                             ((((tc5) != 0U) ? 1U : 0U) << 5U) | \
+                                             ((((tc4) != 0U) ? 1U : 0U) << 4U) | \
+                                             ((((tc3) != 0U) ? 1U : 0U) << 3U) | \
+                                             ((((tc2) != 0U) ? 1U : 0U) << 2U) | \
+                                             ((((tc1) != 0U) ? 1U : 0U) << 1U) | \
+                                             ((((tc0) != 0U) ? 1U : 0U) << 0U))
 
 /*! \brief Maximum number of gate command entries in each list. */
 #define ENET_TAS_MAX_CMD_LISTS               (16)
 
-/*! \brief Maximum number of transmit queues supported by implementation. */
+/*! \brief Maximum number of transmit queues. */
 #define ENET_TAS_MAX_NUM_QUEUES              (8)
-
-/*! \brief Minimum cycle time supported by implementation (in ns). */
-#define ENET_TAS_MIN_CYCLE_TIME_NS           (1000000)
-
-/*! \brief Minimum TAS window duration supported by implementation (in ns). */
-#define ENET_TAS_MIN_WINDOW_DURATION_NS      (10000)
 
 /* ========================================================================== */
 /*                         Structures and Enums                               */
@@ -92,7 +97,7 @@ typedef enum EnetTas_Ioctl_e
      * \brief Get the hardware version of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: None
+     * -  inArgs: #EnetTas_GenericInArgs
      * - outArgs: #Enet_Version
      *
      * Type: Synchronous.
@@ -103,7 +108,7 @@ typedef enum EnetTas_Ioctl_e
      * \brief Set the admin list parameters of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_SetAdminListInArgs
+     * -  inArgs: #EnetTas_SetAdminListInArgs
      * - outArgs: None
      *
      * Type: Asynchronous.
@@ -114,22 +119,23 @@ typedef enum EnetTas_Ioctl_e
      * \brief Get the status of the operational list update.
      *
      * This IOCTL should be called after #ENET_TAS_IOCTL_SET_ADMIN_LIST
-     * to verify Admin list to operational list copy at specified time.
-     * This IOCTL should be called until #TAS_OPER_LIST_UPDATED received as output
+     * to verify admin list to operational list copy at specified time.
+     * This IOCTL should be called until #ENET_TAS_OPER_LIST_UPDATED received
+     * as output.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_GenericInArgs
-     * - outArgs: EnetTas_OperStatus
+     * -  inArgs: #EnetTas_GenericInArgs
+     * - outArgs: #EnetTas_OperStatus
      *
      * Type: Synchronous.
      */
     ENET_TAS_IOCTL_GET_OPER_LIST_STATUS = ENET_TAS_PUBLIC_IOCTL(2U),
 
     /*!
-     * \brief Set the State of the TAS module.
+     * \brief Set the state of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_SetStateInArgs
+     * -  inArgs: #EnetTas_SetStateInArgs
      * - outArgs: None
      *
      * Type: Asynchronous.
@@ -137,11 +143,11 @@ typedef enum EnetTas_Ioctl_e
     ENET_TAS_IOCTL_SET_STATE = ENET_TAS_PUBLIC_IOCTL(3U),
 
     /*!
-     * \brief Get the State of the TAS module.
+     * \brief Get the state of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_GenericInArgs
-     * - outArgs: EnetTas_TasState
+     * -  inArgs: #EnetTas_GenericInArgs
+     * - outArgs: #EnetTas_TasState
      *
      * Type: Synchronous.
      */
@@ -151,8 +157,8 @@ typedef enum EnetTas_Ioctl_e
      * \brief Get the admin list parameters of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_GenericInArgs
-     * - outArgs: EnetTas_ControlList
+     * -  inArgs: #EnetTas_GenericInArgs
+     * - outArgs: #EnetTas_ControlList
      *
      * Type: Synchronous.
      */
@@ -162,19 +168,19 @@ typedef enum EnetTas_Ioctl_e
      * \brief Get the operational list parameters of the TAS module.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_GenericInArgs
-     * - outArgs: EnetTas_ControlList
+     * -  inArgs: #EnetTas_GenericInArgs
+     * - outArgs: #EnetTas_ControlList
      *
      * Type: Synchronous.
      */
     ENET_TAS_IOCTL_GET_OPER_LIST = ENET_TAS_PUBLIC_IOCTL(6U),
 
     /*!
-     * \brief Get the TAS config change status parameters
+     * \brief Get the TAS config change status parameters.
      *
      * IOCTL parameters:
-     * -  inArgs: EnetTas_GenericInArgs
-     * - outArgs: EnetTas_ConfigStatus
+     * -  inArgs: #EnetTas_GenericInArgs
+     * - outArgs: #EnetTas_ConfigStatus
      *
      * Type: Synchronous.
      */
@@ -191,15 +197,15 @@ typedef struct EnetTas_GenericInArgs_s
 } EnetTas_GenericInArgs;
 
 /*!
- * \brief ICSSG TAS state types.
+ * \brief TAS state types.
  */
 typedef enum EnetTas_OperStatus_s
 {
     /*! Operational list is not yet updated. */
-    TAS_OPER_LIST_NOT_YET_UPDATED = 0,
+    ENET_TAS_OPER_LIST_NOT_YET_UPDATED = 0,
 
     /*! Operational list is updated. */
-    TAS_OPER_LIST_UPDATED = 1,
+    ENET_TAS_OPER_LIST_UPDATED = 1,
 } EnetTas_OperStatus;
 
 /*!
@@ -208,13 +214,13 @@ typedef enum EnetTas_OperStatus_s
 typedef enum EnetTas_TasState_s
 {
     /*! Idle. */
-    TAS_DISABLE = 0,
+    ENET_TAS_DISABLE = 0,
 
     /*! Enable TAS. */
-    TAS_ENABLE = 1,
+    ENET_TAS_ENABLE = 1,
 
     /*! Reset the state machine. */
-    TAS_RESET = 2,
+    ENET_TAS_RESET = 2,
 } EnetTas_TasState;
 
 /*!
@@ -222,10 +228,10 @@ typedef enum EnetTas_TasState_s
  */
 typedef struct EnetTas_GateCmdEntry_s
 {
-    /*! 32-bit Time interval for the gate command. */
+    /*! 32-bit time interval for the gate command. */
     uint32_t timeInterval;
 
-    /*! 8-bit Mask to signify which gate will be open. One bit for each gate. */
+    /*! 8-bit mask to signify which gate will be open. One bit for each gate. */
     uint8_t gateStateMask;
 } EnetTas_GateCmdEntry;
 
@@ -234,6 +240,7 @@ typedef struct EnetTas_GateCmdEntry_s
  */
 typedef struct EnetTas_MaxSDUTable_s
 {
+    /*! Maximum service data unit (SDU). One per queue. */
     uint16_t maxSDU[ENET_TAS_MAX_NUM_QUEUES];
 } EnetTas_MaxSDUTable;
 
@@ -256,7 +263,7 @@ typedef struct EnetTas_ControlList_s
     /*! Length of the list or number of entries. */
     uint8_t listLength;
 
-    /*! See IcssgTas_maxSDUTable */
+    /*! See \ref EnetTas_MaxSDUTable. */
     EnetTas_MaxSDUTable sduTable;
 } EnetTas_ControlList;
 

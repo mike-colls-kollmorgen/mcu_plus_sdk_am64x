@@ -58,26 +58,6 @@ extern "C" {
  */
 #define ENET_MEM_LARGE_POOL_PKT_SIZE        ENET_UTILS_ALIGN(1536U, ENET_UTILS_CACHELINE_SIZE)
 
-#if defined(SOC_AWR294X)
-#define ENET_MEM_NUM_TX_PKTS                (64U)
-#define ENET_MEM_NUM_RX_PKTS                (128U)
-#else
-
-#define ENET_MEM_NUM_TX_PKTS   (16U)
-#define ENET_MEM_NUM_RX_PKTS   (32U)
-#endif
-
-#define ENET_MEM_LARGE_POOL_PACKET_NUM                             \
-    ((ENET_MEM_NUM_RX_PKTS * ENET_CFG_RX_FLOWS_NUM) + \
-     (ENET_MEM_NUM_TX_PKTS * ENET_CFG_TX_CHANNELS_NUM))
-
-#define ENET_MEM_NUM_DESCS ((ENET_MEM_NUM_TX_PKTS * ENET_CFG_TX_CHANNELS_NUM) + \
-                            (ENET_MEM_NUM_RX_PKTS * ENET_CFG_RX_FLOWS_NUM))
-
-
-#define ENET_MEM_NUM_RINGS (ENET_MEM_NUM_RINGS_TYPES * \
-                                    (ENET_CFG_TX_CHANNELS_NUM + ENET_CFG_RX_FLOWS_NUM))
-
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */

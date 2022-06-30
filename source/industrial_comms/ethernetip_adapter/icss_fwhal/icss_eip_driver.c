@@ -83,11 +83,10 @@ uint8_t manufacturerIdentity[] = {0xC4, 0xED, 0xBA};
 /**
  *  @brief  Initialization routine for Ethernet/IP driver functions
  *
- *          This API does the following functionalities
- *              Register the Real Time Rx Call back
- *              Enable Storm prevention
+ *          This API does the following functionalities:
+ *              Loads the firmware on PRU0 and PRU1 cores
  *              Call DLR init API
- *              Call PTP init API
+ *              Call TimeSync(PTP) init API
  *
  *  @param  icssEipHandle [in] EIP handle
  *

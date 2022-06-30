@@ -36,6 +36,12 @@
 #ifndef REG_LPDDR4_DATA_SLICE_1_MACROS_H_
 #define REG_LPDDR4_DATA_SLICE_1_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #define LPDDR4__DENALI_PHY_256_READ_MASK                             0x000F07FFU
 #define LPDDR4__DENALI_PHY_256_WRITE_MASK                            0x000F07FFU
 #define LPDDR4__DENALI_PHY_256__PHY_CLK_WR_BYPASS_SLAVE_DELAY_1_MASK 0x000007FFU
@@ -2395,6 +2401,11 @@
 #define LPDDR4__DENALI_PHY_395__PHY_DQS_FFE_1_WIDTH                           2U
 #define LPDDR4__PHY_DQS_FFE_1__REG DENALI_PHY_395
 #define LPDDR4__PHY_DQS_FFE_1__FLD LPDDR4__DENALI_PHY_395__PHY_DQS_FFE_1
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* REG_LPDDR4_DATA_SLICE_1_MACROS_H_ */
 

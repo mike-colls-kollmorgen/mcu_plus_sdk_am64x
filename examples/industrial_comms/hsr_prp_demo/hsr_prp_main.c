@@ -769,75 +769,62 @@ void taskLedBlink(void *args)
 
     do
     {
-        if(!timeSyncHandle->timeSyncConfig.isMaster)
+        dutInSync = hsrprp_AppGPTPSynchronized();
+
+        if((TRUE == dutInSync) && (deviceInSync == 0))
         {
-            dutInSync = hsrprp_AppGPTPSynchronized();
+            deviceInSync = 1;
+        }
 
-            if((TRUE == dutInSync) && (deviceInSync == 0))
+        if((deviceInSync == 1) && (FALSE == dutInSync))
+        {
+            ptpError = 1;
+        }
+
+        if(dutInSync)
+        {
+            if(ptpError)
             {
-                deviceInSync = 1;
-            }
-
-            if((deviceInSync == 1) && (FALSE == dutInSync))
-            {
-                ptpError = 1;
-            }
-
-            if(dutInSync)
-            {
-                if(ptpError)
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(1000));
-                }
-
-                else
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(1000));
-                }
-            }
-
-            else if(timeSyncHandle->tsRunTimeVar->stateMachine &
-                    TS_STATE_MACHINE_FIRST_ADJUSTMENT_DONE)
-            {
-                if(ptpError)
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                }
-
-                else
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                }
-
+                ClockP_usleep(ClockP_ticksToUsec(1000));
             }
 
             else
             {
-                if(ptpError)
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(800));
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                }
+                ClockP_usleep(ClockP_ticksToUsec(1000));
+            }
+        }
 
-                else
-                {
-                    ClockP_usleep(ClockP_ticksToUsec(800));
-                    ClockP_usleep(ClockP_ticksToUsec(200));
-                }
+        else if(timeSyncHandle->tsRunTimeVar->stateMachine &
+                TS_STATE_MACHINE_FIRST_ADJUSTMENT_DONE)
+        {
+            if(ptpError)
+            {
+                ClockP_usleep(ClockP_ticksToUsec(200));
+                ClockP_usleep(ClockP_ticksToUsec(200));
+            }
+
+            else
+            {
+                ClockP_usleep(ClockP_ticksToUsec(200));
+                ClockP_usleep(ClockP_ticksToUsec(200));
             }
 
         }
 
         else
         {
-            deviceInSync = 0;
-            dutInSync = 0;
-            ClockP_usleep(ClockP_ticksToUsec(200));
-            ClockP_usleep(ClockP_ticksToUsec(800));
-        }
+            if(ptpError)
+            {
+                ClockP_usleep(ClockP_ticksToUsec(800));
+                ClockP_usleep(ClockP_ticksToUsec(200));
+            }
 
+            else
+            {
+                ClockP_usleep(ClockP_ticksToUsec(800));
+                ClockP_usleep(ClockP_ticksToUsec(200));
+            }
+        }
     }
     while(1);
 
@@ -1211,7 +1198,6 @@ int8_t hsrprp_initICSSPtpHandle(TimeSync_ParamsHandle_t timeSyncHandle,
     timeSyncHandle->timeSyncConfig.timeSyncSyncLossCallBackfn = (TimeSync_SyncLossCallBack_t)hsrprp_syncLossCallback;
 
     /*Configure Master params*/
-    timeSyncHandle->timeSyncConfig.isMaster = 0;
     timeSyncHandle->timeSyncConfig.masterParams.priority1 = TIMESYNC_DEFAULT_PRIO_1;
     timeSyncHandle->timeSyncConfig.masterParams.priority2 = TIMESYNC_DEFAULT_PRIO_2;
     timeSyncHandle->timeSyncConfig.masterParams.clockAccuracy = TIMESYNC_DEFAULT_CLOCK_ACCURACY; /*greater than 10s */

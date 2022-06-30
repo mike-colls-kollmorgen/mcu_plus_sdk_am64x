@@ -1,8 +1,8 @@
 /**
  * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
  * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
- * @cliArgs --device "AM64x_beta" --package "ALV" --part "Default" --context "r5fss0-0" --product "MCU_PLUS_SDK_AM64x@08.02.00"
- * @versions {"tool":"1.11.0+2225"}
+ * @cliArgs --device "AM64x_beta" --package "ALV" --part "Default" --context "r5fss0-0" --product "MCU_PLUS_SDK_AM64x@08.03.00"
+ * @versions {"tool":"1.12.0+2406"}
  */
 
 /**
@@ -79,16 +79,18 @@ uart1.rxTrigLvl               = "1";
 uart1.useMcuDomainPeripherals = true;
 uart1.MCU_UART.$assign        = "MCU_USART0";
 
-profinet1.$name                       = "CONFIG_PROFINET0";
-profinet1.phyToMacInterfaceMode       = "RGMII";
-profinet1.icss_emac[0].$name          = "CONFIG_ICSS_EMAC0";
-profinet1.icss_emac[0].instance       = scripting.forceWrite("ICSSG1");
-profinet1.icss_emac[0].mode           = scripting.forceWrite("SWITCH");
-profinet1.icss_emac[0].phyAddr0       = scripting.forceWrite(15);
-profinet1.icss_emac[0].learningEnable = true;
-profinet1.ethphy1[0].$name            = "CONFIG_ETHPHY0";
-profinet1.ethphy2[0].$name            = "CONFIG_ETHPHY1";
-profinet1.PRU_ICSSG1_RGMII1.$assign   = "PRU_ICSSG1_RGMII1";
+profinet1.$name                         = "CONFIG_PROFINET0";
+profinet1.phyToMacInterfaceMode         = "RGMII";
+profinet1.icss_emac[0].$name            = "CONFIG_ICSS_EMAC0";
+profinet1.icss_emac[0].mode             = scripting.forceWrite("SWITCH");
+profinet1.icss_emac[0].phyAddr0         = scripting.forceWrite(15);
+profinet1.icss_emac[0].learningEnable   = true;
+profinet1.icss_emac[0].linkTaskPriority = 29;
+profinet1.icss_emac[0].rxTaskPriority   = 28;
+profinet1.icss_emac[0].txTaskPriority   = 28;
+profinet1.ethphy1[0].$name              = "CONFIG_ETHPHY0";
+profinet1.ethphy2[0].$name              = "CONFIG_ETHPHY1";
+profinet1.PRU_ICSSG1_RGMII1.$assign     = "PRU_ICSSG1_RGMII1";
 
 profinet1.icss = pruicss1;
 pruicss1.$name = "CONFIG_PRU_ICSS1";

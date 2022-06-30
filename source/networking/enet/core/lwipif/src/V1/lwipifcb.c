@@ -48,10 +48,8 @@
 #include <networking/enet/utils/include/enet_apputils.h>
 #include <networking/enet/utils/include/enet_appmemutils.h>
 #include <networking/enet/utils/include/enet_appboardutils.h>
-#include <networking/enet/utils/include/enet_mcm.h>
 #include <networking/enet/utils/include/enet_appsoc.h>
 #include <networking/enet/utils/include/enet_apprm.h>
-
 
 #if (ENET_ENABLE_PER_ICSSG == 1)
 #include <networking/enet/core/include/per/icssg.h>
@@ -68,17 +66,6 @@
 #include <networking/enet/core/lwipif/inc/lwip2lwipif.h>
 #include <networking/enet/core/lwipif/inc/lwipif2enet_AppIf.h>
 
-
-typedef struct
-{
-    EnetMcm_CmdIf hMcmCmdIf[ENET_TYPE_NUM];
-    Udma_DrvHandle hUdmaDrv;
-    Enet_Type enetType;
-    uint32_t instId;
-    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
-    uint8_t numMacPorts;
-} LwipIfCb_AppObj;
-
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
@@ -90,131 +77,41 @@ typedef struct
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-static LwipIfCb_AppObj gLwipIfCbObj =
-{
-    .hMcmCmdIf =
-    {
-        [ENET_CPSW_3G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_ICSSG_DUALMAC] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_ICSSG_SWITCH] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_GMAC_3G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_CPSW_2G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_CPSW_3G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_CPSW_5G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-        [ENET_CPSW_9G] = {.hMboxCmd = NULL, .hMboxResponse = NULL},
-    },
-};
-
-
 /* ========================================================================== */
 /*                            Function Declaration                            */
 /* ========================================================================== */
 
 
-static int32_t LwipApp_init(Enet_Type enetType)
-{
-    int32_t status = ENET_SOK;
-    EnetMcm_InitConfig enetMcmCfg;
-    Cpsw_Cfg cpswCfg;
-#if (ENET_ENABLE_PER_ICSSG == 1)
-    Icssg_Cfg icssgCfg;
-#endif
-    EnetRm_ResCfg *resCfg = &cpswCfg.resCfg;
-    EnetUdma_Cfg dmaCfg;
 
-    EnetApp_getEnetInstInfo(&gLwipIfCbObj.enetType,
-                            &gLwipIfCbObj.instId,
-                            gLwipIfCbObj.macPortList,
-                            &gLwipIfCbObj.numMacPorts);
-
-    EnetAppUtils_assert(gLwipIfCbObj.enetType == enetType);
-
-    /* Open UDMA */
-    gLwipIfCbObj.hUdmaDrv = EnetAppUtils_udmaOpen(gLwipIfCbObj.enetType, NULL);
-    EnetAppUtils_assert(NULL != gLwipIfCbObj.hUdmaDrv);
-    dmaCfg.rxChInitPrms.dmaPriority = UDMA_DEFAULT_RX_CH_DMA_PRIORITY;
-    dmaCfg.hUdmaDrv = gLwipIfCbObj.hUdmaDrv;
-
-#if (ENET_ENABLE_PER_CPSW == 1)
-    /* Set configuration parameters */
-    if (Enet_isCpswFamily(gLwipIfCbObj.enetType))
-    {
-        cpswCfg.dmaCfg = (void *)&dmaCfg;
-        Enet_initCfg(gLwipIfCbObj.enetType, gLwipIfCbObj.instId, &cpswCfg, sizeof(cpswCfg));
-        EnetApp_getCpswInitCfg(gLwipIfCbObj.enetType, gLwipIfCbObj.instId, &cpswCfg);
-
-        enetMcmCfg.perCfg = &cpswCfg;
-        resCfg = &cpswCfg.resCfg;
-    }
-#endif
-
-#if (ENET_ENABLE_PER_ICSSG == 1)
-        Enet_initCfg(gLwipIfCbObj.enetType, gLwipIfCbObj.instId, &icssgCfg, sizeof(icssgCfg));
-
-        /* Currently we only support one ICSSG port in NIMU */
-        EnetAppUtils_assert(gLwipIfCbObj.numMacPorts == 1U);
-
-        resCfg = &icssgCfg.resCfg;
-        icssgCfg.dmaCfg = (void *)&dmaCfg;
-
-        enetMcmCfg.perCfg = &icssgCfg;
-#endif
-
-    EnetAppUtils_assert(NULL != enetMcmCfg.perCfg);
-    EnetAppUtils_initResourceConfig(gLwipIfCbObj.enetType, EnetSoc_getCoreId(), resCfg);
-
-    enetMcmCfg.enetType           = gLwipIfCbObj.enetType;
-    enetMcmCfg.instId             = gLwipIfCbObj.instId;
-    enetMcmCfg.setPortLinkCfg     = EnetApp_initLinkArgs;
-    enetMcmCfg.numMacPorts        = gLwipIfCbObj.numMacPorts;
-    enetMcmCfg.periodicTaskPeriod = ENETPHY_FSM_TICK_PERIOD_MS; /* msecs */
-    enetMcmCfg.print              = EnetAppUtils_print;
-
-    memcpy(&enetMcmCfg.macPortList[0U], &gLwipIfCbObj.macPortList[0U], sizeof(enetMcmCfg.macPortList));
-    status = EnetMcm_init(&enetMcmCfg);
-
-    return status;
-}
 
 
 void LwipifEnetAppCb_getHandle(LwipifEnetAppIf_GetHandleInArgs *inArgs,
                                LwipifEnetAppIf_GetHandleOutArgs *outArgs)
 {
     int32_t status;
-    EnetMcm_HandleInfo handleInfo;
     EnetPer_AttachCoreOutArgs attachInfo;
     uint32_t coreId          = EnetSoc_getCoreId();
-    EnetMcm_CmdIf *pMcmCmdIf;
-
+    Enet_Type enetType;
+    uint32_t instId;
+    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
+    uint8_t numMacPorts = 0;
     EnetUdma_OpenRxFlowPrms enetRxFlowCfg;
     EnetUdma_OpenTxChPrms enetTxChCfg;
     bool useRingMon = false;
     bool useDfltFlow = ENETLWIP_USE_DEFAULT_FLOW;
+    EnetApp_HandleInfo handleInfo;
 
-    EnetApp_getEnetInstInfo(&gLwipIfCbObj.enetType,
-                            &gLwipIfCbObj.instId,
-                            gLwipIfCbObj.macPortList,
-                            &gLwipIfCbObj.numMacPorts);
-    pMcmCmdIf = &gLwipIfCbObj.hMcmCmdIf[gLwipIfCbObj.enetType];
-    if (pMcmCmdIf->hMboxCmd == NULL)
-    {
-        status = LwipApp_init(gLwipIfCbObj.enetType);
+    EnetApp_getEnetInstInfo(&enetType,
+                            &instId);
 
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("Failed to open ENET: %d\r\n", status);
-        }
-        EnetAppUtils_assert(status == ENET_SOK);
-        EnetMcm_getCmdIf(gLwipIfCbObj.enetType, pMcmCmdIf);
-    }
+    EnetApp_getEnetInstMacInfo(enetType, instId,
+                             macPortList, &numMacPorts);
 
-    EnetAppUtils_assert(pMcmCmdIf->hMboxCmd != NULL);
-    EnetAppUtils_assert(pMcmCmdIf->hMboxResponse != NULL);
-    EnetMcm_acquireHandleInfo(pMcmCmdIf, &handleInfo);
-    EnetMcm_coreAttach(pMcmCmdIf, coreId, &attachInfo);
+    EnetApp_acquireHandleInfo(enetType, instId, &handleInfo);
+    EnetApp_coreAttach(enetType,instId, coreId, &attachInfo);
 
     /* Confirm HW checksum offload is enabled as NIMU enables it by default */
-    if (Enet_isCpswFamily(gLwipIfCbObj.enetType))
+    if (Enet_isCpswFamily(enetType))
     {
         Enet_IoctlPrms prms;
         bool csumOffloadFlg;
@@ -233,13 +130,13 @@ void LwipifEnetAppCb_getHandle(LwipifEnetAppIf_GetHandleInArgs *inArgs,
 
     /* Open TX channel */
     EnetDma_initTxChParams(&enetTxChCfg);
-
+    EnetAppUtils_setCommonTxChPrms(&enetTxChCfg);
     enetTxChCfg.hUdmaDrv  = handleInfo.hUdmaDrv;
     enetTxChCfg.useProxy  = true;
     enetTxChCfg.numTxPkts = inArgs->txCfg.numPackets;
     enetTxChCfg.cbArg     = inArgs->txCfg.cbArg;
     enetTxChCfg.notifyCb  = inArgs->txCfg.notifyCb;
-    EnetAppUtils_setCommonTxChPrms(&enetTxChCfg);
+
 
     EnetAppUtils_openTxCh(handleInfo.hEnet,
                           attachInfo.coreKey,
@@ -249,6 +146,7 @@ void LwipifEnetAppCb_getHandle(LwipifEnetAppIf_GetHandleInArgs *inArgs,
                           &enetTxChCfg);
     /* Open RX Flow */
     EnetDma_initRxChParams(&enetRxFlowCfg);
+    EnetAppUtils_setCommonRxFlowPrms(&enetRxFlowCfg);
     enetRxFlowCfg.notifyCb  = inArgs->rxCfg.notifyCb;
     enetRxFlowCfg.numRxPkts = inArgs->rxCfg.numPackets;
     enetRxFlowCfg.cbArg     = inArgs->rxCfg.cbArg;
@@ -272,17 +170,15 @@ void LwipifEnetAppCb_getHandle(LwipifEnetAppIf_GetHandleInArgs *inArgs,
     pFqRingPrms->ringMonCfg.data1 = inArgs->rxCfg.numPackets;
 #endif
 
-    EnetAppUtils_setCommonRxFlowPrms(&enetRxFlowCfg);
-
 #if (ENET_ENABLE_PER_ICSSG == 1)
-    if(Enet_isIcssFamily(gLwipIfCbObj.enetType))
+    if(Enet_isIcssFamily(enetType))
     {
         enetRxFlowCfg.flowPrms.sizeThreshEn = 0U;
     }
 #endif
 
-    EnetAppUtils_openRxFlow(gLwipIfCbObj.enetType,
-                            gLwipIfCbObj.instId,
+    EnetAppUtils_openRxFlow(enetType,
+                            instId,
                             handleInfo.hEnet,
                             attachInfo.coreKey,
                             coreId,
@@ -315,14 +211,14 @@ void LwipifEnetAppCb_getHandle(LwipifEnetAppIf_GetHandleInArgs *inArgs,
 
 #if (ENET_ENABLE_PER_ICSSG == 1)
     /* Add port MAC entry in case of ICSSG dual MAC */
-    if (ENET_ICSSG_DUALMAC == gLwipIfCbObj.enetType)
+    if (ENET_ICSSG_DUALMAC == enetType)
     {
         Enet_IoctlPrms prms;
         IcssgMacPort_SetMacAddressInArgs inArgs;
 
         memset(&inArgs, 0, sizeof(inArgs));
         memcpy(&inArgs.macAddr[0U], &outArgs->rxInfo.macAddr[0U], sizeof(inArgs.macAddr));
-        inArgs.macPort = gLwipIfCbObj.macPortList[0U];
+        inArgs.macPort = macPortList[0U];
 
         ENET_IOCTL_SET_IN_ARGS(&prms, &inArgs);
         status = Enet_ioctl(handleInfo.hEnet, coreId, ICSSG_MACPORT_IOCTL_SET_MACADDR, &prms);
@@ -341,10 +237,11 @@ void LwipifEnetAppCb_releaseHandle(LwipifEnetAppIf_ReleaseHandleInfo *releaseInf
     EnetDma_PktQ fqPktInfoQ;
     EnetDma_PktQ cqPktInfoQ;
     bool useDfltFlow = ENETLWIP_USE_DEFAULT_FLOW;
-    EnetMcm_CmdIf *pMcmCmdIf = &gLwipIfCbObj.hMcmCmdIf[gLwipIfCbObj.enetType];
+    Enet_Type enetType;
+    uint32_t instId;
 
-    EnetAppUtils_assert(pMcmCmdIf->hMboxCmd != NULL);
-    EnetAppUtils_assert(pMcmCmdIf->hMboxResponse != NULL);
+    EnetApp_getEnetInstInfo(&enetType,
+                            &instId);
 
     /* Close TX channel */
     {
@@ -365,7 +262,7 @@ void LwipifEnetAppCb_releaseHandle(LwipifEnetAppIf_ReleaseHandleInfo *releaseInf
         EnetQueue_initQ(&fqPktInfoQ);
         EnetQueue_initQ(&cqPktInfoQ);
 
-        EnetAppUtils_closeRxFlow(gLwipIfCbObj.enetType,
+        EnetAppUtils_closeRxFlow(enetType,
                                  releaseInfo->hEnet,
                                  releaseInfo->coreKey,
                                  releaseInfo->coreId,
@@ -379,8 +276,8 @@ void LwipifEnetAppCb_releaseHandle(LwipifEnetAppIf_ReleaseHandleInfo *releaseInf
         releaseInfo->rxFreePktCb(releaseInfo->freePktCbArg, &fqPktInfoQ, &cqPktInfoQ);
     }
 
-    EnetMcm_coreDetach(pMcmCmdIf, releaseInfo->coreId, releaseInfo->coreKey);
-    EnetMcm_releaseHandleInfo(pMcmCmdIf);
+    EnetApp_coreDetach(enetType, instId, releaseInfo->coreId, releaseInfo->coreKey);
+    EnetApp_releaseHandleInfo(enetType, instId);
 }
 
 

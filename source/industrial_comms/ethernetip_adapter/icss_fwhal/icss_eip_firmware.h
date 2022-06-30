@@ -33,6 +33,12 @@
 #ifndef ICSS_EIP_FIRMWARE_H_
 #define ICSS_EIP_FIRMWARE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 ////**************************************************************************
 //                                                                           *
 //                                                                           *
@@ -109,5 +115,10 @@
 #define DEBUG_MC_FLT                        1
 #define FEATURE_MULTICAST_FILTER_SHIFT      26
 //*************************************************************************************
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_EIP_FIRMWARE_H_ */

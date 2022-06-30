@@ -42,6 +42,12 @@
 #ifndef CSLR_H
 #define CSLR_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <drivers/hw_include/tistdtypes.h>
 #include <drivers/hw_include/csl_utils.h>
 
@@ -555,5 +561,10 @@ static inline void CSL_REG8_FINS_RAW(volatile uint8_t * const p,
     CSL_REG8_WR_RAW(p, regVal);
     return;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSLR_H_ */

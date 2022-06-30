@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_SOC_H_
 #define BOOTLOADER_SOC_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #if defined (SOC_AM64X) || defined (SOC_AM243X)
 #include <drivers/bootloader/soc/am64x_am243x/bootloader_soc.h>
 #endif
@@ -44,6 +50,11 @@
 #endif
 #if defined (SOC_AM263X)
 #include <drivers/bootloader/soc/am263x/bootloader_soc.h>
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* BOOTLOADER_SOC_H_ */

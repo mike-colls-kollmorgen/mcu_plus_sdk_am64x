@@ -65,10 +65,10 @@
 
 #include <IOLM_SMI.h>
 #include <IOLM_Sitara_Version.h>
+#include "IOLM_Port_Utils.h"
 #include "IOLM_Phy.h"
 #include "IOLinkPort/IOLM_Port_Sitara_soc.h"
 #include "IOLinkPort/IOLM_Port_LEDTask.h"
-
 #include "IOLM_Port_smiExample.h"
 
 #define IOLM_MAIN_PRU_INSTANCE              (0)
@@ -80,62 +80,21 @@
 #define IOLM_MAIN_LOOP_TASK_SIZE            (0x2000U / IOLM_MAIN_TASK_SIZE_DIVIDER)
 #define IOLM_MAIN_LED_TASK_SIZE             (0x2000U / IOLM_MAIN_TASK_SIZE_DIVIDER)
 #define IOLM_EXAMPLE_TASK_SIZE              (0x2000U / IOLM_MAIN_TASK_SIZE_DIVIDER)
+
 static IOLM_MAIN_TASK_STACK_TYPE    IOLM_startupTaskStack_s[IOLM_MAIN_STARTUP_TASK_SIZE] \
-                                        __attribute__((aligned(32))) = { 0 };
+                                        __attribute__((aligned(32), section(".threadstack"))) = {0};
 static IOLM_MAIN_TASK_STACK_TYPE    IOLM_mainTaskStack_s[IOLM_MAIN_LOOP_TASK_SIZE] \
-                                        __attribute__((aligned(32))) = { 0 };
+                                        __attribute__((aligned(32), section(".threadstack"))) = {0};
 static IOLM_MAIN_TASK_STACK_TYPE    IOLM_ledTaskStack_s[IOLM_MAIN_LED_TASK_SIZE] \
-                                        __attribute__((aligned(32))) = { 0 };
+                                        __attribute__((aligned(32), section(".threadstack"))) = {0};
 static IOLM_MAIN_TASK_STACK_TYPE    IOLM_exampleTaskStack_s[IOLM_EXAMPLE_TASK_SIZE] \
-                                        __attribute__((aligned(32))) = { 0 };
+                                        __attribute__((aligned(32), section(".threadstack"))) = {0};
 
 static void* IOLM_pExampleTaskHandle_s;
 static void* PRU_IOL_pLedTaskHandle_s;
 static void* IOLM_pMainTaskHandle_s;
 
-const IOLM_SPhyGeneric portCfg[IOLM_PORT_COUNT] =
-{
-    {
-        .u8Port = 0,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 1,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 2,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 3,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 4,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 5,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-    {
-        .u8Port = 6,
-        .eType = IOLM_Phy_eType_SitaraPru,
-        IOLM_PHY_INTERFACE_SITARAPRU
-    },
-{
-       .u8Port = 7,
-       .eType = IOLM_Phy_eType_SitaraPru,
-       IOLM_PHY_INTERFACE_SITARAPRU
-    },
-};
+OSAL_SCHED_SSignalHandle_t* pSignal_g = NULL;
 
 /*!
  *  \brief
@@ -161,7 +120,7 @@ static void IOLM_MAIN_sysInit()
  */
 uint32_t IOLM_MAIN_boardInit()
 {
-    static const IOLM_SPhyGeneric* pPhys[IOLM_PORT_COUNT];
+    static const IOLM_SPhyGeneric*  pPhys[IOLM_PORT_COUNT];
     uint8_t     port;
     uint32_t    error = OSAL_eERR_NOERROR;
 
@@ -175,15 +134,13 @@ uint32_t IOLM_MAIN_boardInit()
     }
 
     /* Init lower levels */
-
     for (port = 0; port < IOLM_PORT_COUNT; port++)
     {
-        pPhys[port] = (IOLM_SPhyGeneric *) &portCfg[port];
+        pPhys[port]     = (IOLM_SPhyGeneric *) &IOLM_SOC_phyPortCfgPru_g[port];
     }
 
     IOLM_SOC_init();
     PRU_IOLM_Init(IOLM_MAIN_PRU_INSTANCE);
-    OSAL_SCHED_sleep(500);
     IOLM_Phy_Init(pPhys);
 
 laExit:
@@ -217,6 +174,18 @@ void IOLM_MAIN_exampleStart()
 
 /*!
  *  \brief
+ *  This callback function is called by the stack requires a mainloop run.
+ *  This is used in combination with operating systems
+ *
+ *  \return     void
+ */
+void IOLM_MAIN_cbMainLoopRequest(void)
+{
+    OSAL_postSignal(pSignal_g);
+}
+
+/*!
+ *  \brief
  *  Task for the main application loop.
  *
  *
@@ -226,6 +195,8 @@ void IOLM_MAIN_exampleStart()
 void OSAL_FUNC_NORETURN IOLM_MAIN_loop()
 {
     uint8_t portNumber;
+
+    pSignal_g = OSAL_createSignal("IOLM_mainLoopRequest");
 
     /* IO Link Master stack and example init */
     IOLM_EXMPL_init();
@@ -237,11 +208,10 @@ void OSAL_FUNC_NORETURN IOLM_MAIN_loop()
 
     /* Create a task for the IO-Link main execution */
     IOLM_MAIN_exampleStart();
-
     while (1)
     {
         IOLM_SMI_vRun();
-        OSAL_SCHED_yield();
+        OSAL_waitSignal(pSignal_g, 2);
     }
 }
 
@@ -321,6 +291,9 @@ int main(int argc, char* argv[])
 
     IOLM_MAIN_sysInit();
     OSAL_init();
+    OSAL_registerPrintOut(NULL, IOLM_Utils_logPrint);
+    
+    OSAL_printfSuppress(false);
 
     TaskP_Params_init(&startupTaskParams);
 

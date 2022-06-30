@@ -98,6 +98,11 @@ extern void PN_API_PDEV_init(void);
 extern uint32_t PN_API_PDEV_start(void);
 extern uint32_t PN_API_PDEV_run(void);
 extern uint32_t PN_API_PDEV_applyConfiguration(const PN_API_PDEV_SConfiguration_t *pConfiguration_p);
+extern uint32_t PN_API_PDEV_getVersionId(uint32_t bufferLength_p, char* pBuffer_p);
+extern uint32_t PN_API_PDEV_getMainRepositoryName(uint32_t bufferLength_p, char* pBuffer_p);
+extern uint32_t PN_API_PDEV_getSubrepositoriesInfo(uint32_t bufferLength_p, char* pBuffer_p, char* pDelimiterBuffer_p);
+extern uint32_t PN_API_PDEV_getVersion(uint32_t bufferLength_p, char* pBuffer_p);
+extern void print_dumpVersions();
 
 #ifdef  __cplusplus 
 } 

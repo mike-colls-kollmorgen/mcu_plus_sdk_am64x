@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -130,6 +130,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a286266f020b708b67c8fb5fd9171caae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55fe66b016170a98b58d8902ec3e4bcf"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html#a55fe66b016170a98b58d8902ec3e4bcf">cycleTimeNs</a></td></tr>
 <tr class="separator:a55fe66b016170a98b58d8902ec3e4bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06ec8114433103564d586ece74e7b9ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structIcssg__mdioLinkIntCfg.html">Icssg_mdioLinkIntCfg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html#a06ec8114433103564d586ece74e7b9ff">mdioLinkIntCfg</a></td></tr>
+<tr class="separator:a06ec8114433103564d586ece74e7b9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a870a1886128aa8d6d97dce47ce898626"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html#a870a1886128aa8d6d97dce47ce898626">disablePhyDriver</a></td></tr>
+<tr class="separator:a870a1886128aa8d6d97dce47ce898626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca78211d3e6c096dbe1b5072a3ddc86"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html#a8ca78211d3e6c096dbe1b5072a3ddc86">qosLevels</a></td></tr>
+<tr class="separator:a8ca78211d3e6c096dbe1b5072a3ddc86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28d3663e2729a547f0aab2ffbdcaa54c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html#a28d3663e2729a547f0aab2ffbdcaa54c">isPremQueEnable</a></td></tr>
+<tr class="separator:a28d3663e2729a547f0aab2ffbdcaa54c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="aebba1e67337203f9e7801dd0c4a47ccb"></a>
@@ -249,6 +257,67 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Cycle time in nanoseconds </p>
+
+</div>
+</div>
+<a id="a06ec8114433103564d586ece74e7b9ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06ec8114433103564d586ece74e7b9ff">&#9670;&nbsp;</a></span>mdioLinkIntCfg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structIcssg__mdioLinkIntCfg.html">Icssg_mdioLinkIntCfg</a> Icssg_Cfg::mdioLinkIntCfg</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Mdio link interrupt config </p>
+
+</div>
+</div>
+<a id="a870a1886128aa8d6d97dce47ce898626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a870a1886128aa8d6d97dce47ce898626">&#9670;&nbsp;</a></span>disablePhyDriver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Icssg_Cfg::disablePhyDriver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Disable Enet LLD PHY driver - Disables use on PHY driver inside the Enet LLD. All PHY functionality including PHY state machine is bypassed Application will use this mode if ethernet PHY is managed outside the Enet LLD Application is responsible for PHY management. Application can register with Enet LLD to get mdioLinkStateChangeCb callback. Application <em>must</em> use Enet LLD IOCTLs to access MDIO as MDIO ownership is still with Enet LLD and there should not be multiple masters for the MDIO peripheral </p>
+
+</div>
+</div>
+<a id="a8ca78211d3e6c096dbe1b5072a3ddc86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca78211d3e6c096dbe1b5072a3ddc86">&#9670;&nbsp;</a></span>qosLevels</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Icssg_Cfg::qosLevels</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Max number of QoS Level supported. Used to determine number of hostBufferPoolNum </p>
+
+</div>
+</div>
+<a id="a28d3663e2729a547f0aab2ffbdcaa54c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28d3663e2729a547f0aab2ffbdcaa54c">&#9670;&nbsp;</a></span>isPremQueEnable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Icssg_Cfg::isPremQueEnable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Whether premption Queue is enabled or not <br  />
+ </p>
 
 </div>
 </div>

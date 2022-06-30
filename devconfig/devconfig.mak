@@ -6,11 +6,25 @@ SIGNING_TOOL_PATH=$(MCU_PLUS_SDK_PATH)/tools/boot/signing
 
 # Path to the keys
 ROM_DEGENERATE_KEY:=$(SIGNING_TOOL_PATH)/rom_degenerateKey.pem
-CUST_MPK=$(SIGNING_TOOL_PATH)/custMpk_am64x_am243x.pem
-CUST_MEK=$(SIGNING_TOOL_PATH)/custMek_am64x_am243x.txt
+ifeq ($(DEVICE),am263x)
+    CUST_MPK=$(SIGNING_TOOL_PATH)/mcu_custMpk.pem
+else ifeq ($(DEVICE),am273x)
+    CUST_MPK=$(SIGNING_TOOL_PATH)/mcu_custMpk.pem
+else ifeq ($(DEVICE),awr294x)
+    CUST_MPK=$(SIGNING_TOOL_PATH)/mcu_custMpk.pem
+else
+    CUST_MPK=$(SIGNING_TOOL_PATH)/custMpk_am64x_am243x.pem
+    CUST_MEK=$(SIGNING_TOOL_PATH)/custMek_am64x_am243x.txt
+endif
 
-# Encryption option (yes/no)
+# Encryption option for application (yes/no)
 ENC_ENABLED?=no
+
+# Encryption option for SBL (yes/no)
+ENC_SBL_ENABLED?=yes
+
+# Debug option for HS (yes/no)
+DBG_ENABLED?=no
 
 # Generic macros to be used depending on the device type
 APP_SIGNING_KEY=

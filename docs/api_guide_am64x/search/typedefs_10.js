@@ -1,19 +1,7 @@
 var searchData=
 [
-  ['uart_5fcallbackfxn_17779',['UART_CallbackFxn',['../group__DRV__UART__MODULE.html#gaaf1b837ab338b999e5338652d2238987',1,'uart.h']]],
-  ['uart_5fdmaclosefxn_17780',['UART_dmaCloseFxn',['../group__UART__DMA.html#ga3249c58d1581df647070b5f7028cff87',1,'uart_dma.h']]],
-  ['uart_5fdmadisablechannelfxn_17781',['UART_dmaDisableChannelFxn',['../group__UART__DMA.html#ga1181735ceaaf48019120865627965c88',1,'uart_dma.h']]],
-  ['uart_5fdmahandle_17782',['UART_DmaHandle',['../group__UART__DMA.html#gad59cae375baf556ba18f06fd6f685a45',1,'uart_dma.h']]],
-  ['uart_5fdmaopenfxn_17783',['UART_dmaOpenFxn',['../group__UART__DMA.html#gac16ad3d034f7d6409de53dbc5da3df73',1,'uart_dma.h']]],
-  ['uart_5fdmatransferreadfxn_17784',['UART_dmaTransferReadFxn',['../group__UART__DMA.html#ga5bc0cca6eb05a670661116c8ac627970',1,'uart_dma.h']]],
-  ['uart_5fdmatransferwritefxn_17785',['UART_dmaTransferWriteFxn',['../group__UART__DMA.html#gaaf4ead01120025675a2fb5f23ebd41fe',1,'uart_dma.h']]],
-  ['uart_5fhandle_17786',['UART_Handle',['../group__DRV__UART__MODULE.html#ga1daace75c81c26cd9ec7be4ac73525f1',1,'uart.h']]],
-  ['udma_5fchhandle_17787',['Udma_ChHandle',['../group__DRV__UDMA__TYPE__MODULE.html#ga100aed129312041de5ea034b88bb57b9',1,'udma_types.h']]],
-  ['udma_5fdrvhandle_17788',['Udma_DrvHandle',['../group__DRV__UDMA__TYPE__MODULE.html#ga3aa612b1bab08e5dd1bf8037f3c268fe',1,'udma_types.h']]],
-  ['udma_5feventcallback_17789',['Udma_EventCallback',['../group__DRV__UDMA__EVENT__MODULE.html#ga7b1f151c1c05a0f36c1c90274a84c0ff',1,'udma_event.h']]],
-  ['udma_5feventhandle_17790',['Udma_EventHandle',['../group__DRV__UDMA__TYPE__MODULE.html#ga4afbabf47d8a2235bdb2b82ca3522a57',1,'udma_types.h']]],
-  ['udma_5fflowhandle_17791',['Udma_FlowHandle',['../group__DRV__UDMA__TYPE__MODULE.html#ga099fdefbeebeb13ae4c0fc4e1e9f3121',1,'udma_types.h']]],
-  ['udma_5fphytovirtfxn_17792',['Udma_PhyToVirtFxn',['../group__DRV__UDMA__API__MODULE.html#ga81ecf4b921defdc923531d805bdaa009',1,'udma.h']]],
-  ['udma_5fringhandle_17793',['Udma_RingHandle',['../group__DRV__UDMA__TYPE__MODULE.html#ga131c6bfbec0ea6d75fd5639ac788d97e',1,'udma_types.h']]],
-  ['udma_5fvirttophyfxn_17794',['Udma_VirtToPhyFxn',['../group__DRV__UDMA__API__MODULE.html#ga9f008d49699731eab60e49fa0bf07335',1,'udma.h']]]
+  ['taskp_5ffxnmain_18387',['TaskP_FxnMain',['../group__KERNEL__DPL__TASK.html#ga7524877e402484b63664b1c8eb48778d',1,'TaskP.h']]],
+  ['timesync_5fparamshandle_5ft_18388',['TimeSync_ParamsHandle_t',['../icss__timeSyncApi_8h.html#a91afc412cdef68f6aad3611cfea22dc2',1,'icss_timeSyncApi.h']]],
+  ['timesync_5fstackresetcallback_5ft_18389',['TimeSync_stackResetCallback_t',['../icss__timeSyncApi_8h.html#a37893687b02fc503c9e4c807ab7c70fa',1,'icss_timeSyncApi.h']]],
+  ['timesync_5fsynclosscallback_5ft_18390',['TimeSync_SyncLossCallBack_t',['../icss__timeSyncApi_8h.html#a03937c26648618344a47df6998dc6798',1,'icss_timeSyncApi.h']]]
 ];

@@ -34,6 +34,19 @@ var NAVTREE =
         [ "Public Licensed Packages", "releasenotes.html#releasenotes_opensource_license", null ]
       ] ],
       [ "Known Issues", "releasenotes.html#known_issues", null ],
+      [ "Release Version 1.04.10", "releasenotes.html#version_release10410", [
+        [ "Fixed Issues", "releasenotes.html#fixed_issues_release10410", null ]
+      ] ],
+      [ "Release Version 1.04.09", "releasenotes.html#version_release10409", [
+        [ "Fixed Issues", "releasenotes.html#fixed_issues_release10409", null ]
+      ] ],
+      [ "Release Version 1.04.08", "releasenotes.html#version_release10408", [
+        [ "Fixed Issues", "releasenotes.html#fixed_issues_release10408", null ]
+      ] ],
+      [ "Release Version 1.04.07", "releasenotes.html#version_release10407", [
+        [ "New Features", "releasenotes.html#new_features_release10407", null ],
+        [ "Fixed Issues", "releasenotes.html#fixed_issues_release10407", null ]
+      ] ],
       [ "Release Version 1.04.06", "releasenotes.html#version_release10406", [
         [ "New Features", "releasenotes.html#new_features_release10406", null ],
         [ "Fixed Issues", "releasenotes.html#fixed_issues_release10406", null ]
@@ -142,8 +155,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group___e_i___a_p_i___c_i_p___e_r_r_o_r___c_o_d_e_s_ga02294b9fe8c2e4bfb42848eb393dafc0.html#gga02294b9fe8c2e4bfb42848eb393dafc0a3f8f05fd3702d74c70884eb0eb8946c7",
-"struct_e_i_p___s_port_state_a694302771e6ac3364fa4666cefe3acad.html#a694302771e6ac3364fa4666cefe3acad"
+"group___e_i___a_p_i___c_i_p___e_r_r_o_r___c_o_d_e_s_ga02294b9fe8c2e4bfb42848eb393dafc0.html#gga02294b9fe8c2e4bfb42848eb393dafc0a3bfa38105ff960c10554ae6801403beb",
+"struct_e_i___a_p_p___p_e_r_m___s_cfg_data_adb9b0eae29e6f09b4bb8511c4672c085.html#adb9b0eae29e6f09b4bb8511c4672c085"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_PROTOCOL_H
 #define RM_TISCI_PROTOCOL_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  * The secondary_host parameter is valid for any RM TISCI message utilizing
  * the seconday host mechanic.
@@ -67,6 +73,11 @@
  * field.
  */
 #define TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST (0xFFu)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_PROTOCOL_H */
 

@@ -33,6 +33,12 @@
 #ifndef BOOTLOADER_PRIV_H_
 #define BOOTLOADER_PRIV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* Magic number and tokens for RPRC format */
 #define BOOTLOADER_RPRC_MAGIC_NUMBER   0x43525052
 #define BOOTLOADER_RPRC_RESOURCE       0
@@ -126,5 +132,10 @@ Bootloader_resMemSections* Bootloader_socGetSBLMem(void);
 
 uint32_t Bootloader_getX509CertLen(uint8_t *x509_cert_ptr);
 uint32_t Bootloader_getMsgLen(uint8_t *x509_cert_ptr, uint32_t x509_cert_size);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* BOOTLOADER_PRIV_H_ */

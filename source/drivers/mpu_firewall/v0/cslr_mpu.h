@@ -33,6 +33,12 @@
 #ifndef CSLR_MPU_H
 #define CSLR_MPU_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**************************************************************************\
 * Register Overlay Structure for prog_region
 \**************************************************************************/
@@ -342,5 +348,10 @@ typedef struct  {
 #define CSL_MPU_FAULT_CLEAR_FAULT_CLR_RESETVAL (0x00000000u)
 
 #define CSL_MPU_FAULT_CLEAR_RESETVAL     (0x00000000u)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

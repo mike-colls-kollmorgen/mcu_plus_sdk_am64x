@@ -38,6 +38,12 @@
 #ifndef RED_HSR_HANDLE_H_
 #define RED_HSR_HANDLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <kernel/dpl/ClockP.h>
 #include <kernel/dpl/TaskP.h>
 
@@ -84,5 +90,10 @@ typedef struct hsrPrp_Config_s
 } hsrPrp_Config;
 
 typedef struct hsrPrp_Config_s hsrPrpHandle;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_HSR_HANDLE_H_ */

@@ -1143,6 +1143,124 @@ void CSL_MDIO_setPollEnableMask(CSL_mdioHandle hMdioRegs,
  */
 uint32_t CSL_MDIO_getPollEnableMask(CSL_mdioHandle hMdioRegs);
 
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyRegReadAsyncTrigger
+ *
+ * \param   hMdioRegs Handle to MDIO module register overlay.
+ * \param   userGroup     User group to use
+ * \param   phyAddr  PHY Address.
+ * \param   regNum   Register Number to be read.
+ *
+ * \return  TRUE     Read is successful.
+ * \return  FALSE    Read is not acknowledged properly.
+ *
+ * =============================================================================
+ */
+bool  CSL_MDIO_phyRegReadAsyncTrigger(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum);
+
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyRegReadAsyncComplete
+ *
+ * \param   hMdioRegs Handle to MDIO module register overlay.
+ * \param   userGroup     User group to use
+ * \param   phyAddr  PHY Address.
+ * \param   regNum   Register Number to be read.
+ * \param   pData    Pointer where the read value shall be written.
+ *
+ * \return  TRUE     Read is successful.
+ * \return  FALSE    Read is not acknowledged properly.
+ *
+ * =============================================================================
+ */
+uint32_t  CSL_MDIO_phyRegReadAsyncComplete(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint16_t *pData);
+
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyRegReadAsyncTrigger
+ *
+ * \brief   This API triggers async write to a PHY register using MDIO.
+ *
+ * \param   hMdioRegs Handle to MDIO module register overlay.
+ * \param   userGroup     User group to use
+ * \param   phyAddr       PHY Address.
+ * \param   regNum        Register Number to be written.
+ * \param   wrVal         Value to be written.
+ *
+ * =============================================================================
+ */
+bool  CSL_MDIO_phyRegWriteAsyncTrigger(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint16_t wrVal);
+
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyRegWrite
+ *
+ * \brief   This API writes a PHY register using MDIO.
+ *
+ * \param   hMdioRegs Handle to MDIO module register overlay.
+ * \param   userGroup     User group to use
+ * \param   phyAddr       PHY Address.
+ * \param   regNum        Register Number to be written.
+ * \param   wrVal         Value to be written.
+ *
+ * =============================================================================
+ */
+uint32_t  CSL_MDIO_phyRegWriteAsyncComplete(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint32_t wrVal);
+
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyInitiateRegWriteC45
+ *
+ * \brief Initiate a non-blocking write transaction with PHY using Clause-45
+ *        frame. The user should call CSL_MDIO_isPhyRegAccessComplete() to query
+ *        the transaction status.
+ *
+ * \param hMdioRegs  Handle to MDIO module register overlay
+ * \param userGroup  User group to use
+ * \param phyAddr    PHY address
+ * \param mmdNum     MMD number
+ * \param regAddr    Register address
+ * \param wrVal      Value to be written
+ *
+ * \retval CSL_PASS   Register write has been initiated
+ * \retval CSL_EFAIL  MDIO is busy with previous transaction
+ *
+ * =============================================================================
+ */
+
+
+/** ============================================================================
+ *   @n@b CSL_MDIO_phyInitiateRegWriteC45
+ *
+ * \brief Initiate a non-blocking write transaction with PHY using Clause-45
+ *        frame. The user should call CSL_MDIO_isPhyRegAccessComplete() to query
+ *        the transaction status.
+ *
+ * \param hMdioRegs  Handle to MDIO module register overlay
+ * \param userGroup  User group to use
+ * \param phyAddr    PHY address
+ * \param mmdNum     MMD number
+ * \param regAddr    Register address
+ * \param wrVal      Value to be written
+ *
+ * \retval CSL_PASS   Register write has been initiated
+ * \retval CSL_EFAIL  MDIO is busy with previous transaction
+ *
+ * =============================================================================
+ */
+
+
 /**
 @}
 */

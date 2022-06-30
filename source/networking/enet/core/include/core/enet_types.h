@@ -167,7 +167,7 @@ extern "C" {
 /*! \brief Lowest packet priority. */
 #define ENET_PRI_MIN                          (0U)
 
-/*! \brief Lowest packet priority. */
+/*! \brief Highest packet priority. */
 #define ENET_PRI_MAX                          (ENET_PRI_NUM - 1U)
 
 /*! \brief Type of Service (ToS) priority. */

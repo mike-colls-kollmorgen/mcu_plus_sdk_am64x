@@ -269,6 +269,50 @@ const IOLM_PL_sPortConfig_t iolPinSetup_g[] =
  }
 };
 
+const IOLM_SPhyGeneric IOLM_SOC_phyPortCfgPru_g[IOLM_PORT_COUNT] =
+{
+    {
+        .u8Port = 0,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 1,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 2,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 3,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 4,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 5,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 6,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+    {
+        .u8Port = 7,
+        .eType = IOLM_Phy_eType_Pru,
+        IOLM_PHY_INTERFACE_SITARAPRU
+    },
+};
+
 void Board_initPruss(uint32_t pruSelect)
 {
     (void)pruSelect;

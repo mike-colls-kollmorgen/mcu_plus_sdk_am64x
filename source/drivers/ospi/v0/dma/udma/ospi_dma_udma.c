@@ -63,7 +63,7 @@ static int32_t OspiDma_udmaOpen(void* ospiDmaArgs)
 
     drvHandle   = udmaArgs->drvHandle;
     chHandle    = udmaArgs->chHandle;
-    trpdMem     = udmaArgs->trpdMem;
+    trpdMem     = (uint8_t *) udmaArgs->trpdMem;
     trpdMemSize = udmaArgs->trpdMemSize;
 
     /* Init channel parameters */
@@ -187,7 +187,7 @@ static int32_t OspiDma_udmaUpdateSubmitTR(void* ospiDmaArgs, void* dst, void* sr
     int32_t status = UDMA_SOK;
     OspiDma_UdmaArgs *udmaArgs = (OspiDma_UdmaArgs *)ospiDmaArgs;
     Udma_ChHandle chHandle = udmaArgs->chHandle;
-    uint8_t *trpdMem     = udmaArgs->trpdMem;
+    uint8_t *trpdMem     = (uint8_t *) udmaArgs->trpdMem;
     uint32_t trpdMemSize = udmaArgs->trpdMemSize;
     uint64_t pDesc;
     uint32_t trRespStatus;
@@ -236,7 +236,11 @@ static int32_t OspiDma_udmaUpdateSubmitTR(void* ospiDmaArgs, void* dst, void* sr
             /* Check TR response status */
             CacheP_inv(trpdMem, trpdMemSize, CacheP_TYPE_ALLD);
             trRespStatus = UdmaUtils_getTrpdTr15Response(trpdMem, 1U, 0U);
-            DebugP_assert(CSL_UDMAP_TR_RESPONSE_STATUS_COMPLETE == trRespStatus);
+            if(trRespStatus != CSL_UDMAP_TR_RESPONSE_STATUS_COMPLETE)
+            {
+                DebugP_log("TR Response failed for transfer : SRC = 0x%X, DST = 0x%X, SIZE = %u\r\n", (uint32_t)src, (uint32_t)dst, length);
+                DebugP_assert(FALSE);
+            }
             break;
         }
     }
@@ -264,10 +268,10 @@ static int32_t OspiDma_udmaCopy(void* ospiDmaArgs, void* dst, void* src, uint32_
         rmainder = length % OSPI_DMA_UDMA_XFER_SIZE;
         icnt[1] = (uint16_t)(quotient);
     }
-    
+
     icnt[2] = (uint16_t)1U;
     icnt[3] = (uint16_t)1U;
-    
+
     udmaStatus = OspiDma_udmaUpdateSubmitTR(ospiDmaArgs, dst, src, icnt);
 
     if(rmainder != 0)
@@ -278,7 +282,7 @@ static int32_t OspiDma_udmaCopy(void* ospiDmaArgs, void* dst, void* src, uint32_
         icnt[2] = (uint16_t)1U;
         icnt[3] = (uint16_t)1U;
 
-        udmaStatus = OspiDma_udmaUpdateSubmitTR(ospiDmaArgs, dst+length-rmainder, src+length-rmainder, icnt);
+        udmaStatus = OspiDma_udmaUpdateSubmitTR(ospiDmaArgs, ((uint8_t *)dst+(length-rmainder)), ((uint8_t *)src+(length-rmainder)), icnt);
     }
 
     if(udmaStatus == UDMA_SOK)

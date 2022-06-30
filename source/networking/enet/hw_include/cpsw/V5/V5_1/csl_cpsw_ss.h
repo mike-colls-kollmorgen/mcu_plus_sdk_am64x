@@ -688,7 +688,50 @@ static inline void CSL_CPSW_setWrIntPrescaler
               value); 
 }
 
- 
+/**
+ * \brief   Get TX interrupt status
+ *
+ * \param   hCpswSsRegs Pointer to CSL_Xge_cpsw_ss_sRegs structure
+ * \param   core       Core number
+ *
+ * \return  status for TX interrupt
+ **/
+static inline Uint32 CSL_CPSW_getTxIntStatus
+(
+    CSL_Xge_cpsw_ss_sRegs    *hCpswSsRegs,
+	Uint32                    core
+);/* for misra warnings*/
+static inline Uint32 CSL_CPSW_getTxIntStatus
+(
+    CSL_Xge_cpsw_ss_sRegs    *hCpswSsRegs,
+	Uint32                    core
+)
+{
+	return ((Uint32)hCpswSsRegs->CORE_INT_STAT[core].TX_STAT);
+}
+
+/**
+ * \brief   Get RX interrupt status
+ *
+ * \param   hCpswSsRegs Pointer to CSL_Xge_cpsw_ss_sRegs structure
+ * \param   core       Core number
+ *
+ * \return  status for RX interrupt
+ **/
+static inline Uint32 CSL_CPSW_getRxIntStatus
+(
+    CSL_Xge_cpsw_ss_sRegs    *hCpswSsRegs,
+	Uint32                    core
+);/* for misra warnings*/
+static inline Uint32 CSL_CPSW_getRxIntStatus
+(
+    CSL_Xge_cpsw_ss_sRegs    *hCpswSsRegs,
+	Uint32                    core
+)
+{
+	return ((Uint32)hCpswSsRegs->CORE_INT_STAT[core].RX_STAT);
+}
+
 #ifdef __cplusplus
 }
 #endif

@@ -720,6 +720,25 @@ int32_t Sciclient_rmPsilWrite(const struct tisci_msg_rm_psil_write_req *req,
 int32_t Sciclient_rmSetProxyCfg(const struct tisci_msg_rm_proxy_cfg_req *req,
                                 uint32_t timeout);
 
+/**
+ *  \brief Checks the output's control register to see if the output line has an
+ *        input line mapped to it.
+ *
+ *
+ *  \param  id             TISCI Device ID of the interrupt router. Some possible values are :
+ * 
+ *                         TISCI_DEV_CMP_EVENT_INTROUTER0
+ *                         TISCI_DEV_MAIN_GPIOMUX_INTROUTER0
+ *                         TISCI_DEV_WKUP_MCU_GPIOMUX_INTROUTER0
+ *                         TISCI_DEV_TIMESYNC_EVENT_ROUTER0
+ *
+ *  \param  outp           Output line of the interrupt router. Check TRM for number of output pins
+ *                         of the interrupt router
+ *
+ *  \return SystemP_SUCCESS on success, else failure
+ */
+int32_t Sciclient_rmIrOutpIsFree(uint16_t id, uint16_t outp);
+
 #ifdef __cplusplus
 }
 #endif

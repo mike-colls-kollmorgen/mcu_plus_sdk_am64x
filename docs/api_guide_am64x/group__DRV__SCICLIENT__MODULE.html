@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('group__DRV__SCICLIENT__MODULE.html',''
 <p>System Controller Interface (SCI) Client</p>
 <dl class="section user"><dt>IMPORTANT NOTE</dt><dd><b> The interfaces defined in this package are bound to change. Release notes/user guide list the additional limitation/restriction of this module/interfaces. </b> <br  />
  <b> Refer to top level user guide for detailed features, limitations and usage description. </b></dd></dl>
-<h2><a class="anchor" id="autotoc_md616"></a>
+<h2><a class="anchor" id="autotoc_md693"></a>
 Introduction to SCICLIENT</h2>
 <p>The SCIClient is an interface to the TI-SCI protocol for RTOS and non-OS based applications. It exposes the core message details, valid module/clock IDs to the higher level software and abstracts the communication with the firmware based on the TI-SCI protocol. These APIs can be called by power, resource and security RTOS drivers or any other non-OS or RTOS based higher level software to be able to communicate with DMSC for its services. The higher level software is expected to populate the necessary message core parameters. The SCIClient would wrap the core message with the necessary protocol header and forward this to the DMSC. The SCIClient relies on the CSL-FL layer to program and interact with the Secure Proxy Threads. The SCIClient's goal is to ensure there is no duplication of the interface to the DMSC from different software components which need to interact with the DMSC or other System Control Entities in future devices. The Sciclient contains</p><ul>
 <li><a class="el" href="group__SCICLIENT__HAL.html">System Controller Interface (SCI) Client HAL</a></li>
@@ -122,7 +122,7 @@ Introduction to SCICLIENT</h2>
 <li><a class="el" href="group__SCICLIENT__FMW__PROCBOOT__IF.html">Sciclient Processor Boot API Interface</a></li>
 <li><a class="el" href="group__SCICLIENT__ROM__HAL.html">Sciclient Interface to DMSC ROM</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md617"></a>
+<h2><a class="anchor" id="autotoc_md694"></a>
 Introduction to DMSC</h2>
 <p>Traditional Texas Instruments SoCs have implemented system control functions such as power management within operating systems on each of the processing units (ARM/DSP). However, such a traditional approach has had tremendous challenges to ensure system stability. Few of the challenges faced include:</p>
 <ul>
@@ -132,10 +132,10 @@ Introduction to DMSC</h2>
 </ul>
 <p>Device Management and Security control (DMSC) attempts to resolve these issues by being a consistent component of Keystone 3 SoC architecture performing the role of a centralized SoC power, security and device management controller.</p>
 <p>In effect, this is a microcontroller and runs a safety and security certified firmware that provides services to the rest of the OSes/Software running on various other processors on the SoC.</p>
-<h3><a class="anchor" id="autotoc_md618"></a>
+<h3><a class="anchor" id="autotoc_md695"></a>
 DMSC Power Management</h3>
 <p>DMSC controls the power management of the device, hence is responsible for bringing the device out of reset, enforce clock and reset rules. DMSC power management functions are critical to bring device to low power modes, for example DeepSleep, and sense wake-up events to bring device back online to active state.</p>
-<h3><a class="anchor" id="autotoc_md619"></a>
+<h3><a class="anchor" id="autotoc_md696"></a>
 DMSC Security Management</h3>
 <p>The DMSC firmware Security Management manages SoC central security resources. The security subsystem provides APIs to other software entities to avail these features in a controlled and secure way. The security management firmware is subdivided into modules listed below:</p><ul>
 <li>Firewall management</li>
@@ -146,7 +146,7 @@ DMSC Security Management</h3>
 <li>Secure keys management</li>
 <li>Secure debug</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md620"></a>
+<h3><a class="anchor" id="autotoc_md697"></a>
 DMSC Resource Management</h3>
 <p>The DMSC firmware Resource Management (RM) (sub) system manages SoC shared resources. RM manages access and configuration of shared resources amongst SoC processing entities. RM provides a set of interfaces over which SoC processing entities can allocate and free access to shared resources.</p>
 <p>The resource management firmware is subdivided into modules listed below:</p><ul>
@@ -157,7 +157,7 @@ DMSC Resource Management</h3>
 <li>PSI-L management</li>
 <li>Non-secure proxy management</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md621"></a>
+<h3><a class="anchor" id="autotoc_md698"></a>
 Communication with DMSC</h3>
 <p>DMSC is a "black box" with respect to the other processing entities (ARM/DSP) on the SoC. Communication with DMSC occurs over a messaging protocol called the Texas Instruments System Control Interface (TI-SCI). TI-SCI is a predefined request-response protocol that provides access to the various services provided by DMSC.</p>
 <p>The actual messaging hardware block varies depending on SoC, but typical examples include "Proxy over message manager" and "Secure Proxy over Ring Accellerator". These communication mechanisms are standardized and secured by DMSC firmware prior to operation.</p>

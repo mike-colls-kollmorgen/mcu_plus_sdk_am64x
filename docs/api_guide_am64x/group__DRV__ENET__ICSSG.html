@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -106,6 +106,7 @@ $(document).ready(function(){initNavTree('group__DRV__ENET__ICSSG.html',''); ini
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#func-members">Functions</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
@@ -156,6 +157,11 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__FwPoolMem.html">Icssg_FwPoolMem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG buffer pool memories.  <a href="structIcssg__FwPoolMem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__MdioLinkStateChangeInfo.html">Icssg_MdioLinkStateChangeInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PHY link status change event information.  <a href="structIcssg__MdioLinkStateChangeInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__mdioLinkIntCfg.html">Icssg_mdioLinkIntCfg</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcssg__Cfg.html">Icssg_Cfg</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG peripheral configuration parameters.  <a href="structIcssg__Cfg.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,13 +171,21 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac042205c48f637c75f8f41162033e381"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structIcssg__FwPoolMem.html">Icssg_FwPoolMem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#gac042205c48f637c75f8f41162033e381">EnetCb_getFwPoolMem</a> (<a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a> enetType, uint32_t instId)</td></tr>
-<tr class="memdesc:gac042205c48f637c75f8f41162033e381"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG memory pool callback function.  <a href="group__DRV__ENET__ICSSG.html#gac042205c48f637c75f8f41162033e381">More...</a><br /></td></tr>
-<tr class="separator:gac042205c48f637c75f8f41162033e381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f04709ff3b31960db059a651c2959f3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structIcssg__FwPoolMem.html">Icssg_FwPoolMem</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga6f04709ff3b31960db059a651c2959f3">EnetCb_GetFwPoolMem</a> (<a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a> enetType, uint32_t instId)</td></tr>
+<tr class="memdesc:ga6f04709ff3b31960db059a651c2959f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG memory pool callback function.  <a href="group__DRV__ENET__ICSSG.html#ga6f04709ff3b31960db059a651c2959f3">More...</a><br /></td></tr>
+<tr class="separator:ga6f04709ff3b31960db059a651c2959f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf70332779a14ad506288283116114709"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#gaf70332779a14ad506288283116114709">IcssgMacPort_initCfg</a> (<a class="el" href="structIcssgMacPort__Cfg.html">IcssgMacPort_Cfg</a> *macPortCfg)</td></tr>
+<tr class="memdesc:gaf70332779a14ad506288283116114709"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises Mac Port COnfiguration.  <a href="group__DRV__ENET__ICSSG.html#gaf70332779a14ad506288283116114709">More...</a><br /></td></tr>
 <tr class="separator:gaf70332779a14ad506288283116114709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9a305eb0d557ab0fa30acbb2e5b7286f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga9a305eb0d557ab0fa30acbb2e5b7286f">Icssg_getSliceNum</a> (<a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a> enetType, uint32_t instId, <a class="el" href="group__ENET__MAIN__API.html#ga263f2a3003e793a56d3def727e2b6a4f">Enet_MacPort</a> macPort)</td></tr>
+<tr class="memdesc:ga9a305eb0d557ab0fa30acbb2e5b7286f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICSSG memory pool callback function.  <a href="group__DRV__ENET__ICSSG.html#ga9a305eb0d557ab0fa30acbb2e5b7286f">More...</a><br /></td></tr>
 <tr class="separator:ga9a305eb0d557ab0fa30acbb2e5b7286f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga672434751d6cb2e5ea14e69ef99e0b50"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga672434751d6cb2e5ea14e69ef99e0b50">Icssg_MdioLinkStateChangeCb</a>) (<a class="el" href="structIcssg__MdioLinkStateChangeInfo.html">Icssg_MdioLinkStateChangeInfo</a> *info, void *appArg)</td></tr>
+<tr class="memdesc:ga672434751d6cb2e5ea14e69ef99e0b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Icssg PHY link state change callback function.  <a href="group__DRV__ENET__ICSSG.html#ga672434751d6cb2e5ea14e69ef99e0b50">More...</a><br /></td></tr>
+<tr class="separator:ga672434751d6cb2e5ea14e69ef99e0b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -309,18 +323,12 @@ Macros</h2></td></tr>
 <tr class="memitem:ga502fb59579e40a36732aa4d56095d0ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga502fb59579e40a36732aa4d56095d0ff">ICSSG_DUALMAC_PORT_BUFFER_POOL_NUM</a>&#160;&#160;&#160;(0U)</td></tr>
 <tr class="memdesc:ga502fb59579e40a36732aa4d56095d0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of port buffer pools required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#ga502fb59579e40a36732aa4d56095d0ff">More...</a><br /></td></tr>
 <tr class="separator:ga502fb59579e40a36732aa4d56095d0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7690c841169e97d07e183dd1055f0e15"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga7690c841169e97d07e183dd1055f0e15">ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM</a>&#160;&#160;&#160;(8U)</td></tr>
-<tr class="memdesc:ga7690c841169e97d07e183dd1055f0e15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of host buffer pools required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#ga7690c841169e97d07e183dd1055f0e15">More...</a><br /></td></tr>
-<tr class="separator:ga7690c841169e97d07e183dd1055f0e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga413c282f2e2c2791e1cc9cfddc35ccbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga413c282f2e2c2791e1cc9cfddc35ccbf">ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM</a>&#160;&#160;&#160;(2U)</td></tr>
 <tr class="memdesc:ga413c282f2e2c2791e1cc9cfddc35ccbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of host egress queues required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#ga413c282f2e2c2791e1cc9cfddc35ccbf">More...</a><br /></td></tr>
 <tr class="separator:ga413c282f2e2c2791e1cc9cfddc35ccbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad99b2290cf29654a9f087396f768490c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#gad99b2290cf29654a9f087396f768490c">ICSSG_SWITCH_PORT_BUFFER_POOL_NUM</a>&#160;&#160;&#160;(8U)</td></tr>
 <tr class="memdesc:gad99b2290cf29654a9f087396f768490c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of port buffer pools required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#gad99b2290cf29654a9f087396f768490c">More...</a><br /></td></tr>
 <tr class="separator:gad99b2290cf29654a9f087396f768490c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga931d9f0759c76e724749b650709dd551"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga931d9f0759c76e724749b650709dd551">ICSSG_SWITCH_HOST_BUFFER_POOL_NUM</a>&#160;&#160;&#160;(16U)</td></tr>
-<tr class="memdesc:ga931d9f0759c76e724749b650709dd551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of host buffer pools required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#ga931d9f0759c76e724749b650709dd551">More...</a><br /></td></tr>
-<tr class="separator:ga931d9f0759c76e724749b650709dd551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90453530c4b09a8eeb91aa205cd6207f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga90453530c4b09a8eeb91aa205cd6207f">ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM</a>&#160;&#160;&#160;(2U)</td></tr>
 <tr class="memdesc:ga90453530c4b09a8eeb91aa205cd6207f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of host egress queues required for Dual-MAC.  <a href="group__DRV__ENET__ICSSG.html#ga90453530c4b09a8eeb91aa205cd6207f">More...</a><br /></td></tr>
 <tr class="separator:ga90453530c4b09a8eeb91aa205cd6207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -492,6 +500,12 @@ Macros</h2></td></tr>
 <tr class="separator:ga06544572c928cf1ca9cc5fa75a70f5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga910a461468a9305375fe8fc63805f410"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga910a461468a9305375fe8fc63805f410">ICCSG_RX_CLASS_DATA_FT_RX_SAV</a>&#160;&#160;&#160;(31U)</td></tr>
 <tr class="separator:ga910a461468a9305375fe8fc63805f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga24ad95a05004f3c8ca612cf276be9336"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga24ad95a05004f3c8ca612cf276be9336">ICSSG_TAS_MIN_CYCLE_TIME_NS</a>&#160;&#160;&#160;(1000000)</td></tr>
+<tr class="memdesc:ga24ad95a05004f3c8ca612cf276be9336"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum cycle time supported by implementation (in ns).  <a href="group__DRV__ENET__ICSSG.html#ga24ad95a05004f3c8ca612cf276be9336">More...</a><br /></td></tr>
+<tr class="separator:ga24ad95a05004f3c8ca612cf276be9336"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga702f76f6445274ab25d61543d812a560"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__ENET__ICSSG.html#ga702f76f6445274ab25d61543d812a560">ICSSG_TAS_MIN_WINDOW_DURATION_NS</a>&#160;&#160;&#160;(10000)</td></tr>
+<tr class="memdesc:ga702f76f6445274ab25d61543d812a560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum TAS window duration supported by implementation (in ns).  <a href="group__DRV__ENET__ICSSG.html#ga702f76f6445274ab25d61543d812a560">More...</a><br /></td></tr>
+<tr class="separator:ga702f76f6445274ab25d61543d812a560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
 ICSSG FDB entry fields.</h2></td></tr>
@@ -722,22 +736,6 @@ ICSSG FDB entry fields.</h2></td></tr>
 
 </div>
 </div>
-<a id="ga7690c841169e97d07e183dd1055f0e15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7690c841169e97d07e183dd1055f0e15">&#9670;&nbsp;</a></span>ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM&#160;&#160;&#160;(8U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Number of host buffer pools required for Dual-MAC. </p>
-
-</div>
-</div>
 <a id="ga413c282f2e2c2791e1cc9cfddc35ccbf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga413c282f2e2c2791e1cc9cfddc35ccbf">&#9670;&nbsp;</a></span>ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM</h2>
 
@@ -767,22 +765,6 @@ ICSSG FDB entry fields.</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Number of port buffer pools required for Dual-MAC. </p>
-
-</div>
-</div>
-<a id="ga931d9f0759c76e724749b650709dd551"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga931d9f0759c76e724749b650709dd551">&#9670;&nbsp;</a></span>ICSSG_SWITCH_HOST_BUFFER_POOL_NUM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ICSSG_SWITCH_HOST_BUFFER_POOL_NUM&#160;&#160;&#160;(16U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Number of host buffer pools required for Dual-MAC. </p>
 
 </div>
 </div>
@@ -2104,6 +2086,56 @@ ICSSG FDB entry fields.</h2></td></tr>
 
 </div>
 </div>
+<a id="ga24ad95a05004f3c8ca612cf276be9336"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga24ad95a05004f3c8ca612cf276be9336">&#9670;&nbsp;</a></span>ICSSG_TAS_MIN_CYCLE_TIME_NS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ICSSG_TAS_MIN_CYCLE_TIME_NS&#160;&#160;&#160;(1000000)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Minimum cycle time supported by implementation (in ns). </p>
+
+</div>
+</div>
+<a id="ga702f76f6445274ab25d61543d812a560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga702f76f6445274ab25d61543d812a560">&#9670;&nbsp;</a></span>ICSSG_TAS_MIN_WINDOW_DURATION_NS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ICSSG_TAS_MIN_WINDOW_DURATION_NS&#160;&#160;&#160;(10000)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Minimum TAS window duration supported by implementation (in ns). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga672434751d6cb2e5ea14e69ef99e0b50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga672434751d6cb2e5ea14e69ef99e0b50">&#9670;&nbsp;</a></span>Icssg_MdioLinkStateChangeCb</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* Icssg_MdioLinkStateChangeCb) (<a class="el" href="structIcssg__MdioLinkStateChangeInfo.html">Icssg_MdioLinkStateChangeInfo</a> *info, void *appArg)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Icssg PHY link state change callback function. </p>
+<p>Callback for PHY link state change interrupt (MDIO_LINKINT). This callback is invoked from interrupt context. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ga5c07990c0f14dac427406a93c0b0f46a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5c07990c0f14dac427406a93c0b0f46a">&#9670;&nbsp;</a></span>Icssg_Instance_Num</h2>
@@ -2511,14 +2543,14 @@ ICSSG FDB entry fields.</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gac042205c48f637c75f8f41162033e381"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac042205c48f637c75f8f41162033e381">&#9670;&nbsp;</a></span>EnetCb_getFwPoolMem()</h2>
+<a id="ga6f04709ff3b31960db059a651c2959f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f04709ff3b31960db059a651c2959f3">&#9670;&nbsp;</a></span>EnetCb_GetFwPoolMem()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structIcssg__FwPoolMem.html">Icssg_FwPoolMem</a>* EnetCb_getFwPoolMem </td>
+          <td class="memname">const <a class="el" href="structIcssg__FwPoolMem.html">Icssg_FwPoolMem</a>* EnetCb_GetFwPoolMem </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__ENET__MAIN__API.html#gaaccaa1593a07b1228ca35c6e6aefbf0f">Enet_Type</a>&#160;</td>
           <td class="paramname"><em>enetType</em>, </td>
@@ -2538,6 +2570,14 @@ ICSSG FDB entry fields.</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ICSSG memory pool callback function. </p>
+<p>Initializes the ICSSG memory pool callback function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enetType</td><td>Enet Peripheral type </td></tr>
+    <tr><td class="paramname">instId</td><td>Instance Number </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2556,6 +2596,15 @@ ICSSG FDB entry fields.</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initialises Mac Port COnfiguration. </p>
+<p>Gets Application configuration related to ICSSG.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">macPortCfg</td><td>Pointer to ICSSG mac port configuration structure </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2590,6 +2639,17 @@ ICSSG FDB entry fields.</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>ICSSG memory pool callback function. </p>
+<p>Initializes the ICSSG memory pool callback function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enetType</td><td>Enet Peripheral type </td></tr>
+    <tr><td class="paramname">instId</td><td>Instance Number </td></tr>
+    <tr><td class="paramname">macPort</td><td>Enet Mac Port </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

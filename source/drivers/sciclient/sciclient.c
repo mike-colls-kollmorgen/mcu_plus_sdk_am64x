@@ -246,6 +246,11 @@ int32_t Sciclient_abiCheck(void)
     };
 
     struct tisci_msg_version_resp response;
+    /* Explicitly initialize the value to something other than SCICLIENT_FIRMWARE_ABI_MAJOR 
+     * so that the function doesn't accidentally pass.
+     */
+    response.abi_major = 0xFFU;
+
     Sciclient_RespPrm_t           respPrm =
     {
         0,
@@ -278,6 +283,12 @@ int32_t Sciclient_getVersionCheck(uint32_t doLog)
     };
 
     struct tisci_msg_version_resp response;
+    /* Explicitly initialize the value to something other than SCICLIENT_FIRMWARE_ABI_MAJOR 
+     * so that we would know the getVersion failed at least from the prints.
+     */
+    response.version = 0xFFFFU;
+    response.abi_major = 0xFFU;
+    response.abi_minor = 0xFFU;
     Sciclient_RespPrm_t           respPrm =
     {
         0,
@@ -657,6 +668,10 @@ uint32_t Sciclient_getCurrentContext(uint16_t messageType)
        (TISCI_MSG_BOARD_CONFIG_RM == messageType) ||
        (TISCI_MSG_BOARD_CONFIG_SECURITY == messageType) ||
        (TISCI_MSG_KEY_WRITER == messageType) ||
+       (TISCI_MSG_READ_OTP_MMR == messageType) ||
+       (TISCI_MSG_WRITE_OTP_ROW == messageType) ||
+       (TISCI_MSG_READ_SWREV == messageType) ||
+       (TISCI_MSG_WRITE_SWREV == messageType) ||
        (TISCI_MSG_BOARD_CONFIG_PM == messageType))
     {
         retVal = gSciclientHandle.secureContextId;

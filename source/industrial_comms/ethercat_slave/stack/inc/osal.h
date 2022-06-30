@@ -528,7 +528,6 @@ extern OSAL_API int32_t             OSAL_postSignal             (void*          
 
 extern OSAL_API void*               OSAL_createCountSignal      (uint32_t                       countStart_p
                                                                 ,uint32_t                       countMax_p);
-extern OSAL_API void*               OSAL_openCountSignal        (const char*                    pName_p);
 extern OSAL_API void*               OSAL_deleteCountSignal      (void*                          pSignal_p);
 extern OSAL_API int32_t             OSAL_waitCountSignal        (void*                          pSignal_p
                                                                 ,uint32_t                       msTimeout_p);

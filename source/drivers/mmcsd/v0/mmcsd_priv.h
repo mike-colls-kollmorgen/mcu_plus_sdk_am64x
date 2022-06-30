@@ -35,6 +35,15 @@
  *  \brief MMCSD Driver private header file.
  */
 
+#ifndef MMCSD_PRIV_H
+#define MMCSD_PRIV_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 #include <drivers/mmcsd.h>
 
@@ -121,3 +130,10 @@ int32_t MMCSD_parseECSDEmmc(MMCSD_EmmcDeviceData *data, uint8_t ecsdData[512]);
 int32_t MMCSD_parseCIDSd(MMCSD_SdDeviceData *data, uint32_t resp[4]);
 int32_t MMCSD_parseCSDSd(MMCSD_SdDeviceData *data, uint32_t resp[4]);
 int32_t MMCSD_parseSCRSd(MMCSD_SdDeviceData *data, uint8_t *scr);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* MMCSD_PRIV_H */

@@ -103,6 +103,7 @@ void __attribute__((interrupt("FIQ"), section(".text.hwi"))) HwiP_fiq_handler(vo
 
     /* Read to force prioritization logic to take effect */
     dummy = HwiP_getFIQVecAddr();
+    (void)dummy;
 
     status = HwiP_getFIQ(&intNum);
     if(status==SystemP_SUCCESS)

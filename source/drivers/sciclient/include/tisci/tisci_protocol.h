@@ -54,6 +54,12 @@
 #ifndef TISCI_PROTOCOL_H
 #define TISCI_PROTOCOL_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * This flag is reserved and not to be used.
@@ -259,6 +265,14 @@ struct tisci_sec_header {
 /* Keywriter TISCI message to write keys from a certificate  */
 #define TISCI_MSG_KEY_WRITER                    (0x9031U)
 
+/* SWREV TISCI messages */
+
+/* SWREV TISCI message to write software revision to eFUSE  */
+#define TISCI_MSG_WRITE_SWREV                   (0x9032U)
+
+/* SWREV TISCI message to read software revision from eFUSE  */
+#define TISCI_MSG_READ_SWREV                    (0x9033U)
+
 /* Processor Control APIs */
 
 /** Message to get a Processor */
@@ -382,6 +396,11 @@ struct tisci_sec_header {
  * configuration
  */
 #define TISCI_MSG_RM_PROXY_CFG                  (0x1300U)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TISCI_PROTOCOL_H */
 

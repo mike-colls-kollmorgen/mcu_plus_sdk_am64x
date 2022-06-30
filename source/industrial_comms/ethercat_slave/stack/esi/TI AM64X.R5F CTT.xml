@@ -3,12 +3,14 @@
 	<Vendor>
 		<Id>#xE000059D</Id>
 		<Name>Texas Instruments Incorporated</Name>
+        <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
 	</Vendor>
 	<Descriptions>
 		<Groups>
 			<Group SortOrder="-1">
 				<Type>EtherCAT Toolkit</Type>
 				<Name LcId="0">EtherCAT Toolkit</Name>
+                <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
 			</Group>
 		</Groups>
 		<Devices>
@@ -1982,8 +1984,8 @@
 				<Fmmu>MBoxState</Fmmu>
 				<Sm DefaultSize="256" StartAddress="#x1000" ControlByte="#x26" Enable="1">MBoxOut</Sm>
 				<Sm DefaultSize="256" StartAddress="#x1100" ControlByte="#x22" Enable="1">MBoxIn</Sm>
-				<Sm DefaultSize="128" StartAddress="#x1200" ControlByte="#x64" Enable="1">Outputs</Sm>
-				<Sm DefaultSize="128" StartAddress="#x1e00" ControlByte="#x20" Enable="1">Inputs</Sm>
+				<Sm StartAddress="#x1200" ControlByte="#x64" Enable="1">Outputs</Sm>
+				<Sm StartAddress="#x1e00" ControlByte="#x20" Enable="1">Inputs</Sm>
 				<Mailbox DataLinkLayer="true">
 					<EoE/>
 					<CoE SdoInfo="true" PdoConfig="true" PdoUpload="true" CompleteAccess="true"/>
@@ -2014,6 +2016,7 @@
 					<ConfigData>800ce088e8030000000000000000</ConfigData>
 					<BootStrap>0010000100120001</BootStrap>
 				</Eeprom>
+                             <ImageData16x14>424de6000000000000007600000028000000100000000e000000010004000000000070000000130b0000130b000010000000100000000707ff003434fc004e4efd007474f3009f9fde008a8af000b1b1d400b8b8fc00ccccd700d0d0ef00f9f9fc000000000000000000000000000000000000000000aaaaaaaaa628aaaaaaaaaaaa6126aaaaaaaaaa941014aaaaaaaa8841053148aaaaa533014a84138aaa81000295562038a8200002a229200262000003a22a300255531016a32a6218aaaa2014a879415aaaaa20015a9577aaaaaa20002a12aaaaaaaa20014aa9aaaaaaaa2002aaaaaaaa</ImageData16x14>
 			</Device>
 		</Devices>
 	</Descriptions>

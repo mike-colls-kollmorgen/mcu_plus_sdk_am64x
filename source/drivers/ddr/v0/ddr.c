@@ -90,10 +90,15 @@ static LPDDR4_Config gLpddrCfg;
 static LPDDR4_PrivateData gLpddrPd;
 
 /* ========================================================================== */
+/*                         Extern Function declerations                       */
+/* ========================================================================== */
+extern void DDR_socEnableVttRegulator(void);
+
+/* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
 static void DDR_setFreq(uint64_t freq)
-{    
+{
     uint32_t module = TISCI_DEV_DDR16SS0;
     uint32_t clock = TISCI_DEV_DDR16SS0_DDRSS_DDR_PLL_CLK;
     int32_t status = SystemP_SUCCESS;
@@ -151,19 +156,19 @@ static void DDR_changeFreqAck(DDR_Params *prms)
 static int32_t DDR_setClock(DDR_Params *prms)
 {
     int32_t status = SystemP_SUCCESS;
-    
+
     if((HW_RD_REG32(DDR_CTL_REG_BASE) & DDR_TYPE_MASK) == DDR4_MEMORY)
     {
         /* Type is DDR4*/
-        DDR_setFreq(prms->clk1Freq);       
+        DDR_setFreq(prms->clk1Freq);
     }
     else
     {
         /* Type is LPDDR4. Start Frequency handshake.*/
         DDR_setFreq(25000000);
-        
+
         ClockP_usleep(5000);
-    
+
         /*trigger the start bit (from PI)*/
         HW_WR_REG32(DDR_CTL_REG_BASE + DDR_PI_REG_BLOCK_OFFS + DDR_PI_0_SFR_OFFS,   TRIGGER_START_BIT);
 
@@ -175,10 +180,10 @@ static int32_t DDR_setClock(DDR_Params *prms)
         ClockP_usleep(1000);
 
         DDR_changeFreqAck(prms);
-        
+
         ClockP_usleep(500);
 
-        /*PI INT STATUS*/        
+        /*PI INT STATUS*/
         while(((HW_RD_REG32(DDR_CTL_REG_BASE + DDR_PI_REG_BLOCK_OFFS + DDR_PI_83_SFR_OFFS)) & 0x1) != 0x1);
         /*CTL_342[25] = int status init[1] = 1 - The MC initialization has been completed.*/
         while((HW_RD_REG32(DDR_CTL_REG_BASE + DDR_CTL_342_SFR_OFFS)&0x02000000)!= 0x02000000);
@@ -277,7 +282,7 @@ static int32_t DDR_start(void)
     offset = DDR_CTL_REG_OFFSET;
 
     status = LPDDR4_ReadReg(&gLpddrPd, LPDDR4_CTL_REGS, offset, &regval);
-    
+
     if((HW_RD_REG32(DDR_CTL_REG_BASE) & DDR_TYPE_MASK) == DDR4_MEMORY)
     {
         /* DDR4 memory */
@@ -287,7 +292,7 @@ static int32_t DDR_start(void)
             ret = SystemP_FAILURE;
         }
     }
-    else    
+    else
     {
         /* LPDDR4 memory */
         if ((status > 0U) || ((regval & 0x1U) != 1U))
@@ -295,7 +300,7 @@ static int32_t DDR_start(void)
             DebugP_logError("LPDDR4_ReadReg failed !!!\r\n");
             ret = SystemP_FAILURE;
         }
-    }        
+    }
 
     if(ret == SystemP_SUCCESS)
     {
@@ -323,6 +328,8 @@ static int32_t DDR_start(void)
 int32_t DDR_init(DDR_Params *prm)
 {
     int32_t status = SystemP_SUCCESS;
+
+    DDR_socEnableVttRegulator();
 
     /* power and clock to DDR and EMIF is done form outside using SysConfig */
 

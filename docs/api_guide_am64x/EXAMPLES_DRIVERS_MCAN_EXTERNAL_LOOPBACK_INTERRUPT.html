@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_MCAN_EXTERNAL_LOOPBAC
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1131">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1246">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_DRIVERS_MCAN_EXTERNAL_LOOPBACK_INTERRUPT_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1132">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1133">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1134">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1247">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1248">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1249">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_mcan_external_loopback_interrupt"></a></p>
-<h1><a class="anchor" id="autotoc_md1131"></a>
+<h1><a class="anchor" id="autotoc_md1246"></a>
 Introduction</h1>
 <p>This example is a multi core application which demonstrates the CAN message communication between the MCAN instances. Instance MCAN1 is designated as 'TX' and the other instance MCAN0 is designated as 'RX'.</p>
 <p>The MCAN1 instance initiates the transmission by sending a message. The MCAN0 instance receives the same message. Message is transmitted with the following configuration.</p>
@@ -160,7 +160,7 @@ Supported Combinations</h1>
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/mcan/mcan_external_loopback_interrupt   </td></tr>
 </table>
 <dl class="section note"><dt>Note</dt><dd>MCAN transceiver is enabled in RX application via mcan_enableTransceiver() function. To enable transceiver, I2C1 should be configured in SYSCFG.</dd></dl>
-<h1><a class="anchor" id="autotoc_md1132"></a>
+<h1><a class="anchor" id="autotoc_md1247"></a>
 Steps to Run the Example</h1>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
@@ -169,10 +169,10 @@ Steps to Run the Example</h1>
 <li>This is a multi-core example. Hence the executables should be loaded and run for all the above mentioned cores</li>
 <li>The application has a sync mechanism at the start which waits for all cores to start before doing the test. Hence the cores can be loaded and run in any sequence.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1133"></a>
+<h1><a class="anchor" id="autotoc_md1248"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_MCAN_PAGE.html">MCAN</a></p>
-<h1><a class="anchor" id="autotoc_md1134"></a>
+<h1><a class="anchor" id="autotoc_md1249"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run,</p>
 <div class="fragment"><div class="line">[MCAN] RX Application, Interrupt mode started ...</div>

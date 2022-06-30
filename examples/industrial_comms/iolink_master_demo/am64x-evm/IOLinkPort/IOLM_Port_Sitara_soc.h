@@ -45,6 +45,7 @@
 #include <stdbool.h>
 #include <osal.h>
 #include <pru.h>
+#include <IOLM_Phy.h>
 
 #include "ti_drivers_config.h"
 #include <drivers/gpio.h>
@@ -114,6 +115,8 @@ typedef enum IOLM_SOC_EPowerState
     IOLM_SOC_ePowerState_ON         = 1,
     IOLM_SOC_ePowerState_FORCE32BIT = 0xffffffff
 } IOLM_SOC_EPowerState_t;
+
+extern const IOLM_SPhyGeneric IOLM_SOC_phyPortCfgPru_g[IOLM_PORT_COUNT];
 
 void IOLM_SOC_init();
 void IOLM_SOC_setMode(uint8_t instance_p, uint8_t portNum_p, IOLM_PL_ePortMode_t mode_p);

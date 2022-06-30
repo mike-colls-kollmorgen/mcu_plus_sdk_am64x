@@ -169,7 +169,7 @@ void eip_multicast_filter_update_macid(PRUICSS_Handle   pruicssHandle,
 #if DEBUG_MC_FLT
     DebugP_log("multicastAddr:%s hashVal hex:%x hashVal dec:%d status:%d",
                 multicastAddr, hashVal, hashVal, command);
-    DebugP_assert(multicastTablePtr >= 0);
+    DebugP_assert(multicastTablePtr != NULL);
 #endif
 }
 

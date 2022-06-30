@@ -116,7 +116,7 @@ int32_t OSPI_norFlashInit1s1s1s(OSPI_Handle handle)
     /* SDR will be enabled in flash by default, set OSPI controller to 1S-1S-1S mode */
     uint32_t xferLines = OSPI_XFER_LINES_SINGLE;
 
-    /* Set number of address bytes as 3 to support legacy flash devices also 
+    /* Set number of address bytes as 3 to support legacy flash devices also
         00 = 1 addr byte
         01 = 2 addr byte
         10 = 3 addr byte
@@ -155,7 +155,7 @@ int32_t OSPI_norFlashInit1s1s1s(OSPI_Handle handle)
     /* Set read capture delay */
     status += OSPI_setRdDataCaptureDelay(handle, 0);
 
-    return SystemP_SUCCESS;
+    return status;
 }
 
 int32_t OSPI_norFlashReadId(OSPI_Handle handle, uint32_t *manufacturerId, uint32_t *deviceId)
@@ -325,7 +325,7 @@ int32_t OSPI_norFlashErase(OSPI_Handle handle, uint32_t address)
     cmd    = OSPI_NOR_CMD_BLOCK_ERASE;
 
     status = OSPI_norFlashWaitReady(handle, OSPI_NOR_WRR_WRITE_TIMEOUT);
-    
+
     if(status == SystemP_SUCCESS)
     {
         status = OSPI_norFlashCmdWrite(handle, cmdWren, 0xFFFFFFFF, NULL, 0);

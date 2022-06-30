@@ -33,6 +33,12 @@
 #ifndef _PRU_UART_H_
 #define _PRU_UART_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* UART Register set */
 typedef struct
 {
@@ -316,5 +322,10 @@ typedef struct
 
 volatile __far pruUart CT_UART __attribute__((cregister("PRU_UART", near),
         peripheral));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _PRU_UART_H_ */

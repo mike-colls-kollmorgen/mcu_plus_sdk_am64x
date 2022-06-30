@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,16 +108,16 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_HWI_PAGE.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md424">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md425">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md426">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md427">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md428">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md485">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md486">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md487">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md488">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md489">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_HwiP"></a></p>
 <dl class="section attention"><dt>Attention</dt><dd>See also <a class="el" href="KERNEL_FREERTOS_PAGE.html">FreeRTOS</a>, <a class="el" href="KERNEL_NORTOS_PAGE.html">NO RTOS</a> for list of CPU specific supported and unsupported features.</dd></dl>
-<h1><a class="anchor" id="autotoc_md424"></a>
+<h1><a class="anchor" id="autotoc_md485"></a>
 Features Supported</h1>
 <ul>
 <li>Register a interrupt callback to a specific CPU number</li>
@@ -141,10 +141,10 @@ Features Supported</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md425"></a>
+<h1><a class="anchor" id="autotoc_md486"></a>
 Features NOT Supported</h1>
 <p>See also <a class="el" href="KERNEL_FREERTOS_PAGE.html">FreeRTOS</a>, <a class="el" href="KERNEL_NORTOS_PAGE.html">NO RTOS</a> for list of unsupported features.</p>
-<h1><a class="anchor" id="autotoc_md426"></a>
+<h1><a class="anchor" id="autotoc_md487"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>For ARM R5,<ul>
@@ -178,7 +178,7 @@ Important Usage Guidelines</h1>
 </table>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md427"></a>
+<h1><a class="anchor" id="autotoc_md488"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="HwiP_8h.html">kernel/dpl/HwiP.h</a>&gt;</span></div>
@@ -186,7 +186,7 @@ Example Usage</h1>
 <div class="line">{</div>
 <div class="line">    <span class="comment">/* my ISR */</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Example to register a ISR for CPU interrupt 10, </p><div class="fragment"><div class="line">    <a class="code" href="structHwiP__Params.html">HwiP_Params</a> hwiParams;</div>
+</div><!-- fragment --><p>Example to register a ISR for CPU interrupt 10, </p><div class="fragment"><div class="line">    <a class="code" href="structHwiP__Params.html">HwiP_Params</a> hwiParams;</div>
 <div class="line">    <a class="code" href="structHwiP__Object.html">HwiP_Object</a> hwiObj;</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__HWI.html#ga33f02161b1837b41f08ba064f1001045">HwiP_Params_init</a>(&amp;hwiParams);</div>
@@ -200,14 +200,14 @@ Example Usage</h1>
 <div class="line">    hwiParams.<a class="code" href="structHwiP__Params.html#a26ec86a18720de1a3fe54828ceb959d2">args</a> = NULL;</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__HWI.html#gacda2e6e40428be67320f57d0676e4bd1">HwiP_construct</a>(&amp;hwiObj, &amp;hwiParams);</div>
-</div><!-- fragment --><p> Example to disable and restore interrupts across a crtical section </p><div class="fragment"><div class="line">    uintptr_t oldIntState;</div>
+</div><!-- fragment --><p>Example to disable and restore interrupts across a crtical section </p><div class="fragment"><div class="line">    uintptr_t oldIntState;</div>
 <div class="line"> </div>
 <div class="line">    oldIntState = <a class="code" href="group__KERNEL__DPL__HWI.html#gadf7e2ae62a1e103bdf8386da5404eedf">HwiP_disable</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* critical section */</span></div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="group__KERNEL__DPL__HWI.html#ga5708f4c326c7bc0aafdf4c4a4e89acd0">HwiP_restore</a>(oldIntState);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md428"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md489"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__HWI.html">APIs for HW Interrupts</a> </p>
 </div></div><!-- contents -->

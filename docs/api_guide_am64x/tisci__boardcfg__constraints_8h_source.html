@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,12 +142,23 @@ $(document).ready(function(){initNavTree('tisci__boardcfg__constraints_8h_source
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#ifndef TISCI_BOARDCFG_CONSTRAINTS_H</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#define TISCI_BOARDCFG_CONSTRAINTS_H</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="group__tisci__boardcfg__constraints.html#ga9e5f81f42e35daccad7653ed106d996a">   63</a></span>&#160;<span class="preprocessor">#define TISCI_BOARDCFG_MAX_MAIN_HOST_COUNT                            (8U)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="group__tisci__boardcfg__constraints.html#ga12132281ba0c9958b65ea3ea7d7e11da">   64</a></span>&#160;<span class="preprocessor">#define TISCI_BOARDCFG_MAX_MCU_HOST_COUNT                             (4U)</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TISCI_BOARDCFG_CONSTRAINTS_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="group__tisci__boardcfg__constraints.html#ga9e5f81f42e35daccad7653ed106d996a">   69</a></span>&#160;<span class="preprocessor">#define TISCI_BOARDCFG_MAX_MAIN_HOST_COUNT                            (8U)</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="group__tisci__boardcfg__constraints.html#ga12132281ba0c9958b65ea3ea7d7e11da">   70</a></span>&#160;<span class="preprocessor">#define TISCI_BOARDCFG_MAX_MCU_HOST_COUNT                             (4U)</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TISCI_BOARDCFG_CONSTRAINTS_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.11-->

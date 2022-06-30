@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,27 +108,27 @@ $(document).ready(function(){initNavTree('RELEASE_NOTES_07_03_02_PAGE.html','');
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md108">New in this Release</a></li>
-<li class="level1"><a href="#autotoc_md109">Device and Validation Information</a></li>
-<li class="level1"><a href="#autotoc_md110">Dependent Tools and Compiler Information</a></li>
-<li class="level1"><a href="#autotoc_md111">Key Features</a><ul><li class="level2"><a href="#autotoc_md112">OS Kernel</a></li>
-<li class="level2"><a href="#autotoc_md113">Driver Porting Layer (DPL)</a></li>
-<li class="level2"><a href="#autotoc_md114">Secondary Bootloader (SBL)</a></li>
-<li class="level2"><a href="#autotoc_md115">SOC Device Drivers</a></li>
-<li class="level2"><a href="#autotoc_md116">Board Device Drivers</a></li>
-<li class="level2"><a href="#autotoc_md117">CMSIS</a></li>
-<li class="level2"><a href="#autotoc_md118">Motor Control</a></li>
-<li class="level2"><a href="#autotoc_md119">Networking</a></li>
-<li class="level2"><a href="#autotoc_md120">USB</a></li>
-<li class="level2"><a href="#autotoc_md121">Demos</a></li>
+<ul><li class="level1"><a href="#autotoc_md162">New in this Release</a></li>
+<li class="level1"><a href="#autotoc_md163">Device and Validation Information</a></li>
+<li class="level1"><a href="#autotoc_md164">Dependent Tools and Compiler Information</a></li>
+<li class="level1"><a href="#autotoc_md165">Key Features</a><ul><li class="level2"><a href="#autotoc_md166">OS Kernel</a></li>
+<li class="level2"><a href="#autotoc_md167">Driver Porting Layer (DPL)</a></li>
+<li class="level2"><a href="#autotoc_md168">Secondary Bootloader (SBL)</a></li>
+<li class="level2"><a href="#autotoc_md169">SOC Device Drivers</a></li>
+<li class="level2"><a href="#autotoc_md170">Board Device Drivers</a></li>
+<li class="level2"><a href="#autotoc_md171">CMSIS</a></li>
+<li class="level2"><a href="#autotoc_md172">Motor Control</a></li>
+<li class="level2"><a href="#autotoc_md173">Networking</a></li>
+<li class="level2"><a href="#autotoc_md174">USB</a></li>
+<li class="level2"><a href="#autotoc_md175">Demos</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md122">Fixed Issues</a></li>
-<li class="level1"><a href="#autotoc_md123">Known Issues</a></li>
-<li class="level1"><a href="#autotoc_md124">Limitations</a></li>
-<li class="level1"><a href="#autotoc_md125">Upgrade and Compatibility Information</a><ul><li class="level2"><a href="#autotoc_md126">Examples</a></li>
-<li class="level2"><a href="#autotoc_md127">Networking</a></li>
-<li class="level2"><a href="#autotoc_md128">SOC Device Drivers</a></li>
+<li class="level1"><a href="#autotoc_md176">Fixed Issues</a></li>
+<li class="level1"><a href="#autotoc_md177">Known Issues</a></li>
+<li class="level1"><a href="#autotoc_md178">Limitations</a></li>
+<li class="level1"><a href="#autotoc_md179">Upgrade and Compatibility Information</a><ul><li class="level2"><a href="#autotoc_md180">Examples</a></li>
+<li class="level2"><a href="#autotoc_md181">Networking</a></li>
+<li class="level2"><a href="#autotoc_md182">SOC Device Drivers</a></li>
 </ul>
 </li>
 </ul>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('RELEASE_NOTES_07_03_02_PAGE.html','');
  Unless explicitly noted otherwise, the SW modules would work in both FreeRTOS and no-RTOS environment. <br  />
  Unless explicitly noted otherwise, the SW modules would work on any of the R5F's present on the SOC. <br  />
  All SW modules will not work on M4F. M4F support for a module will be explicitly called out.</dd></dl>
-<h1><a class="anchor" id="autotoc_md108"></a>
+<h1><a class="anchor" id="autotoc_md162"></a>
 New in this Release</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -163,7 +163,7 @@ New in this Release</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Generic NOR Flash APIs for 1s1s1s mode as part of OSPI driver  </td><td class="markdownTableBodyNone">OSPI   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md109"></a>
+<h1><a class="anchor" id="autotoc_md163"></a>
 Device and Validation Information</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -171,23 +171,23 @@ Device and Validation Information</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">AM64x  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">AM64x GP EVM (referred to as am64x-evm in code)  </td><td class="markdownTableBodyNone">Windows 10 64b or Ubuntu 18.04 64b   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md110"></a>
+<h1><a class="anchor" id="autotoc_md164"></a>
 Dependent Tools and Compiler Information</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Tools  </th><th class="markdownTableHeadNone">Supported CPUs  </th><th class="markdownTableHeadNone">Version   </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Code Composer Studio  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">11.1.0   </td></tr>
+<td class="markdownTableBodyNone">Code Composer Studio  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">11.2.0   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">SysConfig  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">1.11.0, build 2225   </td></tr>
+<td class="markdownTableBodyNone">SysConfig  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">1.12.1, build 2406   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">TI ARM CLANG  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">1.3.0.LTS   </td></tr>
+<td class="markdownTableBodyNone">TI ARM CLANG  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">1.3.1.LTS   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">FreeRTOS Kernel  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">10.4.3   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md165"></a>
 Key Features</h1>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md166"></a>
 OS Kernel</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -199,7 +199,7 @@ OS Kernel</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">NO RTOS  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">NA  </td><td class="markdownTableBodyNone">See <b>Driver Porting Layer (DPL)</b> below  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md113"></a>
+<h2><a class="anchor" id="autotoc_md167"></a>
 Driver Porting Layer (DPL)</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -229,7 +229,7 @@ Driver Porting Layer (DPL)</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Event  </td><td class="markdownTableBodyNone">R5F, M4F  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">FreeRTOS  </td><td class="markdownTableBodyNone">Setting, getting, clearing, and waiting of Event bits  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md114"></a>
+<h2><a class="anchor" id="autotoc_md168"></a>
 Secondary Bootloader (SBL)</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -237,7 +237,7 @@ Secondary Bootloader (SBL)</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Bootloader  </td><td class="markdownTableBodyNone">R5FSS0-0  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">NORTOS  </td><td class="markdownTableBodyNone">Boot modes: OSPI, OSPI XIP, UART. All R5F's, M4F boot. RPRC, multi-core image format, DDR init  </td><td class="markdownTableBodyNone">SBL booting Linux. SBL booting A53.   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md115"></a>
+<h2><a class="anchor" id="autotoc_md169"></a>
 SOC Device Drivers</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -287,7 +287,7 @@ SOC Device Drivers</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">UDMA  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">Basic memory copy, SW trigger, Chaining  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md116"></a>
+<h2><a class="anchor" id="autotoc_md170"></a>
 Board Device Drivers</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -301,7 +301,7 @@ Board Device Drivers</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">LED  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">GPIO and I2C IO expander based LED control  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md117"></a>
+<h2><a class="anchor" id="autotoc_md171"></a>
 CMSIS</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -309,7 +309,7 @@ CMSIS</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">CMSIS DSP  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">NA  </td><td class="markdownTableBodyNone">FreeRTOS, NORTOS  </td><td class="markdownTableBodyNone">Basic math, complex math, controller, fast math, filtering, Matrix, statistics, transform  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md118"></a>
+<h2><a class="anchor" id="autotoc_md172"></a>
 Motor Control</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -319,7 +319,7 @@ Motor Control</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Position Sense EnDAT  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">FreeRTOS, NORTOS  </td><td class="markdownTableBodyNone">Single channel, Multi channel, Continuous mode  </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md119"></a>
+<h2><a class="anchor" id="autotoc_md173"></a>
 Networking</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -337,7 +337,7 @@ Networking</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">ICSS TimeSync  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">NO  </td><td class="markdownTableBodyNone">FreeRTOS  </td><td class="markdownTableBodyNone">Only compiled  </td><td class="markdownTableBodyNone">Not tested   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md120"></a>
+<h2><a class="anchor" id="autotoc_md174"></a>
 USB</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -349,7 +349,7 @@ USB</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">TinyUSB Core and CDC Driver  </td><td class="markdownTableBodyNone">R5F  </td><td class="markdownTableBodyNone">NO  </td><td class="markdownTableBodyNone">FreeRTOS, NORTOS  </td><td class="markdownTableBodyNone">USB device with CDC class  </td><td class="markdownTableBodyNone">USB Host, other USB device class drivers   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md121"></a>
+<h2><a class="anchor" id="autotoc_md175"></a>
 Demos</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -357,7 +357,7 @@ Demos</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Benchmark demo  </td><td class="markdownTableBodyNone">4xR5F's  </td><td class="markdownTableBodyNone">YES  </td><td class="markdownTableBodyNone">NORTOS  </td><td class="markdownTableBodyNone">CFFT, FIR and FOC benchmarks  </td><td class="markdownTableBodyNone">ADC/PWM benchmark   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md122"></a>
+<h1><a class="anchor" id="autotoc_md176"></a>
 Fixed Issues</h1>
 <table class="doxtable">
 <tr>
@@ -387,7 +387,7 @@ Fixed Issues</h1>
 <tr>
 <td>MCUSDK-781 </td><td>SysConfig for multiple GPIO LED instances generate same code </td><td>LED </td><td>7.3.0, 7.3.1 </td><td>AM64x, AM243x </td><td>Fixed  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md123"></a>
+<h1><a class="anchor" id="autotoc_md177"></a>
 Known Issues</h1>
 <table class="doxtable">
 <tr>
@@ -407,7 +407,7 @@ Known Issues</h1>
 <tr>
 <td>MCUSDK-626 </td><td>DMA not working with ADC FIFO 1 </td><td>ADC </td><td>7.3.0 onwards </td><td>AM64x, AM243x </td><td>Use ADC FIFO 0  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md124"></a>
+<h1><a class="anchor" id="autotoc_md178"></a>
 Limitations</h1>
 <table class="doxtable">
 <tr>
@@ -415,10 +415,10 @@ Limitations</h1>
 <tr>
 <td>MCUSDK-208 </td><td>gmake with -j can sometimes lock up Windows command prompt </td><td>Build </td><td>7.3.0 </td><td>AM64x, AM243x </td><td>Use bash for windows as part of git for windows or don't use -j option  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md125"></a>
+<h1><a class="anchor" id="autotoc_md179"></a>
 Upgrade and Compatibility Information</h1>
 <dl class="section attention"><dt>Attention</dt><dd>When migrating from Processor SDK RTOS, see <a class="el" href="MIGRATION_GUIDES.html">Migration Guides</a> for more details</dd></dl>
-<h2><a class="anchor" id="autotoc_md126"></a>
+<h2><a class="anchor" id="autotoc_md180"></a>
 Examples</h2>
 <table class="doxtable">
 <tr>
@@ -432,7 +432,7 @@ Examples</h2>
 </div><!-- fragment --><p class="endtd"></p>
 </td><td>All SDK examples are updated for this change. This change is needed in your application if it based off a older SDK.  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md127"></a>
+<h2><a class="anchor" id="autotoc_md181"></a>
 Networking</h2>
 <table class="doxtable">
 <tr>
@@ -450,7 +450,7 @@ Networking</h2>
 <tr>
 <td>ICSS TimeSync </td><td>- </td><td>Added new parameter <code>macId</code> in <code><a class="el" href="structTimeSync__ParamsHandle.html" title="Time synchronization parameter handle structure.">TimeSync_ParamsHandle</a></code> structure </td><td>This field should be filled by the user.  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md128"></a>
+<h2><a class="anchor" id="autotoc_md182"></a>
 SOC Device Drivers</h2>
 <table class="doxtable">
 <tr>

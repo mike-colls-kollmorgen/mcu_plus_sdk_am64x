@@ -104,7 +104,7 @@ extern "C" {
 #define IOLM_NUM_OF_JOBS (IOLM_PORT_COUNT * 5) // PDIN, PDOUT, Event, Mcmd, ISDU
 
 /** \brief Minimum time interval for IO-Link timers. */
-#define IOLM_MIN_TIMER_INTERVAL_US     100
+#define IOLM_MIN_TIMER_INTERVAL_US     10
 
 /** Ready pulse time expectations. */
 /** Lower limit of ready pulse length in us. */

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -131,6 +131,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnetPer__AttachCoreOutArgs.html">EnetPer_AttachCoreOutArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output args for <a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0a35881d860c7370884c040a0a6d0c7ffd" title="Attach core to Ethernet peripheral.">ENET_PER_IOCTL_ATTACH_CORE</a> command.  <a href="structEnetPer__AttachCoreOutArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnet__ExtPhyLinkUpEventInfo.html">Enet_ExtPhyLinkUpEventInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input args for <a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0ad8272de8375d74b7fb536db8803169a9" title="Handle link up event for an externally managed PHY.">ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT</a> command.  <a href="structEnet__ExtPhyLinkUpEventInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnetPer__Obj.html">EnetPer_Obj</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ethernet Peripheral object.  <a href="structEnetPer__Obj.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,7 +205,9 @@ Enumerations</h2></td></tr>
 <a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0af0a00667bb37a68ba44197315da6c5b4">ENET_IOCTL_UNREGISTER_DSTMAC_RX_FLOW</a> = ENET_PER_PUBLIC_IOCTL(11U), 
 <br />
 &#160;&#160;<a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0a1066255f6aad9f26ce1f53499569be51">ENET_PER_IOCTL_SET_VLAN_AWARE</a> = ENET_PER_PUBLIC_IOCTL(12U), 
-<a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0a7f3201f387df50569695ab0558228a4e">ENET_PER_IOCTL_SET_VLAN_UNAWARE</a> = ENET_PER_PUBLIC_IOCTL(13U)
+<a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0a7f3201f387df50569695ab0558228a4e">ENET_PER_IOCTL_SET_VLAN_UNAWARE</a> = ENET_PER_PUBLIC_IOCTL(13U), 
+<a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0ad8272de8375d74b7fb536db8803169a9">ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT</a> = ENET_PER_PUBLIC_IOCTL(14U), 
+<a class="el" href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0ace2b386b7090151536648059eab4eb8e">ENET_PER_IOCTL_HANDLE_EXTPHY_LINKDOWN_EVENT</a> = ENET_PER_PUBLIC_IOCTL(15U)
 <br />
  }</td></tr>
 <tr class="memdesc:a5e37e31ddf40acdd06e84bbf2cf413c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ethernet peripheral IOCTL commands.  <a href="enet__per_8h.html#a5e37e31ddf40acdd06e84bbf2cf413c0">More...</a><br /></td></tr>
@@ -651,6 +656,20 @@ Enumerations</h2></td></tr>
 <li>inArgs: None</li>
 <li>outArgs: None </li>
 </ul>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e37e31ddf40acdd06e84bbf2cf413c0ad8272de8375d74b7fb536db8803169a9"></a>ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT&#160;</td><td class="fielddoc"><p>Handle link up event for an externally managed PHY. </p>
+<p>IOCTL params:</p><ul>
+<li>inArgs: <a class="el" href="structEnet__ExtPhyLinkUpEventInfo.html" title="Input args for ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT command.">Enet_ExtPhyLinkUpEventInfo</a></li>
+<li>outArgs: None</li>
+</ul>
+<p>Type: Synchronous. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5e37e31ddf40acdd06e84bbf2cf413c0ace2b386b7090151536648059eab4eb8e"></a>ENET_PER_IOCTL_HANDLE_EXTPHY_LINKDOWN_EVENT&#160;</td><td class="fielddoc"><p>Handle link down event for an externally managed PHY. </p>
+<p>IOCTL params:</p><ul>
+<li>inArgs: #</li>
+<li>outArgs: None</li>
+</ul>
+<p>Type: Synchronous. </p>
 </td></tr>
 </table>
 

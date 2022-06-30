@@ -30,12 +30,12 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 #include "ti_board_config.h"
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file
  */
 
 

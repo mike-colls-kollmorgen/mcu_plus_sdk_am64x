@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,40 +108,40 @@ $(document).ready(function(){initNavTree('INSTALL_NON_DEFAULT.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md253">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md254">SDK Installation</a><ul><li class="level2"><a href="#autotoc_md255">Using Makefiles</a></li>
-<li class="level2"><a href="#autotoc_md256">Using CCS Projects</a></li>
+<ul><li class="level1"><a href="#autotoc_md306">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md307">SDK Installation</a><ul><li class="level2"><a href="#autotoc_md308">Using Makefiles</a></li>
+<li class="level2"><a href="#autotoc_md309">Using CCS Projects</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md257">SysConfig Installation</a><ul><li class="level2"><a href="#autotoc_md258">Using Makefiles</a></li>
-<li class="level2"><a href="#autotoc_md259">Using CCS Projects</a></li>
+<li class="level1"><a href="#autotoc_md310">SysConfig Installation</a><ul><li class="level2"><a href="#autotoc_md311">Using Makefiles</a></li>
+<li class="level2"><a href="#autotoc_md312">Using CCS Projects</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md260">TI CLANG Compiler Toolchain Installation</a><ul><li class="level2"><a href="#autotoc_md261">Using Makefiles</a></li>
-<li class="level2"><a href="#autotoc_md262">Using CCS Projects</a></li>
+<li class="level1"><a href="#autotoc_md313">TI CLANG Compiler Toolchain Installation</a><ul><li class="level2"><a href="#autotoc_md314">Using Makefiles</a></li>
+<li class="level2"><a href="#autotoc_md315">Using CCS Projects</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md263">CCS Installation</a><ul><li class="level2"><a href="#autotoc_md264">Using Makefiles</a></li>
-<li class="level2"><a href="#autotoc_md265">Using CCS Projects</a></li>
+<li class="level1"><a href="#autotoc_md316">CCS Installation</a><ul><li class="level2"><a href="#autotoc_md317">Using Makefiles</a></li>
+<li class="level2"><a href="#autotoc_md318">Using CCS Projects</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md266">Other Tools</a></li>
+<li class="level1"><a href="#autotoc_md319">Other Tools</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_install_non_default"></a></p>
 <dl class="section note"><dt>Note</dt><dd>The screen shots shown on this page are for AM64x MCU+ SDK v7.3.0. You would see your specific SOC and SDK version that is installed. However the instructions and steps mentioned remain the same, unless mentioned otherwise.</dd></dl>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md306"></a>
 Introduction</h1>
 <p>The user guide in general recommends to install the SDK and tools at default paths for simplicity. However the SDK and tools can be installed at non-default locations as well. This section lists some details you need to follow when installing the SDK and tools at non-default locations.</p>
-<h1><a class="anchor" id="autotoc_md254"></a>
+<h1><a class="anchor" id="autotoc_md307"></a>
 SDK Installation</h1>
-<h2><a class="anchor" id="autotoc_md255"></a>
+<h2><a class="anchor" id="autotoc_md308"></a>
 Using Makefiles</h2>
 <ul>
 <li>You can install SDK anywhere and there is nothing more to do.</li>
 <li>Each makefile has a relative path to the root of the SDK. You can install the SDK anywhere and the makefiles inside the SDK will build the libraries and example correctly</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md256"></a>
+<h2><a class="anchor" id="autotoc_md309"></a>
 Using CCS Projects</h2>
 <ul>
 <li>After installing the SDK at non-default location, you need to make the sure the SDK is visible to CCS IDE by following the steps shown here <a class="el" href="CCS_SETUP_PAGE.html#CCS_PACKAGE_CHECK">Check Packages as seen by CCS</a></li>
@@ -151,17 +151,17 @@ Using CCS Projects</h2>
 <img src="ccs_setup_01.png" alt=""/>
 <div class="caption">
 CCS Products</div></div>
-<h1><a class="anchor" id="autotoc_md257"></a>
+<h1><a class="anchor" id="autotoc_md310"></a>
 SysConfig Installation</h1>
-<h2><a class="anchor" id="autotoc_md258"></a>
+<h2><a class="anchor" id="autotoc_md311"></a>
 Using Makefiles</h2>
 <ul>
 <li>Edit the below file to point to SysConfig install location <pre class="fragment">  ${SDK_INSTALL_PATH}/imports.mak
 </pre></li>
-<li>Edit the below variable in this file, depending on Linux or Windows, to point to the SysConfig install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1.11.0
+<li>Edit the below variable in this file, depending on Linux or Windows, to point to the SysConfig install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1.12.1
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md259"></a>
+<h2><a class="anchor" id="autotoc_md312"></a>
 Using CCS Projects</h2>
 <ul>
 <li>After installing SysConfig at non-default location, you need to make the sure it is visible to CCS IDE by following the steps shown here <a class="el" href="CCS_SETUP_PAGE.html#CCS_PACKAGE_CHECK">Check Packages as seen by CCS</a></li>
@@ -171,17 +171,17 @@ Using CCS Projects</h2>
 <img src="ccs_setup_01.png" alt=""/>
 <div class="caption">
 CCS Products</div></div>
-<h1><a class="anchor" id="autotoc_md260"></a>
+<h1><a class="anchor" id="autotoc_md313"></a>
 TI CLANG Compiler Toolchain Installation</h1>
-<h2><a class="anchor" id="autotoc_md261"></a>
+<h2><a class="anchor" id="autotoc_md314"></a>
 Using Makefiles</h2>
 <ul>
 <li>Edit the below file to point to compiler install location <pre class="fragment">  ${SDK_INSTALL_PATH}/imports.mak
 </pre></li>
-<li>Edit the below variable in this file, depending on Linux or Windows, to point to the compiler install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  CGT_TI_ARM_CLANG_PATH=$(TOOLS_PATH)/ti-cgt-armllvm_1.3.0.LTS
+<li>Edit the below variable in this file, depending on Linux or Windows, to point to the compiler install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  CGT_TI_ARM_CLANG_PATH=$(TOOLS_PATH)/ti-cgt-armllvm_1.3.1.LTS
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md262"></a>
+<h2><a class="anchor" id="autotoc_md315"></a>
 Using CCS Projects</h2>
 <ul>
 <li>After installing the compiler at non-default location, you need to make the sure it is visible to CCS IDE by following the steps shown here <a class="el" href="CCS_SETUP_PAGE.html#CCS_PACKAGE_CHECK">Check Packages as seen by CCS</a></li>
@@ -191,17 +191,17 @@ Using CCS Projects</h2>
 <img src="ccs_setup_02.png" alt=""/>
 <div class="caption">
 CCS Compilers</div></div>
-<h1><a class="anchor" id="autotoc_md263"></a>
+<h1><a class="anchor" id="autotoc_md316"></a>
 CCS Installation</h1>
-<h2><a class="anchor" id="autotoc_md264"></a>
+<h2><a class="anchor" id="autotoc_md317"></a>
 Using Makefiles</h2>
 <ul>
 <li>Edit the below file to point to CCS install location <pre class="fragment">  ${SDK_INSTALL_PATH}/imports.mak
 </pre></li>
-<li>Edit the below variable in this file, depending on Linux or Windows, to point to CCS install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  CCS_PATH?=$(TOOLS_PATH)/ccs1110/ccs
+<li>Edit the below variable in this file, depending on Linux or Windows, to point to CCS install location. Give absolute path with forward slash <code>/</code>. <pre class="fragment">  CCS_PATH?=$(TOOLS_PATH)/ccs1120/ccs
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md265"></a>
+<h2><a class="anchor" id="autotoc_md318"></a>
 Using CCS Projects</h2>
 <ul>
 <li>After installing CCS at non-default location, make the sure the SDK, SysConfig and compiler is visible to CCS IDE, by following the steps shown here <a class="el" href="CCS_SETUP_PAGE.html#CCS_PACKAGE_CHECK">Check Packages as seen by CCS</a></li>
@@ -215,7 +215,7 @@ CCS Products</div></div>
 <img src="ccs_setup_02.png" alt=""/>
 <div class="caption">
 CCS Compilers</div></div>
-<h1><a class="anchor" id="autotoc_md266"></a>
+<h1><a class="anchor" id="autotoc_md319"></a>
 Other Tools</h1>
 <p>The SDK needs other tools like openssl, python 3.x. These can be installed anywhere, just make sure the tools are visible to the command prompt in Windows or Linux. See <a class="el" href="SDK_DOWNLOAD_PAGE.html">Download, Install and Setup SDK and Tools</a> for more information on how to check if the tools are visible and installed as expected. </p>
 </div></div><!-- contents -->

@@ -35,6 +35,12 @@
 #ifndef LPDDR4_STRUCTS_IF_H
 #define LPDDR4_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "lpddr4_if.h"
 
@@ -129,5 +135,10 @@ struct LPDDR4_FspModeRegs_s
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* LPDDR4_STRUCTS_IF_H */

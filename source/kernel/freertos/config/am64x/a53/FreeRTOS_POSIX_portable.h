@@ -31,7 +31,18 @@
 #ifndef _FREERTOS_POSIX_PORTABLE_H_
 #define _FREERTOS_POSIX_PORTABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* This port uses the defaults in FreeRTOS_POSIX_portable_default.h, so this
  * file is empty. */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _FREERTOS_POSIX_PORTABLE_H_ */

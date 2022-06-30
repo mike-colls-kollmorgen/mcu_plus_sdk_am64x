@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('BOOTFLOW_XIP.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md206">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md207">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md208">Pre-requisites</a></li>
-<li class="level1"><a href="#autotoc_md209">Enable XIP for a application</a></li>
-<li class="level1"><a href="#autotoc_md210">Debugging XIP applications</a></li>
+<ul><li class="level1"><a href="#autotoc_md259">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md260">Additional References</a></li>
+<li class="level1"><a href="#autotoc_md261">Pre-requisites</a></li>
+<li class="level1"><a href="#autotoc_md262">Enable XIP for a application</a></li>
+<li class="level1"><a href="#autotoc_md263">Debugging XIP applications</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_bootflow_xip"></a></p>
-<h1><a class="anchor" id="autotoc_md206"></a>
+<h1><a class="anchor" id="autotoc_md259"></a>
 Introduction</h1>
 <ul>
 <li>Normally, when running a application, the application code is first copied to RAM by bootloader and then code executes from RAM.</li>
@@ -130,7 +130,7 @@ Introduction</h1>
 <li>However in some situations it is needed to execute code from flash for non-real time, non high performance code.</li>
 <li>XIP allows to do this.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md207"></a>
+<h1><a class="anchor" id="autotoc_md260"></a>
 Additional References</h1>
 <p>See also these additional pages for more details and examples about XIP,</p>
 <ul>
@@ -140,7 +140,7 @@ Additional References</h1>
 </li>
 <li>To understand overall boot flow see, <a class="el" href="BOOTFLOW_GUIDE.html">Understanding the bootflow and bootloaders</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md208"></a>
+<h1><a class="anchor" id="autotoc_md261"></a>
 Pre-requisites</h1>
 <ul>
 <li>The flash memory should be visible to the CPU, in "direct access mode (DAC)" i.e memory mapped mode.<ul>
@@ -151,7 +151,7 @@ Pre-requisites</h1>
 <li>The secondary bootloader needs to enable flash at highest throughput mode in this DAC mode, before booting the application.</li>
 <li>The application entry point, interrupt vectors and initial code upto <code>main()</code> should still execute from RAM. After <code>main()</code> the code can execute from flash.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md209"></a>
+<h1><a class="anchor" id="autotoc_md262"></a>
 Enable XIP for a application</h1>
 <p>To enable XIP for a application, below changes need to be done,</p>
 <ul>
@@ -207,7 +207,7 @@ Flash section in R5F MPU</div></div>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md210"></a>
+<h1><a class="anchor" id="autotoc_md263"></a>
 Debugging XIP applications</h1>
 <ul>
 <li>XIP applications can not be loaded via CCS, hence to debug a XIP application one needs to always flash and run the application and then "load symbols" via CCS to debug the application</li>

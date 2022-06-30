@@ -136,7 +136,7 @@ uint32_t ESL_OS_boardInit(uint32_t pruInstance_p)
 {
     uint32_t retVal = OSAL_eERR_EINVAL;
 
-    OSAL_TIMER_set100usecTickSupport(CONFIG_TIMER0_USEC_PER_TICK == 100U);
+    OSAL_TIMER_set100usecTickSupport(CONFIG_TIMER0_USEC_PER_TICK == 100u);
 
     Board_init();
     Drivers_open();
@@ -288,6 +288,7 @@ static uint32_t Board_getnumLedPerGroup(void)
 {
     uint32_t            ledCount;
 #if !(defined EC_IOL_GATEWAY) && (!(defined FBTLPROVIDER) || (FBTLPROVIDER==0))
+#if (defined CONFIG_LED0)
     const LED_Attrs    *attrs;
 
     attrs = LED_getAttrs(CONFIG_LED0);
@@ -295,6 +296,9 @@ static uint32_t Board_getnumLedPerGroup(void)
     /* For AM64x-EVM, AM243x-EVM and AM243x-LP all LEDs are connected, so return
      * the driver attributes value of 8 */
     ledCount = attrs->numLedPerGroup;
+#else
+    ledCount = 0;
+#endif
 #else
     ledCount = 0;
 #endif
@@ -331,7 +335,7 @@ static uint32_t Board_getnumLedPerGroup(void)
 void* ESL_OS_ioexp_leds_init(void)
 {
     ESL_OS_I2C_SHandle_t*   pHandle = NULL;
-    int32_t                 status;
+    int32_t                 status = SystemP_FAILURE;
 
     pHandle = (ESL_OS_I2C_SHandle_t*)OSAL_MEMORY_calloc(1, sizeof(ESL_OS_I2C_SHandle_t));
     if (!pHandle)
@@ -341,6 +345,7 @@ void* ESL_OS_ioexp_leds_init(void)
 
     OSAL_MEMORY_memset(pHandle, 0, sizeof(ESL_OS_I2C_SHandle_t));
 #if !(defined EC_IOL_GATEWAY) && (!(defined FBTLPROVIDER) || (FBTLPROVIDER==0))
+#if (defined CONFIG_LED0)
     /* already done by drivers_open */
     pHandle->ledHandle = gLedHandle[CONFIG_LED0];
     pHandle->numLedPerGroup = Board_getnumLedPerGroup();
@@ -353,6 +358,7 @@ void* ESL_OS_ioexp_leds_init(void)
     {
         status = LED_off(pHandle->ledHandle, 0);
     }
+#endif
 #endif
 
     if (SystemP_SUCCESS != status)

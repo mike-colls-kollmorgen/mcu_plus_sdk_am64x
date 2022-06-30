@@ -252,7 +252,7 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
     /*Two buffers are configured, one for each port.*/
 
     /*Configure Sync, Announce, Follow Up and Management frame buffer*/
-    timeSyncHandle->timeSyncBuff.sync_TxBuf = malloc(
+    timeSyncHandle->timeSyncBuff.sync_TxBuf = (uint8_t *) malloc(
                 timeSyncHandle->timeSyncBuff.syncBuf_size);
 
     if(timeSyncHandle->timeSyncBuff.sync_TxBuf == NULL)
@@ -260,9 +260,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
         return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
     }
 
-    timeSyncHandle->timeSyncBuff.followUp_TxBuf[0] = malloc(
+    timeSyncHandle->timeSyncBuff.followUp_TxBuf[0] = (uint8_t *) malloc(
                 timeSyncHandle->timeSyncBuff.flwUpBuf_size);
-    timeSyncHandle->timeSyncBuff.followUp_TxBuf[1] = malloc(
+    timeSyncHandle->timeSyncBuff.followUp_TxBuf[1] = (uint8_t *) malloc(
                 timeSyncHandle->timeSyncBuff.flwUpBuf_size);
 
     if((timeSyncHandle->timeSyncBuff.followUp_TxBuf[0] == NULL) ||
@@ -271,7 +271,7 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
         return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
     }
 
-    timeSyncHandle->timeSyncBuff.announce_TxBuf = malloc(
+    timeSyncHandle->timeSyncBuff.announce_TxBuf = (uint8_t *) malloc(
                 timeSyncHandle->timeSyncBuff.announceBuf_size);
 
     if(timeSyncHandle->timeSyncBuff.announce_TxBuf == NULL)
@@ -283,9 +283,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
     if(P2P == timeSyncHandle->timeSyncConfig.type)
     {
 
-        timeSyncHandle->timeSyncBuff.pdelayReq_RxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayReq_RxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayReq_RxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayReq_RxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayReq_RxBuf[0] == NULL) ||
@@ -294,9 +294,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
             return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
         }
 
-        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_RxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_RxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_RxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_RxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayResFlwUp_RxBuf[0] == NULL) ||
@@ -305,9 +305,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
             return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
         }
 
-        timeSyncHandle->timeSyncBuff.pdelayRes_RxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayRes_RxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayRes_RxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayRes_RxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayRes_RxBuf[0] == NULL) ||
@@ -316,9 +316,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
             return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
         }
 
-        timeSyncHandle->timeSyncBuff.pdelayReq_TxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayReq_TxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayReq_TxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayReq_TxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayReq_TxBuf[0] == NULL) ||
@@ -327,9 +327,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
             return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
         }
 
-        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_TxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_TxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_TxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayResFlwUp_TxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayResFlwUp_TxBuf[0] == NULL) ||
@@ -338,9 +338,9 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
             return TIME_SYNC_UNABLE_TO_ALLOC_MEM;
         }
 
-        timeSyncHandle->timeSyncBuff.pdelayRes_TxBuf[0] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayRes_TxBuf[0] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
-        timeSyncHandle->timeSyncBuff.pdelayRes_TxBuf[1] = malloc(
+        timeSyncHandle->timeSyncBuff.pdelayRes_TxBuf[1] = (uint8_t *) malloc(
                     TIMESYNC_PDELAY_BUF_SIZE);
 
         if((timeSyncHandle->timeSyncBuff.pdelayRes_TxBuf[0] == NULL) ||
@@ -353,7 +353,7 @@ int8_t TimeSync_alloc_PktBuffer(TimeSync_ParamsHandle_t timeSyncHandle)
 
     else        /*Configure Delay Req buffers*/
     {
-        timeSyncHandle->timeSyncBuff.delayReq_TxBuf = malloc(
+        timeSyncHandle->timeSyncBuff.delayReq_TxBuf = (uint8_t *) malloc(
                     TIMESYNC_DELAY_REQ_BUF_SIZE);
 
         if(timeSyncHandle->timeSyncBuff.delayReq_TxBuf == NULL)

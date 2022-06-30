@@ -159,6 +159,14 @@ typedef enum
     /**< control MMR lock 7*/
 } EnetAppUtils_CtrlMmrType;
 
+typedef struct EnetApp_HandleInfo_s
+{
+    Enet_Handle hEnet;
+#if !(defined(SOC_AM273X) || defined(SOC_AWR294X) || defined (SOC_AM263X))
+    Udma_DrvHandle hUdmaDrv;
+#endif
+} EnetApp_HandleInfo;
+
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
@@ -409,11 +417,26 @@ int32_t EnetAppUtils_showRxFlowStats(EnetDma_RxChHandle hRxFlow);
 
 int32_t EnetAppUtils_showTxChStats(EnetDma_TxChHandle hTxCh);
 
-void EnetApp_getEnetInstInfo(Enet_Type *enetType, uint32_t *instId,
+void EnetApp_getEnetInstInfo(Enet_Type *enetType, uint32_t *instId);
+void EnetApp_getEnetInstMacInfo(Enet_Type enetType, uint32_t instId,
                              Enet_MacPort macPortList[],   uint8_t *numMacPorts);
-void EnetApp_getCpswInitCfg(Enet_Type enetType,  uint32_t instId,   Cpsw_Cfg *cpswCfg);
-void EnetApp_initLinkArgs(EnetPer_PortLinkCfg *linkArgs,   Enet_MacPort macPort);
+void     EnetApp_acquireHandleInfo(Enet_Type enetType, uint32_t instId,
+                                   EnetApp_HandleInfo *handleInfo);
+
+void     EnetApp_coreAttach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            EnetPer_AttachCoreOutArgs *attachInfo);
+
+void     EnetApp_coreDetach(Enet_Type enetType, uint32_t instId,
+                            uint32_t coreId,
+                            uint32_t coreKey);
+
+void     EnetApp_releaseHandleInfo(Enet_Type enetType, uint32_t instId);
+
+
 bool EnetApp_isPortLinked(Enet_Handle hEnet);
+
+
 
 
 /* ========================================================================== */

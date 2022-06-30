@@ -53,6 +53,12 @@
 #ifndef TISCI_BOARDCFG_MACROS_H
 #define TISCI_BOARDCFG_MACROS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /** Length of the hash in bytes. We use SHA2-512 as the hash algorithm */
 #define TISCI_BOARDCFG_HASH_LEN_BYTES (64U)
 
@@ -93,6 +99,11 @@
  * before needing to pick a new seed.
  * e.g. 0x3172U -> 0x4081U, 0x42AFU -> 0x33BEU
  */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 /** @} */

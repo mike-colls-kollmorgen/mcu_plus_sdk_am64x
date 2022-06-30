@@ -60,6 +60,8 @@ IOLM_SMI_SCallbacks IOLM_EXMPL_SSmiCallbacks_g =
     /* Cyclic communication */
     .cbPDInCnf                  =       IOLM_EXMPL_cbPDInCnf,
     .cbPDOutCnf                 =       IOLM_EXMPL_cbPDOutCnf,
+    /* Mainloop Request - called by stack to indicate SMI mainloop run is required */
+    .cbMainLoopRequest          =       IOLM_MAIN_cbMainLoopRequest,
 };
 
 IOLM_EXMPL_SPortDataValues_t port[IOLM_EXMPL_PORTS_USED + 1];
@@ -175,7 +177,7 @@ void OSAL_FUNC_NORETURN IOLM_EXMPL_mainLoop(void)
 
     IOLM_EXMPL_printf("---------------START EXAMPLE APPLICATION------------------\n");
     IOLM_SMI_vMasterIdentificationReq(IOLM_SMI_CLIENT_APP);
-    OSAL_SCHED_sleep(2000); /*Wait for answer*/
+    OSAL_SCHED_sleep(5); /*Wait for answer*/
     IOLM_EXMPL_printf("\n");
     
     while (1)
@@ -248,7 +250,6 @@ void IOLM_EXMPL_stateMachine(void)
                 IOLM_SMI_SPortConfigList portConfig;
                 memset(&portConfig, 0, sizeof(portConfig));
                 portConfig.u8PortMode = IOLM_SMI_ePortMode_IOL_AUTOSTART;
-                
                 portConfig.u16ArgBlockID = IOLM_SMI_ENDIAN_16(IOLM_SMI_eArgBlockID_PortConfigList);
                 IOLM_EXMPL_printf("IO-Link port %u: Port is now in \"Config\" mode\n", portNumber);
                 IOLM_SMI_vPortConfigurationReq(IOLM_SMI_CLIENT_APP, portNumber, sizeof(portConfig), (INT8U*)&portConfig);

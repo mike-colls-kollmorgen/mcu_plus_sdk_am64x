@@ -163,7 +163,6 @@ void TimeSync_doFirstAdjustment(TimeSync_ParamsHandle_t timeSyncHandle,
 void TimeSync_getTxTS(TimeSync_ParamsHandle_t timeSyncHandle, uint8_t portNum,
                       ptpFrameTypes_t frameType)
 {
-    uint8_t *ptpFlwUpPacket = NULL;
     uint8_t *ptpPDelayResFlwUpPacket = NULL;
     ICSS_EMAC_TxArgument txArg;
     uint32_t nanoseconds = 0;
@@ -175,70 +174,11 @@ void TimeSync_getTxTS(TimeSync_ParamsHandle_t timeSyncHandle, uint8_t portNum,
     oppPort = ~portNum;
     oppPort &= 0x3;
 
-    /*This gets called only in case of 2-step master and forced 2-step slave*/
+    /*This gets called only in case of forced 2-step slave*/
     if(SYNC_FRAME == frameType)              /*Sync frame*/
     {
-        if(!timeSyncHandle->timeSyncConfig.isMaster)
-        {
-
-            /*Set event flag to indicate sync frame tx*/
-            EventP_setBits(&(timeSyncHandle->ptpSendFollowUpEvtObject[oppPort - 1]), timeSyncHandle->eventIdSync);
-
-        }
-
-        else
-        {
-            ptpFlwUpPacket = timeSyncHandle->timeSyncBuff.followUp_TxBuf[portNum - 1];
-
-            /*Write seconds into packet*/
-            TimeSync_convEndianess(&(timeSyncHandle->syncParam[portNum - 1]->txTsSec),
-                          ptpFlwUpPacket + \
-                          PTP_REQ_RCPT_TS_SEC_OFFSET - offset, 6);
-            /*Write nanoseconds into packet*/
-            TimeSync_convEndianess(&(timeSyncHandle->syncParam[portNum - 1]->txTs),
-                          ptpFlwUpPacket + \
-                          PTP_REQ_RCPT_TS_NSEC_OFFSET - offset, 4);
-
-            /*Add Source Port ID*/
-            TimeSync_addHalfWord(ptpFlwUpPacket + PTP_SRC_PORT_ID_OFFSET - offset,
-                        portNum);
-
-            if(timeSyncHandle->timeSyncConfig.hsrEnabled ||
-                    timeSyncHandle->timeSyncConfig.custom_tx_api)
-            {
-
-// #ifdef NEW_TX_CALLBACK
-//                 txArg.customFlag = 0;
-// #endif //NEW_TX_CALLBACK
-                txArg.icssEmacHandle = timeSyncHandle->emacHandle;
-                txArg.lengthOfPacket = timeSyncHandle->timeSyncBuff.flwUpBuf_size;
-                txArg.portNumber = portNum;
-                txArg.queuePriority = ICSS_EMAC_QUEUE1;
-                txArg.srcAddress = ptpFlwUpPacket;
-
-                /*Send follow up frame out*/
-                // ((((ICSS_EmacObject *)
-                //    timeSyncHandle->emacHandle->object)->callBackHandle)->txCallBack)->callBack(
-                //        &txArg,
-                //        ((((ICSS_EmacObject *)
-                //           timeSyncHandle->emacHandle->object)->callBackHandle)->txCallBack)->userArg);
-                ICSS_EMAC_txPacket(&txArg, NULL);
-            }
-            else
-            {
-                txArg.icssEmacHandle = timeSyncHandle->emacHandle;
-                txArg.lengthOfPacket = timeSyncHandle->timeSyncBuff.flwUpBuf_size;
-                txArg.portNumber = portNum;
-                txArg.queuePriority = ICSS_EMAC_QUEUE1;
-                txArg.srcAddress = ptpFlwUpPacket;
-
-                ICSS_EMAC_txPacket(&txArg, NULL);
-                // ICSS_EmacTxPacketEnqueue(timeSyncHandle->emacHandle, ptpFlwUpPacket,
-                //                          portNum, ICSS_EMAC_QUEUE1, timeSyncHandle->timeSyncBuff.flwUpBuf_size);
-            }
-
-        }
-
+        /*Set event flag to indicate sync frame tx*/
+        EventP_setBits(&(timeSyncHandle->ptpSendFollowUpEvtObject[oppPort - 1]), timeSyncHandle->eventIdSync);
     }
 
     if(DELAY_RESP_FRAME == frameType)              /*Pdelay response*/

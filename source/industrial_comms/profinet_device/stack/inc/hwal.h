@@ -131,7 +131,7 @@ typedef struct HWAL_PRU_SPhysical
     HWAL_MEM_SBarDescriptor_t   iram[2];
 } HWAL_PRU_SPhysical_t;
 
-typedef uint32_t (*HWAL_FREERTOS_PRFCNT_CBPrfCntOverflowHandler_t) (void);
+typedef uint32_t (*HWAL_PRFCNT_CBPrfCntOverflowHandler_t) (void);
 
 #if (defined __cplusplus)
 extern "C" {
@@ -157,6 +157,8 @@ extern          uint32_t    HWAL_getEventDevice             (uint8_t            
                                                             ,char*                          pEventDevice_p);
 extern          uint32_t    HWAL_getPruPhysInfo             (uint8_t                        pruInstance_p
                                                             ,HWAL_PRU_SPhysical_t*          pInfo_p);
+extern HWAL_API uint32_t    HWAL_cyclicTrigger              (void);
+extern HWAL_API uint32_t    HWAL_leaveOp                    (void);
 
 extern HWAL_API uint32_t    HWAL_PRFCNT_init                (HWAL_PRFCNT_EPrecision_t       precision_p);
 

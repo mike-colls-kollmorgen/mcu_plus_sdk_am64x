@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -62,12 +62,12 @@
 #include <drivers/hw_include/cslr_mcspi.h>
 #include <drivers/hw_include/cslr.h>
 
-#if defined (DRV_VERSION_MCSPI_V0)
+#if defined (DMA_VERSION_MCSPI_UDMA)
 #include <drivers/mcspi/v0/dma/udma/mcspi_dma_udma.h>
 #endif
 
-#if defined (DRV_VERSION_MCSPI_V1)
-/* Include EDMA */
+#if defined (DMA_VERSION_MCSPI_EDMA)
+#include <drivers/mcspi/v0/dma/edma/mcspi_dma_edma.h>
 #endif
 
 #ifdef __cplusplus

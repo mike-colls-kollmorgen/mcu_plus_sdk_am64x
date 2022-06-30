@@ -16,10 +16,10 @@
 
 /* This is the size of stack when R5 is in IRQ mode
  * In NORTOS,
- * - Here interrupt nesting is disabled as of now
+ * - Here interrupt nesting is enabled
  * - This is the stack used by ISRs registered as type IRQ
  * In FreeRTOS,
- * - Here interrupt nesting is enabled
+ * - Here interrupt nesting is disabled
  * - This is stack that is used initally when a IRQ is received
  * - But then the mode is switched to SVC mode and SVC stack is used for all user ISR callbacks
  * - Hence in FreeRTOS, IRQ stack size is less and SVC stack size is more
@@ -131,7 +131,7 @@ MEMORY
     /* when using multi-core application's i.e more than one R5F/M4F active, make sure
      * this memory does not overlap with other R5F's
      */
-    MSRAM     : ORIGIN = 0x70080000 , LENGTH = 0x40000
+    MSRAM     : ORIGIN = 0x70080000 , LENGTH = 0x42000
 
     /* This section can be used to put XIP section of the application in flash, make sure this does not overlap with
      * other CPUs. Also make sure to add a MPU entry for this section and mark it as cached and code executable

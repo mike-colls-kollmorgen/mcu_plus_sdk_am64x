@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -142,31 +142,42 @@ $(document).ready(function(){initNavTree('icss__eip__mcFltr_8h_source.html','');
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef ICSS_EIP_MCFLTR_H_</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define ICSS_EIP_MCFLTR_H_</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="icss__emac_8h.html">networking/icss_emac/icss_emac.h</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a9edd1400c2d388b0368220e487ac8138">   54</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a9edd1400c2d388b0368220e487ac8138">eip_multicast_filter_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                 uint8_t        command);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#ab7d8101615d1e5b31145ce78814f1c8b">   66</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#ab7d8101615d1e5b31145ce78814f1c8b">eip_multicast_stromPrev_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>  pruicssHandle,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                                    uint8_t         command);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a25f7639b05ba3e4482b41157cbe7eb8f">   79</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a25f7639b05ba3e4482b41157cbe7eb8f">eip_multicast_filter_update_macid</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>   pruicssHandle,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                       <span class="keywordtype">char</span>             *multicastAddr,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                       uint8_t          command);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a64d9ecec698b7a7e4760b739f364a7fe">   90</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a64d9ecec698b7a7e4760b739f364a7fe">eip_multicast_filter_override_hashmask</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>  pruicssHandle,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                            <span class="keywordtype">char</span>            *mask);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a5f309482b443a41d347df774b3cabda0">   99</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a5f309482b443a41d347df774b3cabda0">eip_multicast_filter_init</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* ICSS_EIP_MCFLTR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="icss__emac_8h.html">networking/icss_emac/icss_emac.h</a>&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a9edd1400c2d388b0368220e487ac8138">   60</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a9edd1400c2d388b0368220e487ac8138">eip_multicast_filter_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                 uint8_t        command);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#ab7d8101615d1e5b31145ce78814f1c8b">   72</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#ab7d8101615d1e5b31145ce78814f1c8b">eip_multicast_stromPrev_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>  pruicssHandle,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                    uint8_t         command);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a25f7639b05ba3e4482b41157cbe7eb8f">   85</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a25f7639b05ba3e4482b41157cbe7eb8f">eip_multicast_filter_update_macid</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>   pruicssHandle,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                       <span class="keywordtype">char</span>             *multicastAddr,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                       uint8_t          command);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a64d9ecec698b7a7e4760b739f364a7fe">   96</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a64d9ecec698b7a7e4760b739f364a7fe">eip_multicast_filter_override_hashmask</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a>  pruicssHandle,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                            <span class="keywordtype">char</span>            *mask);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="icss__eip__mcFltr_8h.html#a5f309482b443a41d347df774b3cabda0">  105</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="icss__eip__mcFltr_8h.html#a5f309482b443a41d347df774b3cabda0">eip_multicast_filter_init</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* ICSS_EIP_MCFLTR_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aicss__eip__mcFltr_8h_html_a5f309482b443a41d347df774b3cabda0"><div class="ttname"><a href="icss__eip__mcFltr_8h.html#a5f309482b443a41d347df774b3cabda0">eip_multicast_filter_init</a></div><div class="ttdeci">void eip_multicast_filter_init(PRUICSS_Handle pruicssHandle)</div><div class="ttdoc">multicast filtering init</div></div>

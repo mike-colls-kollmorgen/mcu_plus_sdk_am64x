@@ -38,6 +38,12 @@
 #ifndef RED_COMMON_H_
 #define RED_COMMON_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -533,5 +539,10 @@ typedef enum
 #else /* RED_DEBUG */
 #define RED_DEBUG_MSG(...)
 #endif /* RED_DEBUG */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_COMMON_H_ */

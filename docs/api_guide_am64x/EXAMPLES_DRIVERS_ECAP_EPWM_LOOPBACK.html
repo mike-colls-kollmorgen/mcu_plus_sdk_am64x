@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,15 +108,15 @@ $(document).ready(function(){initNavTree('EXAMPLES_DRIVERS_ECAP_EPWM_LOOPBACK.ht
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1068">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1183">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_DRIVERS_ECAP_EPWM_LOOPBACK_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1069">Steps to Run the Example</a></li>
-<li class="level1"><a href="#autotoc_md1070">See Also</a></li>
-<li class="level1"><a href="#autotoc_md1071">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1184">Steps to Run the Example</a></li>
+<li class="level1"><a href="#autotoc_md1185">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1186">Sample Output</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_drivers_ecap_epwm_loopback"></a></p>
-<h1><a class="anchor" id="autotoc_md1068"></a>
+<h1><a class="anchor" id="autotoc_md1183"></a>
 Introduction</h1>
 <p>This example demonstrates ePWM to eCAP loopback test. The ecap module is configured in the capture mode and the ecap device pin is configured as input pin. A square wave needs to be fed to the ecap pin externally. Based on the internal counter the count values for each of the edge is latched in register. 4th edge will generate the interrupt. Based on the latched counter values, calculates the input signal frequency and the duty cycle based on the epwm input to the ecap module. ePWM is configured to generate a square wave with 25% duty cycle. Connect the ePWM output to eCAP input externally on the board. Below is the setup details.</p>
 <ul>
@@ -140,7 +140,7 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/drivers/ecap/ecap_epwm_loopback/   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1069"></a>
+<h1><a class="anchor" id="autotoc_md1184"></a>
 Steps to Run the Example</h1>
 <ul>
 <li><b>When using CCS projects to build</b>, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
@@ -148,10 +148,10 @@ Steps to Run the Example</h1>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 <li>Please connect the ePWM output to eCAP input externally as mentioned above in Introduction section</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1070"></a>
+<h1><a class="anchor" id="autotoc_md1185"></a>
 See Also</h1>
 <p><a class="el" href="DRIVERS_ECAP_PAGE.html">ECAP</a></p>
-<h1><a class="anchor" id="autotoc_md1071"></a>
+<h1><a class="anchor" id="autotoc_md1186"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run,</p>
 <div class="fragment"><div class="line">EPWM to ECAP loopback application started...</div>

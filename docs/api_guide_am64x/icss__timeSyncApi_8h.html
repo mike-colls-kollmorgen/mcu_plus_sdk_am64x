@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -148,9 +148,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtimeSync__SyntInfo__t.html">timeSync_SyntInfo_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters required for clock syntonization.  <a href="structtimeSync__SyntInfo__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtimeSync__ToD__Param__t.html">timeSync_ToD_Param_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters required for doing Time of Day synchronization.  <a href="structtimeSync__ToD__Param__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtimeSync__NrrInfo__t.html">timeSync_NrrInfo_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters required for calculating Nighbor Rate Ratio.  <a href="structtimeSync__NrrInfo__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,9 +230,6 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a6852e64424bdf32dfd10be120350f484"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__timeSyncApi_8h.html#a6852e64424bdf32dfd10be120350f484">TimeSync_txCallBack_t</a>) (uint32_t arg, uint32_t arg2)</td></tr>
-<tr class="memdesc:a6852e64424bdf32dfd10be120350f484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit callback function.  <a href="icss__timeSyncApi_8h.html#a6852e64424bdf32dfd10be120350f484">More...</a><br /></td></tr>
-<tr class="separator:a6852e64424bdf32dfd10be120350f484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03937c26648618344a47df6998dc6798"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="icss__timeSyncApi_8h.html#a03937c26648618344a47df6998dc6798">TimeSync_SyncLossCallBack_t</a>) (void)</td></tr>
 <tr class="memdesc:a03937c26648618344a47df6998dc6798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sync loss callback function. Call cross module functions in case of loss of synchronization.  <a href="icss__timeSyncApi_8h.html#a03937c26648618344a47df6998dc6798">More...</a><br /></td></tr>
 <tr class="separator:a03937c26648618344a47df6998dc6798"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -780,22 +774,6 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a6852e64424bdf32dfd10be120350f484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6852e64424bdf32dfd10be120350f484">&#9670;&nbsp;</a></span>TimeSync_txCallBack_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef void(* TimeSync_txCallBack_t) (uint32_t arg, uint32_t arg2)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transmit callback function. </p>
-
-</div>
-</div>
 <a id="a03937c26648618344a47df6998dc6798"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03937c26648618344a47df6998dc6798">&#9670;&nbsp;</a></span>TimeSync_SyncLossCallBack_t</h2>
 

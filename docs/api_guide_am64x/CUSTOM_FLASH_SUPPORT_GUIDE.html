@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,30 +108,30 @@ $(document).ready(function(){initNavTree('CUSTOM_FLASH_SUPPORT_GUIDE.html',''); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md274">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md275">Summary of steps needed to enable a new flash device</a></li>
-<li class="level1"><a href="#autotoc_md276">Step 1: Building the OSPI Flash Diagnostic example</a></li>
-<li class="level1"><a href="#autotoc_md277">Step 2: Creating a new flash driver</a><ul><li class="level2"><a href="#autotoc_md278">Flash driver structure in the SDK</a></li>
-<li class="level2"><a href="#autotoc_md279">Adding new files to device specific layer</a></li>
+<ul><li class="level1"><a href="#autotoc_md327">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md328">Summary of steps needed to enable a new flash device</a></li>
+<li class="level1"><a href="#autotoc_md329">Step 1: Building the OSPI Flash Diagnostic example</a></li>
+<li class="level1"><a href="#autotoc_md330">Step 2: Creating a new flash driver</a><ul><li class="level2"><a href="#autotoc_md331">Flash driver structure in the SDK</a></li>
+<li class="level2"><a href="#autotoc_md332">Adding new files to device specific layer</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md280">Step 3: Obtaining flash details from the SFDP table OR datasheet</a><ul><li class="level2"><a href="#autotoc_md281">Flash configuration information</a></li>
-<li class="level2"><a href="#autotoc_md282">Serial Flash Discoverable Parameters (SFDP)</a></li>
-<li class="level2"><a href="#autotoc_md283">Using the output of OSPI Flash Diagnostic example</a></li>
-<li class="level2"><a href="#autotoc_md284">Using the flash datasheet</a></li>
+<li class="level1"><a href="#autotoc_md333">Step 3: Obtaining flash details from the SFDP table OR datasheet</a><ul><li class="level2"><a href="#autotoc_md334">Flash configuration information</a></li>
+<li class="level2"><a href="#autotoc_md335">Serial Flash Discoverable Parameters (SFDP)</a></li>
+<li class="level2"><a href="#autotoc_md336">Using the output of OSPI Flash Diagnostic example</a></li>
+<li class="level2"><a href="#autotoc_md337">Using the flash datasheet</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md285">Step 4: Test the new flash driver with the changes using OSPI Flash I/O example</a></li>
-<li class="level1"><a href="#autotoc_md286">Step 5: Test the flash driver with OSPI bootloader and flash writer</a></li>
-<li class="level1"><a href="#autotoc_md287">Miscellaneous tips and tricks</a></li>
+<li class="level1"><a href="#autotoc_md338">Step 4: Test the new flash driver with the changes using OSPI Flash I/O example</a></li>
+<li class="level1"><a href="#autotoc_md339">Step 5: Test the flash driver with OSPI bootloader and flash writer</a></li>
+<li class="level1"><a href="#autotoc_md340">Miscellaneous tips and tricks</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_custom_flash"></a></p>
-<h1><a class="anchor" id="autotoc_md274"></a>
+<h1><a class="anchor" id="autotoc_md327"></a>
 Introduction</h1>
 <p>The flash driver provided in the SDK package can communicate with a limited number of flashes as listed in <a class="el" href="BOARD_FLASH_PAGE.html">Flash</a>. While we can always talk to a flash in 1S-1S-1S mode of communication after a soft reset, the data throughput offered by this mode will be quite less compared the maximum supported by the flash (4S-4D-4D or 8D-8D-8D)</p>
 <p>If a different external flash is being used, the flash driver will need certain modifications and configuration changes to work properly. This guide will help in the process of developing/modifying the flash driver to suit the custom external flash being used.</p>
-<h1><a class="anchor" id="autotoc_md275"></a>
+<h1><a class="anchor" id="autotoc_md328"></a>
 Summary of steps needed to enable a new flash device</h1>
 <ul>
 <li><b>Step 1</b>: Build the <code>ospi_flash_diag</code> example : <a class="el" href="EXAMPLES_DRIVERS_OSPI_FLASH_DIAG.html">OSPI Flash Diagnostic</a>. This example communicates with the flash in 1S-1S-1S mode and queries the flash for the SFDP table (if SFDP is supported by the flash) among other things. The logs from this example would be required later to configure the flash driver.</li>
@@ -140,12 +140,12 @@ Summary of steps needed to enable a new flash device</h1>
 <li><b>Step 4</b>: Test the new flash driver with the changes using <code>ospi_flash_io</code> example : <a class="el" href="EXAMPLES_DRIVERS_OSPI_FLASH_IO.html">OSPI Flash IO</a></li>
 <li><b>Step 5</b>: Test the flash driver with OSPI bootloader <a class="el" href="EXAMPLES_DRIVERS_SBL_OSPI.html">SBL OSPI</a> and flash writer <a class="el" href="EXAMPLES_DRIVERS_SBL_UART_UNIFLASH.html">SBL UART Uniflash</a> by flashing an example <a class="el" href="GETTING_STARTED_FLASH.html">Flash a Hello World example</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md276"></a>
+<h1><a class="anchor" id="autotoc_md329"></a>
 Step 1: Building the OSPI Flash Diagnostic example</h1>
 <p>Refer the example page <a class="el" href="EXAMPLES_DRIVERS_OSPI_FLASH_DIAG.html">OSPI Flash Diagnostic</a> on building this application. You will need have to initialize the SOC in no boot mode as mentioned in <a class="el" href="EVM_SETUP_PAGE.html#EVM_SOC_INIT_NOBOOT_MODE">SOC Initialization Using CCS Scripting</a> and also load and run this example using CCS, as mentioned in <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a>. Take logs printed by the example and save it in a txt file. We would need to refer these logs later while configuring the flash driver.</p>
-<h1><a class="anchor" id="autotoc_md277"></a>
+<h1><a class="anchor" id="autotoc_md330"></a>
 Step 2: Creating a new flash driver</h1>
-<h2><a class="anchor" id="autotoc_md278"></a>
+<h2><a class="anchor" id="autotoc_md331"></a>
 Flash driver structure in the SDK</h2>
 <p>The flash driver in the SDK composes of two layers :</p>
 <ul>
@@ -161,7 +161,7 @@ Flash driver structure in the SDK</h2>
 <li><a class="el" href="group__BOARD__FLASH__MODULE.html#ga6871c4f81b71aa3543e8c37ace777821">Flash_eraseBlk</a></li>
 </ul>
 <p>Out of these, the <a class="el" href="group__BOARD__FLASH__MODULE.html#ga433c1193175febd7b27b3a305bd7d57c">Flash_open</a> is the most important one. That is where the flash would be configured to work in a specific mode and also set the NOR SPI controller to talk to the flash. The callbacks to these will be implemented in the device specific layer.</p>
-<h2><a class="anchor" id="autotoc_md279"></a>
+<h2><a class="anchor" id="autotoc_md332"></a>
 Adding new files to device specific layer</h2>
 <p>There are 3 files needed per flash in the device specific layer as per the current driver structure :</p>
 <ul>
@@ -178,9 +178,9 @@ Adding new files to device specific layer</h2>
 <li>For size, give the flash size in bytes</li>
 </ul>
 <p>Confirm that the files build and the new flash device is selectable in sysconfig. We can now update the files according to the new flash device.</p>
-<h1><a class="anchor" id="autotoc_md280"></a>
+<h1><a class="anchor" id="autotoc_md333"></a>
 Step 3: Obtaining flash details from the SFDP table OR datasheet</h1>
-<h2><a class="anchor" id="autotoc_md281"></a>
+<h2><a class="anchor" id="autotoc_md334"></a>
 Flash configuration information</h2>
 <p>In order to program the flash device and NOR SPI controller to work in the best configuration (maximum data throughput) supported by the flash device, these are the bare minimum data required from the flash :</p>
 <ul>
@@ -201,11 +201,11 @@ Flash configuration information</h2>
 <li>Hybrid sector feature</li>
 </ul>
 <p>Enabling a specific protocol or DTR or setting the dummy cycles are done by writing to various configuration registers in the flash. These data about the flash can be found out in 2 ways, from the flash datasheet or SFDP (Serial Flash Discoverable Parameters) standard. Strictly speaking the SFDP is not a complete replacement for the datasheet, but SFDP can provide data about all the details mentioned above. If the custom flash device supports SFDP, we can use that. If not, we'll have to rely on the flash datasheet to get these informations.</p>
-<h2><a class="anchor" id="autotoc_md282"></a>
+<h2><a class="anchor" id="autotoc_md335"></a>
 Serial Flash Discoverable Parameters (SFDP)</h2>
 <p>The Serial Flash Discoverable Parameters (SFDP) is a standard which provides a consistent method of describing the functional and feature capabilities of the flash device in a standard set of internal parameter tables. This table can be queried to identify the configurations and adjustments needed to set the flash in a desired state.</p>
 <p>The parsing of the SFDP table is time consuming. Considering this, the SFDP parsing feature in this SDK is tied with a diagnostic example of the NOR SPI driver. In flashes where the SFDP is supported, this example can be used to parse the details into a config structure which can aid in writing the custom flash driver. As of now the SFDP parsing in the SDK supports JEDS216D standard.</p>
-<h2><a class="anchor" id="autotoc_md283"></a>
+<h2><a class="anchor" id="autotoc_md336"></a>
 Using the output of OSPI Flash Diagnostic example</h2>
 <p>The <code>ospi_flash_diag</code> example reads the SFDP table (in 1S-1S-1S mode) and prints the parsed result in the form of a struct which can be used to fill in your own device defines struct. Here is a sample output:</p>
 <div class="fragment"><div class="line">================================================</div>
@@ -363,7 +363,7 @@ Using the output of OSPI Flash Diagnostic example</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md284"></a>
+<h2><a class="anchor" id="autotoc_md337"></a>
 Using the flash datasheet</h2>
 <p>This section can be ignored if the flash supports SFDP.</p>
 <p>All the details regarding the flash including fast read opcodes, supported erase sizes, dummy clocks needed for each instruction and flash configuration registers information will be available from the flash data sheet.</p>
@@ -376,20 +376,20 @@ Using the flash datasheet</h2>
 <li>Configuration registers for setting various protocols, DTR clocking, and dummy cycles can be obtained from register configuration section.</li>
 </ul>
 <p>These opcodes and register address values can then be updated in the <code>flash_nor_xspi_device_&lt;flash_part_number&gt;.c</code> file. Make necessary changes in the <code>Flash_norXspiOpen</code> function to set the 4 byte addressing mode correctly. If it is a case of separate opcodes, you only need to set this for the NOR SPI controller. If it needs a register write to one of the flash config registers, then that needs to be done.</p>
-<h1><a class="anchor" id="autotoc_md285"></a>
+<h1><a class="anchor" id="autotoc_md338"></a>
 Step 4: Test the new flash driver with the changes using OSPI Flash I/O example</h1>
 <ul>
 <li>Update the example.syscfg of the <code>ospi_flash_io</code> example <a class="el" href="EXAMPLES_DRIVERS_OSPI_FLASH_IO.html">OSPI Flash IO</a> using SysConfig GUI to select the new flash device you have added.</li>
 <li>Build and run the example</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md286"></a>
+<h1><a class="anchor" id="autotoc_md339"></a>
 Step 5: Test the flash driver with OSPI bootloader and flash writer</h1>
 <ul>
 <li>Similar to the <code>ospi_flash_io</code> example, update the example.syscfg for OSPI bootloader (<code>sbl_ospi</code>) <a class="el" href="EXAMPLES_DRIVERS_SBL_OSPI.html">SBL OSPI</a> and flash writer (<code>sbl_uart_uniflash</code>) <a class="el" href="EXAMPLES_DRIVERS_SBL_UART_UNIFLASH.html">SBL UART Uniflash</a></li>
 <li>Build the flash writer and the OSPI bootloader.</li>
 <li>Try to flash an application and boot it using the OSPI bootloader. Follow the steps mentioned in <a class="el" href="GETTING_STARTED_FLASH.html">Flash a Hello World example</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md287"></a>
+<h1><a class="anchor" id="autotoc_md340"></a>
 Miscellaneous tips and tricks</h1>
 <ul>
 <li>Device delay settings of the OSPI controller might need a change depending on the AC characteristics of the flash. The default value should work for most cases, but if there is a read issue especially at higher clock speeds and octal mode, this might be something to check for. </li>

@@ -1500,14 +1500,14 @@ void PN_PTCP_syncHandling(PN_Handle pnHandle)
                                                   + PTCP_PM_CYCLE_COUNTER_OFFSET));
             uint32_t new_cycle_counter = (pnHandle->pnPtcpConfig).calculatedCycleCtr;
             uint32_t curr = curr_cycle_counter & 0x00007FFF;
-            uint32_t new = new_cycle_counter & 0x00007FFF;
+            uint32_t new_cc = new_cycle_counter & 0x00007FFF;
 
-            if(new >= curr)
+            if(new_cc >= curr)
             {
                 (pnHandle->pnPtcpConfig).calculatedCycleCtr = new_cycle_counter;
             }
 
-            if(new < curr)
+            if(new_cc < curr)
             {
                 (pnHandle->pnPtcpConfig).calculatedCycleCtr = new_cycle_counter ^ 0x00008000;
             }
@@ -1606,14 +1606,14 @@ void PN_PTCP_syncHandling(PN_Handle pnHandle)
                                                   + PTCP_PM_CYCLE_COUNTER_OFFSET));
             uint32_t new_cycle_counter = cycle_counter;
             uint32_t curr = curr_cycle_counter & 0x00007FFF;
-            uint32_t new = new_cycle_counter & 0x00007FFF;
+            uint32_t new_cc = new_cycle_counter & 0x00007FFF;
 
-            if(new >= curr)
+            if(new_cc >= curr)
             {
                 cycle_counter = new_cycle_counter;
             }
 
-            if(new < curr)
+            if(new_cc < curr)
             {
                 cycle_counter = new_cycle_counter ^ 0x00008000;
             }

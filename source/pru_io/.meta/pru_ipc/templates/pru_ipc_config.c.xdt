@@ -3,10 +3,106 @@
     let icss0_intc = system.modules['/drivers/pruicss/icss_intc/icss0_intc_mapping'];
     let icss1_intc = system.modules['/drivers/pruicss/icss_intc/icss1_intc_mapping'];
 
+    let instancesOffsets = {
+        ICSSG0: {
+            PRU0: {
+                memOffset: 0,
+            },
+            PRU1: {
+                memOffset: 0,
+            },
+            RTU_PRU0: {
+                memOffset: 0,
+            },
+            RTU_PRU1: {
+                memOffset: 0,
+            },
+            TX_PRU0: {
+                memOffset: 0,
+            },
+            TX_PRU1: {
+                memOffset: 0,
+            },
+        },
+        ICSSG1: {
+            PRU0: {
+                memOffset: 0,
+            },
+            PRU1: {
+                memOffset: 0,
+            },
+            RTU_PRU0: {
+                memOffset: 0,
+            },
+            RTU_PRU1: {
+                memOffset: 0,
+            },
+            TX_PRU0: {
+                memOffset: 0,
+            },
+            TX_PRU1: {
+                memOffset: 0,
+            },
+        },
+    };
+
+    const RTU_OFFSET = "0x00001000 + ";
+    const TX_OFFSET  = "0x00001800 + ";
+
+// maybe an advanced mode option to provide user options to select memName and memOffset
     function getPruConfigMemAddr (instance) {
-        return  instance.icssInstance === "ICSSG0" ?
-                (instance.pruCore === "PRU0" ? "CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE" : "CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE") :
-                (instance.pruCore === "PRU0" ? "CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE" : "CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE") ;
+        let offset = (instancesOffsets[instance.icssInstance][instance.pruCore].memOffset).toString(10);
+        let memAddr = "NULL";
+        if (instance.icssInstance === "ICSSG0") {
+            switch(instance.pruCore) {
+                case "PRU0":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + " + offset;
+                    break;
+                case "PRU1":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE + " + offset;
+                    break;
+                case "RTU_PRU0":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + " + RTU_OFFSET + offset;
+                    break;
+                case "RTU_PRU1":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE + " + RTU_OFFSET + offset;
+                    break;
+                case "TX_PRU0":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM0_SLV_RAM_BASE + " + TX_OFFSET + offset;
+                    break;
+                case "TX_PRU1":
+                    memAddr = "CSL_PRU_ICSSG0_DRAM1_SLV_RAM_BASE + " + TX_OFFSET + offset;
+                    break;
+                default:
+                    // Nothing
+            }
+        }
+        if (instance.icssInstance === "ICSSG1") {
+            switch(instance.pruCore) {
+                case "PRU0":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + " + offset;
+                    break;
+                case "PRU1":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE + " + offset;
+                    break;
+                case "RTU_PRU0":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + " + RTU_OFFSET + offset;
+                    break;
+                case "RTU_PRU1":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE + " + RTU_OFFSET + offset;
+                    break;
+                case "TX_PRU0":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE + " + TX_OFFSET + offset;
+                    break;
+                case "TX_PRU1":
+                    memAddr = "CSL_PRU_ICSSG1_DRAM1_SLV_RAM_BASE + " + TX_OFFSET + offset;
+                    break;
+                default:
+                    // Nothing
+            }
+        }
+        instancesOffsets[instance.icssInstance][instance.pruCore].memOffset += 8 + 4*instance.noOfBuffers;
+        return  memAddr;
     }
 
     function getR5fIntrNum (instance) {
@@ -108,7 +204,7 @@ static PRU_IPC_Attrs  gPruIpcAttrs[CONFIG_PRU_IPC_NUM_INSTANCES] =
         .noOfBlocks    = `instance.noOfBlocks`,
         .noOfBuffers   = `instance.noOfBuffers`,
         .bufferAddrs   = PruIpc_bufferAddrs`i+1`,
-        .configMemAddr = `getPruConfigMemAddr(instance)`,
+        .config        = `getPruConfigMemAddr(instance)`,
         % if(instance.interruptRx) {
         .pruEvtoutNum  = ICSS_INTC_HOST_INTR_`instance.rxIntcMapping?.host` - ICSS_INTC_HOST_INTR_2,
         .sysEventNum   = ICSS_INTC_EVENT_`instance.rxIntcMapping?.event`,

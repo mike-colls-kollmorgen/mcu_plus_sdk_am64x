@@ -35,6 +35,17 @@
 #ifndef CDN_INTTYPES_H
 #define CDN_INTTYPES_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <inttypes.h>
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

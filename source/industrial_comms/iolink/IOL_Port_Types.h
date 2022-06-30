@@ -32,6 +32,12 @@
 #ifndef INC_PROT__IOL_PORT_TYPES_H__
 #define INC_PROT__IOL_PORT_TYPES_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
 \addtogroup group_iol_port_types IO-Link port types
 \{
@@ -73,5 +79,10 @@ typedef float FLOAT32; /**< \brief 32 bit float */
 typedef double FLOAT64; /**< \brief 64 bit float */
 
 /** \} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

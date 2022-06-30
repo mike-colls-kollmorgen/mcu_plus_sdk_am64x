@@ -33,6 +33,12 @@
 #ifndef ICSS_TIMESYNC_H_
 #define ICSS_TIMESYNC_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -806,5 +812,10 @@ void TimeSync_dummyBMCA(TimeSync_ParamsHandle_t timeSyncHandle,
 
 
 uint64_t getIEPTimestamp(TimeSync_ParamsHandle_t timeSyncHandle);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ICSS_TIMESYNC_H_ */

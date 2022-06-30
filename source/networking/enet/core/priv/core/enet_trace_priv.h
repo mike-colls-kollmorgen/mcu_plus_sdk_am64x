@@ -72,26 +72,47 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 
 /*! \brief Trace prefix type */
 #if (ENET_CFG_TRACE_LEVEL > ENET_CFG_TRACE_LEVEL_NONE)
-#if (ENET_CFG_TRACE_FORMAT == ENET_CFG_FORMAT_FUNC)
+#  if (ENET_CFG_TRACE_TRACE_FORMAT == ENET_CFG_TRACE_FORMAT_FUNC)
+#    if ENET_CFG_IS_ON(TRACE_DISABLE_INFOSTRING)
 /* Trace prefix: "<func>: fmt" */
+#define ENETTRACE_trace(globalLevel, level, fmt, ...)        \
+    EnetTrace_trace((globalLevel), (level),                  \
+                    "%s:%d \r\n" ,                             \
+                    __func__,__LINE__)
+#    else
 #define ENETTRACE_trace(globalLevel, level, fmt, ...)        \
     EnetTrace_trace((globalLevel), (level),                  \
                     "%s: " fmt,                              \
                     __func__, ## __VA_ARGS__)
-
-#elif (ENET_CFG_TRACE_FORMAT == ENET_CFG_FORMAT_FILE)
+#    endif
+#  endif
+#  if (ENET_CFG_TRACE_TRACE_FORMAT == ENET_CFG_TRACE_FORMAT_FILE)
+#    if ENET_CFG_IS_ON(TRACE_DISABLE_INFOSTRING)
 /* Trace prefix: "<file>: <line>: fmt" */
 #define ENETTRACE_trace(globalLevel, level, fmt, ...)        \
     EnetTrace_trace((globalLevel), (level),                  \
+                    "%s: %d: \r\n",                          \
+                    __FILE__, __LINE__)
+#    else
+#define ENETTRACE_trace(globalLevel, level, fmt, ...)        \
                     "%s: %d: " fmt,                          \
                     __FILE__, __LINE__, ## __VA_ARGS__)
-#else
+#    endif
+#  endif
+#  if (ENET_CFG_TRACE_TRACE_FORMAT == ENET_CFG_TRACE_FORMAT_FULL)
+#      if ENET_CFG_IS_ON(TRACE_DISABLE_INFOSTRING)
 /* Trace prefix: "<file>: <line>: <func>: fmt" */
 #define ENETTRACE_trace(globalLevel, level, fmt, ...)        \
     EnetTrace_trace((globalLevel), (level),                  \
+                    "%s: %d: %s: \r\n" ,                     \
+                    __FILE__, __LINE__, __func__)
+#    else
+#define ENETTRACE_trace(globalLevel, level, fmt, ...)       \
+     EnetTrace_trace((globalLevel), (level),                 \
                     "%s: %d: %s: " fmt,                      \
                     __FILE__, __LINE__, __func__, ## __VA_ARGS__)
-#endif
+#    endif
+#  endif
 #else /* ENET_CFG_TRACE_LEVEL_NONE */
 #define ENETTRACE_trace(globalLevel, level, fmt, ...)
 #endif
@@ -102,7 +123,7 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 #if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR)
 #define ENETTRACE_ERR(fmt, ...) ENETTRACE_trace(gEnetTrace_runtimeLevel, \
                                                 ENET_TRACE_ERROR,        \
-                                                fmt,                     \
+                                                fmt "\r",                \
                                                 ## __VA_ARGS__)
 /* TODO: Replace the below #ifdef with a method applicable for both C & C++ */
 /*!
@@ -125,7 +146,7 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 #if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN)
 #define ENETTRACE_WARN(fmt, ...) ENETTRACE_trace(gEnetTrace_runtimeLevel, \
                                                  ENET_TRACE_WARN,         \
-                                                 fmt,                     \
+                                                 fmt "\r",                \
                                                  ## __VA_ARGS__)
 /*!
  * \brief Helper macro to add trace message with #ENET_TRACE_WARN level if
@@ -152,7 +173,7 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 #if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_INFO)
 #define ENETTRACE_INFO(fmt, ...) ENETTRACE_trace(gEnetTrace_runtimeLevel, \
                                                  ENET_TRACE_INFO,         \
-                                                 fmt,                     \
+                                                 fmt "\r",                \
                                                  ## __VA_ARGS__)
 /*!
  * \brief Helper macro to add trace message with #ENET_TRACE_INFO level if
@@ -180,7 +201,7 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 #if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG)
 #define ENETTRACE_DBG(fmt, ...) ENETTRACE_trace(gEnetTrace_runtimeLevel, \
                                                 ENET_TRACE_DEBUG,        \
-                                                fmt,                     \
+                                                fmt "\r",                \
                                                 ## __VA_ARGS__)
 /*!
  * \brief Helper macro to add trace message with #ENET_TRACE_DEBUG level if
@@ -209,7 +230,7 @@ void EnetTrace_trace(EnetTrace_TraceLevel globalLevel,
 #if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_VERBOSE)
 #define ENETTRACE_VERBOSE(fmt, ...) ENETTRACE_trace(gEnetTrace_runtimeLevel, \
                                                     ENET_TRACE_VERBOSE,      \
-                                                    fmt,                     \
+                                                    fmt "\r",                \
                                                     ## __VA_ARGS__)
 /*!
  * \brief Helper macro to add trace message with #ENET_TRACE_VERBOSE level if

@@ -61,8 +61,15 @@
  *  \brief NO-RTOS portable file for FreeRTOS includes in FreeRTOS+FAT module.
  *
  */
+#ifndef FAT_NOROTS_FREERTOS_H
+#define FAT_NOROTS_FREERTOS_H
 
 #include <stdint.h>
+
+#ifdef  __cplusplus
+    extern "C" {
+#endif
+
 #include <kernel/dpl/DebugP.h>
 
 typedef long BaseType_t;
@@ -87,3 +94,9 @@ typedef unsigned long UBaseType_t;
 
 #define taskENTER_CRITICAL() (void)0
 #define taskEXIT_CRITICAL()  (void)0
+
+#ifdef  __cplusplus
+    } /* extern "C" */
+#endif
+
+#endif /* ifndef FAT_NOROTS_FREERTOS_H */

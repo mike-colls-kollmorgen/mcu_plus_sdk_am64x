@@ -36,6 +36,12 @@
 #ifndef CDN_TRB_H
 #define CDN_TRB_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_xhci_if.h"
 #include "cdn_xhci_structs_if.h"
 #include "byteorder.h"
@@ -174,5 +180,10 @@ static inline uint16_t getSID(USBSSP_RingElementT const *trb) {
 static inline uint8_t getSetupId(USBSSP_RingElementT const *trb) {
     return ((uint8_t) ((le32ToCpu(trb->dword3) & USBSSP_TRB_SETUPID_MASK) >> USBSSP_TRB_SETUPID_POS));
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

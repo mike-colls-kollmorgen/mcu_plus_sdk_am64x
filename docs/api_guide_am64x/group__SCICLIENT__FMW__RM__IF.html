@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -181,6 +181,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gac1598ff1fc7d1379d9ae84edb950184d"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SCICLIENT__FMW__RM__IF.html#gac1598ff1fc7d1379d9ae84edb950184d">Sciclient_rmSetProxyCfg</a> (const struct <a class="el" href="structtisci__msg__rm__proxy__cfg__req.html">tisci_msg_rm_proxy_cfg_req</a> *req, uint32_t timeout)</td></tr>
 <tr class="memdesc:gac1598ff1fc7d1379d9ae84edb950184d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy Configuration Request.  <a href="group__SCICLIENT__FMW__RM__IF.html#gac1598ff1fc7d1379d9ae84edb950184d">More...</a><br /></td></tr>
 <tr class="separator:gac1598ff1fc7d1379d9ae84edb950184d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7ee1d653406e3c9f84bc0e7738a25c99"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SCICLIENT__FMW__RM__IF.html#ga7ee1d653406e3c9f84bc0e7738a25c99">Sciclient_rmIrOutpIsFree</a> (uint16_t <a class="el" href="tisci__pm__device_8h.html#abaabdc509cdaba7df9f56c6c76f3ae19">id</a>, uint16_t outp)</td></tr>
+<tr class="memdesc:ga7ee1d653406e3c9f84bc0e7738a25c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the output's control register to see if the output line has an input line mapped to it.  <a href="group__SCICLIENT__FMW__RM__IF.html#ga7ee1d653406e3c9f84bc0e7738a25c99">More...</a><br /></td></tr>
+<tr class="separator:ga7ee1d653406e3c9f84bc0e7738a25c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga9f5698910d64b1d911a639d097aafc8c"></a>
@@ -1147,6 +1150,48 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">req</td><td>Pointer to proxy config payload</td></tr>
     <tr><td class="paramname">timeout</td><td>Gives a sense of how long to wait for the operation. Refer <a class="el" href="group__KERNEL__DPL__SYSTEM.html#SystemP_Timeout">SystemP_Timeout</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>SystemP_SUCCESS on success, else failure </dd></dl>
+
+</div>
+</div>
+<a id="ga7ee1d653406e3c9f84bc0e7738a25c99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7ee1d653406e3c9f84bc0e7738a25c99">&#9670;&nbsp;</a></span>Sciclient_rmIrOutpIsFree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t Sciclient_rmIrOutpIsFree </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>outp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks the output's control register to see if the output line has an input line mapped to it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>TISCI Device ID of the interrupt router. Some possible values are : <pre class="fragment">                   TISCI_DEV_CMP_EVENT_INTROUTER0
+                   TISCI_DEV_MAIN_GPIOMUX_INTROUTER0
+                   TISCI_DEV_WKUP_MCU_GPIOMUX_INTROUTER0
+                   TISCI_DEV_TIMESYNC_EVENT_ROUTER0
+</pre></td></tr>
+    <tr><td class="paramname">outp</td><td>Output line of the interrupt router. Check TRM for number of output pins of the interrupt router</td></tr>
   </table>
   </dd>
 </dl>

@@ -10,7 +10,14 @@ const staticConfig = [
         intrNum1: 28,
         intrNum2: 29,
         funcClk: fsi_tx_func_clk,
-        clockIds: [ "TISCI_DEV_FSITX0_FSI_TX_PLL_CLK" ],
+        clockIds: [ "TISCI_DEV_FSITX0" ],
+        clockFrequencies: [
+            {
+                moduleId: "TISCI_DEV_FSITX0",
+                clkId   : "TISCI_DEV_FSITX0_FSI_TX_PLL_CLK",
+                clkRate : fsi_tx_func_clk,
+            },
+        ],
     },
     {
         name: "FSI_TX1",
@@ -18,7 +25,14 @@ const staticConfig = [
         intrNum1: 30,
         intrNum2: 31,
         funcClk: fsi_tx_func_clk,
-        clockIds: [ "TISCI_DEV_FSITX1_FSI_TX_PLL_CLK" ],
+        clockIds: [ "TISCI_DEV_FSITX1" ],
+        clockFrequencies: [
+            {
+                moduleId: "TISCI_DEV_FSITX1",
+                clkId   : "TISCI_DEV_FSITX1_FSI_TX_PLL_CLK",
+                clkRate : fsi_tx_func_clk,
+            },
+        ],
     },
 ];
 
@@ -33,5 +47,6 @@ function getInterfaceName(inst) {
 let soc = {
     getStaticConfigArr,
     getInterfaceName,
+    interruptXbarConfig: false,
 };
 exports = soc;

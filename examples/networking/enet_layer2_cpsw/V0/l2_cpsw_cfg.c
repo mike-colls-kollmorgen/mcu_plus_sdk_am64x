@@ -42,6 +42,10 @@
 #include "l2_cpsw_common.h"
 #include "l2_cpsw_cfg.h"
 #include "l2_cpsw_dataflow.h"
+#include "ti_enet_open_close.h"
+#include "ti_enet_config.h"
+#include "ti_board_config.h"
+#include <networking/enet/utils/include/enet_apputils.h>
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
@@ -56,6 +60,8 @@
 /* ========================================================================== */
 
 extern uint32_t Board_getEthBoardId(void);
+static EnetApp_PerCtxt * EnetApp_getPerCtxt(Enet_Type enetType,
+                                            uint32_t instId);
 
 /* ========================================================================== */
 /*                            Global Variables                                */
@@ -67,71 +73,18 @@ extern uint32_t Board_getEthBoardId(void);
 
 int32_t EnetApp_init(void)
 {
-    EnetOsal_Cfg osalCfg;
-    EnetUtils_Cfg utilsCfg;
     int32_t status = ENET_SOK;
-
-    /* Initialize Enet driver (use default OSAL and utils) */
-    EnetAppUtils_print("Init Enet's OSAL and utils to use defaults\r\n");
-    Enet_initOsalCfg(&osalCfg);
-    Enet_initUtilsCfg(&utilsCfg);
-    Enet_init(&osalCfg, &utilsCfg);
 
     gEnetApp.coreId = EnetSoc_getCoreId();
 
-    /* Initialize memory */
-    EnetAppUtils_print("Init memory utils\r\n");
-    status = EnetMem_init();
-    if (status != ENET_SOK)
-    {
-        EnetAppUtils_print("Failed to initialize memory utils: %d\r\n", status);
-        EnetAppUtils_assert(false);
-    }
-
     /* Initialize all queues */
     EnetQueue_initQ(&gEnetApp.txFreePktInfoQ);
-
-    /* Create task, clock and semaphore used for periodic tick */
-    if (status == ENET_SOK)
-    {
-        EnetAppUtils_print("Create clock and task for periodic tick\r\n");
-        EnetApp_createClock();
-    }
-
-    /* Open UDMA driver which is the same handle to be used for all peripherals */
-    if (status == ENET_SOK)
-    {
-        EnetAppUtils_print("Open Main UDMA driver\r\n");
-        gEnetApp.hMainUdmaDrv = EnetAppUtils_udmaOpen(ENET_CPSW_3G, NULL);
-        if (gEnetApp.hMainUdmaDrv == NULL)
-        {
-            EnetAppUtils_print("Failed to open Main UDMA driver: %d\r\n", status);
-            status = ENET_EALLOC;
-            EnetAppUtils_assert(false);
-        }
-    }
 
     return status;
 }
 
 void EnetApp_deinit(void)
 {
-    /* Open UDMA driver which is the same handle to be used for all peripherals */
-    EnetAppUtils_print("Close UDMA driver\r\n");
-    EnetAppUtils_udmaclose(gEnetApp.hMainUdmaDrv);
-
-    /* Initialize Enet driver (use default OSAL and utils) */
-    EnetAppUtils_print("Deinit Enet driver\r\n");
-    Enet_deinit();
-
-    /* Delete task, clock and semaphore used for periodic tick */
-    EnetAppUtils_print("Delete clock and task for periodic tick\r\n");
-    EnetApp_deleteClock();
-
-    /* Deinitialize memory */
-    EnetAppUtils_print("Deinit memory utils\r\n");
-    EnetMem_deInit();
-
     EnetAppUtils_print("Deinit complete\r\n");
 
 }
@@ -191,14 +144,27 @@ void EnetApp_initAleConfig(CpswAle_Cfg *aleCfg)
     aleCfg->policerGlobalCfg.policerNoMatchMode = CPSW_ALE_POLICER_NOMATCH_MODE_GREEN;
 }
 
+void EnetApp_updateCpswInitCfg(Enet_Type enetType,  uint32_t instId,   Cpsw_Cfg *cpswCfg)
+{
+    EnetApp_PerCtxt *perCtxt = EnetApp_getPerCtxt(enetType, instId);
+
+    EnetAppUtils_assert(perCtxt != NULL);
+    /* Prepare init configuration for all peripherals */
+    EnetAppUtils_print("\nInit all configs\r\n");
+    EnetAppUtils_print("----------------------------------------------\r\n");
+    EnetAppUtils_print("%s: init config\r\n", perCtxt->name);
+
+    cpswCfg->vlanCfg.vlanAware          = false;
+    cpswCfg->hostPortCfg.removeCrc      = true;
+    cpswCfg->hostPortCfg.padShortPacket = true;
+    cpswCfg->hostPortCfg.passCrcErrors  = true;
+    EnetApp_initEnetLinkCbPrms(cpswCfg);
+    EnetApp_initAleConfig(&cpswCfg->aleCfg);
+}
+
 int32_t EnetApp_open(EnetApp_PerCtxt *perCtxts,
                            uint32_t numPerCtxts)
 {
-    EnetUdma_Cfg *dmaCfg;
-    EnetRm_ResCfg *resCfg;
-    Enet_IoctlPrms prms;
-    EnetPer_AttachCoreOutArgs attachCoreOutArgs;
-
     uint32_t i;
     int32_t status = ENET_SOK;
 
@@ -211,35 +177,7 @@ int32_t EnetApp_open(EnetApp_PerCtxt *perCtxts,
         EnetAppUtils_enableClocks(perCtxt->enetType, perCtxt->instId);
     }
 
-    /* Prepare init configuration for all peripherals */
-    EnetAppUtils_print("\nInit all configs\r\n");
-    EnetAppUtils_print("----------------------------------------------\r\n");
-    for (i = 0U; i < numPerCtxts; i++)
-    {
-        EnetApp_PerCtxt *perCtxt = &perCtxts[i];
-
-        dmaCfg = &perCtxt->dmaCfg;
-        dmaCfg->rxChInitPrms.dmaPriority = UDMA_DEFAULT_RX_CH_DMA_PRIORITY;
-        EnetAppUtils_print("%s: init config\r\n", perCtxt->name);
-
-        Cpsw_Cfg *cpswCfg = &perCtxt->cpswCfg;
-        Enet_initCfg(perCtxt->enetType, perCtxt->instId, cpswCfg, sizeof(*cpswCfg));
-        cpswCfg->vlanCfg.vlanAware          = false;
-        cpswCfg->hostPortCfg.removeCrc      = true;
-        cpswCfg->hostPortCfg.padShortPacket = true;
-        cpswCfg->hostPortCfg.passCrcErrors  = true;
-        EnetApp_initEnetLinkCbPrms(cpswCfg);
-        resCfg = &cpswCfg->resCfg;
-        EnetApp_initAleConfig(&cpswCfg->aleCfg);
-        /* Set DMA configuration */
-        dmaCfg->hUdmaDrv = gEnetApp.hMainUdmaDrv;
-        cpswCfg->dmaCfg = (void *)dmaCfg;
-
-        /* Initialize RM */
-        EnetAppUtils_initResourceConfig(perCtxt->enetType, EnetSoc_getCoreId(), resCfg);
-
-    }
-        /* Create RX tasks for each peripheral */
+    /* Create RX tasks for each peripheral */
     if (status == ENET_SOK)
     {
         EnetAppUtils_print("\nCreate RX tasks\r\n");
@@ -260,22 +198,18 @@ int32_t EnetApp_open(EnetApp_PerCtxt *perCtxts,
     for (i = 0U; i < numPerCtxts; i++)
     {
         EnetApp_PerCtxt *perCtxt = &perCtxts[i];
-        EnetAppUtils_print("%s: Open enet\r\n", perCtxt->name);
-        Cpsw_Cfg *cpswCfg = &perCtxt->cpswCfg;
-        perCtxt->hEnet = Enet_open(perCtxt->enetType, perCtxt->instId, cpswCfg, sizeof(*cpswCfg));
+        EnetApp_HandleInfo handleInfo;
 
-        if (perCtxt->hEnet == NULL)
+        EnetAppUtils_print("%s: Open enet\r\n", perCtxt->name);
+        status = EnetApp_driverOpen(perCtxt->enetType, perCtxt->instId);
+        if (status != ENET_SOK)
         {
             EnetAppUtils_print("%s: failed to open enet\r\n", perCtxt->name);
-            status = ENET_EFAIL;
             break;
         }
-    }
-
-    /* Start PHY tick timer */
-    if (status == ENET_SOK)
-    {
-        ClockP_start(&gEnetApp.tickTimerObj);
+        EnetApp_acquireHandleInfo(perCtxt->enetType, perCtxt->instId, &handleInfo);
+        perCtxt->hEnet = handleInfo.hEnet;
+        perCtxt->hMainUdmaDrv = handleInfo.hUdmaDrv;
     }
 
     /* Attach the core with RM */
@@ -286,29 +220,12 @@ int32_t EnetApp_open(EnetApp_PerCtxt *perCtxts,
         for (i = 0U; i < numPerCtxts; i++)
         {
             EnetApp_PerCtxt *perCtxt = &perCtxts[i];
+            EnetPer_AttachCoreOutArgs attachCoreOutArgs;
 
             EnetAppUtils_print("%s: Attach core\r\n", perCtxt->name);
 
-            ENET_IOCTL_SET_INOUT_ARGS(&prms, &gEnetApp.coreId, &attachCoreOutArgs);
-
-            status = Enet_ioctl(perCtxt->hEnet, gEnetApp.coreId, ENET_PER_IOCTL_ATTACH_CORE, &prms);
-            if (status != ENET_SOK)
-            {
-                EnetAppUtils_print("%s: failed to attach: %d\r\n", perCtxt->name, status);
-            }
-            else
-            {
-                gEnetApp.coreKey = attachCoreOutArgs.coreKey;
-            }
-        }
-    }
-
-    if (status == ENET_SOK)
-    {
-        status = EnetApp_openPort(perCtxts);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to open port link: %d\r\n", perCtxts->name, status);
+            EnetApp_coreAttach(perCtxt->enetType, perCtxt->instId, gEnetApp.coreId, &attachCoreOutArgs);
+            perCtxt->coreKey = attachCoreOutArgs.coreKey;
         }
     }
 
@@ -340,12 +257,48 @@ int32_t EnetApp_open(EnetApp_PerCtxt *perCtxts,
     return status;
 }
 
+static int32_t EnetApp_getPerIdx(Enet_Type enetType, uint32_t instId, uint32_t *perIdx)
+{
+    uint32_t i;
+    int32_t status = ENET_SOK;
+
+    /* Initialize async IOCTL and TX timestamp semaphores */
+    for (i = 0U; i < gEnetApp.numPerCtxts; i++)
+    {
+        EnetApp_PerCtxt *perCtxt = &(gEnetApp.perCtxt[i]);
+        if ((perCtxt->enetType == enetType) && (perCtxt->instId == instId))
+        {
+            break;
+        }
+    }
+    if (i < gEnetApp.numPerCtxts)
+    {
+        *perIdx = i;
+        status = ENET_SOK;
+    }
+    else
+    {
+        status = ENET_ENOTFOUND;
+    }
+    return status;
+}
+
+static EnetApp_PerCtxt * EnetApp_getPerCtxt(Enet_Type enetType,
+                                            uint32_t instId)
+{
+    uint32_t perIdx;
+    int32_t status;
+
+    status = EnetApp_getPerIdx(enetType, instId, &perIdx);
+    EnetAppUtils_assert(status == ENET_SOK);
+    EnetAppUtils_assert(perIdx < ENET_ARRAYSIZE(gEnetApp.perCtxt));
+    return (&gEnetApp.perCtxt[perIdx]);
+}
+
 void EnetApp_close(EnetApp_PerCtxt *perCtxts,
                          uint32_t numPerCtxts)
 {
-    Enet_IoctlPrms prms;
     uint32_t i;
-    int32_t status;
 
     EnetAppUtils_print("\nClose Ports for all peripherals\r\n");
     EnetAppUtils_print("----------------------------------------------\r\n");
@@ -386,12 +339,9 @@ void EnetApp_close(EnetApp_PerCtxt *perCtxts,
 
         EnetAppUtils_print("%s: Detach core\r\n", perCtxt->name);
 
-        ENET_IOCTL_SET_IN_ARGS(&prms, &gEnetApp.coreKey);
-        status = Enet_ioctl(perCtxt->hEnet, gEnetApp.coreId, ENET_PER_IOCTL_DETACH_CORE, &prms);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to detach: %d\r\n", perCtxt->name);
-        }
+        EnetApp_coreDetach(perCtxt->enetType, perCtxt->instId,
+                            gEnetApp.coreId,
+                            perCtxt->coreKey);
     }
 
     /* Close opened Enet drivers if any peripheral failed */
@@ -401,7 +351,7 @@ void EnetApp_close(EnetApp_PerCtxt *perCtxts,
     {
         EnetApp_PerCtxt *perCtxt = &perCtxts[i];
         EnetAppUtils_print("%s: Close enet\r\n", perCtxt->name);
-        Enet_close(perCtxt->hEnet);
+        EnetApp_releaseHandleInfo(perCtxt->enetType, perCtxt->instId);
         perCtxt->hEnet = NULL;
     }
 
@@ -514,20 +464,21 @@ void EnetApp_showMacAddrs(EnetApp_PerCtxt *perCtxts,
     }
 }
 
-int32_t EnetApp_openPort(EnetApp_PerCtxt *perCtxt)
+void EnetApp_initLinkArgs(Enet_Type enetType,
+                          uint32_t instId,
+                          EnetPer_PortLinkCfg *linkArgs,
+                          Enet_MacPort macPort)
 {
-    Enet_IoctlPrms prms;
     EnetBoard_EthPort ethPort;
     const EnetBoard_PhyCfg *boardPhyCfg;
-    EnetPer_PortLinkCfg portLinkCfg;
-    CpswMacPort_Cfg cpswMacCfg;
-    EnetMacPort_LinkCfg *linkCfg = &portLinkCfg.linkCfg;
-    EnetMacPort_Interface *mii = &portLinkCfg.mii;
-    EnetPhy_Cfg *phyCfg = &portLinkCfg.phyCfg;
-    Enet_MacPort macPort;
+    CpswMacPort_Cfg *cpswMacCfg;
+    EnetMacPort_LinkCfg *linkCfg = &linkArgs->linkCfg;
+    EnetMacPort_Interface *mii = &linkArgs->mii;
+    EnetPhy_Cfg *phyCfg = &linkArgs->phyCfg;
     int32_t status = ENET_SOK;
+    EnetApp_PerCtxt *perCtxt;
 
-    macPort = perCtxt->macPort;
+    perCtxt = EnetApp_getPerCtxt(enetType, instId);
 
     EnetAppUtils_print("%s: Open port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
 
@@ -545,11 +496,10 @@ int32_t EnetApp_openPort(EnetApp_PerCtxt *perCtxt)
         EnetAppUtils_assert(false);
     }
 
-    CpswMacPort_initCfg(&cpswMacCfg);
-    portLinkCfg.macCfg = &cpswMacCfg;
+    cpswMacCfg = linkArgs->macCfg;
 
     /* Set port link params */
-    portLinkCfg.macPort = macPort;
+    linkArgs->macPort = macPort;
 
     mii->layerType     = ethPort.mii.layerType;
     mii->sublayerType  = ethPort.mii.sublayerType;
@@ -561,8 +511,7 @@ int32_t EnetApp_openPort(EnetApp_PerCtxt *perCtxt)
     boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
     if (boardPhyCfg != NULL)
     {
-        EnetPhy_initCfg(phyCfg);
-        phyCfg->phyAddr     = CONFIG_ENET_CPSW0_PHY0_ADDR;
+        phyCfg->phyAddr     = boardPhyCfg->phyAddr;
         phyCfg->isStrapped  = boardPhyCfg->isStrapped;
         phyCfg->loopbackEn  = false;
         phyCfg->skipExtendedCfg = boardPhyCfg->skipExtendedCfg;
@@ -577,21 +526,6 @@ int32_t EnetApp_openPort(EnetApp_PerCtxt *perCtxt)
         EnetAppUtils_print("%s: No PHY configuration found\r\n", perCtxt->name);
         EnetAppUtils_assert(false);
     }
-
-    /* Open port link */
-    if (status == ENET_SOK)
-    {
-        ENET_IOCTL_SET_IN_ARGS(&prms, &portLinkCfg);
-
-        EnetAppUtils_print("%s: Open port %u link\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-        status = Enet_ioctl(perCtxt->hEnet, gEnetApp.coreId, ENET_PER_IOCTL_OPEN_PORT_LINK, &prms);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to open port link: %d\r\n", perCtxt->name, status);
-        }
-    }
-
-    return status;
 }
 
 void EnetApp_closePort(EnetApp_PerCtxt *perCtxt)
@@ -644,44 +578,6 @@ int32_t EnetApp_waitForLinkUp(EnetApp_PerCtxt *perCtxt)
         if (!linked)
         {
             ClockP_sleep(1);
-        }
-    }
-
-    if (gEnetApp.run)
-    {
-        EnetAppUtils_print("%s: Port %u link is %s\r\n",
-                            perCtxt->name, ENET_MACPORT_ID(macPort), linked ? "up" : "down");
-
-        /* Set port to 'Forward' state */
-        if (status == ENET_SOK)
-        {
-
-            CpswAle_SetPortStateInArgs setPortStateInArgs;
-            setPortStateInArgs.portNum   = CPSW_ALE_HOST_PORT_NUM;
-            setPortStateInArgs.portState = CPSW_ALE_PORTSTATE_FORWARD;
-            ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
-            prms.outArgs = NULL;
-            status = Enet_ioctl(perCtxt->hEnet,
-                                gEnetApp.coreId,
-                                CPSW_ALE_IOCTL_SET_PORT_STATE,
-                                &prms);
-            if (status != ENET_SOK)
-            {
-                EnetAppUtils_print("%s: CPSW_ALE_IOCTL_SET_PORT_STATE IOCTL failed : %d\r\n",
-                                    perCtxt->name, status);
-            }
-            if (status == ENET_SOK)
-            {
-                ENET_IOCTL_SET_NO_ARGS(&prms);
-                status = Enet_ioctl(perCtxt->hEnet,
-                                    gEnetApp.coreId,
-                                    ENET_HOSTPORT_IOCTL_ENABLE,
-                                    &prms);
-                if (status != ENET_SOK)
-                {
-                    EnetAppUtils_print("%s: Failed to enable host port: %d\r\n", perCtxt->name, status);
-                }
-            }
         }
     }
 

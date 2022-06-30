@@ -61,52 +61,6 @@
 /*                         Structure Declarations                             */
 /* ========================================================================== */
 
-#if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
-typedef struct EnetMem_DmaDescMem_s
-{
-    /*! The node element so this packet can be added to a queue
-     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
-     *       and deferences to this member */
-    EnetQ_Node node;
-
-    /*! DMA descriptor element */
-    EnetUdma_DmaDesc *dmaDescPtr;
-
-    /*! DMA descriptor state, refer to CpswUtils_DescStateMemMgr */
-    uint32_t dmaDescState;
-}EnetMem_DmaDescMem;
-
-/**
- *  \brief
- */
-typedef struct EnetMem_RingMem_s
-{
-    /*! The node element so this packet can be added to a queue
-     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
-     *       and deferences to this member */
-    EnetQ_Node node;
-
-    /*! Ring memory element */
-    uint8_t * ringElePtr;
-}EnetMem_RingMem;
-
-#endif
-/**
- *  \brief
- */
-typedef struct EnetMem_EthPktMem_s
-{
-    /*! The node element so this packet can be added to a queue
-     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
-     *       and deferences to this member */
-    EnetQ_Node node;
-
-    /*! Eth packet info structure - shared with driver */
-    EnetDma_Pkt *dmaPktPtr;
-
-    /*! Original packet size - we can't use this info from dmaPkt as app can change it */
-    uint32_t orgBufSize;
-}EnetMem_AppPktInfoMem;
 
 typedef EnetQ EnetMem_DmaDescMemQ;
 
@@ -139,17 +93,6 @@ typedef struct EnetMem_MemAllocObj_s
     /**< Pool3 ethernet packet memory Q */
     EnetMem_EthPktMemQ ethPktMem_SmallPoolQ;
 
-#if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
-    /* Enet UDMA DESC memories */
-    EnetMem_DmaDescMem dmaDescMemArray[ENET_MEM_NUM_DESCS];
-
-    /* RX & TX RingAcc memories */
-    EnetMem_RingMem  ringMemArray[ENET_MEM_NUM_RINGS];
-
-#endif
-    /* Eth packet info memory Q - large pool */
-    EnetMem_AppPktInfoMem appPktInfoMem[ENET_MEM_NUM_ALLOC_POOLS][ENET_MEM_LARGE_POOL_PACKET_NUM];
-
     /* Eth memuitls configuration structure */
     EnetMem_Cfg cfg;
 } EnetMem_MemAllocObj;
@@ -165,17 +108,19 @@ void EnetMem_initMemObjs(const EnetMem_Cfg *cfg, EnetMem_MemAllocObj *obj)
     EnetMem_DmaDescMemPoolEntry *dmaDescMem;
     #endif
 
-    ENET_UTILS_COMPILETIME_ASSERT(ENET_ARRAYSIZE(cfg->pktBufPool) == ENET_ARRAYSIZE(obj->appPktInfoMem));
     for (poolIdx = 0; poolIdx < ENET_ARRAYSIZE(cfg->pktBufPool);poolIdx++)
     {
         uint8_t *pktAddr = cfg->pktBufPool[poolIdx].pktBufMem;
         EnetDma_Pkt *pktInfo = cfg->pktBufPool[poolIdx].pktInfoMem;
+        EnetMem_AppPktInfoMem *appPktInfo;
 
+        appPktInfo = cfg->pktBufPool[poolIdx].pktInfoContainerMem;
         for (i = 0; i < cfg->pktBufPool[poolIdx].numPkts; i++)
         {
-            obj->appPktInfoMem[poolIdx][i].dmaPktPtr = pktInfo;
-            obj->appPktInfoMem[poolIdx][i].dmaPktPtr->bufPtr = pktAddr;
+            appPktInfo[i].dmaPktPtr = pktInfo;
+            appPktInfo[i].dmaPktPtr->bufPtr = pktAddr;
             pktInfo++;
+            EnetAppUtils_assert((uintptr_t)(&appPktInfo[i + 1]) <= ((uintptr_t)cfg->pktBufPool[poolIdx].pktInfoContainerMem) + cfg->pktBufPool[poolIdx].pktInfoContainerSize);
             EnetAppUtils_assert((uintptr_t)pktInfo <= ((uintptr_t)cfg->pktBufPool[poolIdx].pktInfoMem) + cfg->pktBufPool[poolIdx].pktInfoSize);
             pktAddr += ENET_UTILS_ALIGN(cfg->pktBufPool[poolIdx].pktSize, ENET_UTILS_CACHELINE_SIZE);
             EnetAppUtils_assert((uintptr_t)pktAddr <= ((uintptr_t)cfg->pktBufPool[poolIdx].pktBufMem) + cfg->pktBufPool[poolIdx].pktBufSize);
@@ -185,16 +130,16 @@ void EnetMem_initMemObjs(const EnetMem_Cfg *cfg, EnetMem_MemAllocObj *obj)
     ringMem = cfg->ringMem.ringMemBase;
     for (i = 0; i < cfg->ringMem.numRings; i++)
     {
-        EnetAppUtils_assert(i < ENET_ARRAYSIZE(obj->ringMemArray));
-        obj->ringMemArray[i].ringElePtr = &ringMem->ringEle[0];
+        EnetAppUtils_assert((uintptr_t)(obj->cfg.ringMem.ringInfoContainerBase + (i + 1)) <= (((uintptr_t)cfg->ringMem.ringInfoContainerBase) + cfg->ringMem.ringInfoContainerSize));
+        obj->cfg.ringMem.ringInfoContainerBase[i].ringElePtr = &ringMem->ringEle[0];
         ringMem++;
         EnetAppUtils_assert((uintptr_t)ringMem <= ((uintptr_t)cfg->ringMem.ringMemBase) + cfg->ringMem.ringMemSize);
     }
     dmaDescMem = cfg->dmaDescMem.descMemBase;
     for (i = 0; i < cfg->dmaDescMem.numDesc; i++)
     {
-        EnetAppUtils_assert(i < ENET_ARRAYSIZE(obj->dmaDescMemArray));
-        obj->dmaDescMemArray[i].dmaDescPtr = &dmaDescMem->dmaDesc;
+        EnetAppUtils_assert((uintptr_t)(&obj->cfg.dmaDescMem.descInfoContainerMemBase[i + 1]) <= (((uintptr_t)cfg->dmaDescMem.descInfoContainerMemBase) + cfg->dmaDescMem.descInfoContainerMemSize));
+        obj->cfg.dmaDescMem.descInfoContainerMemBase[i].dmaDescPtr = &dmaDescMem->dmaDesc;
         dmaDescMem++;
         EnetAppUtils_assert((uintptr_t)dmaDescMem <= ((uintptr_t)cfg->dmaDescMem.descMemBase) + cfg->dmaDescMem.descMemSize);
     }
@@ -270,18 +215,21 @@ static EnetMem_AppPktInfoMem * EnetMem_getPktInfoEntry(EnetMem_MemAllocObj *obj,
     uint32_t poolIdx;
     EnetMem_AppPktInfoMem *entry = NULL;
 
-    for (poolIdx = 0; poolIdx < ENET_ARRAYSIZE(obj->appPktInfoMem); poolIdx++)
+    for (poolIdx = 0; poolIdx < ENET_ARRAYSIZE(obj->cfg.pktBufPool); poolIdx++)
     {
         if ((pPktInfo >= obj->cfg.pktBufPool[poolIdx].pktInfoMem) && (pPktInfo < (EnetDma_Pkt *)((uintptr_t)obj->cfg.pktBufPool[poolIdx].pktInfoMem + obj->cfg.pktBufPool[poolIdx].pktInfoSize)))
         {
             break;
         }
     }
-    if (poolIdx < ENET_ARRAYSIZE(obj->appPktInfoMem))
+    if (poolIdx < ENET_ARRAYSIZE(obj->cfg.pktBufPool))
     {
         pktInfoIndex = pPktInfo - obj->cfg.pktBufPool[poolIdx].pktInfoMem;
         EnetAppUtils_assert(pktInfoIndex < obj->cfg.pktBufPool[poolIdx].numPkts);
-        entry = &obj->appPktInfoMem[poolIdx][pktInfoIndex];
+        entry = &obj->cfg.pktBufPool[poolIdx].pktInfoContainerMem[pktInfoIndex];
+        EnetAppUtils_assert(((uintptr_t)entry >= (uintptr_t)obj->cfg.pktBufPool[poolIdx].pktInfoContainerMem) 
+                            &&
+                            ((uintptr_t)(entry + 1) <= (((uintptr_t)obj->cfg.pktBufPool[poolIdx].pktInfoContainerMem) + obj->cfg.pktBufPool[poolIdx].pktInfoContainerSize)));
         EnetAppUtils_assert(entry->dmaPktPtr == pPktInfo);
     }
     return entry;
@@ -366,10 +314,11 @@ static EnetMem_RingMem * EnetMem_getRingMemEntry(EnetMem_MemAllocObj *obj, void 
     EnetAppUtils_assert(((uintptr_t)ringMemPtr >= (uintptr_t)obj->cfg.ringMem.ringMemBase)
                         &&
                         ((uintptr_t)ringMemPtr < ((uintptr_t)obj->cfg.ringMem.ringMemBase + obj->cfg.ringMem.ringMemSize)));
-    ringMemPoolEntry = container_of(ringMemPtr, EnetMem_RingMemPoolEntry, ringEle[0]);
+    ringMemPoolEntry = container_of((const uint8_t *) ringMemPtr, EnetMem_RingMemPoolEntry, ringEle[0]);
     ringMemIdx = ringMemPoolEntry - obj->cfg.ringMem.ringMemBase;
-    EnetAppUtils_assert((ringMemIdx < ENET_ARRAYSIZE(obj->ringMemArray) && (ringMemIdx < obj->cfg.ringMem.numRings)));
-    ringMem= &obj->ringMemArray[ringMemIdx];
+    EnetAppUtils_assert((uintptr_t)(&obj->cfg.ringMem.ringInfoContainerBase[(ringMemIdx + 1)]) <= (((uintptr_t)obj->cfg.ringMem.ringInfoContainerBase) + obj->cfg.ringMem.ringInfoContainerSize));
+    EnetAppUtils_assert(ringMemIdx < obj->cfg.ringMem.numRings);
+    ringMem= &obj->cfg.ringMem.ringInfoContainerBase[ringMemIdx];
     EnetAppUtils_assert(ringMem->ringElePtr == ringMemPtr);
     return ringMem;
 }
@@ -435,8 +384,9 @@ static EnetMem_DmaDescMem * EnetMem_getDescMemEntry(EnetMem_MemAllocObj *obj, En
                         ((uintptr_t)pDmaDescMem < ((uintptr_t)&obj->cfg.dmaDescMem.descMemBase->dmaDesc + obj->cfg.dmaDescMem.descMemSize)));
     descMemPoolEntry = container_of(pDmaDescMem, EnetMem_DmaDescMemPoolEntry, dmaDesc);
     descMemIdx = descMemPoolEntry - obj->cfg.dmaDescMem.descMemBase;
-    EnetAppUtils_assert(descMemIdx < ENET_ARRAYSIZE(obj->dmaDescMemArray) && (descMemIdx < obj->cfg.dmaDescMem.numDesc));
-    descMem= &obj->dmaDescMemArray[descMemIdx];
+    EnetAppUtils_assert((uintptr_t)(&obj->cfg.dmaDescMem.descInfoContainerMemBase[descMemIdx + 1]) <= (((uintptr_t)obj->cfg.dmaDescMem.descInfoContainerMemBase) + obj->cfg.dmaDescMem.descInfoContainerMemSize)); 
+    EnetAppUtils_assert(descMemIdx < obj->cfg.dmaDescMem.numDesc);
+    descMem= &obj->cfg.dmaDescMem.descInfoContainerMemBase[descMemIdx];
     EnetAppUtils_assert(descMem->dmaDescPtr == pDmaDescMem);
     return descMem;
 }
@@ -477,7 +427,7 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
         EnetMem_initMemObjs(cfg, &gEnetMemObj);
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
         memset(gEnetMemObj.cfg.ringMem.ringMemBase , 0U, gEnetMemObj.cfg.ringMem.ringMemSize);
-		
+
         memset(gEnetMemObj.cfg.dmaDescMem.descMemBase , 0U, gEnetMemObj.cfg.dmaDescMem.descMemSize);
         /*********************** DMA packet Q ************************/
         if (ENET_SOK == retVal)
@@ -486,15 +436,15 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
             /* Initialize the DMA packet and enqueue into free packet Q */
             for (i = 0U; i < gEnetMemObj.cfg.dmaDescMem.numDesc; i++)
             {
-                gEnetMemObj.dmaDescMemArray[i].dmaDescState = 0;
-                if (!ENET_UTILS_IS_ALIGNED(gEnetMemObj.dmaDescMemArray[i].dmaDescPtr, alignSize))
+                gEnetMemObj.cfg.dmaDescMem.descInfoContainerMemBase[i].dmaDescState = 0;
+                if (!ENET_UTILS_IS_ALIGNED(gEnetMemObj.cfg.dmaDescMem.descInfoContainerMemBase[i].dmaDescPtr, alignSize))
                 {
                     retVal = ENET_EFAIL;
                     break;
                 }
 
-                EnetQueue_enq(&gEnetMemObj.dmaDescFreeQ, &gEnetMemObj.dmaDescMemArray[i].node);
-                ENET_UTILS_SET_DESC_MEMMGR_STATE(&gEnetMemObj.dmaDescMemArray[i].dmaDescState, ENET_DESCSTATE_MEMMGR_FREE);
+                EnetQueue_enq(&gEnetMemObj.dmaDescFreeQ, &gEnetMemObj.cfg.dmaDescMem.descInfoContainerMemBase[i].node);
+                ENET_UTILS_SET_DESC_MEMMGR_STATE(&gEnetMemObj.cfg.dmaDescMem.descInfoContainerMemBase[i].dmaDescState, ENET_DESCSTATE_MEMMGR_FREE);
             }
         }
 
@@ -503,15 +453,15 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
         {
             EnetQueue_initQ(&gEnetMemObj.ringMemQ);
             /* Enqueue ring memory element into free packet Q */
-            for (i = 0U; i < ENET_MEM_NUM_RINGS; i++)
+            for (i = 0U; i < gEnetMemObj.cfg.ringMem.numRings; i++)
             {
-                if (!ENET_UTILS_IS_ALIGNED(gEnetMemObj.ringMemArray[i].ringElePtr, alignSize))
+                if (!ENET_UTILS_IS_ALIGNED(gEnetMemObj.cfg.ringMem.ringInfoContainerBase[i].ringElePtr, alignSize))
                 {
                     retVal = ENET_EFAIL;
                     break;
                 }
 
-                EnetQueue_enq(&gEnetMemObj.ringMemQ, &gEnetMemObj.ringMemArray[i].node);
+                EnetQueue_enq(&gEnetMemObj.ringMemQ, &gEnetMemObj.cfg.ringMem.ringInfoContainerBase[i].node);
             }
         }
 #endif
@@ -522,7 +472,10 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
             /* Enqueue ring memory element into free packet Q */
             for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].numPkts; i++)
             {
-                pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_LARGE][i];
+                pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem[i];
+                EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem) 
+                            &&
+                            ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerSize)));
                 /* Keep record of allocated size - we use this in free */
                 pAppPktInfoMem->orgBufSize = gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktSize;
                 bufPtr = pAppPktInfoMem->dmaPktPtr->bufPtr;
@@ -557,7 +510,10 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
             /* Enqueue ring memory element into free packet Q */
             for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].numPkts; i++)
             {
-                pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_MEDIUM][i];
+                pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem[i];
+                EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem) 
+                            &&
+                            ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerSize)));
                 /* Keep record of allocated size - we use this in free */
                 pAppPktInfoMem->orgBufSize = gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktSize;
                 bufPtr = pAppPktInfoMem->dmaPktPtr->bufPtr;
@@ -591,7 +547,11 @@ static int32_t EnetMem_initCore(const EnetMem_Cfg *cfg)
             /* Enqueue ring memory element into free packet Q */
             for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].numPkts; i++)
             {
-                pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_SMALL][i];
+                pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem[i];
+                EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem) 
+                            &&
+                            ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerSize)));
+
                 /* Keep record of allocated size - we use this in free */
                 pAppPktInfoMem->orgBufSize = gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktSize;
                 bufPtr = pAppPktInfoMem->dmaPktPtr->bufPtr;
@@ -637,18 +597,18 @@ void EnetMem_deInit(void)
     if (gEnetMemObj.memUtilsInitFlag)
     {
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
-        if (EnetQueue_getQCount(&gEnetMemObj.ringMemQ) != ENET_MEM_NUM_RINGS)
+        if (EnetQueue_getQCount(&gEnetMemObj.ringMemQ) != gEnetMemObj.cfg.ringMem.numRings)
         {
             EnetAppUtils_print("RingMemQ: Before: %d, after: %d\r\n",
-                               ENET_MEM_NUM_RINGS,
+                               gEnetMemObj.cfg.ringMem.numRings,
                                EnetQueue_getQCount(&gEnetMemObj.ringMemQ));
             status = ENET_EFAIL;
         }
 
-        if (EnetQueue_getQCount(&gEnetMemObj.dmaDescFreeQ) != ENET_MEM_NUM_DESCS)
+        if (EnetQueue_getQCount(&gEnetMemObj.dmaDescFreeQ) != gEnetMemObj.cfg.dmaDescMem.numDesc)
         {
             EnetAppUtils_print("DmaDesQ: Before: %d, after: %d\r\n",
-                               ENET_MEM_NUM_DESCS,
+                               gEnetMemObj.cfg.dmaDescMem.numDesc,
                                EnetQueue_getQCount(&gEnetMemObj.dmaDescFreeQ));
             status = ENET_EFAIL;
         }
@@ -669,16 +629,19 @@ void EnetMem_deInit(void)
         memset(&gEnetMemObj, 0U, sizeof(EnetMem_MemAllocObj));
 
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
-        for (i = 0U; i < ENET_MEM_NUM_DESCS; i++)
+        for (i = 0U; i < gEnetMemObj.cfg.dmaDescMem.numDesc; i++)
         {
-            EnetDma_checkDescState(&(gEnetMemObj.dmaDescMemArray[i].dmaDescState),
+            EnetDma_checkDescState(&(gEnetMemObj.cfg.dmaDescMem.descInfoContainerMemBase[i].dmaDescState),
                                     ENET_DESCSTATE_MEMMGR_FREE,
                                     ENET_DESCSTATE_MEMMGR_FREE);
         }
 #endif
         for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].numPkts; i++)
         {
-            pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_SMALL][i];
+            pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem[i];
+            EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem) 
+                        &&
+                        ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_SMALL].pktInfoContainerSize)));
             EnetDma_Pkt *dmaPkt = pAppPktInfoMem->dmaPktPtr;
 
             EnetDma_checkPktState(&dmaPkt->pktState,
@@ -689,7 +652,10 @@ void EnetMem_deInit(void)
 
         for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].numPkts; i++)
         {
-            pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_MEDIUM][i];
+            pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem[i];
+            EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem)
+                        &&
+                        ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_MEDIUM].pktInfoContainerSize)));
             EnetDma_Pkt *dmaPkt = pAppPktInfoMem->dmaPktPtr;
 
             EnetDma_checkPktState(&dmaPkt->pktState,
@@ -700,7 +666,10 @@ void EnetMem_deInit(void)
 
         for (i = 0U; i < gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].numPkts; i++)
         {
-            pAppPktInfoMem = &gEnetMemObj.appPktInfoMem[ENET_MEM_POOLIDX_LARGE][i];
+            pAppPktInfoMem = &gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem[i];
+            EnetAppUtils_assert(((uintptr_t)pAppPktInfoMem >= (uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem)
+                        &&
+                        ((uintptr_t)(pAppPktInfoMem + 1) <= (((uintptr_t)gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerMem) + gEnetMemObj.cfg.pktBufPool[ENET_MEM_POOLIDX_LARGE].pktInfoContainerSize)));
             EnetDma_Pkt *dmaPkt = pAppPktInfoMem->dmaPktPtr;
 
             EnetDma_checkPktState(&dmaPkt->pktState,

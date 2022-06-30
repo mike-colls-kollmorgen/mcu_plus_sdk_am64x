@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,26 +108,29 @@ $(document).ready(function(){initNavTree('CCS_SETUP_PAGE.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md19">Download CCS</a></li>
-<li class="level1"><a href="#autotoc_md20">Install CCS</a></li>
+<ul><li class="level1"><a href="#autotoc_md20">Download CCS</a></li>
+<li class="level1"><a href="#autotoc_md21">Install CCS</a></li>
 <li class="level1"><a href="#CCS_PACKAGE_CHECK">Check Packages as seen by CCS</a></li>
-<li class="level1"><a href="#CCS_NEW_TARGET_CONFIG">Create Target Configuration</a></li>
-<li class="level1"><a href="#autotoc_md21">Known Issues</a></li>
+<li class="level1"><a href="#CCS_NEW_TARGET_CONFIG">Create Target Configuration</a><ul><li class="level2"><a href="#autotoc_md22">AM64X-EVM</a></li>
+<li class="level2"><a href="#autotoc_md23">AM64X-SK</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md24">Known Issues</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_getting_started_ccs_setup"></a></p>
 <dl class="section note"><dt>Note</dt><dd>The steps on this page need to be done once on a given host machine</dd></dl>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Download CCS</h1>
 <ul>
 <li>The Code Composer Studio (CCS) download home page is, <a href="https://www.ti.com/tool/CCSTUDIO">https://www.ti.com/tool/CCSTUDIO</a></li>
-<li>Download CCS 11.1.0 from above link</li>
+<li>Download CCS 11.2.0 from above link</li>
 <li>Unzip the file for Windows or Linux at any location on your host PC</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Install CCS</h1>
 <ul>
-<li>Install CCS 11.1.0 by double clicking the installer file from the downloaded and un-zipped CCS package file.</li>
+<li>Install CCS 11.2.0 by double clicking the installer file from the downloaded and un-zipped CCS package file.</li>
 </ul>
 <p> <style>div.image img[src="installer_file.png"]{width:20%}</style> </p><div class="image">
 <img src="installer_file.png" alt=""/>
@@ -174,7 +177,7 @@ Check Packages as seen by CCS</h1>
 <div class="caption">
 CCS Preferences</div></div>
 <ul>
-<li>Goto "Code Composer Studio &gt; Products", make sure you see SysConfig 1.11.0 listed here.<ul>
+<li>Goto "Code Composer Studio &gt; Products", make sure you see SysConfig 1.12.1 listed here.<ul>
 <li>Sometimes, you need to click "Restore Defaults" and then "Refresh"</li>
 </ul>
 </li>
@@ -184,7 +187,7 @@ CCS Preferences</div></div>
 <div class="caption">
 CCS Products</div></div>
 <ul>
-<li>Goto "Code Composer Studio &gt; Build &gt; Compilers", make sure you see TI CLANG 1.3.0.LTS listed here<ul>
+<li>Goto "Code Composer Studio &gt; Build &gt; Compilers", make sure you see TI CLANG 1.3.1.LTS listed here<ul>
 <li>Sometimes, you need to click "Restore Defaults" and then "Refresh"</li>
 </ul>
 </li>
@@ -195,6 +198,8 @@ CCS Products</div></div>
 CCS Compilers</div></div>
 <h1><a class="anchor" id="CCS_NEW_TARGET_CONFIG"></a>
 Create Target Configuration</h1>
+<h2><a class="anchor" id="autotoc_md22"></a>
+AM64X-EVM</h2>
 <ul>
 <li>Goto "View &gt; Target Configuration"</li>
 </ul>
@@ -243,7 +248,57 @@ Bypass unused targets</div></div>
 <li>For SBL, you can use either, but for CCS load, you need to use AM64x_GP_EVM.</li>
 <li>Now you can move on to <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a> to prepare your EVM for running programs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
+AM64X-SK</h2>
+<ul>
+<li>Goto "View &gt; Target Configuration"</li>
+</ul>
+<p> <style>div.image img[src="new_target_config_00.png"]{width:20%}</style> </p><div class="image">
+<img src="new_target_config_00.png" alt=""/>
+<div class="caption">
+Target Configuration Menu</div></div>
+<ul>
+<li>Create a new target configuration</li>
+</ul>
+<p> <style>div.image img[src="new_target_config_01.png"]{width:25%}</style> </p><div class="image">
+<img src="new_target_config_01.png" alt=""/>
+<div class="caption">
+New Target Configuration</div></div>
+<ul>
+<li>Give a nice name to the new target configuration, typically {soc name}_{JTAG type}</li>
+</ul>
+<p> <style>div.image img[src="target_config_name.png"]{width:50%}</style> </p><div class="image">
+<img src="target_config_name.png" alt=""/>
+<div class="caption">
+Target Configuration Name</div></div>
+<ul>
+<li>Select connection as XDS110 USB Debug Probe</li>
+</ul>
+<p> <style>div.image img[src="target_config_xds.png"]{width:50%}</style> </p><div class="image">
+<img src="target_config_xds.png" alt=""/>
+<div class="caption">
+Select JTAG Connection</div></div>
+<ul>
+<li>In "Board or Device" type "AM64X" and select "AM64x_SK_EVM"</li>
+</ul>
+<p> <style>div.image img[src="sk_ccs_target_config_00.png"]{width:50%}</style> </p><div class="image">
+<img src="sk_ccs_target_config_00.png" alt=""/>
+<div class="caption">
+Select AM64X EVM</div></div>
+<ul>
+<li>Bypass not used CPUs: Go to "Advanced" tab and enable the "Bypass" option as shown in the below image. typically, ICSS_Gx are not used by most developers, so these can be bypassed. Note, you can always undo this change later, by editing the target configuration, should you need these CPUs.</li>
+</ul>
+<p> <style>div.image img[src="ccs_target_config_01.png"]{width:50%}</style> </p><div class="image">
+<img src="ccs_target_config_01.png" alt=""/>
+<div class="caption">
+Bypass unused targets</div></div>
+<ul>
+<li>Click "Save" to save the newly created target configuration.</li>
+<li>The AM64x-SK target configuration is just barebone, no GELs associated with PSC/PLL/DDR are loaded. AM64x_SK_EVM target configuration loads up and executes the appropriate GELs for the board.</li>
+<li>For SBL, you can use either, but for CCS load, you need to use AM64x_SK_EVM.</li>
+<li>Now you can move on to <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a> to prepare your EVM for running programs.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Known Issues</h1>
 <ul>
 <li>To use the debugger correctly with CCS in Linux, some additional steps are required. There is a message which is shown during the CCS installation to do this, but more often than not this is missed. If you miss this, you might get an error similar to</li>

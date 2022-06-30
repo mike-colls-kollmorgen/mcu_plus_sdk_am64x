@@ -34,7 +34,7 @@
     let clockSetFrequencyTemplate = '/drivers/system/power_clock_module_set_frequency.c.xdt'
 %%}
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 #include <kernel/dpl/DebugP.h>
 #include <drivers/soc.h>

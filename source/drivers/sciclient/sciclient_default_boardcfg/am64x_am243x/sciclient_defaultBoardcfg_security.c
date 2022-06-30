@@ -82,9 +82,139 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .size = sizeof(struct tisci_boardcfg_extended_otp),
         },
         /* Host ID 0 is DMSC. This means no host has write acces to OTP array */
-        .write_host_id = 0,
+        .write_host_id = 35U,
         /* This is an array with 32 entries */
-        .otp_entry = {0},
+        .otp_entry = {
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+				{
+					.host_id = 128U, 
+					.host_perms = 0x2, 
+				},
+		
+		},
     },
     /* DKEK configuration */
     .dkek_config = {

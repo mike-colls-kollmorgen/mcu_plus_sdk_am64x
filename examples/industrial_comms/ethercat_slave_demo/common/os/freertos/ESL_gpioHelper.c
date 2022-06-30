@@ -299,7 +299,7 @@ bool ESL_GPIO_write(void* pGpioHandle_p, ESL_GPIO_EModule_t moduleId_p, ESL_GPIO
 {
     bool                        state       = false;
     uint32_t                    baseAddr;
-    
+
     OSALUNREF_PARM(pGpioHandle_p);
 
     switch (moduleId_p)

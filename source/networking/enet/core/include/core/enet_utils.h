@@ -110,8 +110,9 @@ extern "C" {
 #else /* !defined(__KLOCWORK__) && !defined(__cplusplus) */
 #define Enet_assert(cond, ...)                               \
     do {                                                     \
-        ENETTRACE_ERR_IF(!(bool)(cond), __VA_ARGS__);        \
-        EnetUtils_assertLocal((bool)(cond),                  \
+        bool assertCond = (bool)(cond);                      \
+        ENETTRACE_ERR_IF(!assertCond, __VA_ARGS__);          \
+        EnetUtils_assertLocal(assertCond,                    \
                               (const char *)# cond,          \
                               (const char *)__FILE__,        \
                               (int32_t)__LINE__);            \

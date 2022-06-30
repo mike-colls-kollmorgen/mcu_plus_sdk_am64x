@@ -36,6 +36,12 @@
 #ifndef CDN_XHCI_INTERNAL_H
 #define CDN_XHCI_INTERNAL_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -293,5 +299,10 @@ void xhciGetShortCfgDescComplete(USBSSP_DriverResourcesT *res, uint32_t status, 
  * @return
  */
 void xhciEpSetFeatureHost(USBSSP_DriverResourcesT *res, uint8_t epIndex, uint8_t feature);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

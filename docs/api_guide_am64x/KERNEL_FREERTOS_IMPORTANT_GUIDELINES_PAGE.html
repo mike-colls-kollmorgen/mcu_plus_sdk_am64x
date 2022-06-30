@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,63 +108,63 @@ $(document).ready(function(){initNavTree('KERNEL_FREERTOS_IMPORTANT_GUIDELINES_P
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md353">FreeRTOS configuration</a></li>
-<li class="level1"><a href="#autotoc_md354">Using and adding FreeRTOS to your project</a></li>
-<li class="level1"><a href="#autotoc_md355">Summary of comparison with SysBIOS</a><ul><li class="level2"><a href="#autotoc_md356">Key similarities between modules</a></li>
-<li class="level2"><a href="#autotoc_md357">Key differences between modules</a></li>
+<ul><li class="level1"><a href="#autotoc_md409">FreeRTOS configuration</a></li>
+<li class="level1"><a href="#autotoc_md410">Using and adding FreeRTOS to your project</a></li>
+<li class="level1"><a href="#autotoc_md411">Summary of comparison with SysBIOS</a><ul><li class="level2"><a href="#autotoc_md412">Key similarities between modules</a></li>
+<li class="level2"><a href="#autotoc_md413">Key differences between modules</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md358">FreeRTOS Tasks</a><ul><li class="level2"><a href="#autotoc_md359">Overview</a></li>
-<li class="level2"><a href="#autotoc_md360">Initial Tasks</a></li>
-<li class="level2"><a href="#autotoc_md361">Task load</a></li>
-<li class="level2"><a href="#autotoc_md362">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md414">FreeRTOS Tasks</a><ul><li class="level2"><a href="#autotoc_md415">Overview</a></li>
+<li class="level2"><a href="#autotoc_md416">Initial Tasks</a></li>
+<li class="level2"><a href="#autotoc_md417">Task load</a></li>
+<li class="level2"><a href="#autotoc_md418">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md363">FreeRTOS Interrupts</a><ul><li class="level2"><a href="#autotoc_md364">Overview</a></li>
-<li class="level2"><a href="#autotoc_md365">Nested interrupts and ISR stack</a></li>
-<li class="level2"><a href="#autotoc_md366">Interrupts outside of FreeRTOS</a></li>
-<li class="level2"><a href="#autotoc_md367">Additional important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md419">FreeRTOS Interrupts</a><ul><li class="level2"><a href="#autotoc_md420">Overview</a></li>
+<li class="level2"><a href="#autotoc_md421">Nested interrupts and ISR stack</a></li>
+<li class="level2"><a href="#autotoc_md422">Interrupts outside of FreeRTOS</a></li>
+<li class="level2"><a href="#autotoc_md423">Additional important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md368">FreeRTOS Semaphores and Mutex</a><ul><li class="level2"><a href="#autotoc_md369">Overview</a></li>
-<li class="level2"><a href="#autotoc_md370">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md424">FreeRTOS Semaphores and Mutex</a><ul><li class="level2"><a href="#autotoc_md425">Overview</a></li>
+<li class="level2"><a href="#autotoc_md426">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md371">FreeRTOS Task Notification</a><ul><li class="level2"><a href="#autotoc_md372">Overview</a></li>
-<li class="level2"><a href="#autotoc_md373">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md427">FreeRTOS Task Notification</a><ul><li class="level2"><a href="#autotoc_md428">Overview</a></li>
+<li class="level2"><a href="#autotoc_md429">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md374">FreeRTOS Event Groups</a><ul><li class="level2"><a href="#autotoc_md375">Overview</a></li>
-<li class="level2"><a href="#autotoc_md376">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md430">FreeRTOS Event Groups</a><ul><li class="level2"><a href="#autotoc_md431">Overview</a></li>
+<li class="level2"><a href="#autotoc_md432">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md377">FreeRTOS Timers</a><ul><li class="level2"><a href="#autotoc_md378">Overview</a></li>
-<li class="level2"><a href="#autotoc_md379">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md433">FreeRTOS Timers</a><ul><li class="level2"><a href="#autotoc_md434">Overview</a></li>
+<li class="level2"><a href="#autotoc_md435">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md380">FreeRTOS Heaps</a><ul><li class="level2"><a href="#autotoc_md381">Default heap</a></li>
-<li class="level2"><a href="#autotoc_md382">User defined heaps</a></li>
-<li class="level2"><a href="#autotoc_md383">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md436">FreeRTOS Heaps</a><ul><li class="level2"><a href="#autotoc_md437">Default heap</a></li>
+<li class="level2"><a href="#autotoc_md438">User defined heaps</a></li>
+<li class="level2"><a href="#autotoc_md439">Important tips for application writers</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md384">FreeRTOS Additional Modules</a><ul><li class="level2"><a href="#autotoc_md385">Queues</a></li>
-<li class="level2"><a href="#autotoc_md386">Queue Sets, Stream Buffers, Co-routines</a></li>
+<li class="level1"><a href="#autotoc_md440">FreeRTOS Additional Modules</a><ul><li class="level2"><a href="#autotoc_md441">Queues</a></li>
+<li class="level2"><a href="#autotoc_md442">Queue Sets, Stream Buffers, Co-routines</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md387">FreeRTOS Hook Functions</a><ul><li class="level2"><a href="#autotoc_md388">Debug Hook Functions</a></li>
-<li class="level2"><a href="#autotoc_md389">Statistics Hook Functions</a></li>
-<li class="level2"><a href="#autotoc_md390">Trace Hooks Functions</a></li>
+<li class="level1"><a href="#autotoc_md443">FreeRTOS Hook Functions</a><ul><li class="level2"><a href="#autotoc_md444">Debug Hook Functions</a></li>
+<li class="level2"><a href="#autotoc_md445">Statistics Hook Functions</a></li>
+<li class="level2"><a href="#autotoc_md446">Trace Hooks Functions</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md391">FreeRTOS POSIX</a><ul><li class="level2"><a href="#autotoc_md392">Overview</a></li>
-<li class="level2"><a href="#autotoc_md393">Important tips for application writers</a></li>
+<li class="level1"><a href="#autotoc_md447">FreeRTOS POSIX</a><ul><li class="level2"><a href="#autotoc_md448">Overview</a></li>
+<li class="level2"><a href="#autotoc_md449">Important tips for application writers</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_os_freertos_important_guidelines"></a></p>
 <p>This section has additional useful information related to FreeRTOS and its integration within MCU+ SDK. <b>It also compares some key points and config in FreeRTOS vs TI SysBIOS RTOS which was used in previous TI SOCs and SDKs.</b></p>
-<h1><a class="anchor" id="autotoc_md353"></a>
+<h1><a class="anchor" id="autotoc_md409"></a>
 FreeRTOS configuration</h1>
 <ul>
 <li>In FreeRTOS, all applications need to provide a <code>FreeRTOSConfig.h</code> file which specifies the FreeRTOS kernel configuration, see <a href="https://www.freertos.org/a00110.html">https://www.freertos.org/a00110.html</a></li>
@@ -182,7 +182,7 @@ FreeRTOS configuration</h1>
 <li>The predefined config file per SOC and per CPU can be found at below path <pre class="fragment">  ${SDK_INSALL_PATH}/source/kernel/freertos/config/{soc}/{cpu}/FreeRTOSConfig.h
 </pre></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md354"></a>
+<h1><a class="anchor" id="autotoc_md410"></a>
 Using and adding FreeRTOS to your project</h1>
 <ul>
 <li>You can start using FreeRTOS using one of the many example projects in the SDK. The <a class="el" href="EXAMPLES_EMPTY.html">Empty Project</a> at <code>${SDK_INSTALL_PATH}/examples/empty</code> is a good starting point</li>
@@ -211,10 +211,10 @@ Using and adding FreeRTOS to your project</h1>
 </li>
 <li>Once again refer to the many FreeRTOS examples to see the project settings and startup code.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md355"></a>
+<h1><a class="anchor" id="autotoc_md411"></a>
 Summary of comparison with SysBIOS</h1>
 <p>This section has a quick summary of comparision between SysBIOS and FreeRTOS features. Refer rest of the sections on this page for more details</p>
-<h2><a class="anchor" id="autotoc_md356"></a>
+<h2><a class="anchor" id="autotoc_md412"></a>
 Key similarities between modules</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -252,7 +252,7 @@ Key similarities between modules</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">POSIX  </td><td class="markdownTableBodyNone">FreeRTOS+POSIX  </td><td class="markdownTableBodyNone">Similar features, see details below   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md357"></a>
+<h2><a class="anchor" id="autotoc_md413"></a>
 Key differences between modules</h2>
 <table class="doxtable">
 <tr>
@@ -270,9 +270,9 @@ Key differences between modules</h2>
 <tr>
 <td>Number of task priorities is configurable (upto max 32) vs SysBIOS default of 16 </td><td><b>SDK default config</b> keeps number of task priorities to 16 in FreeRTOS  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md358"></a>
+<h1><a class="anchor" id="autotoc_md414"></a>
 FreeRTOS Tasks</h1>
-<h2><a class="anchor" id="autotoc_md359"></a>
+<h2><a class="anchor" id="autotoc_md415"></a>
 Overview</h2>
 <ul>
 <li>FreeRTOS has ability to create tasks with below parameters<ul>
@@ -303,7 +303,7 @@ Overview</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md360"></a>
+<h2><a class="anchor" id="autotoc_md416"></a>
 Initial Tasks</h2>
 <ul>
 <li>Two tasks are created inside FreeRTOS on startup, idle task and timer task</li>
@@ -313,16 +313,17 @@ Initial Tasks</h2>
 </ul>
 </li>
 </ul>
-<div class="fragment"><div class="line">/* in FreeRTOSConfig.h file */</div>
-<div class="line">/* when 1, make sure to implement void vApplicationIdleHook(void) as the hook function */</div>
-<div class="line">#define configUSE_IDLE_HOOK                     (1)</div>
-<div class="line"> </div>
-<div class="line">/* in port.c file for R5F, M4F, A53 */</div>
-<div class="line">void vApplicationIdleHook( void )</div>
-<div class="line">{</div>
-<div class="line">    __asm__ volatile (&quot;wfi&quot;);</div>
-<div class="line">}</div>
-</div><!-- fragment --><ul>
+<pre class="fragment">\code
+/* in FreeRTOSConfig.h file */
+/* when 1, make sure to implement void vApplicationIdleHook(void) as the hook function */
+#define configUSE_IDLE_HOOK                     (1)
+/* in port.c file for R5F, M4F, A53 */
+void vApplicationIdleHook( void )
+{
+    __asm__ volatile ("wfi");
+}
+\endcode
+</pre><ul>
 <li>Timer task (<b>SDK default config enables timer task to match SysBIOS</b>),<ul>
 <li>Timer callbacks and “deferred” interrupt handler functions are called in context of the timer task</li>
 <li><b>NOTE, unlike SysBIOS, SW timer callbacks are not called in ISR context</b></li>
@@ -336,7 +337,7 @@ Initial Tasks</h2>
 <div class="fragment"><div class="line">#define configUSE_TIMERS               (1) /* enable timer task and SW timers */</div>
 <div class="line">#define configTIMER_TASK_PRIORITY      (configMAX_PRIORITIES - 1) /* highest priority */</div>
 <div class="line">#define configTIMER_TASK_STACK_DEPTH   (256) /* 1KB */</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md361"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md417"></a>
 Task load</h2>
 <ul>
 <li>To measure task and CPU load, in FreeRTOS config, we need to set <code>configGENERATE_RUN_TIME_STATS</code> to <code>1</code> (<b>SDK default</b> is <code>1</code> when <code>configOPTIMIZE_FOR_LATENCY</code> is <code>0</code>)</li>
@@ -347,7 +348,7 @@ Task load</h2>
 <li>To get task load with overflow condition taken care of, it is recommended to create the task using <a class="el" href="KERNEL_DPL_TASK_PAGE.html">Task</a> DPL APIs</li>
 <li>Total CPU load is calculated by measuring the time spent in IDLE task and then subtracting it from 100%, i.e CPU load = 100 - CPU idle load</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md362"></a>
+<h2><a class="anchor" id="autotoc_md418"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Task function should not return in FreeRTOS, instead it should call vTaskDelete(NULL) to destroy itself, e.g <div class="fragment"><div class="line">void myTaskMain(void *args)</div>
@@ -369,9 +370,9 @@ Important tips for application writers</h2>
 </li>
 <li>.stack is the stack used by code before FreeRTOS scheduler is started, i.e from <code>_c_int00</code> to <code>vTaskStartSchedular()</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md363"></a>
+<h1><a class="anchor" id="autotoc_md419"></a>
 FreeRTOS Interrupts</h1>
-<h2><a class="anchor" id="autotoc_md364"></a>
+<h2><a class="anchor" id="autotoc_md420"></a>
 Overview</h2>
 <ul>
 <li>Interrupt handler is not directly invoked by FreeRTOS Kernel, porting layer handles this<ul>
@@ -399,7 +400,7 @@ Overview</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md365"></a>
+<h2><a class="anchor" id="autotoc_md421"></a>
 Nested interrupts and ISR stack</h2>
 <ul>
 <li>On R5F,<ul>
@@ -440,7 +441,7 @@ Nested interrupts and ISR stack</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md366"></a>
+<h2><a class="anchor" id="autotoc_md422"></a>
 Interrupts outside of FreeRTOS</h2>
 <ul>
 <li>On R5F,<ul>
@@ -461,7 +462,7 @@ Interrupts outside of FreeRTOS</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md367"></a>
+<h2><a class="anchor" id="autotoc_md423"></a>
 Additional important tips for application writers</h2>
 <ul>
 <li>Only FreeRTOS APIs that end with <code>FromISR</code> can be called from ISR context <div class="fragment"><div class="line">BaseType_t xHigherPriorityTaskWoken = 0;</div>
@@ -482,16 +483,16 @@ Additional important tips for application writers</h2>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md368"></a>
+<h1><a class="anchor" id="autotoc_md424"></a>
 FreeRTOS Semaphores and Mutex</h1>
-<h2><a class="anchor" id="autotoc_md369"></a>
+<h2><a class="anchor" id="autotoc_md425"></a>
 Overview</h2>
 <ul>
 <li>FreeRTOS has text book implementation of binary semaphore, counting semaphore, mutex with priority inheritance and recursive mutex</li>
 <li>Timeouts can be specified when waiting on a semaphore/mutex, with timeout error code if semaphore/mutex is not available</li>
 <li>Timeout is specified in units of OS ticks. Use <code>pdMS_TO_TICKS()</code> to convert from msec to OS ticks</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md370"></a>
+<h2><a class="anchor" id="autotoc_md426"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Binary and counting semaphores should be used to signal from ISR to task and task to task<ul>
@@ -504,16 +505,16 @@ Important tips for application writers</h2>
 </li>
 <li>Once again, only APIs that end with <code>FromISR</code> can be used from within ISR. These are non-blocking APIs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md371"></a>
+<h1><a class="anchor" id="autotoc_md427"></a>
 FreeRTOS Task Notification</h1>
-<h2><a class="anchor" id="autotoc_md372"></a>
+<h2><a class="anchor" id="autotoc_md428"></a>
 Overview</h2>
 <ul>
 <li>Task notification is low overhead API to signal a task from ISR or a task from another task</li>
 <li>We see about 25% reduction in cycles needed for task switch using task notification vs using semaphores in ideal standalone conditions.</li>
 <li>This is a very freertos specific API and SDK drivers and DPL will NOT use this.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md373"></a>
+<h2><a class="anchor" id="autotoc_md429"></a>
 Important tips for application writers</h2>
 <ul>
 <li>In practical use-cases, typically cache effects due to cache miss on the larger application code/data, will have higher effect than overheads of task switch in the smaller OS code.</li>
@@ -521,23 +522,23 @@ Important tips for application writers</h2>
 <li>Here one needs to know the task handle to signal, so its difficult to use this API from within a driver library since driver ISR for example does not know the task in which the driver API is called</li>
 <li>Thus use these APIs in applications after thorough analysis and profiling on benefit for the use-case.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md374"></a>
+<h1><a class="anchor" id="autotoc_md430"></a>
 FreeRTOS Event Groups</h1>
-<h2><a class="anchor" id="autotoc_md375"></a>
+<h2><a class="anchor" id="autotoc_md431"></a>
 Overview</h2>
 <ul>
 <li>An event group is a set of event bits. Event bits are used to indicate if an event has occurred or not. Event bits are often referred to as event flags.</li>
 <li>The number of bits (or flags) stored within an event group is 24 bits</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md376"></a>
+<h2><a class="anchor" id="autotoc_md432"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Unlike "Event" in SysBIOS where one could give a "AND" mask and "OR" mask to wait on, in FreeRTOS one can only give one "event mask" and then tell if one should use "AND" wait or "OR" wait on the single event mask</li>
 <li>When "set bits" is called from ISR, actual action of setting bits is done within the "Timer task" as a "deferred" function call.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md377"></a>
+<h1><a class="anchor" id="autotoc_md433"></a>
 FreeRTOS Timers</h1>
-<h2><a class="anchor" id="autotoc_md378"></a>
+<h2><a class="anchor" id="autotoc_md434"></a>
 Overview</h2>
 <ul>
 <li>Allows users to create one shot or periodic callbacks at time resolution of one OS tick, typically 1ms.</li>
@@ -548,16 +549,16 @@ Overview</h2>
 </li>
 <li>A SW queue is used to post callbacks or functions to execute on timer expiry, the queue depth is config option. <b>SDK default is 16</b></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md379"></a>
+<h2><a class="anchor" id="autotoc_md435"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Since a single task executes all the multiple callbacks, the callbacks are recommended to not block and spend too much time, even though in theory blocking calls are allowed.</li>
 <li>Use <code>xTimerPendFunctionCall()</code> to do “deferred ISR” handling , i.e do the most critical work in ISR and do the rest of work in a another function call which gets called right after all ISRs are done. <b>This feature can be used as alternative to SWI in SysBIOS</b></li>
 <li>Note, do not use <code>FromISR</code> APIs in callbacks, use regular FreeRTOS APIs</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md380"></a>
+<h1><a class="anchor" id="autotoc_md436"></a>
 FreeRTOS Heaps</h1>
-<h2><a class="anchor" id="autotoc_md381"></a>
+<h2><a class="anchor" id="autotoc_md437"></a>
 Default heap</h2>
 <ul>
 <li>FreeRTOS kernel has multiple heap implementations as defined in <code>portable/MemMang</code></li>
@@ -590,7 +591,7 @@ Default heap</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md382"></a>
+<h2><a class="anchor" id="autotoc_md438"></a>
 User defined heaps</h2>
 <ul>
 <li><b>Unlike SysBIOS, FreeRTOS does not support user defined heaps at arbitrary user defined memory locations</b></li>
@@ -603,7 +604,7 @@ User defined heaps</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md383"></a>
+<h2><a class="anchor" id="autotoc_md439"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Use <code>--heap</code> in linker command file to specify heap size and place <code>.heap</code> section in appropriate memory in linker command file. This is used by FreeRTOS (<code>heap_3.c</code>) when it needs dynamic memory allocation.</li>
@@ -613,9 +614,9 @@ Important tips for application writers</h2>
 </li>
 <li>Use SDK provided <code><a class="el" href="HeapP_8h.html">HeapP.h</a></code> to create arbitrary application heaps as needed.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md384"></a>
+<h1><a class="anchor" id="autotoc_md440"></a>
 FreeRTOS Additional Modules</h1>
-<h2><a class="anchor" id="autotoc_md385"></a>
+<h2><a class="anchor" id="autotoc_md441"></a>
 Queues</h2>
 <ul>
 <li>Highly efficient SW queue implementation</li>
@@ -625,7 +626,7 @@ Queues</h2>
 <li>Fixed queue depth and fixed queue element size at queue create</li>
 <li>Can be used by application users</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md386"></a>
+<h2><a class="anchor" id="autotoc_md442"></a>
 Queue Sets, Stream Buffers, Co-routines</h2>
 <ul>
 <li>Queue Sets, more higher level than queues, built using queues, semaphores. FreeRTOS recommends to use these very carefully. <a href="https://www.freertos.org/Pend-on-multiple-rtos-objects.html">https://www.freertos.org/Pend-on-multiple-rtos-objects.html</a></li>
@@ -633,9 +634,9 @@ Queue Sets, Stream Buffers, Co-routines</h2>
 <li>Croutines, used when tasks are deemed too expensive to use, almost unlikely we will ever use these</li>
 <li><b>SDK default config keeps these disabled</b></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md387"></a>
+<h1><a class="anchor" id="autotoc_md443"></a>
 FreeRTOS Hook Functions</h1>
-<h2><a class="anchor" id="autotoc_md388"></a>
+<h2><a class="anchor" id="autotoc_md444"></a>
 Debug Hook Functions</h2>
 <ul>
 <li>FreeRTOS provides "hook" function callbacks specified in FreeRTOS config.</li>
@@ -663,7 +664,7 @@ Debug Hook Functions</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md389"></a>
+<h2><a class="anchor" id="autotoc_md445"></a>
 Statistics Hook Functions</h2>
 <ul>
 <li>FreeRTOS provides APIs to query and return time spent in each task and output the results in a nice formatted table</li>
@@ -671,7 +672,7 @@ Statistics Hook Functions</h2>
 <li>It uses same timer as the tick timer to measure task load.</li>
 <li>See also <a href="https://www.freertos.org/rtos-run-time-stats.html">https://www.freertos.org/rtos-run-time-stats.html</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md390"></a>
+<h2><a class="anchor" id="autotoc_md446"></a>
 Trace Hooks Functions</h2>
 <ul>
 <li>FreeRTOS provides more than 70+ hook marcos at key points in the kernel to log trace info</li>
@@ -683,9 +684,9 @@ Trace Hooks Functions</h2>
 <li>This is used by tools like <code>Tracealyzer</code> to log and then visualize task execution and lot more in a GUI tool, see <a href="https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_Trace/FreeRTOS_Plus_Trace.html">https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_Trace/FreeRTOS_Plus_Trace.html</a></li>
 <li><b>Not enabled in SDK default config</b></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md391"></a>
+<h1><a class="anchor" id="autotoc_md447"></a>
 FreeRTOS POSIX</h1>
-<h2><a class="anchor" id="autotoc_md392"></a>
+<h2><a class="anchor" id="autotoc_md448"></a>
 Overview</h2>
 <ul>
 <li>Implements a subset of the POSIX threading API, see <a href="https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_POSIX/index.html">https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_POSIX/index.html</a></li>
@@ -699,7 +700,7 @@ Overview</h2>
 <li><b>Features similar to SysBIOS POSIX</b></li>
 <li>Available in SDK but optional to use this layer, SDK drivers and SDK DPL APIs does not use POSIX APIs</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md393"></a>
+<h2><a class="anchor" id="autotoc_md449"></a>
 Important tips for application writers</h2>
 <ul>
 <li>Stack used by threads created with pthread is allocated using dynamic memory alloc, so make sure heap size is sufficiently large</li>

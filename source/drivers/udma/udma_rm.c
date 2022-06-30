@@ -1251,6 +1251,8 @@ void Udma_rmFreeMappedRing(uint32_t ringNum,
 
     retVal = Udma_getMappedChRingAttributes(drvHandle, mappedRingGrp, mappedChNum, &chAttr);
     DebugP_assert(UDMA_SOK == retVal);
+    (void) retVal;
+
 
     /* Free up only the free mapped ring - ignore default mapped ring */
     if(ringNum != chAttr.defaultRing)
@@ -1399,7 +1401,7 @@ uint32_t Udma_rmAllocVintrBit(Udma_EventHandleInt eventHandle)
     if(NULL_PTR != eventPrms->masterEventHandle)
     {
         /* Shared event. Get the master handle */
-        masterEventHandle = eventPrms->masterEventHandle;
+        masterEventHandle = (Udma_EventHandleInt) eventPrms->masterEventHandle;
     }
 
     SemaphoreP_pend(&drvHandle->rmLockObj, SystemP_WAIT_FOREVER);
@@ -1433,7 +1435,7 @@ void Udma_rmFreeVintrBit(uint32_t vintrBitNum,
     if(NULL_PTR != eventPrms->masterEventHandle)
     {
         /* Shared event. Get the master handle */
-        masterEventHandle = eventPrms->masterEventHandle;
+        masterEventHandle = (Udma_EventHandleInt) eventPrms->masterEventHandle;
     }
 
     SemaphoreP_pend(&drvHandle->rmLockObj, SystemP_WAIT_FOREVER);
@@ -1555,8 +1557,8 @@ int32_t Udma_rmGetSciclientDefaultBoardCfgRmRange(const Udma_RmDefBoardCfgPrms *
                                                   uint32_t *splitResFlag)
 {
     int32_t                                     retVal = UDMA_SOK;
-    struct tisci_msg_rm_get_resource_range_req  req = {0};
-    struct tisci_msg_rm_get_resource_range_resp res = {0};
+    struct tisci_msg_rm_get_resource_range_req  req = {{0}};
+    struct tisci_msg_rm_get_resource_range_resp res = {{0}};
 
     req.type           = rmDefBoardCfgPrms->sciclientReqType;
     req.subtype        = rmDefBoardCfgPrms->sciclientReqSubtype;

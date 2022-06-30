@@ -6,7 +6,7 @@ var group__ENET__TRACE__API =
     [ "ENET_CFG_TRACE_LEVEL_INFO", "group__ENET__TRACE__API.html#ga71cdb195d83e1ba5887bd578e10b09ca", null ],
     [ "ENET_CFG_TRACE_LEVEL_DEBUG", "group__ENET__TRACE__API.html#gafbdf792a916db13d79341c5bb552d3ea", null ],
     [ "ENET_CFG_TRACE_LEVEL_VERBOSE", "group__ENET__TRACE__API.html#gacd9bc285dde9f775d33438f68bc01d99", null ],
-    [ "ENET_CFG_TRACE_TRACE_LEVEL", "group__ENET__TRACE__API.html#ga8c8e859370750f67022d240cd7c7aa88", null ],
+    [ "ENET_CFG_TRACE_LEVEL", "group__ENET__TRACE__API.html#ga6d6f9ce78be8c92817e6747eeff81e3c", null ],
     [ "ENET_CFG_TRACE_FORMAT_FUNC", "group__ENET__TRACE__API.html#gad9cb4a2686b239b44170d30cea8d4cea", null ],
     [ "ENET_CFG_TRACE_FORMAT_FILE", "group__ENET__TRACE__API.html#gab6d06550a51b66a2d9e12009fe4e33d7", null ],
     [ "ENET_CFG_TRACE_FORMAT_FULL", "group__ENET__TRACE__API.html#gaf39b2755cc31ce49701b8f92335fc3dc", null ],

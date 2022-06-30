@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Texas Instruments Incorporated
+ *  Copyright (C) 2021-22 Texas Instruments Incorporated
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -42,10 +42,6 @@ extern "C"
 
 #if defined (DRV_VERSION_MCSPI_V0)
 #include <drivers/mcspi/v0/mcspi.h>
-#endif
-
-#if defined (DRV_VERSION_MCSPI_V1)
-#include <drivers/mcspi/v1/mcspi.h>
 #endif
 
 #ifdef __cplusplus

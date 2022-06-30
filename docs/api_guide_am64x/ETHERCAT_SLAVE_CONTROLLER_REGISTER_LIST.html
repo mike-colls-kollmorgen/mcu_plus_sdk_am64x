@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -118,11 +118,13 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <tr>
 <td>Revision </td><td>0x0001 </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
-<td></td><td></td><td>0-7 </td><td>R/- </td><td>R/- </td><td>5 </td><td>AM64X : 5  </td></tr>
+<td></td><td></td><td>0-7 </td><td>R/- </td><td>R/- </td><td>5/6 </td><td>AM263x : 5 <br  />
+ AM64x, AM243x : 6 <br  />
+  </td></tr>
 <tr>
 <td>Build </td><td>0x0002-0x0003 </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
-<td></td><td></td><td>0-15 </td><td>R/- </td><td>R/- </td><td>0x4f2 </td><td>Firmware build version.  </td></tr>
+<td></td><td></td><td>0-15 </td><td>R/- </td><td>R/- </td><td>0x502 </td><td>Firmware build version.  </td></tr>
 <tr>
 <td>FMMUs supported </td><td>0x0004 </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
@@ -134,7 +136,7 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <tr>
 <td>RAM Size </td><td>0x0006 </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
-<td></td><td></td><td>0-7 </td><td>R/- </td><td>R/- </td><td>8/28 </td><td>Size of process data RAM (AM64X : 60KB)  </td></tr>
+<td></td><td></td><td>0-7 </td><td>R/- </td><td>R/- </td><td>59 </td><td>Size of Process Data RAM (in KB)  </td></tr>
 <tr>
 <td>Port Descriptor </td><td>0x0007 </td><td></td><td></td><td></td><td>0x0f </td><td></td></tr>
 <tr>
@@ -354,13 +356,13 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <tr>
 <td></td><td></td><td>0-2 </td><td>R/- </td><td>R/- </td><td>00b </td><td><b>Not available in TI ESC</b>  </td></tr>
 <tr>
-<td></td><td></td><td>3 </td><td>R/- </td><td>R/- </td><td>1b </td><td>SYNC0 mapped to AL Event Request register 0x0220.2: <br  />
+<td></td><td></td><td>3 </td><td>R/- </td><td>R/- </td><td>0b </td><td>SYNC0 mapped to AL Event Request register 0x0220.2: <br  />
  0 - Disabled <br  />
  1 - Enabled  </td></tr>
 <tr>
 <td></td><td></td><td>4-6 </td><td>R/- </td><td>R/- </td><td>00b </td><td><b>Not available in TI ESC</b>  </td></tr>
 <tr>
-<td></td><td></td><td>7 </td><td>R/- </td><td>R/- </td><td>1b </td><td>SYNC1 mapped to AL Event Request register 0x0220.3: <br  />
+<td></td><td></td><td>7 </td><td>R/- </td><td>R/- </td><td>0b </td><td>SYNC1 mapped to AL Event Request register 0x0220.3: <br  />
  0 - Disabled <br  />
  1 - Enabled  </td></tr>
 <tr>
@@ -452,11 +454,11 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <tr>
 <td></td><td></td><td>0-7 </td><td>R/W </td><td>R/- </td><td>0 </td><td>Invalid frame counter port 0. Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written.The invalid frame counters are incremented if there is an error in the frame format (Preamble, SFD – Start of Frame Delimiter, FCS – Checksum, invalid length)  </td></tr>
 <tr>
-<td></td><td></td><td>8-15 </td><td>R/W </td><td>R/- </td><td>0 </td><td>RX Error counter port 0. Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written. Physical layer RX Errors (inside frame): MII: RX_ER  </td></tr>
+<td></td><td></td><td>8-15 </td><td>R/W </td><td>R/- </td><td>0 </td><td>RX Error counter port 0. Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written.  </td></tr>
 <tr>
 <td></td><td></td><td>16-23 </td><td>R/W </td><td>R/- </td><td>0 </td><td>Invalid frame counter port 1. Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written.The invalid frame counters are incremented if there is an error in the frame format (Preamble, SFD – Start of Frame Delimiter, FCS – Checksum, invalid length)  </td></tr>
 <tr>
-<td></td><td></td><td>24-31 </td><td>R/W </td><td>R/- </td><td>0 </td><td>RX Error counter port 1.Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written. Physical layer RX Errors (inside frame): MII: RX_ER  </td></tr>
+<td></td><td></td><td>24-31 </td><td>R/W </td><td>R/- </td><td>0 </td><td>RX Error counter port 1.Counting is stopped when 0xFF is reached. Cleared if any of the counters (0x300-0x30b) is written.  </td></tr>
 <tr>
 <td></td><td></td><td>32-39 </td><td>R/- </td><td>R/- </td><td>0 </td><td>Invalid frame counter port 2 - <b>Not available in TI ESC</b>  </td></tr>
 <tr>
@@ -498,9 +500,9 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
  <b>NOTE: For TI ESC max value is:</b> <br  />
  <ul>
 <li>
-<b>196.6 us or 4915 (13-bit wide and NOT 16-bit) because of 333 MHz clock tick on PRU-ICSSG (AM64x/AM243x)</b> </li>
+<b>327.64 us or 8189 (13-bit wide and NOT 16-bit) for 200 MHz clock tick on PRU-ICSSG (AM64x/AM243x) and PRU-ICSSM (AM263x)</b> </li>
 <li>
-<b>327.64 us or 8189 (13-bit wide and NOT 16-bit) because of 200 MHz clock tick on PRU-ICSSM (AM263x)</b> </li>
+<b>196.6 us or 4915 (13-bit wide and NOT 16-bit) for 333 MHz clock tick on PRU-ICSSG (AM64x/AM243x)</b> </li>
 </ul>
 </td></tr>
 <tr>
@@ -1046,7 +1048,7 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <td>PDI ISR DIGIO pin selection register </td><td>0x0E0A </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
 <td></td><td></td><td>0-7 </td><td>R/W </td><td>R/W </td><td>0 </td><td>PDI ISR DIGIO pin selection register, selects one of pr1_edio_data_outN pins as PDI ISR hw pin, configure 255 to disable. Set corresponding bitmask to enable. Application needs to configure pinmux correctly for this to work. <br  />
- <b>This feature is not available in SoCs with ICSSG</b>  </td></tr>
+ <b>This feature is not available in SoCs with PRU-ICSSG</b>  </td></tr>
 <tr>
 <td>PRU MII RX LINK Polarity </td><td>0x0E0C </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
@@ -1088,7 +1090,7 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <tr>
 <td>Aggressive Drift compensation Trigger </td><td>0x0E1C-0x0E1D </td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr>
-<td></td><td></td><td>0-16 </td><td>R/W </td><td>R/W </td><td>255 </td><td>Vendor specific aggressive DC drift compensation trigger register. 255 ns by default  </td></tr>
+<td></td><td></td><td>0-15 </td><td>R/W </td><td>R/W </td><td>255 </td><td>Vendor specific aggressive DC drift compensation trigger register. 255 ns by default  </td></tr>
 <tr>
 <td colspan="7">NOTE: Normally one need not program the following register and even access can be disabled via ECAT if not desired. This register is used to enable/disable Enhanced Process Data access latency feature (must be enabled in the application as well).  </td></tr>
 <tr>
@@ -1097,6 +1099,29 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIS
 <td></td><td></td><td>0-15 </td><td>R/W </td><td>R/W </td><td>0 </td><td>Vendor specific Enhanced Process Data buffer access latency mode control Register. <br  />
  0 by default.<br  />
  If set to 1 then firmware assumes that application has the Enhanced mode enabled and works accordingly. (Will not work correctly if not enabled from application side).  </td></tr>
+<tr>
+<td>PHY RX Error Counter Register </td><td>0x0E28-0x0E29 </td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr>
+<td></td><td></td><td>0-15 </td><td>- </td><td>R/W </td><td>0 </td><td>Address of PHY register maintaining RX Error (RX_ERR) count during frame (when RX_DV is asserted). <br  />
+ 0 by default. If set to 0, no PHY register is read for updating 0x0301/0x0303 registers in TI ESC.<br  />
+ For TI DP83869/DP83867/DP82826E/DP83822 PHYs, 0x15 should be configured.<br  />
+ <b>NOTE: This register should be programmed before PRU cores start running</b> <br  />
+  </td></tr>
+<tr>
+<td>PDI ISR Time Register </td><td>0x0E2C-0x0E33 </td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr>
+<td></td><td></td><td>0-63 </td><td>- </td><td>R/W </td><td>0 </td><td>Register captures the System time when PDI ISR is triggered. <br  />
+  </td></tr>
+<tr>
+<td>PRU Clock Frequency Selection Register </td><td>0x0E34-0x0E35 </td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr>
+<td></td><td></td><td>0-7 </td><td>- </td><td>R/W </td><td>0 </td><td><p class="starttd">Selection of 200 MHz or 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock used by EtherCAT Slave Firmware. <br  />
+ 0 : 200 MHz (default)<br  />
+ 1 : 333 MHz <br  />
+ <b>NOTE: This register should be programmed before PRU cores start running</b> <br  />
+ <b>This feature is not available in SoCs with PRU-ICSSM</b></p>
+<p class="endtd"></p>
+</td></tr>
 </table>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

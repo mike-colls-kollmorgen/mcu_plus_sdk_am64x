@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,12 +108,12 @@ $(document).ready(function(){initNavTree('FS_FREERTOS_FAT.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md692">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md775">Introduction</a></li>
 <li class="level1"><a href="#FS_FREERTOS_FAT_ADDITIONAL_REFERENCES">Additional References</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_fs_freertos_fat"></a></p>
-<h1><a class="anchor" id="autotoc_md692"></a>
+<h1><a class="anchor" id="autotoc_md775"></a>
 Introduction</h1>
 <p>FreeRTOS+FAT is an open source, thread aware and scalable FAT12/FAT16/FAT32 DOS/Windows compatible embedded FAT file system for use with and without the RTOS. In the current integration, <b>only the NO-RTOS form of the library is supported</b>. The FreeRTOS support will be added in a subsequent release. Please refrain from using the FreeRTOS+FAT ported layer for file operations in an RTOS environment as the APIs will not be thread safe.</p>
 <p>In this SDK, FreeRTOS+FAT is integrated to work with the MMCSD driver. The porting layer supports any device (SD/eMMC) connected to the MMCSD ports 0 or 1. There is SysConfig support for the FreeRTOS+FAT integrated module. So, to use the FreeRTOS+FAT in your application, just add the FreeRTOS+FAT module under <code>FILE SYSTEMS</code> in the SysConfig. It will automatically add an MMCSD instance. The underlying media can be selected in the FreeRTOS+FAT SysConfig config. Currently "SD" and "EMMC" can be selected.</p>

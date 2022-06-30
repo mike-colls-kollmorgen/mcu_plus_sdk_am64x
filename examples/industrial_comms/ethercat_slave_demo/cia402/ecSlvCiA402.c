@@ -114,7 +114,7 @@ void oled_init(void)
 {
     /* Oled Init */
     const char oled_line1[] = "Kunbus GmbH";
-    const char oled_line2[] = "EtherCAT DTK Demo";
+    const char oled_line2[] = "EtherCAT SDK Demo";
     Board_oledInit();
 
     clear();
@@ -129,7 +129,7 @@ void oled_init(void)
 
 void oled_run(uint8_t i8uState)
 {
-    const char oled_line1[] = "EtherCAT DTK Demo";
+    const char oled_line1[] = "EtherCAT SDK Demo";
     clear();
     setline(0);
     setOrientation(1);
@@ -156,7 +156,7 @@ void oled_run(uint8_t i8uState)
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  pEcApiSlv_p     DTK instance.
+ *  \param[in]  pEcApiSlv_p     SDK instance.
  *
  *  \return     EC_API_EError_t as uint32_t.
  *
@@ -528,7 +528,7 @@ Exit:
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  pEcApiSlv_p     DTK instance.
+ *  \param[in]  pEcApiSlv_p     SDK instance.
  *  \param[in]  pPdo_p          RxPDO instance.
  *  \param[in]  axis_p          axis number.
  *
@@ -976,7 +976,7 @@ Exit:
  *  Initialize slave application example.
  *
  *  \details
- *  Creates a DTK instance and sets the slave application
+ *  Creates a SDK instance and sets the slave application
  *  by configuring the EtherCAT basic configuration, object dictionary
  *  PDO configuration, CiA402 application and other fieldbus settings.
  *
@@ -998,7 +998,7 @@ void EC_SLV_APP_applicationInit(EC_SLV_APP_Sapplication_t* pAppInstance_p)
         goto Exit;
     }
 
-    // Initialize DTK
+    // Initialize SDK
     pAppInstance_p->ptEcSlvApi = EC_API_SLV_new();
     if (!pAppInstance_p->ptEcSlvApi)
     {

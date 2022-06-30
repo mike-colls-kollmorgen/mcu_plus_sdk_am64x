@@ -28,7 +28,7 @@
 ; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-;  Auto generated file - DO NOT MODIFY
+;  Auto generated file 
 
 ;******************************************************************************
 ;   File:     ti_pru_io_config.inc

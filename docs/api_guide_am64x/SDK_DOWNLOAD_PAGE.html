@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -110,16 +110,19 @@ $(document).ready(function(){initNavTree('SDK_DOWNLOAD_PAGE.html',''); initResiz
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md10">Host PC Requirements</a></li>
 <li class="level1"><a href="#autotoc_md11">Download and Install the SDK</a></li>
-<li class="level1"><a href="#autotoc_md12">Download and Install Additional SDK Tools</a><ul><li class="level2"><a href="#autotoc_md13">SysConfig</a></li>
-<li class="level2"><a href="#autotoc_md14">GCC AARCH64 Compiler</a></li>
-<li class="level2"><a href="#autotoc_md15">GCC ARM (R5) Compiler</a></li>
-<li class="level2"><a href="#INSTALL_PYTHON3">Python3</a></li>
-<li class="level2"><a href="#INSTALL_OPENSSL">OpenSSL</a></li>
-<li class="level2"><a href="#INSTALL_MONO">Mono Runtime</a></li>
-<li class="level2"><a href="#autotoc_md16">Code Composer Studio (CCS)</a></li>
+<li class="level1"><a href="#autotoc_md12">Download and Install Additional SDK Tools</a><ul><li class="level2"><a href="#autotoc_md13">SysConfig</a><ul><li class="level3"><a href="#autotoc_md14">Discover SysConfig in CCS</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md17">Download and Install Additional SDK Tools (Optional)</a><ul><li class="level2"><a href="#autotoc_md18">TI CLANG Compiler Toolchain</a></li>
+<li class="level2"><a href="#autotoc_md15">GCC AARCH64 Compiler</a></li>
+<li class="level2"><a href="#autotoc_md16">GCC ARM (R5) Compiler</a></li>
+<li class="level2"><a href="#INSTALL_PYTHON3">Python3</a></li>
+<li class="level2"><a href="#INSTALL_OPENSSL">OpenSSL</a></li>
+<li class="level2"><a href="#INSTALL_PRU-CGT">PRU-CGT</a></li>
+<li class="level2"><a href="#INSTALL_MONO">Mono Runtime</a></li>
+<li class="level2"><a href="#autotoc_md17">Code Composer Studio (CCS)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md18">Download and Install Additional SDK Tools (Optional)</a><ul><li class="level2"><a href="#autotoc_md19">TI CLANG Compiler Toolchain</a></li>
 </ul>
 </li>
 </ul>
@@ -158,12 +161,12 @@ Download and Install the SDK</h1>
 Download and Install Additional SDK Tools</h1>
 <h2><a class="anchor" id="autotoc_md13"></a>
 SysConfig</h2>
-<dl class="section attention"><dt>Attention</dt><dd>SysConfig is also included with CCS, however if you want to build examples using makefiles then you MUST download and install the standalone SysConfig installer listed below. If you plan to only use CCS projects for examples then you can skip this step</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>SDK release support SysConfig 1.12.1 and it's not avaialble by default with CCS 11.2 user MUST download and install the standalone SysConfig installer as listed below.</dd></dl>
 <ul>
 <li>The SysConfig download home page is, <a href="https://www.ti.com/tool/SYSCONFIG">https://www.ti.com/tool/SYSCONFIG</a></li>
-<li>Download SysConfig 1.11.0 from below direct links,<ul>
-<li>Windows, <a href="https://software-dl.ti.com/ccs/esd/sysconfig/sysconfig-1.11.0_2225-setup.exe">WINDOWS INSTALLER</a></li>
-<li>Linux, <a href="https://software-dl.ti.com/ccs/esd/sysconfig/sysconfig-1.11.0_2225-setup.run">LINUX INSTALLER</a></li>
+<li>Download SysConfig 1.12.1 from below direct links,<ul>
+<li>Windows, <a href="https://software-dl.ti.com/ccs/esd/sysconfig/sysconfig-1.12.1_2446-setup.exe">WINDOWS INSTALLER</a></li>
+<li>Linux, <a href="https://software-dl.ti.com/ccs/esd/sysconfig/sysconfig-1.12.1_2446-setup.run">LINUX INSTALLER</a></li>
 </ul>
 </li>
 <li>Install at below path,<ul>
@@ -172,9 +175,19 @@ SysConfig</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Discover SysConfig in CCS</h3>
+<dl class="section attention"><dt>Attention</dt><dd>Below Steps are required only when using CCS for building the examples</dd></dl>
+<ul>
+<li>Open CCS and go to "Window -&gt; Preferences"</li>
+<li>In 'Preferences' window go to "Code Composer Studio -&gt; Products"</li>
+<li>Make sure SysConfig installation path is listed in "Product Discovery Path" list.</li>
+<li>Select version 1.12.1 under SysConfig in "Discovered Products"</li>
+<li>Click on 'Install'</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md15"></a>
 GCC AARCH64 Compiler</h2>
-<dl class="section attention"><dt>Attention</dt><dd>GCC AARCH64 compiler installation is required only for A53 developement in am64x</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>GCC AARCH64 compiler installation is required only for A53 development in am64x</dd></dl>
 <ul>
 <li>Download GCC AARCH64 compiler 9.2-2019.12 from the below link<ul>
 <li>Windows <a href="https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-mingw-w64-i686-aarch64-none-elf.tar.xz">WINDOWS GCC AARCH64 CROSS COMPILER</a></li>
@@ -187,7 +200,7 @@ GCC AARCH64 Compiler</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 GCC ARM (R5) Compiler</h2>
 <dl class="section attention"><dt>Attention</dt><dd>GCC ARM compiler installation is required only for R5 GCC build</dd></dl>
 <ul>
@@ -237,7 +250,7 @@ Python 3.9.1
 <li>Check if the python package manager "pip" is installed, by default pip should be installed along with python. <pre class="fragment">C:\&gt; python -m pip --version
 pip 21.0.1 from C:\Users\{your username}\AppData\Local\Programs\Python\Python39\lib\site-packages\pip (python 3.9)
 </pre></li>
-<li>Install below additional packages via "pip" that are needed for the flashing tools. If you are behind a corporate firewall make sure to pass the server name and port for the proxy as shown below. If proxy is not needed keep <code>--proxy=</code> as blank. <pre class="fragment">C:\&gt; python -m pip install pyserial xmodem tqdm --proxy={your proxy server weblink and port}
+<li>Install below additional packages via "pip" that are needed for the flashing tools. If you are behind a corporate firewall make sure to pass the server name and port for the proxy as shown below. If proxy is not needed keep <code>--proxy=</code> as blank. <pre class="fragment">C:\&gt; python -m pip install pyserial xmodem tqdm --proxy={your proxy server web-link and port}
 </pre></li>
 </ul>
 </li>
@@ -248,14 +261,14 @@ pip 21.0.1 from C:\Users\{your username}\AppData\Local\Programs\Python\Python39\
 </pre></li>
 <li>Check if the python package manager "pip" is installed, by default pip should be installed along with python. <pre class="fragment">$ pip3 --version
 </pre></li>
-<li>Install below additional packages via "pip" that are needed for the flashing tools. If you are behind a corporate firewall make sure to pass the server name and port for the proxy as shown below. If proxy is not needed keep <code>--proxy=</code> as blank. <pre class="fragment">$ pip3 install pyserial xmodem tqdm --proxy={your proxy server weblink and port}
+<li>Install below additional packages via "pip" that are needed for the flashing tools. If you are behind a corporate firewall make sure to pass the server name and port for the proxy as shown below. If proxy is not needed keep <code>--proxy=</code> as blank. <pre class="fragment">$ pip3 install pyserial xmodem tqdm --proxy={your proxy server web-link and port}
 </pre></li>
 </ul>
 </li>
 </ul>
 <h2><a class="anchor" id="INSTALL_OPENSSL"></a>
 OpenSSL</h2>
-<dl class="section note"><dt>Note</dt><dd>You need to install OpenSSL only if you plan to rebuild the SBL application. For initial evaluation on TI EVM, you do not need to rebuild the SBL and you can use the pre-built SBL's for TI EVM. In this case, at least initially in your development, you dont need OpenSSL and you can skip this step.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>You need to install OpenSSL only if you plan to rebuild the SBL application. For initial evaluation on TI EVM, you do not need to rebuild the SBL and you can use the pre-built SBL's for TI EVM. In this case, at least initially in your development, you don't need OpenSSL and you can skip this step.</dd></dl>
 <ul>
 <li>OpenSSL is needed for signing the bootloader images when booting using a bootloader.</li>
 <li>Download and install OpenSSL as below,<ul>
@@ -280,6 +293,10 @@ OpenSSL</h2>
   OpenSSL 1.1.1k  25 Mar 2021
 </pre></li>
 </ul>
+<h2><a class="anchor" id="INSTALL_PRU-CGT"></a>
+PRU-CGT</h2>
+<dl class="section attention"><dt>Attention</dt><dd>You MUST install PRU-CGT if trying to build PRU firmware.</dd></dl>
+<dl class="section user"><dt></dt><dd><a href="https://www.ti.com/tool/PRU-CGT">PRU-CGT-2-3</a> (ti-pru-cgt) should be installed at: <code>C:/ti/</code> when working with PRU firmware development.</dd></dl>
 <h2><a class="anchor" id="INSTALL_MONO"></a>
 Mono Runtime</h2>
 <dl class="section attention"><dt>Attention</dt><dd>You MUST install mono runtime only if you're on Linux</dd></dl>
@@ -290,18 +307,18 @@ Mono Runtime</h2>
 <li>Do below in Linux Ubuntu shell to install mono <pre class="fragment">  $ sudo apt install mono-runtime
 </pre></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Code Composer Studio (CCS)</h2>
 <p>To download, install and setup CCS, follow instructions on this page, <a class="el" href="CCS_SETUP_PAGE.html">Download, Install and Setup CCS</a> .</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Download and Install Additional SDK Tools (Optional)</h1>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 TI CLANG Compiler Toolchain</h2>
 <dl class="section attention"><dt>Attention</dt><dd>TI CLANG Compiler Toolchain is part of CCS, however if user wants to build example using makefile and CCS is not installed then this MUST be installed separately</dd></dl>
 <ul>
-<li>Download TI CLANG compiler toolchain 1.3.0.LTS from below link<ul>
-<li>Windows, <a href="https://software-dl.ti.com/codegen/esd/cgt_public_sw/ARM_LLVM/1.3.0.LTS/ti_cgt_armllvm_1.3.0.LTS_windows-x64_installer.exe">WINDOWS INSTALLER</a></li>
-<li>Linux, <a href="https://software-dl.ti.com/codegen/esd/cgt_public_sw/ARM_LLVM/1.3.0.LTS/ti_cgt_armllvm_1.3.0.LTS_linux-x64_installer.bin">LINUX INSTALLER</a></li>
+<li>Download TI CLANG compiler toolchain 1.3.1.LTS from below link<ul>
+<li>Windows, <a href="https://software-dl.ti.com/codegen/esd/cgt_public_sw/ARM_LLVM/1.3.1.LTS/ti_cgt_armllvm_1.3.1.LTS_windows-x64_installer.exe">WINDOWS INSTALLER</a></li>
+<li>Linux, <a href="https://software-dl.ti.com/codegen/esd/cgt_public_sw/ARM_LLVM/1.3.1.LTS/ti_cgt_armllvm_1.3.1.LTS_linux-x64_installer.bin">LINUX INSTALLER</a></li>
 </ul>
 </li>
 <li>Install at below path,<ul>

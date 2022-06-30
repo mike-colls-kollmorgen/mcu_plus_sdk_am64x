@@ -1,7 +1,7 @@
 {
     "name": "MCU_PLUS_SDK_AM64x",
     "displayName": "MCU+ SDK for AM64x",
-    "version": "08.02.00",
+    "version": "08.03.00",
     "documentationPath": "../docs",
     "includePaths": [
         "../source",
@@ -38,5 +38,5 @@
         "showSignals": true,
         "showUsed": true
     },
-    "minToolVersion" : "1.11.0"
+    "minToolVersion" : "1.12.1"
 }

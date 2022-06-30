@@ -25,6 +25,9 @@ Steps to generate patched Slave Stack Code
         - Set DC_SUPPORTED to 1 if not set.
         - Save the project.
         - Click "Project->Create new Slave Files". This will generate the EtherCAT Source files specific to the the selected TI device.
-        - Copy the generated files to "${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_sources/".
+        - Copy all the generated files except tiescappl.c, tiescappl.h and tiescapplObjects.h to `${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_sources/`.
+        - NOTE :
+            - For the SDK example, tiescappl.c and tiescappl.h files are used from "${SDK_INSTALL_PATH}/examples/industrial_comms/ethercat_slave_beckhoff_ssc_demo/" folder, and not from the SSC Tool generated files.
+            - If you want to modify the object dictionary, you can update the "${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/patch/am64x_am243x_am263x/tiescappl.xlsx" file and then the SSC tool will generate the application code accordingly.
 
 NOTE : Please refer to the documentation of this example in SDK documentation for more details. Open "${SDK_INSTALL_PATH}/README_FIRST_*.html" and go to "Examples and Demos -> Networking -> EtherCAT Slave" page.

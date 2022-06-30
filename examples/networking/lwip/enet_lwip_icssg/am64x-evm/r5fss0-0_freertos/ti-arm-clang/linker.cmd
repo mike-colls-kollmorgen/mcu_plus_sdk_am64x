@@ -1,3 +1,4 @@
+#include "generated/ti_enet_config.h"
 
 /* This is the stack that is used by code running within main()
  * In case of NORTOS,
@@ -50,19 +51,29 @@ SECTIONS
     } > MSRAM
 
     .icssfw {
+    #if (ENET_SYSCFG_DUAL_MAC == 0U)
         *(*RX_PRU_SLICE1_b00_Swt)
         *(*RX_PRU_SLICE0_b00_Swt)
-        *(*TX_PRU_SLICE0_b00_DMac)
-        *(*RX_PRU_SLICE1_b00_DMac)
-        *(*RX_PRU_SLICE0_b00_DMac)
-        *(*TX_PRU_SLICE0_b00_Swt)
-        *(*TX_PRU_SLICE1_b00_DMac)
-        *(*TX_PRU_SLICE1_b00_Swt)
         *(*RTU0_SLICE0_b00_Swt)
+        *(*RX_PRU_SLICE1_b00_Swt)
+        *(*TX_PRU_SLICE1_b00_Swt)
         *(*RTU0_SLICE1_b00_Swt)
+        *(*TX_PRU_SLICE1_b00_Swt)
+        *(*TX_PRU_SLICE0_b00_Swt)
+    #endif
+    #if (ENET_SYSCFG_DUAL_MAC == 1U)
+    #if (ENET_SYSCFG_DUALMAC_PORT1_ENABLED == 1U)
+        *(*TX_PRU_SLICE0_b00_DMac)
+        *(*RX_PRU_SLICE0_b00_DMac)
         *(*RTU0_SLICE0_b00_DMac)
+    #endif
+    #if (ENET_SYSCFG_DUALMAC_PORT2_ENABLED == 1U)
+        *(*RX_PRU_SLICE1_b00_DMac)
+        *(*TX_PRU_SLICE1_b00_DMac)
         *(*RTU0_SLICE1_b00_DMac)
-    } > DDR_ICSS_FW
+    #endif
+    #endif
+    } > MSRAM_ICSS_FW
 
     /* This is rest of code. This can be placed in DDR if DDR is available and needed */
     GROUP {
@@ -75,12 +86,78 @@ SECTIONS
         .data:   {} palign(8)   /* This is where initialized globals and static go */
     } > DDR
 
-
     .icss_mem {
+#if (ENET_SYSCFG_ICSSG0_ENABLED == 1)
+    #if(ENET_SYSCFG_DUAL_MAC == 1)
+        #if(ENET_SYSCFG_DUALMAC_PORT1_ENABLED == 1)
+            *(*gEnetSoc_icssg0HostPoolMem_0)
+            *(*gEnetSoc_icssg0HostQueueMem_0)
+            *(*gEnetSoc_icssg0ScratchMem_0)
+            #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+                *(*gEnetSoc_icssg0HostPreQueueMem_0)
+            #endif
+        #else
+            *(*gEnetSoc_icssg0HostPoolMem_1)
+            *(*gEnetSoc_icssg0HostQueueMem_1)
+            *(*gEnetSoc_icssg0ScratchMem_1)
+            #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+                    *(*gEnetSoc_icssg0HostPreQueueMem_1)
+            #endif
+        #endif
+    #endif
+#endif
+#if (ENET_SYSCFG_ICSSG1_ENABLED == 1)
+    #if(ENET_SYSCFG_DUAL_MAC == 1)
+        #if(ENET_SYSCFG_DUALMAC_PORT1_ENABLED == 1)
+                *(*gEnetSoc_icssg1HostPoolMem_0)
+                *(*gEnetSoc_icssg1HostQueueMem_0)
+                *(*gEnetSoc_icssg1ScratchMem_0)
+            #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+                *(*gEnetSoc_icssg1HostPreQueueMem_0)
+            #endif
+        #else
+                *(*gEnetSoc_icssg1HostPoolMem_1)
+                *(*gEnetSoc_icssg1HostQueueMem_1)
+                *(*gEnetSoc_icssg1ScratchMem_1)
+            #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+                *(*gEnetSoc_icssg1HostPreQueueMem_1)
+            #endif
+        #endif
+    #endif
+#endif
+#if (ENET_SYSCFG_ICSSG0_ENABLED == 1)
+    #if(ENET_SYSCFG_DUAL_MAC == 0)
+        *(*gEnetSoc_icssg0PortPoolMem_0)
+        *(*gEnetSoc_icssg0PortPoolMem_1)
+        *(*gEnetSoc_icssg0HostPoolMem_0)
+        *(*gEnetSoc_icssg0HostPoolMem_1)
+        *(*gEnetSoc_icssg0HostQueueMem_0)
+        *(*gEnetSoc_icssg0HostQueueMem_1)
+        *(*gEnetSoc_icssg0ScratchMem_0)
+        *(*gEnetSoc_icssg0ScratchMem_1)
+        #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+            *(*gEnetSoc_icssg0HostPreQueueMem_0)
+            *(*gEnetSoc_icssg0HostPreQueueMem_1)
+        #endif
+    #endif
+#endif
+#if (ENET_SYSCFG_ICSSG1_ENABLED == 1)
+    #if(ENET_SYSCFG_DUAL_MAC == 0)
+        *(*gEnetSoc_icssg1PortPoolMem_0)
+        *(*gEnetSoc_icssg1PortPoolMem_1)
+        *(*gEnetSoc_icssg1HostPoolMem_0)
         *(*gEnetSoc_icssg1HostPoolMem_1)
+        *(*gEnetSoc_icssg1HostQueueMem_0)
         *(*gEnetSoc_icssg1HostQueueMem_1)
+        *(*gEnetSoc_icssg1ScratchMem_0)
         *(*gEnetSoc_icssg1ScratchMem_1)
-    } (NOLOAD) > DDR_ICSS_FW_OVERLAY_MEM
+        #if (ENET_SYSCFG_PREMPTION_ENABLE == 1)
+            *(*gEnetSoc_icssg1HostPreQueueMem_0)
+            *(*gEnetSoc_icssg1HostPreQueueMem_1)
+        #endif
+    #endif
+#endif
+    } (NOLOAD) > MSRAM_ICSS_FW_OVERLAY_MEM
 
     /* This is rest of uninitialized data. This can be placed in DDR if DDR is available and needed */
     GROUP {
@@ -136,7 +213,7 @@ NOTE: Below memory is reserved for DMSC usage
  specific firewall calls are setup.
 */
 
-#define ICSS_FW_LEN (0x1c800)
+#define ICSS_FW_LEN (0x4D800)
 MEMORY
 {
     R5F_VECS  : ORIGIN = 0x00000000 , LENGTH = 0x00000040
@@ -146,7 +223,9 @@ MEMORY
     /* when using multi-core application's i.e more than one R5F/M4F active, make sure
      * this memory does not overlap with other R5F's
      */
-    MSRAM     : ORIGIN = 0x70080000 , LENGTH = 0x140000
+    MSRAM     : ORIGIN = 0x70080000 , LENGTH = (0x140000 - ICSS_FW_LEN)
+    MSRAM_ICSS_FW : ORIGIN = end(MSRAM) , LENGTH = ICSS_FW_LEN
+
 
     /* This section can be used to put XIP section of the application in flash, make sure this does not overlap with
      * other CPUs. Also make sure to add a MPU entry for this section and mark it as cached and code executable
@@ -156,9 +235,7 @@ MEMORY
     /* when using multi-core application's i.e more than one R5F/M4F active, make sure
      * this memory does not overlap with other R5F's
      */
-    DDR       : ORIGIN = 0x80000000 , LENGTH = (0x1000000 - ICSS_FW_LEN)
-    DDR_ICSS_FW : ORIGIN = end(DDR) , LENGTH = ICSS_FW_LEN
-
+    DDR       : ORIGIN = 0x80000000 , LENGTH = 0x1000000
     /* shared memory segments */
     /* On R5F,
      * - make sure there is a MPU entry which maps below regions as non-cache
@@ -168,5 +245,5 @@ MEMORY
     RTOS_NORTOS_IPC_SHM_MEM : ORIGIN = 0x701D8000, LENGTH = 0x00008000
 
 PAGE 1:
-        DDR_ICSS_FW_OVERLAY_MEM : ORIGIN = start(DDR_ICSS_FW) , LENGTH = size(DDR_ICSS_FW)
+        MSRAM_ICSS_FW_OVERLAY_MEM : ORIGIN = start(MSRAM_ICSS_FW) , LENGTH = size(MSRAM_ICSS_FW)
 }

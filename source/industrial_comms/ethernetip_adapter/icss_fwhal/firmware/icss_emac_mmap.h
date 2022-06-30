@@ -33,6 +33,12 @@
 #ifndef ICSS_EMAC_MMAP_H_
 #define ICSS_EMAC_MMAP_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -371,5 +377,10 @@ ICSS_EMAC_FwMulticastFilterParams icss_emacFwMulticastFilterCfg = {
     ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_SET,
     ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_NOT_SET,
 };
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef ICSS_EMAC_MMAP_H_ */

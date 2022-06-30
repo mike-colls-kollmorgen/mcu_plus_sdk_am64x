@@ -32,6 +32,17 @@
 #ifndef INCLUDE_CDN_ASSERT_H
 #define INCLUDE_CDN_ASSERT_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <assert.h>
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INCLUDE_CDN_ASSERT_H */

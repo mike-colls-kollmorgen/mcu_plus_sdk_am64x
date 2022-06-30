@@ -213,6 +213,83 @@ uint32_t  CSL_MDIO_phyRegRead2(CSL_mdioHandle hMdioRegs,
     return(ret_val);
 }
 
+bool  CSL_MDIO_phyRegReadAsyncTrigger(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum)
+{
+    uint32_t regVal = 0U;
+    bool accessRegBusy = true;
+
+    /* Wait till transaction completion if any */
+    if(CSL_MDIO_isPhyRegAccessComplete(hMdioRegs, userGroup))
+    {
+        accessRegBusy = false;
+    }
+
+    if(accessRegBusy == false)
+    {
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_GO, CSL_MDIO_USER_GROUP_USER_ACCESS_REG_GO_EN_0x1);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_WRITE, CSL_MDIO_USER_GROUP_USER_ACCESS_REG_READ);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_PHYADR, phyAddr);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_REGADR, regNum);
+        CSL_REG_WR(&hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, regVal);
+    }
+    return(accessRegBusy);
+}
+
+uint32_t  CSL_MDIO_phyRegReadAsyncComplete(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint16_t *pData)
+{
+    uint32_t ret_val = CSL_PASS;
+    bool accessRegBusy = true;
+
+    /* wait for command completion */
+    if(CSL_MDIO_isPhyRegAccessComplete(hMdioRegs, userGroup))
+    {
+        accessRegBusy = false;
+    }
+
+    if(accessRegBusy == false)
+    {
+        /* Store the data if the read is acknowledged */
+        if(CSL_MDIO_USER_GROUP_USER_ACCESS_REG_ACK_PASS ==
+            CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG,
+            MDIO_USER_GROUP_USER_ACCESS_REG_ACK))
+        {
+            uint32_t regPhyAddr, regPhyRegNum;
+
+            regPhyAddr = CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, MDIO_USER_GROUP_USER_ACCESS_REG_PHYADR);
+            regPhyRegNum = CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, MDIO_USER_GROUP_USER_ACCESS_REG_REGADR);
+            if ((regPhyAddr == phyAddr)
+                &&
+                (regPhyRegNum == regNum))
+            {
+                *pData = (uint16_t)(CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG,
+                    MDIO_USER_GROUP_USER_ACCESS_REG_DATA));
+                ret_val = CSL_PASS;
+            }
+            else
+            {
+                ret_val = CSL_EFAIL;
+            }
+        }
+        else
+        {
+            ret_val = CSL_EFAIL;
+        }
+    }
+    else
+    {
+        ret_val = CSL_ETIMEOUT;
+    }
+
+    return ret_val;
+}
+
 void CSL_MDIO_phyRegWrite2(CSL_mdioHandle hMdioRegs, uint32_t userGroup, uint32_t phyAddr, uint32_t regNum, uint16_t wrVal)
 {
     uint32_t regVal = 0U;
@@ -235,6 +312,77 @@ void CSL_MDIO_phyRegWrite2(CSL_mdioHandle hMdioRegs, uint32_t userGroup, uint32_
 		  CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG,
                  MDIO_USER_GROUP_USER_ACCESS_REG_GO))
     {}
+}
+
+bool CSL_MDIO_phyRegWriteAsyncTrigger(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint16_t wrVal)
+{
+    uint32_t regVal = 0U;
+    bool accessRegBusy = false;
+
+    /* Wait till transaction completion if any */
+    if(CSL_MDIO_USER_GROUP_USER_ACCESS_REG_GO_EN_0x1 ==
+		  CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG,
+                 MDIO_USER_GROUP_USER_ACCESS_REG_GO))
+    {
+        accessRegBusy = true;
+    }
+
+    if(accessRegBusy == false)
+    {
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_GO, CSL_MDIO_USER_GROUP_USER_ACCESS_REG_GO_EN_0x1);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_WRITE, CSL_MDIO_USER_GROUP_USER_ACCESS_REG_WRITE);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_PHYADR, phyAddr);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_REGADR, regNum);
+        CSL_FINS(regVal, MDIO_USER_GROUP_USER_ACCESS_REG_DATA, wrVal);
+        CSL_REG_WR(&hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, regVal);
+    }
+    return accessRegBusy;
+}
+
+uint32_t  CSL_MDIO_phyRegWriteAsyncComplete(CSL_mdioHandle hMdioRegs,
+                    uint32_t userGroup,
+                    uint32_t phyAddr,
+                    uint32_t regNum,
+                    uint32_t wrVal)
+{
+    uint32_t ret_val = CSL_PASS;
+    bool accessRegBusy = true;
+
+    /* wait for command completion */
+    if(CSL_MDIO_isPhyRegAccessComplete(hMdioRegs, userGroup))
+    {
+        accessRegBusy = false;
+    }
+
+    if(accessRegBusy == false)
+    {
+        uint32_t regPhyAddr, regPhyRegNum, regWrVal;
+
+        regPhyAddr = CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, MDIO_USER_GROUP_USER_ACCESS_REG_PHYADR);
+        regPhyRegNum = CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, MDIO_USER_GROUP_USER_ACCESS_REG_REGADR);
+        regWrVal = CSL_FEXT(hMdioRegs->USER_GROUP[userGroup].USER_ACCESS_REG, MDIO_USER_GROUP_USER_ACCESS_REG_DATA);
+        if ((regPhyAddr == phyAddr)
+            &&
+            (regPhyRegNum == regNum)
+            &&
+            (regWrVal == wrVal))
+        {
+            ret_val = CSL_PASS;
+        }
+        else
+        {
+            ret_val = CSL_EFAIL;
+        }
+    }
+    else
+    {
+        ret_val = CSL_ETIMEOUT;
+    }
+    return ret_val;
 }
 
 void CSL_MDIO_setClause45EnableMask(CSL_mdioHandle hMdioRegs,
@@ -554,7 +702,7 @@ uint32_t  CSL_MDIO_phyRegRead(uint32_t baseAddr,
                     uint32_t regNum,
                     uint16_t *pData)
 {
-    return CSL_MDIO_phyRegRead2((CSL_mdioHandle)((uintptr_t)baseAddr), 
+    return CSL_MDIO_phyRegRead2((CSL_mdioHandle)((uintptr_t)baseAddr),
                                  0U /* Hardcode user group to 0 */,
                                  phyAddr,
                                  regNum,
@@ -563,7 +711,7 @@ uint32_t  CSL_MDIO_phyRegRead(uint32_t baseAddr,
 
 void CSL_MDIO_phyRegWrite(uint32_t baseAddr, uint32_t phyAddr, uint32_t regNum, uint16_t wrVal)
 {
-    CSL_MDIO_phyRegWrite2((CSL_mdioHandle)((uintptr_t)baseAddr), 
+    CSL_MDIO_phyRegWrite2((CSL_mdioHandle)((uintptr_t)baseAddr),
                             0U /* Hardcode user group to 0 */,
                             phyAddr,
                             regNum,

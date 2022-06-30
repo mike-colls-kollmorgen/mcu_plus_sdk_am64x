@@ -42,6 +42,12 @@
 #ifndef CSL_UTILS_H
 #define CSL_UTILS_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /* remove c++'s implicit static built into const */
 #ifdef __cplusplus
@@ -111,6 +117,13 @@
  *  less than 64-bit.
  */
 #define CSL_MEMORY_ALLOC_MAX_STRUCT_BYTE_ALIGNMENT_ARM sizeof(uint64_t)
+
+/*! \brief Macro to get the size of an array. */
+#define CSL_ARRAYSIZE(x)                     (sizeof(x) / sizeof(x[0]))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CSL_UTILS_H */
 /* Nothing past this point */

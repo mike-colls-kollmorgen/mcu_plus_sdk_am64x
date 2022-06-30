@@ -3,7 +3,7 @@ DEVICE ?= am64x
 
 ifeq ($(OS),Windows_NT)
     TOOLS_PATH?=C:/ti
-    CCS_PATH?=$(TOOLS_PATH)/ccs1110/ccs
+    CCS_PATH?=$(TOOLS_PATH)/ccs1120/ccs
     CCS_ECLIPSE=$(CCS_PATH)/eclipse/eclipsec
     CYGWIN_PATH?=$(CCS_PATH)/utils/cygwin
     MKDIR=$(CYGWIN_PATH)/mkdir -p
@@ -21,7 +21,7 @@ else
     UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
         export TOOLS_PATH?=$(HOME)/ti
-        export CCS_PATH?=$(TOOLS_PATH)/ccs1110/ccs
+        export CCS_PATH?=$(TOOLS_PATH)/ccs1120/ccs
         export CCS_ECLIPSE=$(CCS_PATH)/eclipse/eclipse
         export MKDIR=mkdir -p
         export RMDIR=rm -rf
@@ -38,11 +38,12 @@ endif
 
 CGT_TI_PRU_PATH=$(TOOLS_PATH)/ti-cgt-pru_2.3.3
 ifneq ($(wildcard $(CCS_PATH)/.),)
-    CGT_TI_ARM_CLANG_PATH=$(CCS_PATH)/tools/compiler/ti-cgt-armllvm_1.3.0.LTS
+    CGT_TI_ARM_CLANG_PATH=$(CCS_PATH)/tools/compiler/ti-cgt-armllvm_1.3.1.LTS
 else
-    CGT_TI_ARM_CLANG_PATH=$(TOOLS_PATH)/ti-cgt-armllvm_1.3.0.LTS
+    CGT_TI_ARM_CLANG_PATH=$(TOOLS_PATH)/ti-cgt-armllvm_1.3.1.LTS
 endif
-SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1.11.0
+CCS_NODE = $(CCS_PATH)/tools/node/node
+SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1.12.1
 SYSCFG_CLI_PATH ?= $(SYSCFG_PATH)
 SYSCFG_NODE = $(SYSCFG_PATH)/nodejs/node
 SYSCFG_NWJS = $(SYSCFG_PATH)/nw/nw

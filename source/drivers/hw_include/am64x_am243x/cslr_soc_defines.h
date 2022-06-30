@@ -62,9 +62,9 @@ extern "C" {
 /**
  * \anchor CSL_CoreID
  * \name Core ID's of core or CPUs present on this SOC
- * 
+ *
  * @{
- */ 
+ */
 #define CSL_CORE_ID_M4FSS0_0         (0U)
 #define CSL_CORE_ID_R5FSS0_0         (1U)
 #define CSL_CORE_ID_R5FSS0_1         (2U)
@@ -73,6 +73,30 @@ extern "C" {
 #define CSL_CORE_ID_A53SS0_0         (5U)
 #define CSL_CORE_ID_A53SS0_1         (6U)
 #define CSL_CORE_ID_MAX              (7U)
+/** @} */
+
+/**
+ *  \anchor CSL_ArmR5ClusterGroupID
+ *  \name R5 Cluster Group IDs
+ *
+ *  @{
+ */
+/** \brief R5 Cluster Group ID0 */
+#define CSL_ARM_R5_CLUSTER_GROUP_ID_0                 ((uint32_t) 0x00U)
+/** \brief R5 Cluster Group ID1 */
+#define CSL_ARM_R5_CLUSTER_GROUP_ID_1                 ((uint32_t) 0x01U)
+/** @} */
+
+/**
+ *  \anchor CSL_ArmR5CPUID
+ *  \name R5 Core IDs
+ *
+ *  @{
+ */
+/** \brief R5 Core ID0 */
+#define CSL_ARM_R5_CPU_ID_0                          ((uint32_t) 0x00U)
+/** \brief R5 Core ID1 */
+#define CSL_ARM_R5_CPU_ID_1                          ((uint32_t) 0x01U)
 /** @} */
 
 /** @brief Number of ePWM instances */

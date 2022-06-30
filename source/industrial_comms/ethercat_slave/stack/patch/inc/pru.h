@@ -190,26 +190,6 @@ typedef struct  PRU_REG_SProperties
     uint8_t                 reg_properties[PRU_SIZE_OF_REG_PROPERTIES]; /**< Register properties */
 } OSAL_STRUCT_PACKED PRU_REG_SProperties_t;
 
-/*! <!-- Description: -->
- *
- *  \brief Reset PHY
- *
- *  \details
- *
- *  <!-- Parameters and return values: -->
- *
- *  \param[in]  ctxt    Callback context
- *  \param[in]  idx     Phy Index
- *  \param[in]  bReset  true: Phy reset, false: Phy active
- *
- *  <!-- Group: -->
- *
- *  \ingroup pru
- *
- * */
-typedef void    (*PRU_PHY_reset_t)          (void* pCtxt_p, uint8_t idx_p, bool reset_p);
-typedef int16_t (*PRU_PHY_extLibDetect_t)   (void* pPhyLibCtxt_p, uint8_t phyIdx_p, uint32_t phyId_p, uint8_t phyAddr_p, void* pExtLibDesc_p);
-
 typedef void    (*PRU_measurement_t)        (void* pContext_p, uint32_t measureChannel_p, bool channelOn_p);
 
 #if (defined __cplusplus)
@@ -284,24 +264,13 @@ extern void         PRU_TIMER_clearRegister (void);
 extern void         PRU_cbRegisterMsrmt     (void*                      pContext_p
                                             ,PRU_measurement_t          cbFunc_p);
 
-extern PRU_API void PRU_PHY_cbRegisterReset (PRU_PHY_reset_t            cbFunc_p
-                                            ,void*                      pCtxt_p);
 extern bool         PRU_PHY_configure       (uint8_t                    phyIdx_p
                                             ,uint8_t                    phyAddr_p
                                             ,bool                       invertLinkPolarity_p
                                             ,bool                       useRxLink_p);
-extern void         PRU_PHY_cbRegisterLibDetect
-                                            (PRU_PHY_extLibDetect_t     cbFunc_p
-                                            ,void*                      pCtxt_p);
-extern uint32_t     PRU_PHY_readReg         (void*                      pStackCtxt_p
-                                            ,uint32_t                   regNum_p
-                                            ,uint16_t*                  pData_p);
 extern uint32_t     PRU_PHY_readRegEx       (uint8_t                    phyId_p
                                             ,uint32_t                   regNum_p
                                             ,uint16_t*                  pData_p);
-extern void         PRU_PHY_writeReg        (void*                      pStackCtxt_p
-                                            ,uint32_t                   regNum_p
-                                            ,uint16_t                   writeValue_p);
 extern void         PRU_PHY_writeRegEx      (uint8_t                    phyId_p
                                             ,uint32_t                   regNum_p
                                             ,uint16_t                   writeValue_p);

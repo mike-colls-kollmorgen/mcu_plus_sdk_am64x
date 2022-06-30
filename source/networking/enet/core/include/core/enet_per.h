@@ -217,6 +217,28 @@ enum EnetPer_Ioctl_e
      * - outArgs: None
      */
     ENET_PER_IOCTL_SET_VLAN_UNAWARE = ENET_PER_PUBLIC_IOCTL(13U),
+
+    /*!
+     * \brief Handle link up event for an externally managed PHY
+     *
+     * IOCTL params:
+     * -  inArgs: #Enet_ExtPhyLinkUpEventInfo
+     * - outArgs: None
+     *
+     * Type: Synchronous.
+     */
+    ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT = ENET_PER_PUBLIC_IOCTL(14U),
+
+    /*!
+     * \brief Handle link down event for an externally managed PHY.
+     *
+     * IOCTL params:
+     * -  inArgs: #
+     * - outArgs: None
+     *
+     * Type: Synchronous.
+     */
+    ENET_PER_IOCTL_HANDLE_EXTPHY_LINKDOWN_EVENT = ENET_PER_PUBLIC_IOCTL(15U),
 };
 
 /*!
@@ -290,6 +312,19 @@ typedef struct EnetPer_AttachCoreOutArgs_s
     /*! TX MTU per priority */
     uint32_t txMtu[ENET_PRI_NUM];
 } EnetPer_AttachCoreOutArgs;
+
+
+/*!
+ * \brief Input args for #ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT command
+ */
+typedef struct Enet_ExtPhyLinkUpEventInfo_s
+{
+    /*! Mac port for which link up event occured */
+    Enet_MacPort macPort;
+
+    /*! PHY link info as determined by the externally managed PHY */
+    EnetPhy_LinkCfg phyLinkCfg;
+} Enet_ExtPhyLinkUpEventInfo;
 
 /*!
  * \brief Ethernet Peripheral handle.

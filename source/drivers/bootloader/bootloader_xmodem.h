@@ -33,9 +33,20 @@
 #ifndef BOOTLOADER_XMODEM_H_
 #define BOOTLOADER_XMODEM_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 
 int32_t Bootloader_xmodemReceive(uint32_t uartDrvIndex, uint8_t *dstBuf, uint32_t maxBufSize, uint32_t *fileSize);
 int32_t Bootloader_xmodemTransmit(uint32_t uartDrvIndex, uint8_t *src, uint32_t len);
 int32_t Bootloader_xmodemSendAck(uint32_t uartDrvIndex);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* BOOTLOADER_XMODEM_H_ */

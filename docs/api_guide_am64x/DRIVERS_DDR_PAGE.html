@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,44 +108,44 @@ $(document).ready(function(){initNavTree('DRIVERS_DDR_PAGE.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md482">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md483">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md484">Features not Supported</a></li>
-<li class="level1"><a href="#autotoc_md485">Creating your own DDR config file</a><ul><li class="level2"><a href="#autotoc_md486">Step 1: Generate a DDR config file for your EVM</a></li>
-<li class="level2"><a href="#autotoc_md487">Step 2: Add the generated DDR config file to your project</a></li>
+<ul><li class="level1"><a href="#autotoc_md549">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md550">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md551">Features not Supported</a></li>
+<li class="level1"><a href="#autotoc_md552">Creating your own DDR config file</a><ul><li class="level2"><a href="#autotoc_md553">Step 1: Generate a DDR config file for your EVM</a></li>
+<li class="level2"><a href="#autotoc_md554">Step 2: Add the generated DDR config file to your project</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md488">Creating your own LPDDR config file</a><ul><li class="level2"><a href="#autotoc_md489">Step 1: Generate a LPDDR config file for your EVM</a></li>
-<li class="level2"><a href="#autotoc_md490">Step 2: Add the generated LPDDR config file to your project</a></li>
+<li class="level1"><a href="#autotoc_md555">Creating your own LPDDR config file</a><ul><li class="level2"><a href="#autotoc_md556">Step 1: Generate a LPDDR config file for your EVM</a></li>
+<li class="level2"><a href="#autotoc_md557">Step 2: Add the generated LPDDR config file to your project</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md491">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md492">Usage Overview</a></li>
-<li class="level1"><a href="#autotoc_md493">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md494">API</a></li>
+<li class="level1"><a href="#autotoc_md558">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md559">Usage Overview</a></li>
+<li class="level1"><a href="#autotoc_md560">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md561">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_drivers_ddr"></a></p>
 <p>The DDR driver provides API to configure the DDR module.</p>
-<h1><a class="anchor" id="autotoc_md482"></a>
+<h1><a class="anchor" id="autotoc_md549"></a>
 Features Supported</h1>
 <ul>
 <li>Ability to enable/disable DDR support in your application</li>
 <li>Ability to specify the DDR config generated using the "DDR SUBSYSTEM REGISTER CONFIGURATION" tool</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md483"></a>
+<h1><a class="anchor" id="autotoc_md550"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <ul>
 <li>Ability to specify the DDR config generated using the "DDR SUBSYSTEM REGISTER CONFIGURATION" tool</li>
 <li>Enables DDR, EMIF module clock when DDR module is selected</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md484"></a>
+<h1><a class="anchor" id="autotoc_md551"></a>
 Features not Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md485"></a>
+<h1><a class="anchor" id="autotoc_md552"></a>
 Creating your own DDR config file</h1>
-<h2><a class="anchor" id="autotoc_md486"></a>
+<h2><a class="anchor" id="autotoc_md553"></a>
 Step 1: Generate a DDR config file for your EVM</h2>
 <ul>
 <li>Goto <a href="https://dev.ti.com/sysconfig">https://dev.ti.com/sysconfig</a></li>
@@ -164,7 +164,7 @@ DDR SUBSYSTEM REGISTER CONFIGURATION Tool</div></div>
 <img src="ddr_config_tool_save.png" alt=""/>
 <div class="caption">
 Configure and save the generated file</div></div>
-<h2><a class="anchor" id="autotoc_md487"></a>
+<h2><a class="anchor" id="autotoc_md554"></a>
 Step 2: Add the generated DDR config file to your project</h2>
 <ul>
 <li>Open SysConfig (<a class="el" href="SYSCONFIG_INTRO_PAGE.html">Using SDK with SysConfig</a>) for your project</li>
@@ -182,9 +182,9 @@ Add DDR via SysConfig</div></div>
 </li>
 <li>Save the sysconfig project and build your application</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md488"></a>
+<h1><a class="anchor" id="autotoc_md555"></a>
 Creating your own LPDDR config file</h1>
-<h2><a class="anchor" id="autotoc_md489"></a>
+<h2><a class="anchor" id="autotoc_md556"></a>
 Step 1: Generate a LPDDR config file for your EVM</h2>
 <ul>
 <li>Goto <a href="https://dev.ti.com/sysconfig">https://dev.ti.com/sysconfig</a></li>
@@ -203,7 +203,7 @@ DDR SUBSYSTEM REGISTER CONFIGURATION Tool</div></div>
 <img src="lpddr_config_tool_save.png" alt=""/>
 <div class="caption">
 Configure and save the generated file</div></div>
-<h2><a class="anchor" id="autotoc_md490"></a>
+<h2><a class="anchor" id="autotoc_md557"></a>
 Step 2: Add the generated LPDDR config file to your project</h2>
 <ul>
 <li>Open SysConfig (<a class="el" href="SYSCONFIG_INTRO_PAGE.html">Using SDK with SysConfig</a>) for your project</li>
@@ -221,13 +221,13 @@ Add DDR via SysConfig</div></div>
 </li>
 <li>Save the sysconfig project and build your application</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md491"></a>
+<h1><a class="anchor" id="autotoc_md558"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>Please read the application note <a href="https://www.ti.com/lit/pdf/spracu1">https://www.ti.com/lit/pdf/spracu1</a> for projects having own board design with DDR.</li>
 <li>Ideally DDR should be enabled in the bootloader application and the SDK bootloader by default enables DDR by default.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md492"></a>
+<h1><a class="anchor" id="autotoc_md559"></a>
 Usage Overview</h1>
 <p>Include the below file to access the APIs </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="ddr_8h.html">drivers/ddr.h</a>&gt;</span></div>
 <div class="line"> </div>
@@ -253,10 +253,10 @@ Usage Overview</h1>
 <div class="line">    .fshcount              = DDRSS_PLL_FHS_CNT,</div>
 <div class="line">};</div>
 </div><!-- fragment --><p> Initialize DDR </p><div class="fragment"><div class="line">    <a class="code" href="group__DRV__DDR__MODULE.html#gab0fc0ed95040409681fb38d621cc03ca">DDR_init</a>(&amp;gDdrParams);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md493"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md560"></a>
 Example Usage</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md494"></a>
+<h1><a class="anchor" id="autotoc_md561"></a>
 API</h1>
 <p><a class="el" href="group__DRV__DDR__MODULE.html">APIs for DDR</a> </p>
 </div></div><!-- contents -->

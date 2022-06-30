@@ -34,7 +34,7 @@
 #include <drivers/hw_include/cslr_soc.h>
 #include <stdbool.h>
 
-#include <enet_board_cfg.h>
+#include "ti_board_config.h"
 #include <networking/enet/core/include/phy/dp83867.h>
 #include <drivers/pinmux.h>
 
@@ -54,7 +54,7 @@ static Pinmux_PerCfg_t MDIOPinMuxMainDomainCfg[] = {
         PIN_PRG0_PRU1_GPO18,
         ( PIN_MODE(4) | PIN_INPUT_ENABLE | PIN_PULL_DISABLE )
     },
-	
+
 	{PINMUX_END, PINMUX_END}
 };
 
@@ -65,7 +65,7 @@ void Board_cpswMuxSel(void)
 {
 	/* MDIO0 pin config */
 	Pinmux_config(MDIOPinMuxMainDomainCfg, PINMUX_DOMAIN_ID_MAIN);
-	
+
     return;
 }
 

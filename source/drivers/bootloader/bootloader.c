@@ -317,6 +317,7 @@ int32_t Bootloader_rprcImageLoad(Bootloader_Handle handle, Bootloader_CpuInfo *c
             if (status == SystemP_SUCCESS)
             {
                 status = config->fxns->imgReadFxn((void *)(uintptr_t)(section.addr), section.size, config->args);
+                config->bootImageSize += section.size;
             }
         }
     }
@@ -450,6 +451,49 @@ uint32_t Bootloader_getMsgLen(uint8_t *x509_cert_ptr, uint32_t x509_cert_size)
     return msg_len;
 }
 
+/* This API should only be called after all the rprc loading is complete */
+uint32_t Bootloader_getMulticoreImageSize(Bootloader_Handle handle)
+{
+    uint32_t size = 0;
+
+    if(handle != NULL)
+    {
+        Bootloader_Config *config = (Bootloader_Config *)handle;
+        size = config->bootImageSize;
+    }
+    return size;
+}
+
+/* This API should only be called after the bootimage is parsed */
+uint32_t Bootloader_isCorePresent(Bootloader_Handle handle, uint32_t cslCoreId)
+{
+    uint32_t retVal = FALSE;
+
+    if(handle != NULL)
+    {
+        Bootloader_Config *config = (Bootloader_Config *)handle;
+        if((config->coresPresentMap & (1 << cslCoreId)) != 0)
+        {
+            retVal = TRUE;
+        }
+    }
+
+    return retVal;
+}
+
+uint32_t Bootloader_getBootMedia(Bootloader_Handle handle)
+{
+    uint32_t media = BOOTLOADER_INVALID_ID;
+
+    if(NULL != handle)
+    {
+        Bootloader_Config *config = (Bootloader_Config *)handle;
+        media = config->bootMedia;
+    }
+
+    return media;
+}
+
 int32_t Bootloader_verifyMulticoreImage(Bootloader_Handle handle)
 {
     int32_t status = SystemP_FAILURE, authStatus = SystemP_FAILURE;
@@ -494,7 +538,13 @@ int32_t Bootloader_verifyMulticoreImage(Bootloader_Handle handle)
         {
             authStatus = Bootloader_socAuthImage(certLoadAddr);
 
-            /* If authentication status is failure, check if the device is HS/GP */
+            if(config->bootMedia == BOOTLOADER_MEDIA_BUFIO)
+            {
+                /* Authentication will fail in Buf Io because we don't have full data yet, so make it pass here for testing. Default behaviour is to assert. */
+                /* authStatus = SystemP_SUCCESS; */
+                DebugP_assertNoLog(authStatus == SystemP_SUCCESS);
+            }
+
             if(authStatus == SystemP_FAILURE)
             {
                 status = SystemP_FAILURE;
@@ -512,6 +562,12 @@ int32_t Bootloader_verifyMulticoreImage(Bootloader_Handle handle)
                     Bootloader_FlashArgs *flashArgs = (Bootloader_FlashArgs *)(config->args);
                     flashArgs->appImageOffset += certLen;
                     flashArgs->curOffset = flashArgs->appImageOffset;
+                }
+                else if(config->bootMedia == BOOTLOADER_MEDIA_BUFIO)
+                {
+                    Bootloader_BufIoArgs *bufIoArgs = (Bootloader_BufIoArgs *)(config->args);
+                    bufIoArgs->appImageOffset += certLen;
+                    bufIoArgs->curOffset = bufIoArgs->appImageOffset;
                 }
 
                 status = SystemP_SUCCESS;
@@ -588,6 +644,7 @@ int32_t Bootloader_parseMultiCoreAppImage(Bootloader_Handle handle, Bootloader_B
                         cpuInfo->rprcOffset = mHdrCore[i].imageOffset;
                         cpuInfo->entryPoint = 0;
                         cpuInfo->cpuId      = cslCoreId;
+                        config->coresPresentMap |= (1 << cslCoreId);
                     }
                 }
             }

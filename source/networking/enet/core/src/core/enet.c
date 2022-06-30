@@ -184,6 +184,12 @@ static Enet_IoctlValidate gEnetPer_ioctlValidate[] =
     ENET_IOCTL_VALID_PRMS(ENET_PER_IOCTL_SET_VLAN_UNAWARE,
                           0U,
                           0U),
+    ENET_IOCTL_VALID_PRMS(ENET_PER_IOCTL_HANDLE_EXTPHY_LINKUP_EVENT,
+                          sizeof(Enet_ExtPhyLinkUpEventInfo),
+                          0U),
+    ENET_IOCTL_VALID_PRMS(ENET_PER_IOCTL_HANDLE_EXTPHY_LINKDOWN_EVENT,
+                          sizeof(Enet_MacPort),
+                          0U),
 };
 
 /* Public FDB IOCTL validation data. */
@@ -356,6 +362,43 @@ static Enet_IoctlValidate gEnetMdio_ioctlValidate[] =
     ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C45_WRITE,
                           sizeof(EnetMdio_C45WriteInArgs),
                           0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C22_ASYNC_READ_TRIGGER,
+                          sizeof(EnetMdio_C22ReadInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C22_ASYNC_READ_COMPLETE,
+                          sizeof(EnetMdio_C22ReadInArgs),
+                          sizeof(uint16_t)),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C22_ASYNC_WRITE_TRIGGER,
+                          sizeof(EnetMdio_C22WriteInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C22_ASYNC_WRITE_COMPLETE,
+                          sizeof(EnetMdio_C22WriteInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C45_ASYNC_READ_TRIGGER,
+                          sizeof(EnetMdio_C45ReadInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C45_ASYNC_READ_COMPLETE,
+                          sizeof(EnetMdio_C45ReadInArgs),
+                          sizeof(uint16_t)),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C45_ASYNC_WRITE_TRIGGER,
+                          sizeof(EnetMdio_C45WriteInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_C45_ASYNC_WRITE_COMPLETE,
+                          sizeof(EnetMdio_C45WriteInArgs),
+                          0U),
+
+    ENET_IOCTL_VALID_PRMS(ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE,
+                          0U,
+                          0U),
+
 };
 
 /* Public Statistics IOCTL validation data. */
@@ -1462,3 +1505,26 @@ int32_t Enet_validateGenericIoctl(uint32_t cmd,
     return status;
 }
 #endif
+
+int32_t Enet_getHandleInfo(Enet_Handle hEnet,
+                           Enet_Type *enetType,
+                           uint32_t *instId)
+{
+    bool isOpen = false;
+    int32_t status = ENET_EBADARGS;
+
+    if (hEnet)
+    {
+        EnetOsal_lockMutex(hEnet->lock);
+        isOpen = (hEnet->magic == ENET_MAGIC);
+        if (isOpen)
+        {
+            *enetType = hEnet->enetPer->enetType;
+            *instId = hEnet->enetPer->instId;
+            status = ENET_SOK;
+        }
+        EnetOsal_unlockMutex(hEnet->lock);
+    }
+
+    return status;
+}

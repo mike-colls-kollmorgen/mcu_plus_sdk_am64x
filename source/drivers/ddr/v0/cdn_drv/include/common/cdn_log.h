@@ -32,8 +32,12 @@
  *****************************************************************************/
 
 #ifndef INCLUDE_CDN_LOG_H
-
 #define INCLUDE_CDN_LOG_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 //#include "cdn_assert.h"
 #include "cdn_inttypes.h"
@@ -149,5 +153,10 @@ extern void DbgPrint(const char *fmt, ...);
 
 // parasoft-end-suppress MISRA2012-RULE-8_6-2
 // parasoft-end-suppress MISRA2012-DIR-4_4-4
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // INCLUDE_CDN_LOG_H

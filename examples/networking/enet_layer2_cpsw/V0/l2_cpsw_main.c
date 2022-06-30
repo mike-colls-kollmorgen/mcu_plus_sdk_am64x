@@ -160,8 +160,6 @@ void EnetApp_mainTask(void *args)
         }
 
         EnetAppUtils_print("All RX tasks have exited\r\n");
-        /* Stop periodic tick timer */
-        ClockP_stop(&gEnetApp.tickTimerObj);
     }
 
     /* Close all peripherals */

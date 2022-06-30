@@ -61,6 +61,12 @@
  *  \brief NO-RTOS portable file for FreeRTOS includes in FreeRTOS+FAT module.
  *
  */
+#ifndef FAT_NOROTS_TASK_H
+#define FAT_NOROTS_TASK_H
+
+#ifdef  __cplusplus
+    extern "C" {
+#endif
 
 #include "FreeRTOS.h"
 
@@ -70,3 +76,9 @@ void *pvTaskGetThreadLocalStoragePointer(TaskHandle_t xTaskToQuery, BaseType_t x
 void *vTaskSetThreadLocalStoragePointer(TaskHandle_t xTaskToSet, BaseType_t xIndex, void *pvValue);
 void vTaskSuspendAll(void);
 void xTaskResumeAll(void);
+
+#ifdef  __cplusplus
+    } /* extern "C" */
+#endif
+
+#endif /* ifndef FAT_NOROTS_TASK_H */

@@ -33,6 +33,12 @@
 #ifndef IPNDRV_H_
 #define IPNDRV_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -497,4 +503,9 @@ void PN_dhtIsrHandler(void* arg);
  *  \param[in]  arg
  */
 void PN_PTCP_isrHandler(void* arg);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* IPNDRV_H_ */

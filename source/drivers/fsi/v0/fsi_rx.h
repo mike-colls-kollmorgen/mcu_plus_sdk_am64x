@@ -31,6 +31,15 @@
  */
 
 /**
+ *  \defgroup DRV_FSI_RX_MODULE APIs for FSI RX
+ *  \ingroup DRV_MODULE
+ *
+ *  This module contains APIs to program and use the FSI RX module.
+ *
+ *  @{
+ */
+
+/**
  *  \file   v0/fsi_rx.h
  *
  *  \brief  Header file containing various enumerations, structure definitions and function
@@ -55,53 +64,12 @@ extern "C" {
 /* ========================================================================== */
 
 /**
- *
- * @defgroup FSI_RX_API Fast Serial Receive Interface (FSI_RX)
- *
- *
- * To increase functional safety and system reliability the memories (for example,
- * FIFOs, queues, SRAMs and others) in many device modules and subsystems are
- * protected by error correcting code (ECC). This is accomplished through an
- * ECC aggregator and ECC wrapper. The ECC aggregator is connected to
- * these memories (hereinafter ECC RAMs) and involved in the ECC process.
- * Each memory is surrounded by an ECC wrapper which performs the ECC detection
- * and correction. The wrapper communicates via serial interface with the
- * aggregator which has memory mapped configuration interface.
- * The ECC aggregator is also connected to interconnect ECC components that
- * protect the command, address and data buses of the system interconnect.
- * ECC is calculated for the data bus and parity and redundancy for the command
- * and address buses. Each interconnect ECC component has the same serial
- * interface for communication with the aggregator as the ECC wrapper.
- * An ECC aggregator may be connected to both endpoints the ECC wrapper and
- * interconnect ECC component.
- * The ECC aggregator, ECC wrapper and interconnect ECC component are considered
- * as single entity and are hereinafter referred to as ECC aggregator unless
- * otherwise explicitly specified.
- * The design focusses on CSL function layer providing the configuration for
- * ECC RAM ID, force ECC ram error, ECC aggregator interrupt handling features.
- *
+ *  \anchor FSI_RxEnum
+ *  \name FSI RX Enum type
+ *  @{
  */
 /**
-@defgroup FSI_RX_DATASTRUCT  FSI_RX Data Structures
-@ingroup FSI_RX_API
-*/
-/**
-@defgroup FSI_RX_FUNCTION  FSI_RX Functions
-@ingroup FSI_RX_API
-*/
-/**
-@defgroup FSI_RX_ENUM FSI_RX Enumerated Data Types
-@ingroup FSI_RX_API
-*/
-
-/**
- *  @addtogroup FSI_RX_ENUM
-    @{
- *
- */
-
-/**
- * @brief This enumerator defines the types of possible FSI RX events
+ * \brief This enumerator defines the types of possible FSI RX events
  *
  *  Values that can be passed to APIs to enable/disable interrupts and
  *  also to set/get/clear event status on FSI RX operation.
@@ -123,6 +91,8 @@ extern "C" {
  *          frame
  *      12) received data frame
  */
+typedef uint32_t FSI_RxEnumType;
+
 #define FSI_RX_EVT_PING_WD_TIMEOUT  ((uint16_t)0x0001U)
     /** RX ping watchdog times out event */
 #define FSI_RX_EVT_FRAME_WD_TIMEOUT ((uint16_t)0x0002U)
@@ -149,16 +119,16 @@ extern "C" {
 #define FSI_RX_EVT_DATA_FRAME       ((uint16_t)0x0800U)
     /** RX data frame event */
 
-
 /**
- * @brief  Mask of all RX Events, ORing all event defines
+ * \brief  Mask of all RX Events, ORing all event defines
  */
 #define FSI_RX_EVTMASK              ((uint16_t)0x0FFFU)
 
 /**
- * @brief  Maximum value in RX delay line tap control
+ * \brief  Maximum value in RX delay line tap control
  */
 #define FSI_RX_MAX_DELAY_LINE_VAL   ((uint16_t)0x001FU)
+/** @} */
 
 /**
  *  \anchor FSI_RxSubmoduleInReset
@@ -254,12 +224,6 @@ typedef uint32_t FSI_ExtFrameTriggerSrc;
 /**< FSI external trigger source for ePWM8 SOCB */
 /** @} */
 
-/** ===========================================================================
- *  @addtogroup CSL_FSI_RX_FUNCTION
-    @{
- * ============================================================================
- */
-
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
@@ -290,7 +254,7 @@ int32_t FSI_disableRxInternalLoopback(uint32_t base);
  * \brief   This API enables SPI clock paring, receive clock is selected
  *          from the internal port coming from RX module
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * \param   base          [IN]  Base address of the FSI RX module.
  *
@@ -303,7 +267,7 @@ int32_t FSI_enableRxSPIPairing(uint32_t base);
  * \brief   This API disables SPI clock paring, selects regular
  *          receive clock coming from the pins
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * \param   base          [IN]  Base address of the FSI RX module.
  *
@@ -327,7 +291,7 @@ int32_t FSI_setRxDataWidth(uint32_t base, FSI_DataWidth dataWidth);
 /**
  * \brief   This API enables SPI compatible mode in FSI RX
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * \param   base          [IN]  Base address of the FSI RX module.
  *
@@ -339,7 +303,7 @@ int32_t FSI_enableRxSPIMode(uint32_t base);
 /**
  * \brief   This API disables SPI compatible mode in FSI RX
  *
- * @n This API is only applicable when communicating with a C2000 SPI interface
+ * @n This API is only applicable when communicating with a SPI interface
  *
  * \param   base          [IN]  Base address of the FSI RX module.
  *
@@ -762,8 +726,6 @@ int32_t FSI_configRxDelayLine(uint32_t           base,
  *          CSL_EBADARGS = Invalid base address parameter
  */
 int32_t FSI_performRxInitialization(uint32_t base);
-
-/** @} */
 
 #ifdef __cplusplus
 }

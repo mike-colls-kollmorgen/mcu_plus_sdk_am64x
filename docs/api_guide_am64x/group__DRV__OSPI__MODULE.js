@@ -1,7 +1,6 @@
 var group__DRV__OSPI__MODULE =
 [
     [ "Generic NOR Flash API for single pin mode", "group__DRV__OSPI__NOR__FLASH__API__MODULE.html", "group__DRV__OSPI__NOR__FLASH__API__MODULE" ],
-    [ "SFDP API for single pin mode", "group__DRV__OSPI__SFDP__API__MODULE.html", "group__DRV__OSPI__SFDP__API__MODULE" ],
     [ "ospi/v0/ospi.h", "ospi_2v0_2ospi_8h.html", null ],
     [ "OSPI_Transaction", "structOSPI__Transaction.html", [
       [ "count", "structOSPI__Transaction.html#aac78dd1999f55008428a3c5abe2a51d8", null ],
@@ -197,6 +196,7 @@ var group__DRV__OSPI__MODULE =
     [ "OSPI_Transaction_init", "group__DRV__OSPI__MODULE.html#ga66014cbd24d8c287c94846a049d9da68", null ],
     [ "OSPI_ReadCmdParams_init", "group__DRV__OSPI__MODULE.html#gac0fea092fe6e546dd99afbac73aa1cb5", null ],
     [ "OSPI_WriteCmdParams_init", "group__DRV__OSPI__MODULE.html#ga7e7fe11788a7985ea5075fa1f628b437", null ],
+    [ "OSPI_getInputClk", "group__DRV__OSPI__MODULE.html#gac2f47121c92b9d033b0b1c7540d0c8d7", null ],
     [ "OSPI_isDacEnable", "group__DRV__OSPI__MODULE.html#gacfdbd06fc0504e3a3eed1c31a2d42fd3", null ],
     [ "OSPI_isDmaEnable", "group__DRV__OSPI__MODULE.html#gaee5fdd9553f4bd0223b85abf6261d15f", null ],
     [ "OSPI_isIntrEnable", "group__DRV__OSPI__MODULE.html#ga77f5a9e01741701f6330bdedf85b7321", null ],

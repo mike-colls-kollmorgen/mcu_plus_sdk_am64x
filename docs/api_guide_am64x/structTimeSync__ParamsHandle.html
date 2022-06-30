@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -127,12 +127,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab314c8101034fa9eaf02caf0d21a488d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69aa369a1adc09f01a0d80ce2bded648"><td class="memItemLeft" align="right" valign="top">uint32_t backgroundTaskStack[<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a69aa369a1adc09f01a0d80ce2bded648">__attribute__</a> ((aligned(32)))</td></tr>
 <tr class="separator:a69aa369a1adc09f01a0d80ce2bded648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4810b46261af367dbf5cbd880ea9e416"><td class="memItemLeft" align="right" valign="top">uint32_t latchSyncTaskStack[<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a4810b46261af367dbf5cbd880ea9e416">__attribute__</a> ((aligned(32)))</td></tr>
-<tr class="separator:a4810b46261af367dbf5cbd880ea9e416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a170446c291900ed2bf401e6f3a416371"><td class="memItemLeft" align="right" valign="top">uint32_t syncTxTaskStack[<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a170446c291900ed2bf401e6f3a416371">__attribute__</a> ((aligned(32)))</td></tr>
-<tr class="separator:a170446c291900ed2bf401e6f3a416371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b35eed3f638b82a7d2c27bc161e7902"><td class="memItemLeft" align="right" valign="top">uint32_t announceTxTaskStack[<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a7b35eed3f638b82a7d2c27bc161e7902">__attribute__</a> ((aligned(32)))</td></tr>
-<tr class="separator:a7b35eed3f638b82a7d2c27bc161e7902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -190,8 +184,6 @@ Data Fields</h2></td></tr>
 <tr class="separator:a958f3b5f255ced867f4885d15467dfb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af27e16f7f4e54fd84f5cf846acb3aa94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskP__Object.html">TaskP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#af27e16f7f4e54fd84f5cf846acb3aa94">timeSync_backgroundTask</a></td></tr>
 <tr class="separator:af27e16f7f4e54fd84f5cf846acb3aa94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa5bf3b39254fb437a2fb427314d2dd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskP__Object.html">TaskP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#aaa5bf3b39254fb437a2fb427314d2dd2">timeSync_latchSyncTask</a></td></tr>
-<tr class="separator:aaa5bf3b39254fb437a2fb427314d2dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affa2045dd4c29c20c069a668491b550a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structEventP__Object.html">EventP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#affa2045dd4c29c20c069a668491b550a">txTSAvailableEvtObject</a> [<a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga801b7beaa12f8fb779db9dd2d0c4c963">ICSS_EMAC_MAX_PORTS_PER_INSTANCE</a>]</td></tr>
 <tr class="separator:affa2045dd4c29c20c069a668491b550a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d90ff180d073eef37d92e8ba843f342"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structEventP__Object.html">EventP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a4d90ff180d073eef37d92e8ba843f342">ptpPdelayResEvtObject</a> [<a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga801b7beaa12f8fb779db9dd2d0c4c963">ICSS_EMAC_MAX_PORTS_PER_INSTANCE</a>]</td></tr>
@@ -214,20 +206,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a8eb6b66ad8bb24bf03b0c54c02fa71e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3553b4ecf4443a9e6f1d30a3d01659c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemaphoreP__Object.html">SemaphoreP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#ac3553b4ecf4443a9e6f1d30a3d01659c">delayReqTxSemObject</a></td></tr>
 <tr class="separator:ac3553b4ecf4443a9e6f1d30a3d01659c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7129b7c55ce29be297b2adf36bb450b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#ac7129b7c55ce29be297b2adf36bb450b">timeSync_syncTxTimerHandle</a></td></tr>
-<tr class="separator:ac7129b7c55ce29be297b2adf36bb450b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5ed597eec867de7701f298da72e3e5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskP__Object.html">TaskP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#aa5ed597eec867de7701f298da72e3e5f">timeSync_syncTxTask</a></td></tr>
-<tr class="separator:aa5ed597eec867de7701f298da72e3e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9ad86a8859b5b416c951b393f548eaf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTaskP__Object.html">TaskP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#af9ad86a8859b5b416c951b393f548eaf">timeSync_announceTxTask</a></td></tr>
-<tr class="separator:af9ad86a8859b5b416c951b393f548eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf38fea861304b7b600675424b5a3bc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemaphoreP__Object.html">SemaphoreP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#adf38fea861304b7b600675424b5a3bc9">syncTxSemObject</a></td></tr>
-<tr class="separator:adf38fea861304b7b600675424b5a3bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4bb084b7c48ee23cf8d959a4b14115a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemaphoreP__Object.html">SemaphoreP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#ad4bb084b7c48ee23cf8d959a4b14115a">latch_sync_SemObject</a></td></tr>
-<tr class="separator:ad4bb084b7c48ee23cf8d959a4b14115a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a46c8a28d77ff944cdc6cf007b71417"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structHwiP__Object.html">HwiP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a2a46c8a28d77ff944cdc6cf007b71417">timeSync_txTSIsrObject</a></td></tr>
 <tr class="separator:a2a46c8a28d77ff944cdc6cf007b71417"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a814f26f403221ef0ee76ab0f6c7f0545"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structHwiP__Object.html">HwiP_Object</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a814f26f403221ef0ee76ab0f6c7f0545">timeSync_latchIsrObject</a></td></tr>
-<tr class="separator:a814f26f403221ef0ee76ab0f6c7f0545"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72027da7e04c8f01329d67c2072f2336"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a72027da7e04c8f01329d67c2072f2336">numSyncMissed</a></td></tr>
 <tr class="separator:a72027da7e04c8f01329d67c2072f2336"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08cfb96be78d9342f6958d92d1111c78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeSync__Offset__Stable__Algo__t.html">timeSync_Offset_Stable_Algo_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a08cfb96be78d9342f6958d92d1111c78">offsetAlgo</a></td></tr>
@@ -244,8 +224,6 @@ Data Fields</h2></td></tr>
 <tr class="separator:a0f321bcfbf68cb83bcf458b34d8e27f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329aa5bf9b7e4288aadada1d915df8fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeSync__SyntInfo__t.html">timeSync_SyntInfo_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a329aa5bf9b7e4288aadada1d915df8fb">tsSyntInfo</a></td></tr>
 <tr class="separator:a329aa5bf9b7e4288aadada1d915df8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f4039e34ee02943d84a2534e5daee2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeSync__ToD__Param__t.html">timeSync_ToD_Param_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a05f4039e34ee02943d84a2534e5daee2">tsToDParams</a></td></tr>
-<tr class="separator:a05f4039e34ee02943d84a2534e5daee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff3fc8b86c6ee11cac6ee5972d9dd785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeSync__NrrInfo__t.html">timeSync_NrrInfo_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#aff3fc8b86c6ee11cac6ee5972d9dd785">tsNrrInfo</a> [<a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga801b7beaa12f8fb779db9dd2d0c4c963">ICSS_EMAC_MAX_PORTS_PER_INSTANCE</a>]</td></tr>
 <tr class="separator:aff3fc8b86c6ee11cac6ee5972d9dd785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb84d184df7ecc9ec7a5b7fce902d3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsyncParam__t.html">syncParam_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTimeSync__ParamsHandle.html#a6fb84d184df7ecc9ec7a5b7fce902d3c">syncParam</a> [<a class="el" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga801b7beaa12f8fb779db9dd2d0c4c963">ICSS_EMAC_MAX_PORTS_PER_INSTANCE</a>]</td></tr>
@@ -255,7 +233,7 @@ Data Fields</h2></td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a409c181783c852e4793b5859ed1f1225"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a409c181783c852e4793b5859ed1f1225">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[1/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a409c181783c852e4793b5859ed1f1225">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +251,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="a5e059874740ce4eb4b28f045460824e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e059874740ce4eb4b28f045460824e3">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[2/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e059874740ce4eb4b28f045460824e3">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,7 +269,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="aa67c1c87e6267dfabfa5f89e6f826239"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa67c1c87e6267dfabfa5f89e6f826239">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[3/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa67c1c87e6267dfabfa5f89e6f826239">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,7 +287,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="a8504c88587637a86544c57787e219b2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8504c88587637a86544c57787e219b2e">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[4/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8504c88587637a86544c57787e219b2e">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,7 +305,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="ab314c8101034fa9eaf02caf0d21a488d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab314c8101034fa9eaf02caf0d21a488d">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[5/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab314c8101034fa9eaf02caf0d21a488d">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,67 +323,13 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="a69aa369a1adc09f01a0d80ce2bded648"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69aa369a1adc09f01a0d80ce2bded648">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[6/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a69aa369a1adc09f01a0d80ce2bded648">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t backgroundTaskStack [<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)] TimeSync_ParamsHandle::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(aligned(32))&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4810b46261af367dbf5cbd880ea9e416"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4810b46261af367dbf5cbd880ea9e416">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[7/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t latchSyncTaskStack [<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)] TimeSync_ParamsHandle::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(aligned(32))&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a170446c291900ed2bf401e6f3a416371"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a170446c291900ed2bf401e6f3a416371">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[8/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t syncTxTaskStack [<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)] TimeSync_ParamsHandle::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(aligned(32))&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7b35eed3f638b82a7d2c27bc161e7902"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b35eed3f638b82a7d2c27bc161e7902">&#9670;&nbsp;</a></span>__attribute__() <span class="overload">[9/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t announceTxTaskStack [<a class="el" href="icss__timeSyncApi_8h.html#a5486258f1f34d3baeda92a74b63c27c3">TASK_STACK_SIZE</a>/sizeof(uint32_t)] TimeSync_ParamsHandle::__attribute__ </td>
           <td>(</td>
           <td class="paramtype">(aligned(32))&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -830,21 +754,6 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="aaa5bf3b39254fb437a2fb427314d2dd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa5bf3b39254fb437a2fb427314d2dd2">&#9670;&nbsp;</a></span>timeSync_latchSyncTask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTaskP__Object.html">TaskP_Object</a> TimeSync_ParamsHandle::timeSync_latchSyncTask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Task is used to synchronize with the 1PPS output via the latch interrupt </p>
-
-</div>
-</div>
 <a id="affa2045dd4c29c20c069a668491b550a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affa2045dd4c29c20c069a668491b550a">&#9670;&nbsp;</a></span>txTSAvailableEvtObject</h2>
 
@@ -1009,78 +918,6 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="ac7129b7c55ce29be297b2adf36bb450b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7129b7c55ce29be297b2adf36bb450b">&#9670;&nbsp;</a></span>timeSync_syncTxTimerHandle</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t TimeSync_ParamsHandle::timeSync_syncTxTimerHandle</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa5ed597eec867de7701f298da72e3e5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5ed597eec867de7701f298da72e3e5f">&#9670;&nbsp;</a></span>timeSync_syncTxTask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTaskP__Object.html">TaskP_Object</a> TimeSync_ParamsHandle::timeSync_syncTxTask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Actual PTP Task handle which sends Sync frames </p>
-
-</div>
-</div>
-<a id="af9ad86a8859b5b416c951b393f548eaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9ad86a8859b5b416c951b393f548eaf">&#9670;&nbsp;</a></span>timeSync_announceTxTask</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTaskP__Object.html">TaskP_Object</a> TimeSync_ParamsHandle::timeSync_announceTxTask</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>PTP Task for sending Announce frames </p>
-
-</div>
-</div>
-<a id="adf38fea861304b7b600675424b5a3bc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf38fea861304b7b600675424b5a3bc9">&#9670;&nbsp;</a></span>syncTxSemObject</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSemaphoreP__Object.html">SemaphoreP_Object</a> TimeSync_ParamsHandle::syncTxSemObject</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad4bb084b7c48ee23cf8d959a4b14115a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4bb084b7c48ee23cf8d959a4b14115a">&#9670;&nbsp;</a></span>latch_sync_SemObject</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSemaphoreP__Object.html">SemaphoreP_Object</a> TimeSync_ParamsHandle::latch_sync_SemObject</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a2a46c8a28d77ff944cdc6cf007b71417"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a46c8a28d77ff944cdc6cf007b71417">&#9670;&nbsp;</a></span>timeSync_txTSIsrObject</h2>
 
@@ -1089,20 +926,6 @@ Data Fields</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structHwiP__Object.html">HwiP_Object</a> TimeSync_ParamsHandle::timeSync_txTSIsrObject</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a814f26f403221ef0ee76ab0f6c7f0545"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a814f26f403221ef0ee76ab0f6c7f0545">&#9670;&nbsp;</a></span>timeSync_latchIsrObject</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structHwiP__Object.html">HwiP_Object</a> TimeSync_ParamsHandle::timeSync_latchIsrObject</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1222,21 +1045,6 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Data for Syntonization </p>
-
-</div>
-</div>
-<a id="a05f4039e34ee02943d84a2534e5daee2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05f4039e34ee02943d84a2534e5daee2">&#9670;&nbsp;</a></span>tsToDParams</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structtimeSync__ToD__Param__t.html">timeSync_ToD_Param_t</a>* TimeSync_ParamsHandle::tsToDParams</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Parameters for doing time of day synchronization </p>
 
 </div>
 </div>

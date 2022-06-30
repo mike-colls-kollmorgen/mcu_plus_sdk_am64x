@@ -17,3 +17,4 @@ LWIP_MALLOC_MEMPOOL_END
  * lwIP's memory pools for anything else.
  */
 LWIP_MEMPOOL(SYS_MBOX, 22, 100, "SYS_MBOX")
+

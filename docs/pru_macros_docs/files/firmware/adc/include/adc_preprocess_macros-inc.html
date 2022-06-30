@@ -12,6 +12,11 @@
  <div class="CTitle">Macros</div>
 </div>
 
+<a name="m_sign_ext"></a><a name="Topic203"></a><div class="CTopic TMacro LAssembly">
+ <div class="CTitle">m_sign_ext</div>
+ <div class="CBody"><p>For sign extension from A bits to B bits, converts an A-bits wide signed number to a B-bits wide signed number.&nbsp; A: 1 - 32 B: 8, 16, 24, 32</p><p>PEAK cycles: 3 cycle</p><p>Pseudo code:</p><pre><span class="SHKeyword">if</span> (<span class="SHNumber">18th</span> bit == <span class="SHNumber">1</span>)<br />    <span class="SHKeyword">set</span>(bits <span class="SHNumber">18</span> to <span class="SHNumber">32</span> HIGH)</pre><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">A</td><td class="CDLDefinition"><p>Datawidth of input number</p></td></tr><tr><td class="CDLEntry">B</td><td class="CDLDefinition"><p>Required datawidth</p></td></tr><tr><td class="CDLEntry">data_reg</td><td class="CDLDefinition"><p>Input number</p></td></tr><tr><td class="CDLEntry">CONFIG</td><td class="CDLDefinition"><p>clears upper bits also if = EXTEND_0, else only extends 1</p></td></tr></table><div class="CHeading">Returns</div><table class="CDefinitionList"><tr><td class="CDLEntry">data_reg</td><td class="CDLDefinition"><p>Output sign extended number</p></td></tr></table></div>
+</div>
+
 <a name="m_sign_ext_32bit"></a><a name="Topic15"></a><div class="CTopic TMacro LAssembly">
  <div class="CTitle">m_sign_ext_32bit</div>
  <div class="CBody"><p>For sign extension from 18 to 32 bits</p><p>PEAK cycles: 3 cycle</p><p>Pseudo code:</p><pre><span class="SHKeyword">if</span> (<span class="SHNumber">18th</span> bit == <span class="SHNumber">1</span>)<br />    <span class="SHKeyword">set</span>(bits <span class="SHNumber">18</span> to <span class="SHNumber">32</span> HIGH)</pre><div class="CHeading">Parameters</div><p>sample_reg</p><div class="CHeading">Returns</div><p>sample_reg</p></div>

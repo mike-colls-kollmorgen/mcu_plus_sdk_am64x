@@ -33,6 +33,12 @@
 #ifndef LPDDR4_RW_MASKS_H_
 #define LPDDR4_RW_MASKS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "../common/cdn_stdint.h"
 
 extern uint32_t g_lpddr4_ddr_controller_rw_mask[423];
@@ -43,6 +49,11 @@ extern uint32_t g_lpddr4_address_slice_0_rw_mask[43];
 extern uint32_t g_lpddr4_address_slice_1_rw_mask[43];
 extern uint32_t g_lpddr4_address_slice_2_rw_mask[43];
 extern uint32_t g_lpddr4_phy_core_rw_mask[126];
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LPDDR4_RW_MASKS_H_ */
 

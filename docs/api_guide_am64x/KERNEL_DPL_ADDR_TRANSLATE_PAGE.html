@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,32 +108,32 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_ADDR_TRANSLATE_PAGE.html','
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md434">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md435">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md436">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md437">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md438">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md495">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md496">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md497">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md498">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md499">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_AddrTranslateP"></a></p>
-<h1><a class="anchor" id="autotoc_md434"></a>
+<h1><a class="anchor" id="autotoc_md495"></a>
 Features Supported</h1>
 <ul>
 <li>APIs to setup region based address translation using RAT HW on supported SOCs</li>
 <li>APIs to translate 48b SOC view system addr to 32b local CPU view address.</li>
 <li>When no address mapping is specified, no translation is done.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md435"></a>
+<h1><a class="anchor" id="autotoc_md496"></a>
 Features NOT Supported</h1>
 <p>NA</p>
-<h1><a class="anchor" id="autotoc_md436"></a>
+<h1><a class="anchor" id="autotoc_md497"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>The translation API <a class="el" href="group__KERNEL__DPL__ADDR__TRANSLATE.html#ga1769ebed3fd7df26bb09d95a3149ba78">AddrTranslateP_getLocalAddr</a> is meant to be used to translate SOC specified peripheral MMR base addresses to local CPU accesible addresses, within device drivers. The API internally searches through a small array to find the address translations, hence to be efficient, this API should typically be called once during driver init to find the local address that CPU should use.</li>
 <li>This module is not normally required on R5F CPUs since all peripherals are typically mapped within the 32b address space of R5F.</li>
 <li>This module is needed for M4F to access peripherals on the MainSS side of the SOC.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md437"></a>
+<h1><a class="anchor" id="autotoc_md498"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="AddrTranslateP_8h.html">kernel/dpl/AddrTranslateP.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Example to translate a system address to local CPU address, </p><div class="fragment"><div class="line">    uint64_t systemAddr = 0x029060000ul;</div>
@@ -141,7 +141,7 @@ Example Usage</h1>
 <div class="line"> </div>
 <div class="line">    localAddr = <a class="code" href="group__KERNEL__DPL__ADDR__TRANSLATE.html#ga1769ebed3fd7df26bb09d95a3149ba78">AddrTranslateP_getLocalAddr</a>(systemAddr);</div>
 <div class="line"> </div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md438"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md499"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__ADDR__TRANSLATE.html">APIs for Region based address translation (RAT) module</a> </p>
 </div></div><!-- contents -->

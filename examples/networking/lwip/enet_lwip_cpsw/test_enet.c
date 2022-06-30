@@ -39,18 +39,47 @@
 /* lwIP core includes */
 #include "lwip/opt.h"
 #include "test_enet_lwip.h"
-#include <enet_board_cfg.h>
 /* SDK includes */
 #include "ti_drivers_open_close.h"
 #include "ti_board_open_close.h"
+#include "ti_board_config.h"
+#include "ti_enet_open_close.h"
+#include "ti_enet_config.h"
 #include <kernel/dpl/TaskP.h>
 #include <kernel/dpl/ClockP.h>
+#if (ENET_SYSCFG_ENABLE_EXTPHY == 1)
+#include "enetextphy.h"
+#include "enetextphy_phymdio_dflt.h"
+#include "test_enet_extphy.h"
+#endif
 
 extern void Board_cpswMuxSel(void);
 extern void Board_TxRxDelaySet(const EnetBoard_PhyCfg *boardPhyCfg);
 extern uint32_t Board_getEthBoardId(void);
 extern uint32_t Board_getEthType(void);
 
+static void EnetApp_addMCastEntry(Enet_Type enetType,
+                                  uint32_t instId,
+                                  uint32_t coreId,
+                                  const uint8_t *testMCastAddr,
+                                  uint32_t portMask);
+#if (ENET_SYSCFG_ENABLE_EXTPHY == 1U)
+#include "portmacro.h"
+
+#define ENETAPP_EXT_PHY_NUM_ENABLED_PORTS          (1U)
+
+static void EnetApp_initExtPhy(Enet_Type enetType,
+                               uint32_t instId,
+                               Enet_MacPort macPort);
+static void EnetApp_enableMdioStateMachine(Enet_Type enetType,
+                                           uint32_t instId,
+                                           uint32_t coreId);
+static void EnetApp_waitForPhyAlive(Enet_Type enetType,
+                                    uint32_t instId,
+                                    uint32_t coreId,
+                                    Enet_MacPort macPort);
+
+#endif
 
 void print_cpu_load()
 {
@@ -77,7 +106,9 @@ void print_cpu_load()
     }
 }
 
-void EnetApp_initLinkArgs(EnetPer_PortLinkCfg *linkArgs,
+void EnetApp_initLinkArgs(Enet_Type enetType,
+                          uint32_t instId,
+                          EnetPer_PortLinkCfg *linkArgs,
                           Enet_MacPort macPort)
 {
     EnetPhy_Cfg *phyCfg = &linkArgs->phyCfg;
@@ -88,10 +119,10 @@ void EnetApp_initLinkArgs(EnetPer_PortLinkCfg *linkArgs,
     int32_t status;
 
     /* Setup board for requested Ethernet port */
-    ethPort.instId   = 0;
+    ethPort.enetType = enetType;
+    ethPort.instId   = instId;
     ethPort.macPort  = macPort;
     ethPort.boardId  = Board_getEthBoardId();
-    ethPort.enetType = Board_getEthType();
     ethPort.mii.layerType      = ENET_MAC_LAYER_GMII;
     ethPort.mii.sublayerType   = ENET_MAC_SUBLAYER_REDUCED;
     ethPort.mii.variantType    = ENET_MAC_VARIANT_FORCED;
@@ -155,23 +186,11 @@ void EnetApp_initLinkArgs(EnetPer_PortLinkCfg *linkArgs,
     }
 }
 
-void EnetApp_getEnetInstInfo(Enet_Type *enetType,
-                             uint32_t *instId,
-                             Enet_MacPort macPortList[],
-                             uint8_t *numMacPorts)
-{
-    *enetType = Board_getEthType();
-    *instId   = 0;
-    *numMacPorts = 1;
-    macPortList[0] = ENET_MAC_PORT_1;
-}
-
 int enet_lwip_example(void *args)
 {
     Enet_Type enetType;
     uint32_t instId;
-    Enet_MacPort macPortList[1];
-    uint8_t numMacPorts;
+    int32_t status;
 
     Drivers_open();
     Board_driversOpen();
@@ -183,14 +202,303 @@ int enet_lwip_example(void *args)
     DebugP_log("==========================\r\n");
 
     EnetApp_getEnetInstInfo(&enetType,
-                            &instId,
-                             macPortList,
-                             &numMacPorts);
-    EnetAppUtils_enableClocks(enetType, instId);
+                            &instId);
 
+
+    EnetAppUtils_enableClocks(enetType, instId);
+    status = EnetApp_driverOpen(enetType, instId);
+
+    if (status != ENET_SOK)
+    {
+        EnetAppUtils_print("Failed to open ENET: %d\r\n", status);
+    }
+
+    EnetAppUtils_assert(status == ENET_SOK);
+    {
+        const uint8_t testBCastAddr[ENET_MAC_ADDR_LEN] =
+        {
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+        };
+        EnetApp_addMCastEntry(enetType,
+                              instId,
+                              EnetSoc_getCoreId(),
+                              testBCastAddr,
+                              CPSW_ALE_ALL_PORTS_MASK);
+    }
+    #if (ENET_SYSCFG_ENABLE_EXTPHY == 1U)
+    {
+        uint8_t numMacPorts;
+        uint32_t i;
+        Enet_MacPort macPortList[ENET_SYSCFG_MAX_MAC_PORTS];
+
+        EnetApp_getEnetInstMacInfo(enetType,
+                                   instId,
+                                   macPortList,
+                                   &numMacPorts);
+        EnetApp_mdioLinkIntHandlerTask(enetType, instId);
+        portENTER_CRITICAL();
+        EnetApp_enableMdioStateMachine(enetType,
+                                       instId,
+                                       EnetSoc_getCoreId());
+        for (i = 0; i < ENETAPP_EXT_PHY_NUM_ENABLED_PORTS; i++)
+        {
+            EnetApp_waitForPhyAlive(enetType,
+                                    instId,
+                                    EnetSoc_getCoreId(),
+                                    macPortList[i]);
+            EnetApp_initExtPhy(enetType,
+                               instId,
+                               macPortList[i]);
+        }
+        portEXIT_CRITICAL();
+    }
+    #endif
     /* no stdio-buffering, please! */
     //setvbuf(stdout, NULL,_IONBF, 0);
     main_loop(NULL);
     return 0;
 }
+
+static void EnetApp_addMCastEntry(Enet_Type enetType,
+                                  uint32_t instId,
+                                  uint32_t coreId,
+                                  const uint8_t *testMCastAddr,
+                                  uint32_t portMask)
+{
+    Enet_IoctlPrms prms;
+    int32_t status;
+    CpswAle_SetMcastEntryInArgs setMcastInArgs;
+    uint32_t setMcastOutArgs;
+
+    if (Enet_isCpswFamily(enetType))
+    {
+        Enet_Handle hEnet = Enet_getHandle(enetType, instId);
+
+        EnetAppUtils_assert(hEnet != NULL);
+        memset(&setMcastInArgs, 0, sizeof(setMcastInArgs));
+        memcpy(&setMcastInArgs.addr.addr[0U], testMCastAddr,
+               sizeof(setMcastInArgs.addr.addr));
+        setMcastInArgs.addr.vlanId  = 0;
+        setMcastInArgs.info.super = false;
+        setMcastInArgs.info.numIgnBits = 0;
+        setMcastInArgs.info.fwdState = CPSW_ALE_FWDSTLVL_FWD;
+        setMcastInArgs.info.portMask = portMask;
+        ENET_IOCTL_SET_INOUT_ARGS(&prms, &setMcastInArgs, &setMcastOutArgs);
+        status = Enet_ioctl(hEnet, coreId, CPSW_ALE_IOCTL_ADD_MCAST, &prms);
+        if (status != ENET_SOK)
+        {
+           EnetAppUtils_print("EnetTestBcastMcastLimit_AddAleEntry() failed CPSW_ALE_IOCTL_ADD_MCAST: %d\n",
+                               status);
+        }
+    }
+}
+
+
+
+#if (ENET_SYSCFG_ENABLE_EXTPHY == 1U)
+
+EnetExtPhy_Handle ghExtPhy[ENET_SYSCFG_MAX_MAC_PORTS] = {NULL};
+
+static void EnetApp_initExtPhyArgs(Enet_Type enetType,
+                            uint32_t instId,
+                            EnetExtPhy_Mii *mii,
+                            EnetExtPhy_LinkCfg *linkCfg,
+                            Enet_MacPort macPort,
+                            EnetExtPhy_Cfg *phyCfg)
+{
+    EnetBoard_EthPort ethPort;
+    const EnetBoard_PhyCfg *boardPhyCfg;
+
+    /* Setup board for requested Ethernet port */
+    ethPort.instId   = instId;
+    ethPort.macPort  = macPort;
+    ethPort.boardId  = Board_getEthBoardId();
+    ethPort.enetType = enetType;
+    ethPort.mii.layerType      = ENET_MAC_LAYER_GMII;
+    ethPort.mii.sublayerType   = ENET_MAC_SUBLAYER_REDUCED;
+    ethPort.mii.variantType    = ENET_MAC_VARIANT_FORCED;
+    *mii = (EnetExtPhy_Mii) EnetUtils_macToPhyMii(&ethPort.mii);
+
+    boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
+    if (boardPhyCfg != NULL)
+    {
+        EnetExtPhy_initCfg(phyCfg);
+        phyCfg->phyAddr     = boardPhyCfg->phyAddr;
+        phyCfg->skipExtendedCfg = boardPhyCfg->skipExtendedCfg;
+        phyCfg->extendedCfgSize = boardPhyCfg->extendedCfgSize;
+        /* Setting Tx and Rx skew delay values */
+        Board_TxRxDelaySet(boardPhyCfg);
+        memcpy(phyCfg->extendedCfg, boardPhyCfg->extendedCfg, phyCfg->extendedCfgSize);
+    }
+    else
+    {
+        DebugP_log("No PHY configuration found for MAC port %u\r\n",
+                           ENET_MACPORT_ID(ethPort.macPort));
+        EnetAppUtils_assert(false);
+    }
+
+    linkCfg->speed     = ENETEXTPHY_SPEED_AUTO;
+    linkCfg->duplexity = ENETEXTPHY_DUPLEX_AUTO;
+
+}
+
+static void EnetApp_initExtPhy(Enet_Type enetType,
+                               uint32_t instId,
+                               Enet_MacPort macPort)
+{
+    Enet_Handle hEnet;
+    EnetExtPhy_Mii mii;
+    EnetExtPhy_LinkCfg linkCfg;
+    EnetExtPhy_Cfg phyCfg;
+    EnetExtPhy_MdioHandle hMdio;
+    uint32_t macPortCaps;
+
+
+    hEnet = Enet_getHandle(enetType, instId);
+    EnetAppUtils_assert(hEnet != NULL);
+    hMdio = EnetExtPhyMdioDflt_getPhyMdio();
+    EnetAppUtils_assert(hEnet != NULL);
+    macPortCaps = EnetSoc_getMacPortCaps(enetType, instId, macPort);
+
+    EnetApp_initExtPhyArgs(enetType,
+                           instId,
+                           &mii,
+                           &linkCfg,
+                           macPort,
+                           &phyCfg);
+    ghExtPhy[ENET_MACPORT_NORM(macPort)] = EnetExtPhy_open(&phyCfg,
+                               mii,
+                               &linkCfg,
+                               macPortCaps,
+                               hMdio,
+                               hEnet);
+    EnetAppUtils_assert(ghExtPhy[ENET_MACPORT_NORM(macPort)] != NULL);
+
+}
+
+int32_t   EnetApp_getExtPhyLinkCfgInfo(Enet_Type enetType,
+                                       uint32_t instId,
+                                       Enet_MacPort *macPort,
+                                       uint32_t phyAddr,
+                                       EnetPhy_LinkCfg *phyLinkCfg)
+{
+    EnetExtPhy_LinkCfg extPhylinkCfg;
+    int32_t status;
+    uint8_t numMacPorts;
+    uint32_t i;
+    Enet_MacPort macPortList[ENET_SYSCFG_MAX_MAC_PORTS];
+
+    EnetApp_getEnetInstMacInfo(enetType,
+                               instId,
+                               macPortList,
+                               &numMacPorts);
+    for (i = 0; i < numMacPorts; i++)
+    {
+        EnetBoard_EthPort ethPort;
+        const EnetBoard_PhyCfg *boardPhyCfg;
+
+        /* Setup board for requested Ethernet port */
+        ethPort.instId   = instId;
+        ethPort.macPort  = ENET_MACPORT_DENORM(i);
+        ethPort.boardId  = Board_getEthBoardId();
+        ethPort.enetType = enetType;
+        ethPort.mii.layerType      = ENET_MAC_LAYER_GMII;
+        ethPort.mii.sublayerType   = ENET_MAC_SUBLAYER_REDUCED;
+        ethPort.mii.variantType    = ENET_MAC_VARIANT_FORCED;
+        boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
+        EnetAppUtils_assert(boardPhyCfg != NULL);
+        if (phyAddr == boardPhyCfg->phyAddr)
+        {
+            break;
+        }
+    }
+    EnetAppUtils_assert (i < numMacPorts);
+    *macPort = ENET_MACPORT_DENORM(i);
+    status = EnetExtPhy_getLinkCfg(ghExtPhy[ENET_MACPORT_NORM(*macPort)], &extPhylinkCfg);
+    if (status == ENETEXTPHY_SOK)
+    {
+        phyLinkCfg->speed     =  (EnetPhy_Speed) extPhylinkCfg.speed;
+        phyLinkCfg->duplexity =  (EnetPhy_Duplexity) extPhylinkCfg.duplexity;
+    }
+    return status;
+}
+
+bool EnetApp_isPortLinked(Enet_Handle hEnet)
+{
+    Enet_Type enetType;
+    uint32_t instId;
+    uint32_t linkUpMask = 0U;
+    bool linkUp;
+    Enet_MacPort macPortList[ENET_MAC_PORT_NUM];
+    uint8_t numMacPorts;
+    int32_t status;
+    uint32_t i;
+
+    status = Enet_getHandleInfo(hEnet, &enetType, &instId);
+    EnetAppUtils_assert(status == ENET_SOK);
+    EnetApp_getEnetInstMacInfo(enetType, instId, macPortList, &numMacPorts);
+    for (i = 0; i < ENETAPP_EXT_PHY_NUM_ENABLED_PORTS; i++)
+    {
+        linkUpMask |= (EnetExtPhy_isLinked(ghExtPhy[i])  << i);
+    }
+    linkUp =  (linkUpMask != 0) ? true : false;
+    return linkUp;
+}
+
+static void EnetApp_enableMdioStateMachine(Enet_Type enetType,
+                                           uint32_t instId,
+                                           uint32_t coreId)
+{
+    Enet_IoctlPrms prms;
+    int32_t status;
+    Enet_Handle hEnet = Enet_getHandle(enetType, instId);
+
+    EnetAppUtils_assert(hEnet != NULL);
+    ENET_IOCTL_SET_NO_ARGS(&prms);
+    status = Enet_ioctl(hEnet, coreId, ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE, &prms);
+    if (status != ENET_SOK)
+    {
+       EnetAppUtils_print("EnetApp_enableMdioStateMachine() failed ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE: %d\n",
+                           status);
+    }
+    EnetAppUtils_assert(ENET_SOK == status);
+}
+
+static void EnetApp_waitForPhyAlive(Enet_Type enetType,
+                                    uint32_t instId,
+                                    uint32_t coreId,
+                                    Enet_MacPort macPort)
+{
+    bool alive;
+    Enet_IoctlPrms prms;
+    int32_t status;
+    Enet_Handle hEnet = Enet_getHandle(enetType, instId);
+    int8_t phyAddr;
+    EnetBoard_EthPort ethPort;
+    const EnetBoard_PhyCfg *boardPhyCfg;
+
+    EnetAppUtils_assert(hEnet != NULL);
+
+    /* Setup board for requested Ethernet port */
+    ethPort.instId   = instId;
+    ethPort.macPort  = macPort;
+    ethPort.boardId  = Board_getEthBoardId();
+    ethPort.enetType = enetType;
+    ethPort.mii.layerType      = ENET_MAC_LAYER_GMII;
+    ethPort.mii.sublayerType   = ENET_MAC_SUBLAYER_REDUCED;
+    ethPort.mii.variantType    = ENET_MAC_VARIANT_FORCED;
+    boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
+    EnetAppUtils_assert(boardPhyCfg != NULL);
+    phyAddr = boardPhyCfg->phyAddr;
+
+    do {
+        ENET_IOCTL_SET_INOUT_ARGS(&prms, &phyAddr, &alive);
+        status = Enet_ioctl(hEnet,
+                            coreId,
+                            ENET_MDIO_IOCTL_IS_ALIVE,
+                            &prms);
+    } while ((status == ENET_SOK) && (alive != true));
+    EnetAppUtils_assert (status == ENET_SOK);
+}
+#endif /* #if (ENET_SYSCFG_ENABLE_EXTPHY == 1U) */
 

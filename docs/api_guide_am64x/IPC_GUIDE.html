@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,33 +108,33 @@ $(document).ready(function(){initNavTree('IPC_GUIDE.html',''); initResizable(); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md236">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md237">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md238">IPC SW Architecture</a><ul><li class="level2"><a href="#autotoc_md239">IPC Notify and IPC RP Message</a></li>
-<li class="level2"><a href="#autotoc_md240">When using Linux</a></li>
-<li class="level2"><a href="#autotoc_md241">Important usage points</a></li>
-<li class="level2"><a href="#autotoc_md242">IPC design pattern</a></li>
+<ul><li class="level1"><a href="#autotoc_md289">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md290">Additional References</a></li>
+<li class="level1"><a href="#autotoc_md291">IPC SW Architecture</a><ul><li class="level2"><a href="#autotoc_md292">IPC Notify and IPC RP Message</a></li>
+<li class="level2"><a href="#autotoc_md293">When using Linux</a></li>
+<li class="level2"><a href="#autotoc_md294">Important usage points</a></li>
+<li class="level2"><a href="#autotoc_md295">IPC design pattern</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md243">Enabling IPC in applications</a><ul><li class="level2"><a href="#autotoc_md244">Enable IPC in SysConfig</a></li>
-<li class="level2"><a href="#autotoc_md245">Update linker command file</a></li>
-<li class="level2"><a href="#autotoc_md246">Update MMU/MPU for the CPU</a></li>
-<li class="level2"><a href="#autotoc_md247">Sync with CPUs</a></li>
-<li class="level2"><a href="#autotoc_md248">Start using the APIs</a></li>
+<li class="level1"><a href="#autotoc_md296">Enabling IPC in applications</a><ul><li class="level2"><a href="#autotoc_md297">Enable IPC in SysConfig</a></li>
+<li class="level2"><a href="#autotoc_md298">Update linker command file</a></li>
+<li class="level2"><a href="#autotoc_md299">Update MMU/MPU for the CPU</a></li>
+<li class="level2"><a href="#autotoc_md300">Sync with CPUs</a></li>
+<li class="level2"><a href="#autotoc_md301">Start using the APIs</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_developer_guides_ipc"></a></p>
 <dl class="section note"><dt>Note</dt><dd>A53 and Linux will not be available on all SOCs. All references to Linux and A53 should be ignored on such SOCs.</dd></dl>
-<h1><a class="anchor" id="autotoc_md236"></a>
+<h1><a class="anchor" id="autotoc_md289"></a>
 Introduction</h1>
 <p>AM64X SOC has multiple CPUs on which distinct applications are run. These applications need to communicate with each other to realize the larger system level application. This means of communication is called Inter Processor Communication (IPC).</p>
 <p>The section describes the below details related to IPC</p><ul>
 <li>IPC SW architecture as it spans across different CPUs and operating systems.</li>
 <li>Steps to enable IPC in your applications running RTOS, NORTOS or Linux</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md237"></a>
+<h1><a class="anchor" id="autotoc_md290"></a>
 Additional References</h1>
 <p>See also these additional pages for more details and examples about IPC,</p>
 <ul>
@@ -160,7 +160,7 @@ Additional References</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md238"></a>
+<h1><a class="anchor" id="autotoc_md291"></a>
 IPC SW Architecture</h1>
 <p>Shown below is a block diagram of the SW modules involved in IPC,</p>
 <p> <style>div.image img[src="ipc_block_diagram.png"]{width:70%}</style> </p><div class="image">
@@ -168,7 +168,7 @@ IPC SW Architecture</h1>
 <div class="caption">
 IPC SW Block Diagram</div></div>
 <p>IPC involves synchronizing between SW running across multiple CPUs. This is achieved by exchanging messages between the CPUs.</p>
-<h2><a class="anchor" id="autotoc_md239"></a>
+<h2><a class="anchor" id="autotoc_md292"></a>
 IPC Notify and IPC RP Message</h2>
 <p>There are two APIs to exchange messages between the CPUs</p><ul>
 <li>IPC RP Message,<ul>
@@ -194,16 +194,17 @@ IPC Notify and IPC RP Message</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md240"></a>
+<h2><a class="anchor" id="autotoc_md293"></a>
 When using Linux</h2>
 <p>When using Linux,</p><ul>
 <li>On the Linux side, IPC RP Message is implemented inside the Linux kernel on top of the HW mailbox driver</li>
 <li>Applications, typically in user space, can access this RP Message kernel module using the <code>rpmsg_char</code> character driver in user space.</li>
 <li><b>Processor SDK Linux</b> provides a user space <code>rpmsg_char</code> library which gives simplified APIs to send and receive messages to other CPUs using RP Message.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md241"></a>
+<h2><a class="anchor" id="autotoc_md294"></a>
 Important usage points</h2>
-<p>Below are some important points to take note of regarding IPC,</p><ul>
+<p>Below are some important points to take note of regarding IPC,</p>
+<ul>
 <li>Any CPU can do IPC with any other CPU. Constraints if any are listed below.</li>
 <li>The exact mechanism used for HW interrupts would differ based on the SOC capabilities, but the overall features and API from user application point of view remains the same.</li>
 <li>When Linux is one end of the IPC message exchange, only IPC RP Message can be used.</li>
@@ -211,7 +212,7 @@ Important usage points</h2>
 <li>When both ends of the IPC message exchange run RTOS or NORTOS, the max RP Message packet or buffer size is defined by user. Default is 128 bytes. This allows to optimize the memory needed for shared memory in order to fit the shared memory in on-chip RAM.</li>
 <li>When needing to transport larger data more than packet size, it is recommended to pass a "pointer" or "offset" to the data buffer in the message packet rather than copying the data in the message itself.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md242"></a>
+<h2><a class="anchor" id="autotoc_md295"></a>
 IPC design pattern</h2>
 <p>Using the basic send and receive IPC APIs, an application writer can design IPC for his application in many different ways. The final choice depends on the end application requirements.</p>
 <p>Given below is a typical "design pattern" of using IPC RP Message in "client server" mode,</p><ul>
@@ -243,17 +244,18 @@ IPC design pattern</h2>
 <li>On the sender side, it is common to wait for "ack", however the sender can choose to do something in between while waiting for "ack". "ack" itself can be optional for some commands for example, and is usually agreed between the client and server.</li>
 </ul>
 <p>A similar design pattern can be used with IPC Notify APIs, only in this case, the message packet can only be a 28b message value. And the end point values MUST be less than <a class="el" href="group__DRV__IPC__NOTIFY__MODULE.html#ga50498d869225f59bf26ec15f05d22249">IPC_NOTIFY_CLIENT_ID_MAX</a></p>
-<h1><a class="anchor" id="autotoc_md243"></a>
+<h1><a class="anchor" id="autotoc_md296"></a>
 Enabling IPC in applications</h1>
-<p>Below are the summary of steps a application writer on RTOS/NORTOS needs to do enable IPC for their applications</p><ul>
+<p>Below are the summary of steps a application writer on RTOS/NORTOS needs to do enable IPC for their applications</p>
+<ul>
 <li>Step 1: Enable IPC RPMessage and/or IPC Notify in SysConfig for the CPUs of interest.</li>
 <li>Step 2: Update linker command file to place the shared memory sections at the right place in the memory map</li>
 <li>Step 3: Mark the shared memory sections as non-cached in the MPU/MMU of the CPU. This can be done via SysConfig</li>
 <li>Step 4.a: When IPC with Linux is enabled, sync with Linux during system initialization phase.</li>
 <li>Step 4: Start using the IPC message passing APIs</li>
 </ul>
-<p>We use <a class="el" href="EXAMPLES_DRIVERS_IPC_RPMESSAGE_ECHO.html">IPC RP Message Echo</a> example as reference to go through each step in detail. It is recommended to open these projects in CCS and refer to the SysConfig UI for these projects as you read through the instructions below.</p>
-<h2><a class="anchor" id="autotoc_md244"></a>
+<p>We use <a class="el" href="EXAMPLES_DRIVERS_IPC_RPMESSAGE_ECHO.html">IPC RP Message Echo</a> example as reference to go through</p>
+<h2><a class="anchor" id="autotoc_md297"></a>
 Enable IPC in SysConfig</h2>
 <ul>
 <li>Enable IPC via SysConfig, by selecting <code>IPC</code> under <code>TI DRIVERS</code> in the left pane in SysConfig.</li>
@@ -275,7 +277,7 @@ IPC SysConfig</div></div>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md245"></a>
+<h2><a class="anchor" id="autotoc_md298"></a>
 Update linker command file</h2>
 <ul>
 <li>When IPC RP Message is enabled, a shared memory is used to exchange packet buffers between different CPUs. This shared memory MUST be mapped to the same address across all CPUs.</li>
@@ -342,7 +344,7 @@ Update linker command file</h2>
 </div><!-- fragment --><ul>
 <li>Refer to linker command file for <a class="el" href="EXAMPLES_DRIVERS_IPC_RPMESSAGE_LINUX_ECHO.html">IPC RP Message Linux Echo</a> example for reference.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md246"></a>
+<h2><a class="anchor" id="autotoc_md299"></a>
 Update MMU/MPU for the CPU</h2>
 <ul>
 <li>The shared memory sections that are put in the linker command file needs to be mapped as <b>NON-CACHE</b> at the RTOS/NORTOS CPUs.</li>
@@ -353,7 +355,7 @@ Update MMU/MPU for the CPU</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md247"></a>
+<h2><a class="anchor" id="autotoc_md300"></a>
 Sync with CPUs</h2>
 <ul>
 <li>When Linux is present in the system, additionally one needs to call below API at each CPU that has Linux IPC enabled <b>after</b> <code>System_init</code> is done but before any IPC message exchange with Linux is started.</li>
@@ -380,7 +382,7 @@ Sync with CPUs</h2>
 </ul>
 <div class="fragment"><div class="line">/* wait for all cores to be ready */</div>
 <div class="line">IpcNotify_syncAll(SystemP_WAIT_FOREVER);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md248"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md301"></a>
 Start using the APIs</h2>
 <ul>
 <li>Now you can start sending messages between the enabled CPUs using the APIs defined in <a class="el" href="DRIVERS_IPC_NOTIFY_PAGE.html">IPC Notify</a> and <a class="el" href="DRIVERS_IPC_RPMESSAGE_PAGE.html">IPC RPMessage</a> </li>

@@ -38,6 +38,12 @@
 #ifndef RED_VLANTABLE_H_
 #define RED_VLANTABLE_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -119,5 +125,10 @@ RED_STATUS vlan_sv_frames_config(PRUICSS_Handle pruicssHandle,
 RED_STATUS vlan_filter_update_vid(PRUICSS_Handle
                                   pruicssHandle,
                                   uint16_t vid, uint8_t command);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_VLANTABLE_H_ */

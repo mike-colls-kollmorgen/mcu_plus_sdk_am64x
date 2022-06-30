@@ -52,7 +52,11 @@ extern "C" {
 /**
  * \brief Max size of clock object across no-RTOS and all OS's
  */
+#if defined (OS_SAFERTOS)
+#define ClockP_OBJECT_SIZE_MAX    (120u)
+#else
 #define ClockP_OBJECT_SIZE_MAX    (104u)
+#endif
 /**
  * \brief Opaque clock object used with the clock APIs
  */

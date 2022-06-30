@@ -31,7 +31,7 @@
  */
 
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 
 #ifndef TI_DRIVERS_CONFIG_H_

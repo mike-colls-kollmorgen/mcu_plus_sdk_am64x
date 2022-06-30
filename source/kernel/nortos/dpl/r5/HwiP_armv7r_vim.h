@@ -33,6 +33,12 @@
 #ifndef HWIP_ARMV7R_VIM_H
 #define HWIP_ARMV7R_VIM_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <kernel/dpl/HwiP.h>
 
 /* compile flag to enable VIC mode of operation, undef this to use non-VIC mode */
@@ -222,5 +228,10 @@ static inline void HWI_SECTION HwiP_ackFIQ(uint32_t intNum)
     addr = (volatile uint32_t *)(gHwiConfig.intcBaseAddr + VIM_FIQVEC);
     *addr= intNum;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* HWIP_ARMV7R_VIM_H */

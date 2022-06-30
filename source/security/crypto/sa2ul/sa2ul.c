@@ -298,13 +298,6 @@ struct SA2UL_HostDescrRx
     struct SA2UL_PSDataRx psData;
 } __attribute__((__packed__));
 
-struct SA2UL_MCEData
-{
-    uint8_t sopOffset, middleOffset, eopOffset;
-    uint8_t nMCInstrs;
-    const uint8_t * mcInstrs;
-};
-
 /*!
  * \brief Encoded block sizes for encryption algos
  */
@@ -421,7 +414,7 @@ static const uint8_t gSa2ulMceAes128Ecb[] =
 /*!
  * \brief Encryption mode control engine instructions for different modes
  */
-static const struct SA2UL_MCEData gSa2ulMceDataArray[SA2UL_MCE_DATA_NUM] =
+static const SA2UL_MCEData gSa2ulMceDataArray[SA2UL_MCE_DATA_NUM] =
 {
     {
         /* AES-256-ECB */
@@ -1624,12 +1617,12 @@ static int32_t SA2UL_pushBuffer(SA2UL_ContextObject *pCtxObj,const uint8_t  *inp
                 if(SA2UL_IS_HMAC(pCtxObj->ctxPrms.hashAlg)) {
                     authLen += gSa2ulHashBlkSizeBits[pCtxObj->ctxPrms.hashAlg & 7u];
                 }
-            
+
             txDescr->psData.optionWords[0] = (uint32_t)(authLen >> 32);
             txDescr->psData.optionWords[1] = (uint32_t)authLen;
             }
         }
-    
+
         else
         {
             txDescr->exPktInfo.swWord0 |= (CSL_FMK(SA2UL_SWWORD0_ENGINE_ID, SA2UL_ENGINE_CODE_ENCRYPTION_MODULE_P1));
@@ -1811,7 +1804,7 @@ static int32_t SA2UL_hwInit(SA2UL_Attrs  *attrs)
               CSL_CP_ACE_CMD_STATUS_PKA_EN_MASK           |
               CSL_CP_ACE_CMD_STATUS_TRNG_EN_MASK          |
               CSL_CP_ACE_CMD_STATUS_ENCSS_EN_MASK         |
-              CSL_CP_ACE_CMD_STATUS_AUTHSS_EN_MASK;        
+              CSL_CP_ACE_CMD_STATUS_AUTHSS_EN_MASK;
 
         /* Consider timeout */
         while ((reg & CSL_REG_RD(&pSaRegs->MMR.CMD_STATUS)) != reg)
@@ -1857,7 +1850,7 @@ static uint32_t SA2UL_hwDeInit(SA2UL_Attrs  *attrs)
               CSL_CP_ACE_CMD_STATUS_PKA_EN_MASK           |
               CSL_CP_ACE_CMD_STATUS_TRNG_EN_MASK          |
               CSL_CP_ACE_CMD_STATUS_ENCSS_EN_MASK         |
-              CSL_CP_ACE_CMD_STATUS_AUTHSS_EN_MASK;        
+              CSL_CP_ACE_CMD_STATUS_AUTHSS_EN_MASK;
     }
 
     return (retVal);

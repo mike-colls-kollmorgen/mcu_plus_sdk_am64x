@@ -33,6 +33,12 @@
 #ifndef HWIP_ARMV7M_H
 #define HWIP_ARMV7M_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <kernel/dpl/HwiP.h>
 
 #define HWI_SECTION __attribute__((section(".text.hwi")))
@@ -70,5 +76,10 @@ typedef struct HwiP_Ctrl_s {
 
 extern HwiP_Ctrl gHwiCtrl;
 extern uint32_t gHwiP_vectorTable[HwiP_MAX_INTERRUPTS];
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* HWIP_ARMV7M_H */

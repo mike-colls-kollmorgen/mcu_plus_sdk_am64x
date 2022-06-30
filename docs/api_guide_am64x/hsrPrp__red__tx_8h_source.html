@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -111,33 +111,44 @@ $(document).ready(function(){initNavTree('hsrPrp__red__tx_8h_source.html',''); i
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef RED_TX_H_</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define RED_TX_H_</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a>&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__handle_8h.html">hsrPrp_handle.h</a>&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#a225006a144081b8da1bf11ad82d47d3d">   62</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#a225006a144081b8da1bf11ad82d47d3d">RedTxPacketHsrModeT</a>(<a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                               <span class="keyword">const</span> uint8_t *packetData, int32_t packetLength, int32_t queuePriority);</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#a5c64914d190f55b491b12f7b9836e749">   76</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#a5c64914d190f55b491b12f7b9836e749">RedTxPacketHsrModeM</a>(<a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                               <span class="keyword">const</span> uint8_t *packetData, int32_t packetLength, int32_t queuePriority, int32_t port);</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#aeab33cf781618e339ae8026859e40603">   87</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#aeab33cf781618e339ae8026859e40603">RedTxPacketEnqueue</a>(<a class="code" href="hsrPrp__handle_8h.html#a43de893cf9a5bf41d23d5fb8680be4c2">hsrPrpHandle</a> *, <a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                              <a class="code" href="structRED__FRAME.html">RED_FRAME</a> *pRedFrame, int32_t portNumber, int32_t queuePriority);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_TX_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a>&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__handle_8h.html">hsrPrp_handle.h</a>&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#a225006a144081b8da1bf11ad82d47d3d">   68</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#a225006a144081b8da1bf11ad82d47d3d">RedTxPacketHsrModeT</a>(<a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                               <span class="keyword">const</span> uint8_t *packetData, int32_t packetLength, int32_t queuePriority);</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#a5c64914d190f55b491b12f7b9836e749">   82</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#a5c64914d190f55b491b12f7b9836e749">RedTxPacketHsrModeM</a>(<a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                               <span class="keyword">const</span> uint8_t *packetData, int32_t packetLength, int32_t queuePriority, int32_t port);</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="hsrPrp__red__tx_8h.html#aeab33cf781618e339ae8026859e40603">   93</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__tx_8h.html#aeab33cf781618e339ae8026859e40603">RedTxPacketEnqueue</a>(<a class="code" href="hsrPrp__handle_8h.html#a43de893cf9a5bf41d23d5fb8680be4c2">hsrPrpHandle</a> *, <a class="code" href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a> icssEmacHandle,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                              <a class="code" href="structRED__FRAME.html">RED_FRAME</a> *pRedFrame, int32_t portNumber, int32_t queuePriority);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_TX_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__NETWORKING__ICSS__EMAC__MODULE_html_ga6e4ec58e67973e3434b9dcb8d308ec3a"><div class="ttname"><a href="group__NETWORKING__ICSS__EMAC__MODULE.html#ga6e4ec58e67973e3434b9dcb8d308ec3a">ICSS_EMAC_Handle</a></div><div class="ttdeci">struct ICSS_EMAC_Config_s * ICSS_EMAC_Handle</div><div class="ttdoc">Alias for ICSS EMAC Handle containing base addresses and modules.</div><div class="ttdef"><b>Definition:</b> icss_emac.h:368</div></div>
 <div class="ttc" id="ahsrPrp__red__tx_8h_html_a225006a144081b8da1bf11ad82d47d3d"><div class="ttname"><a href="hsrPrp__red__tx_8h.html#a225006a144081b8da1bf11ad82d47d3d">RedTxPacketHsrModeT</a></div><div class="ttdeci">RED_STATUS RedTxPacketHsrModeT(ICSS_EMAC_Handle icssEmacHandle, const uint8_t *packetData, int32_t packetLength, int32_t queuePriority)</div></div>
-<div class="ttc" id="ahsrPrp__handle_8h_html_a43de893cf9a5bf41d23d5fb8680be4c2"><div class="ttname"><a href="hsrPrp__handle_8h.html#a43de893cf9a5bf41d23d5fb8680be4c2">hsrPrpHandle</a></div><div class="ttdeci">struct hsrPrp_Config_s hsrPrpHandle</div><div class="ttdef"><b>Definition:</b> hsrPrp_handle.h:86</div></div>
+<div class="ttc" id="ahsrPrp__handle_8h_html_a43de893cf9a5bf41d23d5fb8680be4c2"><div class="ttname"><a href="hsrPrp__handle_8h.html#a43de893cf9a5bf41d23d5fb8680be4c2">hsrPrpHandle</a></div><div class="ttdeci">struct hsrPrp_Config_s hsrPrpHandle</div><div class="ttdef"><b>Definition:</b> hsrPrp_handle.h:92</div></div>
 <div class="ttc" id="ahsrPrp__red__common_8h_html"><div class="ttname"><a href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a></div><div class="ttdoc">Commonly used Macros, structures and Offsets.</div></div>
-<div class="ttc" id="ahsrPrp__red__common_8h_html_a8aa64482bce36e6a488d046eb834dcac"><div class="ttname"><a href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a></div><div class="ttdeci">RED_STATUS</div><div class="ttdoc">RED Status.</div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:524</div></div>
+<div class="ttc" id="ahsrPrp__red__common_8h_html_a8aa64482bce36e6a488d046eb834dcac"><div class="ttname"><a href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a></div><div class="ttdeci">RED_STATUS</div><div class="ttdoc">RED Status.</div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:530</div></div>
 <div class="ttc" id="ahsrPrp__handle_8h_html"><div class="ttname"><a href="hsrPrp__handle_8h.html">hsrPrp_handle.h</a></div><div class="ttdoc">Include file for hsrPrp_red_hsr.c.</div></div>
-<div class="ttc" id="astructRED__FRAME_html"><div class="ttname"><a href="structRED__FRAME.html">RED_FRAME</a></div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:140</div></div>
+<div class="ttc" id="astructRED__FRAME_html"><div class="ttname"><a href="structRED__FRAME.html">RED_FRAME</a></div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:146</div></div>
 <div class="ttc" id="ahsrPrp__red__tx_8h_html_a5c64914d190f55b491b12f7b9836e749"><div class="ttname"><a href="hsrPrp__red__tx_8h.html#a5c64914d190f55b491b12f7b9836e749">RedTxPacketHsrModeM</a></div><div class="ttdeci">RED_STATUS RedTxPacketHsrModeM(ICSS_EMAC_Handle icssEmacHandle, const uint8_t *packetData, int32_t packetLength, int32_t queuePriority, int32_t port)</div></div>
 <div class="ttc" id="ahsrPrp__red__tx_8h_html_aeab33cf781618e339ae8026859e40603"><div class="ttname"><a href="hsrPrp__red__tx_8h.html#aeab33cf781618e339ae8026859e40603">RedTxPacketEnqueue</a></div><div class="ttdeci">RED_STATUS RedTxPacketEnqueue(hsrPrpHandle *, ICSS_EMAC_Handle icssEmacHandle, RED_FRAME *pRedFrame, int32_t portNumber, int32_t queuePriority)</div><div class="ttdoc">Function to enqueue packet for transmission.</div></div>
 <!-- HTML footer for doxygen 1.8.11-->

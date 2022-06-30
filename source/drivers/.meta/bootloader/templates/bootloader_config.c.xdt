@@ -4,13 +4,22 @@
 
     let isFlashBoot = false;
     let isMMCSDBoot = false;
+    let isBufIoBoot = false;
     for(let i = 0; i < module.$instances.length; i++) {
         if(module.$instances[i].bootMedia == "FLASH") {
             isFlashBoot = true;
             break;
         }
+    }
+    for(let i = 0; i < module.$instances.length; i++) {
         if(module.$instances[i].bootMedia == "EMMC") {
             isMMCSDBoot = true;
+            break;
+        }
+    }
+    for(let i = 0; i < module.$instances.length; i++) {
+        if(module.$instances[i].bootMedia == "BUFIO") {
+            isBufIoBoot = true;
             break;
         }
     }
@@ -25,12 +34,17 @@
 % if(isMMCSDBoot) {
 #include "drivers/bootloader/bootloader_mmcsd_raw.h"
 % }
+% if(isBufIoBoot) {
+#include "drivers/bootloader/bootloader_buf_io.h"
+% }
 
 /* Bootloader boot media specific arguments */
 % for(let i = 0; i < module.$instances.length; i++) {
     % let instance = module.$instances[i];
         % if(instance.bootMedia == "EMMC") {
 Bootloader_MmcsdArgs gBootloader`i`Args =
+        % } else if(instance.bootMedia == "BUFIO") {
+Bootloader_BufIoArgs gBootloader`i`Args =
         % } else {
 Bootloader_`common.camelSentence(instance.bootMedia)`Args gBootloader`i`Args =
         % }
@@ -49,6 +63,13 @@ Bootloader_`common.camelSentence(instance.bootMedia)`Args gBootloader`i`Args =
     .curOffset       = 0,
     .appImageOffset  = `instance.EMMCAppImageOffset`,
     % }
+    % else if(instance.bootMedia == "BUFIO") {
+    .curOffset      = 0,
+    .tempBufSize    = 0,
+    .virtMemOffset  = 0,
+    .drvIdx         = 0,
+    .tempBuf        = 0,
+    % }
 };
 % }
 
@@ -60,11 +81,15 @@ Bootloader_Config gBootloaderConfig[CONFIG_BOOTLOADER_NUM_INSTANCES] =
     {
     % if(module.$instances[i].bootMedia == "EMMC") {
         &gBootloaderMmcsdFxns,
+    % } else if(module.$instances[i].bootMedia == "BUFIO") {
+        &gBootloaderBufIoFxns,
     % } else {
         &gBootloader`common.camelSentence(instance.bootMedia)`Fxns,
     % }
         &gBootloader`i`Args,
         BOOTLOADER_MEDIA_`instance.bootMedia`,
+        0,
+        0,
     },
 % }
 };

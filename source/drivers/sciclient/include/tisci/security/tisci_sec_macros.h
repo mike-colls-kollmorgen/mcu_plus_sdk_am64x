@@ -53,6 +53,12 @@
 #ifndef TISCI_SEC_MACROS_H_
 #define TISCI_SEC_MACROS_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  * \brief Maximum number of priv id slots supported by the hardware
  */
@@ -62,6 +68,11 @@
  * \brief Length of UID
  */
 #define UID_LEN_WORDS (8U)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

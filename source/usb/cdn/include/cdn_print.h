@@ -14,6 +14,10 @@
  * This is the example implementation of DbgPrint used in debug build
  ******************************************************************************
  */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #include "stdarg.h"
 #include "stdio.h"
@@ -29,3 +33,9 @@ void DbgPrint(const char *fmt, ...);
 void vDbgMsg(unsigned int message, unsigned int type, const char *str, ...);
 
 ////#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+

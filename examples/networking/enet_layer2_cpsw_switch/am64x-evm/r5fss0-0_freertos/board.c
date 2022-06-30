@@ -33,20 +33,14 @@
 #include <stdlib.h>
 #include <drivers/hw_include/cslr_soc.h>
 #include <stdbool.h>
-#include <ti_drivers_config.h>
-#include <enet_board_cfg.h>
+
+#include "ti_board_config.h"
 #include <networking/enet/core/include/phy/dp83867.h>
 #include <drivers/pinmux.h>
-#include <drivers/i2c.h>
-
-#define IO_EXPANDER_PORT0_OUTPUT_REG (0x04U)
-#define IO_EXPANDER_PORT0_DIR_REG (0x0CU)
-#define IO_EXPANDER_I2C_ADDR (0x22U)
 
 /* The delay values are set based on trial and error and not tuned per port of the evm */
 uint32_t txDelay = 250U;
 uint32_t rxDelay = 2000U;
-uint32_t phyAddr[2] = {CONFIG_ENET_CPSW0_PHY0_ADDR, CONFIG_ENET_CPSW0_PHY1_ADDR};
 
 static Pinmux_PerCfg_t MDIOPinMuxMainDomainCfg[] = {
     /* MDIO0 pin config */
@@ -60,7 +54,7 @@ static Pinmux_PerCfg_t MDIOPinMuxMainDomainCfg[] = {
         PIN_PRG0_PRU1_GPO18,
         ( PIN_MODE(4) | PIN_INPUT_ENABLE | PIN_PULL_DISABLE )
     },
-	
+
 	{PINMUX_END, PINMUX_END}
 };
 
@@ -71,25 +65,6 @@ void Board_cpswMuxSel(void)
 {
 	/* MDIO0 pin config */
 	Pinmux_config(MDIOPinMuxMainDomainCfg, PINMUX_DOMAIN_ID_MAIN);
-    
-	I2C_Transaction i2cTransaction;
-    uint8_t buffer[2];
-
-    I2C_Transaction_init(&i2cTransaction);
-    i2cTransaction.writeBuf     = buffer;
-    i2cTransaction.writeCount   = 2U;
-    i2cTransaction.slaveAddress = IO_EXPANDER_I2C_ADDR;
-
-    /* Configure MDIO sel pin */
-    /* Set output to high */
-    buffer[0] = IO_EXPANDER_PORT0_OUTPUT_REG + 1; /* Port 1 */
-    buffer[1] = (0x01 << 4); /* Pin 4 */
-    I2C_transfer(I2C_getHandle(CONFIG_I2C1), &i2cTransaction);
-
-    /* set pin to output */
-    buffer[0] = IO_EXPANDER_PORT0_DIR_REG + 1;
-    buffer[1] = ~(0x1 << 4);
-    I2C_transfer(I2C_getHandle(CONFIG_I2C1), &i2cTransaction);
 
     return;
 }

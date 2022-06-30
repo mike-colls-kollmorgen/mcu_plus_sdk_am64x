@@ -111,6 +111,22 @@ var group__DRV__ENET__ICSSG =
       [ "scratchBufferMem", "structIcssg__FwPoolMem.html#afd6f6ceb7b34a83392c2771568178d64", null ],
       [ "scratchBufferSize", "structIcssg__FwPoolMem.html#a59d19a2bb32658f5eb0f2ea3f3ad461c", null ]
     ] ],
+    [ "Icssg_MdioLinkStateChangeInfo", "structIcssg__MdioLinkStateChangeInfo.html", [
+      [ "phyAddr", "structIcssg__MdioLinkStateChangeInfo.html#aeaab592a410789564e742fe0dbaac4fd", null ],
+      [ "aliveChanged", "structIcssg__MdioLinkStateChangeInfo.html#ab31e7598b453fd4d095a1980de711e64", null ],
+      [ "isAlive", "structIcssg__MdioLinkStateChangeInfo.html#a9688eca9b2e42a9de89ca9b2eeb8c69d", null ],
+      [ "linkChanged", "structIcssg__MdioLinkStateChangeInfo.html#aab18ac1fb5aafae54d1845974c3fda23", null ],
+      [ "isLinked", "structIcssg__MdioLinkStateChangeInfo.html#a567e1d2874426d88e8071ac01900dcca", null ]
+    ] ],
+    [ "Icssg_mdioLinkIntCfg", "structIcssg__mdioLinkIntCfg.html", [
+      [ "mdioLinkStateChangeCb", "structIcssg__mdioLinkIntCfg.html#adf5d6e7e7ecd336e617c3ef7b2e058ab", null ],
+      [ "mdioLinkStateChangeCbArg", "structIcssg__mdioLinkIntCfg.html#a3451ecab845f1e413590093c18942c16", null ],
+      [ "prussIntcInitData", "structIcssg__mdioLinkIntCfg.html#afd71ef0a7ac789ea6131e1476c3d4c29", null ],
+      [ "coreIntrNum", "structIcssg__mdioLinkIntCfg.html#aadaf088bf1727911ed68ab5e9bfa8e15", null ],
+      [ "pruEvtNum", "structIcssg__mdioLinkIntCfg.html#a743e996a87a1cbaf2c015b69e845dab5", null ],
+      [ "isPulseIntr", "structIcssg__mdioLinkIntCfg.html#abe98acfa979ba70de3484be7d2de3143", null ],
+      [ "intrPrio", "structIcssg__mdioLinkIntCfg.html#a9c7c920e10fc88c60af934205250b824", null ]
+    ] ],
     [ "Icssg_Cfg", "structIcssg__Cfg.html", [
       [ "agingPeriod", "structIcssg__Cfg.html#aebba1e67337203f9e7801dd0c4a47ccb", null ],
       [ "vlanCfg", "structIcssg__Cfg.html#a0061f8ca143602bba23e0bbe1c9c1f3e", null ],
@@ -119,7 +135,11 @@ var group__DRV__ENET__ICSSG =
       [ "mdioCfg", "structIcssg__Cfg.html#afef40759ec7fa7fa554995ec562d0ad8", null ],
       [ "timeSyncCfg", "structIcssg__Cfg.html#a490a5a9236c21366bfb47b9c5537b548", null ],
       [ "mii", "structIcssg__Cfg.html#a286266f020b708b67c8fb5fd9171caae", null ],
-      [ "cycleTimeNs", "structIcssg__Cfg.html#a55fe66b016170a98b58d8902ec3e4bcf", null ]
+      [ "cycleTimeNs", "structIcssg__Cfg.html#a55fe66b016170a98b58d8902ec3e4bcf", null ],
+      [ "mdioLinkIntCfg", "structIcssg__Cfg.html#a06ec8114433103564d586ece74e7b9ff", null ],
+      [ "disablePhyDriver", "structIcssg__Cfg.html#a870a1886128aa8d6d97dce47ce898626", null ],
+      [ "qosLevels", "structIcssg__Cfg.html#a8ca78211d3e6c096dbe1b5072a3ddc86", null ],
+      [ "isPremQueEnable", "structIcssg__Cfg.html#a28d3663e2729a547f0aab2ffbdcaa54c", null ]
     ] ],
     [ "IcssgMacPort_Cfg", "structIcssgMacPort__Cfg.html", [
       [ "promiscEn", "structIcssgMacPort__Cfg.html#a1b3a42e2c65cf005dd107e7cecb7b437", null ],
@@ -143,10 +163,8 @@ var group__DRV__ENET__ICSSG =
     [ "ICSSG_SWITCH_TX_CH_NUM", "group__DRV__ENET__ICSSG.html#gafb9495335cd9409cf44d8a33c8dee2f3", null ],
     [ "ICSSG_SWITCH_RX_FLOW_NUM", "group__DRV__ENET__ICSSG.html#ga2f91a49f0f1b8d5cd6ee51e07caf3036", null ],
     [ "ICSSG_DUALMAC_PORT_BUFFER_POOL_NUM", "group__DRV__ENET__ICSSG.html#ga502fb59579e40a36732aa4d56095d0ff", null ],
-    [ "ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM", "group__DRV__ENET__ICSSG.html#ga7690c841169e97d07e183dd1055f0e15", null ],
     [ "ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM", "group__DRV__ENET__ICSSG.html#ga413c282f2e2c2791e1cc9cfddc35ccbf", null ],
     [ "ICSSG_SWITCH_PORT_BUFFER_POOL_NUM", "group__DRV__ENET__ICSSG.html#gad99b2290cf29654a9f087396f768490c", null ],
-    [ "ICSSG_SWITCH_HOST_BUFFER_POOL_NUM", "group__DRV__ENET__ICSSG.html#ga931d9f0759c76e724749b650709dd551", null ],
     [ "ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM", "group__DRV__ENET__ICSSG.html#ga90453530c4b09a8eeb91aa205cd6207f", null ],
     [ "ICSSG_HOST_EGRESS_BUFFER_PADDING", "group__DRV__ENET__ICSSG.html#ga31aedbca8742c31695719cf145a33eff", null ],
     [ "ICSSG_SCRATCH_BUFFER_SIZE", "group__DRV__ENET__ICSSG.html#ga40f9343b5d3140b1dd32bdd0e2f593e7", null ],
@@ -239,6 +257,9 @@ var group__DRV__ENET__ICSSG =
     [ "ICCSG_RX_CLASS_DATA_FT_RX_BC", "group__DRV__ENET__ICSSG.html#gac79880b666c7a91ee1a11ebe204c7e9f", null ],
     [ "ICCSG_RX_CLASS_DATA_FT_RX_MC", "group__DRV__ENET__ICSSG.html#ga06544572c928cf1ca9cc5fa75a70f5ff", null ],
     [ "ICCSG_RX_CLASS_DATA_FT_RX_SAV", "group__DRV__ENET__ICSSG.html#ga910a461468a9305375fe8fc63805f410", null ],
+    [ "ICSSG_TAS_MIN_CYCLE_TIME_NS", "group__DRV__ENET__ICSSG.html#ga24ad95a05004f3c8ca612cf276be9336", null ],
+    [ "ICSSG_TAS_MIN_WINDOW_DURATION_NS", "group__DRV__ENET__ICSSG.html#ga702f76f6445274ab25d61543d812a560", null ],
+    [ "Icssg_MdioLinkStateChangeCb", "group__DRV__ENET__ICSSG.html#ga672434751d6cb2e5ea14e69ef99e0b50", null ],
     [ "Icssg_Instance_Num", "group__DRV__ENET__ICSSG.html#ga5c07990c0f14dac427406a93c0b0f46a", [
       [ "ICSSG_INSTANCE_NUM_0", "group__DRV__ENET__ICSSG.html#gga5c07990c0f14dac427406a93c0b0f46aaa95a0edcaf01458d2e50a3b47377629c", null ],
       [ "ICSSG_INSTANCE_NUM_1", "group__DRV__ENET__ICSSG.html#gga5c07990c0f14dac427406a93c0b0f46aa933ae01eeac8423467b3950a18a28214", null ],
@@ -311,7 +332,7 @@ var group__DRV__ENET__ICSSG =
       [ "ICSSG_VERIFYSTATE_FAILED", "group__DRV__ENET__ICSSG.html#gga396aeb563797c453826164ed30e319c3a7f8fcb4d2ff096f08c09a2da8e997ca5", null ],
       [ "ICSSG_VERIFYSTATE_DISABLED", "group__DRV__ENET__ICSSG.html#gga396aeb563797c453826164ed30e319c3a69ddc876c23b30c0491d737e030e13dd", null ]
     ] ],
-    [ "EnetCb_getFwPoolMem", "group__DRV__ENET__ICSSG.html#gac042205c48f637c75f8f41162033e381", null ],
+    [ "EnetCb_GetFwPoolMem", "group__DRV__ENET__ICSSG.html#ga6f04709ff3b31960db059a651c2959f3", null ],
     [ "IcssgMacPort_initCfg", "group__DRV__ENET__ICSSG.html#gaf70332779a14ad506288283116114709", null ],
     [ "Icssg_getSliceNum", "group__DRV__ENET__ICSSG.html#ga9a305eb0d557ab0fa30acbb2e5b7286f", null ]
 ];

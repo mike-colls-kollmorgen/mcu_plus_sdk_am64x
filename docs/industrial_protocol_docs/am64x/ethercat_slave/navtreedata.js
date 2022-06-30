@@ -29,6 +29,8 @@ var NAVTREE =
       [ "Known Issues", "known_issues.html", null ],
       [ "Overview", "releasenotes.html#releasenotesoverview", null ],
       [ "Licensing", "releasenotes.html#releasenoteslicensing", null ],
+      [ "Release Version 1.08.00", "releasenotes.html#version_release10800", null ],
+      [ "Release Version 1.07.00", "releasenotes.html#version_release10700", null ],
       [ "Release Version 1.06.01", "releasenotes.html#version_release10601", null ],
       [ "Release Version 1.06.00", "releasenotes.html#version_release10600", null ],
       [ "Release Version 1.05.02", "releasenotes.html#version_release10502", null ],
@@ -96,9 +98,9 @@ var NAVTREEINDEX =
 [
 "abbreviations.html",
 "group___ci_a402_gaa596d86962c64707dfe796449da11041.html#gaa596d86962c64707dfe796449da11041",
-"group___e_c___a_p_i___s_l_v___ci_a402_ga216f5fc7e0cfe962a07808c95d7b45d9.html#ga216f5fc7e0cfe962a07808c95d7b45d9",
-"group___sdo_access_gab2aa4ae8e1d4cd068bf15db3e6ee7167.html#gab2aa4ae8e1d4cd068bf15db3e6ee7167",
-"struct_e_c___s_l_v___a_p_p___sapplication_a06a2a505822dfe9bc8c4730b56b22e70.html#a06a2a505822dfe9bc8c4730b56b22e70"
+"group___e_c___a_p_i___s_l_v___e_r_r_o_r___c_o_d_e_s_ga022716c308f5d5bd84876c11d568a77e.html#gga022716c308f5d5bd84876c11d568a77ea42d87145d962fac2b214f22cbca6d092",
+"group___sdo_types_ga314bebb0ef74d9f824bbc8f266ff3ff9.html#ga314bebb0ef74d9f824bbc8f266ff3ff9",
+"struct_e_c___s_l_v___a_p_p__s_c_i_a__axis_data_adf9cca9949a19df1c344b17c6fa14d56.html#adf9cca9949a19df1c344b17c6fa14d56"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

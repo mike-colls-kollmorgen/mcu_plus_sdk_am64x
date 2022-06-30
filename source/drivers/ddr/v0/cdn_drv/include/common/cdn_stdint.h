@@ -33,6 +33,12 @@
 #ifndef CDN_STDINT
 #define CDN_STDINT
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 
 /* NOTE - The driver uses fixed width types as defined in C99
@@ -57,5 +63,10 @@
  linux/types.h
 
 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

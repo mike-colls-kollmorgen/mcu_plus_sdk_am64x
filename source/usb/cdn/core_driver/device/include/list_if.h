@@ -35,6 +35,12 @@
 #ifndef LIST_IF_H
 #define LIST_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_a_c90-2 "C90 - limits, DRV-3906" */
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_b_c90-2 "C90 - limits, DRV-3906" */
 
@@ -57,5 +63,10 @@ typedef struct LIST_ListHead_s LIST_ListHead;
 
 /* parasoft-end-suppress MISRA2012-RULE-1_1_b_c90-2 */
 /* parasoft-end-suppress MISRA2012-RULE-1_1_a_c90-2 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* LIST_IF_H */

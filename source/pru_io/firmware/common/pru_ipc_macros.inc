@@ -191,15 +191,18 @@ TMP         .sassign    R25.w2,  s_PruIpc_register
 ;           =======================
 ;
 ;   Parameters:
-;           dataSize       -   Size of the data packets
+;           dataSize       -   Size of the data packets (must dataSize = bx)
+;           baseMemAddr    -   register for storing BASE_MEM_ADDR in
+;           BASE_MEM_ADDR  -   Base addr of config memory
 ;   Returns:
 ;           None
 ;
 ;   See Also:
 ;************************************************************************************
-m_pru_ipc_init   .macro  dataSize
-    lbco    &dataSize,           PRU_IPC_CONFIG_MEM, DATASIZE_OFFSET,    1
-    lbco    &CFG.noOfBuffers, PRU_IPC_CONFIG_MEM, NOOFBUFFERS_OFFSET, 5     ; can we use s_PruIpc_config_len
+m_pru_ipc_init   .macro  dataSize, baseMemAddr, BASE_MEM_ADDR
+    ldi32   baseMemAddr, BASE_MEM_ADDR
+    lbbo    &dataSize,        baseMemAddr, DATASIZE_OFFSET,    1
+    lbbo    &CFG.noOfBuffers, baseMemAddr, NOOFBUFFERS_OFFSET, 5     ; can we use s_PruIpc_config_len
     ldi     ITR.packet, 0
     ldi     ITR.block,  0
     ldi     ITR.idxInBlock, 0
@@ -208,9 +211,8 @@ m_pru_ipc_init   .macro  dataSize
 ;************************************************************************************
 ;   Macro: m_pru_ipc_send
 ;
-;   Sends the ADC data packets to the shared memory for each Buffer
+;   Sends the data packets to the shared memory for each Buffer
 ;   Creates interrupt event for r5f core to read data packets.
-;   Resets ITR.packet, ITR.block if they oveflow their maximum value
 ;
 ;   PEAK cycles:
 ;           (15 + 10*noOfBuffers) cycle
@@ -230,7 +232,7 @@ m_pru_ipc_init   .macro  dataSize
 ;           }
 ;           ITR.packet += dataSize;
 ;           ITR.idxInBlock++;
-
+;
 ;           if (ITR.idxInBlock == CFG.blockSize) {
 ;               memcpy(offset(ITR.block), PRU_IPC_CONFIG_MEM + BLOCKID_OFFSET, 1);
 ;               r31.b0 = INT_NUM;  // generate interrupt
@@ -244,12 +246,11 @@ m_pru_ipc_init   .macro  dataSize
 ;           ======================================================================================
 ;
 ;   Parameters:
-;           [Can make struct of {R1.b3, R2} - addr reg & 1st ADC data reg]
 ;           dataRegBaseAddr    - (8 bits) Address of starting ADC data register (&ADC_DATA_REG_1)
 ;                                   {ADC_DATA_REG_1, ADC_DATA_REG_2, .... ADC_DATA_REG_N}
 ;                                   => register R1.bx must be used
 ;           dataReg            -   Data stored in ADC_DATA_REG_X, Can pass ADC_DATA_REG_0
-;           dataSize           -   Size of the data packets
+;           dataSize           -   Size of the data packets (must dataSize = bx)
 ;           INTR_ENABLE        -   Enable interrupt trigger to specified event
 ;           INTR_NUM           -   Interrupt value to write to R31 to trigger interrupt event
 ;
@@ -258,26 +259,106 @@ m_pru_ipc_init   .macro  dataSize
 ;
 ;   See Also:
 ;************************************************************************************
-m_pru_ipc_send   .macro  dataRegBaseAddr, dataReg, dataSize, INTR_ENABLE, INTR_NUM
-    ldi     ITR.buffer, 0
-    ldi     TMP.bufferOffset, BUFFERBASE_OFFSET
-NEXT_BUFFER?:
+m_pru_ipc_send   .macro  dataRegBaseAddr, dataReg, dataSize, baseMemAddr, INTR_ENABLE, INTR_NUM
+    add     TMP.bufferOffset, baseMemAddr, BUFFERBASE_OFFSET
+
+    loop    BUFFERS_DATA_SENT?, CFG.noOfBuffers
     mvid    dataReg, *dataRegBaseAddr++
-    lbco    &TMP.bufferBaseAddr, PRU_IPC_CONFIG_MEM, TMP.bufferOffset, 4  ; load that buffer base address
+    lbbo    &TMP.bufferBaseAddr, baseMemAddr, TMP.bufferOffset, 4  ; load that buffer base address
     qbeq    SKIP_BUFFER?, TMP.bufferBaseAddr, 0                           ; if NULL skip this buffer write
+    ; Is this needed to support skip on null pointer?
     sbbo    &dataReg, TMP.bufferBaseAddr, ITR.packet, b0                  ; dataSize = bx
 SKIP_BUFFER?:
-    add     ITR.buffer, ITR.buffer, 1
     add     TMP.bufferOffset, TMP.bufferOffset, 4
-    qbne    NEXT_BUFFER?, ITR.buffer, CFG.noOfBuffers
+BUFFERS_DATA_SENT?:
 
     add     ITR.packet, ITR.packet, dataSize
     add     ITR.idxInBlock, ITR.idxInBlock, 1
 
     qbne    SKIP_INTERRUPT_ISSUE?, ITR.idxInBlock, CFG.blockSize
-    sbco    &ITR.block, PRU_IPC_CONFIG_MEM, BLOCKID_OFFSET, 2
+    sbbo    &ITR.block, baseMemAddr, BLOCKID_OFFSET, 2
     .if     INTR_ENABLE = 1
     ldi     r31.b0, INTR_NUM                 ; - interrupt r5f core
+    .endif
+    ldi     ITR.idxInBlock,  0
+    add     ITR.block, ITR.block, 1
+
+    qbgt    SKIP_INDEX_RESET?, ITR.block, CFG.noOfBlocks
+    ldi     ITR.block,  0
+    ldi     ITR.packet, 0
+SKIP_INTERRUPT_ISSUE?:
+SKIP_INDEX_RESET?:
+    .endm
+
+;************************************************************************************
+;   Macro: m_pru_ipc_rcv
+;
+;   Receives the data packets from the shared memory for each Buffer
+;   Handles interrupt event from r5f core, to read data packets.
+;
+;   PEAK cycles:
+;           (15 + 10*noOfBuffers) cycle
+;
+;   Invokes:
+;           None
+;
+;   Pseudo code:
+;           ========================================== C =========================================
+;           for (ITR.buffer = 0, TMP.bufferOffset = BUFFERBASE_OFFSET;
+;                                       ITR.buffer < CFG.noOfBuffers;
+;                                        ITR.buffer++, TMP.bufferOffset+=4) {
+;               dataReg = *dataRegBaseAddr++;
+;               memcpy(offset(TMP.bufferBaseAddr), PRU_IPC_CONFIG_MEM + TMP.bufferOffset, 4);
+;               if (TMP.bufferBaseAddr == 0)     continue;
+;               memcpy(TMP.bufferBaseAddr + ITR.packet, offset(dataReg), dataSize);
+;           }
+;           ITR.packet += dataSize;
+;           ITR.idxInBlock++;
+;
+;           if (ITR.idxInBlock == CFG.blockSize) {
+;               memcpy(offset(ITR.block), PRU_IPC_CONFIG_MEM + BLOCKID_OFFSET, 1);
+;               r31.b0 = INT_NUM;  // generate interrupt
+;               ITR.idxInBlock = 0;
+;               ITR.block++;
+;               if (ITR.block == CFG.noOfBlocks) {
+;                   ITR.block  = 0
+;                   ITR.packet = 0
+;               }
+;           }
+;           ======================================================================================
+;
+;   Parameters:
+;           dataRegBaseAddr    - (8 bits) Address of starting ADC data register (&ADC_DATA_REG_1)
+;                                   {ADC_DATA_REG_1, ADC_DATA_REG_2, .... ADC_DATA_REG_N}
+;                                   => register R1.bx must be used
+;           dataReg            -   Data stored in ADC_DATA_REG_X, Can pass ADC_DATA_REG_0
+;           dataSize           -   Size of the data packets (must dataSize = bx)
+;           INTR_ENABLE        -   Enable interrupt trigger to specified event
+;           EVENT_NUM          -   Event number value on which interrupt will be generated
+;
+;   Returns:
+;           None
+;
+;   See Also:
+;************************************************************************************
+m_pru_ipc_rcv       .macro  dataRegBaseAddr, dataReg, dataSize, baseMemAddr, temp_reg, INTR_ENABLE, EVENT_NUM
+    add     TMP.bufferOffset, baseMemAddr, BUFFERBASE_OFFSET
+
+    loop    BUFFERS_DATA_RCVD?, CFG.noOfBuffers
+    lbbo    &TMP.bufferBaseAddr, baseMemAddr, TMP.bufferOffset, 4  ; load that buffer base address
+    lbbo    &dataReg, TMP.bufferBaseAddr, ITR.packet, b0           ; dataSize = bx
+    mvid    *dataRegBaseAddr++, dataReg
+    add     TMP.bufferOffset, TMP.bufferOffset, 4
+BUFFERS_DATA_RCVD?:
+
+    add     ITR.packet, ITR.packet, dataSize
+    add     ITR.idxInBlock, ITR.idxInBlock, 1
+
+    qbne    SKIP_INTERRUPT_ISSUE?, ITR.idxInBlock, CFG.blockSize
+    sbbo    &ITR.block, baseMemAddr, BLOCKID_OFFSET, 2
+    .if     INTR_ENABLE = 1
+    ldi     temp_reg, EVENT_NUM
+    sbco    &temp_reg, ICSS_INTC_CONST, 0x24, 4
     .endif
     ldi     ITR.idxInBlock,  0
     add     ITR.block, ITR.block, 1

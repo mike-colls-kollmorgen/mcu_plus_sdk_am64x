@@ -119,7 +119,7 @@ FF_Disk_t * FF_MMCSDDiskInit( char * pcName,
     {
         /* Start with every member of the structure set to zero. */
         memset( pxDisk, '\0', sizeof( FF_Disk_t ) );
-        
+
         /* Set the pvTag to be MMCSD config */
         pxDisk->pvTag = ( void * )config;
 
@@ -246,7 +246,7 @@ FF_Error_t FF_MMCSDMountPartition( FF_Disk_t *pxDisk , char* partitionName )
     {
         uint32_t partitionNum = pxDisk->xStatus.bPartitionNumber;
 
-        if(pxDisk->pxIOManager != NULL) 
+        if(pxDisk->pxIOManager != NULL)
         {
             /* Mount the partition. */
             xError = FF_Mount( pxDisk, partitionNum );
@@ -367,7 +367,7 @@ static int32_t prvWriteMmcsd( uint8_t * pucSource,
         else
         {
             /* Copy the data to the MMCSD Device */
-            MMCSD_write(deviceHandle, ( void * ) pucSource, ulSectorNumber, ulSectorCount );
+            MMCSD_write(deviceHandle, ( uint8_t * ) pucSource, ulSectorNumber, ulSectorCount );
 
             lReturn = FF_ERR_NONE;
         }
@@ -416,7 +416,7 @@ static int32_t prvReadMmcsd( uint8_t * pucDestination,
         else
         {
             /* Copy the data from the SD card */
-            MMCSD_read(deviceHandle, ( void * ) pucDestination, ulSectorNumber, ulSectorCount);
+            MMCSD_read(deviceHandle, ( uint8_t * ) pucDestination, ulSectorNumber, ulSectorCount);
 
             lReturn = FF_ERR_NONE;
         }

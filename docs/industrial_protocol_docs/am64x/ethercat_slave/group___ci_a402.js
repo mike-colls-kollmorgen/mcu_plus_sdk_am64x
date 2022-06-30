@@ -283,6 +283,7 @@ var group___ci_a402 =
     [ "OBD_INTERPOLATION_TIME_PERIOD_INDEX", "group___ci_a402_ga7a1609f1c428bef8716ea6d222c07a80.html#ga7a1609f1c428bef8716ea6d222c07a80", null ],
     [ "OBD_MAX_ACCELERATION_INDEX", "group___ci_a402_gad4b97ff554529eb3052d7a23bf9e67be.html#gad4b97ff554529eb3052d7a23bf9e67be", null ],
     [ "OBD_MAX_DECELERATION_INDEX", "group___ci_a402_gac6a32c58eb31ad4d0a12862c84295843.html#gac6a32c58eb31ad4d0a12862c84295843", null ],
+    [ "OBD_TOUCH_PROBE_SOURCE", "group___ci_a402_gad01266f96eeb1157505fcee9023c7839.html#gad01266f96eeb1157505fcee9023c7839", null ],
     [ "OBD_TOUCH_PROBE_1_POS_EDGE_CNT_INDEX", "group___ci_a402_gaaab0afd1c04506090260f78b3fffffbd.html#gaaab0afd1c04506090260f78b3fffffbd", null ],
     [ "OBD_TOUCH_PROBE_1_NEG_EDGE_CNT_INDEX", "group___ci_a402_gaca9c0fdee8e0ee31b70bbf6075b534a3.html#gaca9c0fdee8e0ee31b70bbf6075b534a3", null ],
     [ "OBD_TOUCH_PROBE_2_POS_EDGE_CNT_INDEX", "group___ci_a402_ga6e4382fac0cef1fb2a83c5bd97d917fc.html#ga6e4382fac0cef1fb2a83c5bd97d917fc", null ],

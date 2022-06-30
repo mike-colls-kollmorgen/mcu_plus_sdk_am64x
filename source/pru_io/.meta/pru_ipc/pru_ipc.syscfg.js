@@ -22,6 +22,7 @@ function defaultRxIntcMap(icssInstance, pruCore) {
         else if(pruCore === "PRU1")
             return "19";
     }
+    return "20";
 }
 
 function defaultTxIntcMap(icssInstance, pruCore) {
@@ -39,6 +40,7 @@ function defaultTxIntcMap(icssInstance, pruCore) {
         else if(pruCore === "PRU1")
             return "28";
     }
+    return "27";
 }
 
 function moduleInstances(instance) {
@@ -151,7 +153,7 @@ let pru_ipc_top_module = {
                 },
                 {
                     name: "PRU1",
-                },/*
+                },
                 {
                     name: "RTU_PRU0",
                 },
@@ -164,7 +166,6 @@ let pru_ipc_top_module = {
                 {
                     name: "TX_PRU1",
                 },
-                check which PRU memory is available to use*/
             ],
         },
         {
@@ -213,8 +214,13 @@ let pru_ipc_top_module = {
             default: false,
         },
     ],
+    validate,
     getInstanceConfig,
     moduleInstances,
 };
+
+function validate(inst, report) {
+    common.validate.checkSameFieldName(inst, "pruCore", report);
+}
 
 exports = pru_ipc_top_module;

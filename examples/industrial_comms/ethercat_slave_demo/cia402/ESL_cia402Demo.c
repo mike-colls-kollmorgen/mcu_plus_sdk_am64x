@@ -154,11 +154,11 @@ static EC_SLV_API_CiA402_SAxis_t       localAxes_s[AXES_NUMBER];
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  pEcApiSlv_p		DTK Instance.
+ *  \param[in]  pEcApiSlv_p		SDK Instance.
  *  \param[in]  pObject_p       CiA402 Object.
  *  \param[in]  length_p   		Object length.
  *  \param[out] pValue_p   		Object Value.
- *  \return     ErrorCode       DTK Error code.
+ *  \return     ErrorCode       SDK Error code.
  *
  *  <!-- Example: -->
  *
@@ -208,11 +208,11 @@ Exit:
  *  Use OBD indexes described in ETG6010 Chapter 16. axis_p parameter calculates the axis object index.
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  pEcApiSlv_p		DTK Instance.
+ *  \param[in]  pEcApiSlv_p		SDK Instance.
  *  \param[in]  pCiaObject_p    CiA402 application object descriptor.
  *  \param[in]  length_p   		Object length.
  *  \param[in]  pValue_p   		Object Value.
- *  \return     ErrorCode       DTK Error code.
+ *  \return     ErrorCode       SDK Error code.
  *
  *  <!-- Example: -->
  *
@@ -271,7 +271,7 @@ Exit:
  *  \param[in]  pObjectEntry_p          CiA402 Object entry.
  *  \param[in]  length_p   		        Object entry length.
  *  \param[in]  pValue_p   		        Object entry value.
- *  \return     ErrorCode               DTK Error code.
+ *  \return     ErrorCode               SDK Error code.
  *
  *  <!-- Example: -->
  *
@@ -322,13 +322,13 @@ Exit:
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  pEcApiSlv_p		DTK Instance.
+ *  \param[in]  pEcApiSlv_p		SDK Instance.
  *  \param[in]  index_p   		CiA402 Object index.
  *  \param[in]  subIndex_p      CiA402 Object entry subIndex.
  *  \param[in]  axis_p          Axis number.
  *  \param[in]  length_p   		Object entry length.
  *  \param[in]  pValue_p   		Object entry value.
- *  \return     ErrorCode       DTK Error code.
+ *  \return     ErrorCode       SDK Error code.
  *
  *  <!-- Example: -->
  *
@@ -627,7 +627,7 @@ void EC_SLV_APP_CST(EC_SLV_APP_Sapplication_t* pApplication_p, EC_SLV_API_CiA402
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  ptSlvApi		DTK Slave instance.
+ *  \param[in]  ptSlvApi		SDK Slave instance.
  *  \param[in]  pCiA402Axis		Servo Axis description structure.
  *
  *  <!-- Example: -->
@@ -668,7 +668,7 @@ void EC_SLV_APP_CSV(EC_SLV_APP_Sapplication_t* pApplication_p, EC_SLV_API_CiA402
  *
  *  <!-- Parameters and return values: -->
  *
- *  \param[in]  ptSlvApi		DTK Slave instance.
+ *  \param[in]  ptSlvApi		SDK Slave instance.
  *  \param[in]  pCiA402Axis		Servo Axis description structure.
  *
  *  <!-- Example: -->

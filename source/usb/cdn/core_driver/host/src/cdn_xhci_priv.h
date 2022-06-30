@@ -35,6 +35,12 @@
 #ifndef CDN_XHCI_PRIV_H
 #define CDN_XHCI_PRIV_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_a_c90-2 "C90 - limits, DRV-3906" */
 /* parasoft-begin-suppress MISRA2012-RULE-1_1_b_c90-2 "C90 - limits, DRV-3906" */
 /* parasoft suppress item  MISRA2012-DIR-4_8 "Consider hiding implementation of structure, DRV-4932" */
@@ -770,5 +776,10 @@ struct USBSSP_SfrT_s
 
 /* parasoft-end-suppress MISRA2012-RULE-1_1_b_c90-2 */
 /* parasoft-end-suppress MISRA2012-RULE-1_1_a_c90-2 */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CDN_XHCI_PRIV_H */

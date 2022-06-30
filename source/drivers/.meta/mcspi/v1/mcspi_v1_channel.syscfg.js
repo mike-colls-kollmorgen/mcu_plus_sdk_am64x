@@ -196,12 +196,44 @@ PHA1 = Data are latched on even-numbered edges of SPICLK`,
             default: "SPI",
             hidden: true,
         },
+        {
+            name: "dmaEnable",
+            default: "INTERRUPT",
+            hidden: true,
+        },
     ],
     validate : validate,
+    moduleInstances: moduleInstances,
     getInstanceConfig,
     pinmuxRequirements,
     getPinName,
 };
+
+function moduleInstances(inst) {
+    let modInstances = new Array();
+
+    if(inst.dmaEnable == "DMA")
+    {
+        modInstances.push({
+            name: "mcspiRxConfigXbar",
+            displayName: "MCSPI DMA RX Trigger Configuration",
+            moduleName: '/xbar/dma_trig_xbar/dma_trig_xbar',
+            requiredArgs: {
+                parentName: "MCSPI_RX",
+            },
+        });
+        modInstances.push({
+            name: "mcspiTxConfigXbar",
+            displayName: "MCSPI DMA TX Trigger Configuration",
+            moduleName: '/xbar/dma_trig_xbar/dma_trig_xbar',
+            requiredArgs: {
+                parentName: "MCSPI_TX",
+            },
+        });
+    }
+
+    return (modInstances);
+}
 
 /*
  *  ======== validate ========

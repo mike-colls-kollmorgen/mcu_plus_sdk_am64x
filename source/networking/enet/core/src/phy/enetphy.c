@@ -54,9 +54,6 @@
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-/*! \brief Maximum number of PHYs supported. */
-#define ENETPHY_PHY_MAX                       (8U)
-
 /*! \brief Capability string buffer length. */
 #define ENETPHY_CAPS_BUF_LEN                  (41U)
 
@@ -94,11 +91,11 @@
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 static const char *EnetPhy_getCapsString(uint32_t linkCaps);
 #endif
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 static const char *EnetPhy_getModeString(EnetPhy_Speed speed,
                                          EnetPhy_Duplexity duplexity);
 #endif
@@ -174,29 +171,13 @@ static void EnetPhy_showLinkPartnerCompat(EnetPhy_Handle hPhy,
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* PHY drivers */
-extern EnetPhy_Drv gEnetPhyDrvGeneric;
-extern EnetPhy_Drv gEnetPhyDrvDp83822;
-extern EnetPhy_Drv gEnetPhyDrvDp83867;
-extern EnetPhy_Drv gEnetPhyDrvDp83869;
-extern EnetPhy_Drv gEnetPhyDrvVsc8514;
 
-/*! \brief All the registered PHY specific drivers. */
-static EnetPhyDrv_Handle gEnetPhyDrvs[] =
-{
-    #if !(defined (SOC_AM64X) || defined (SOC_AM243X))
-    &gEnetPhyDrvVsc8514,   /* VSC8514 */
-    &gEnetPhyDrvDp83822,   /* DP83822 */
-	#endif
-    &gEnetPhyDrvDp83867,   /* DP83867 */
-    &gEnetPhyDrvDp83869,   /* DP83869 */
-    &gEnetPhyDrvGeneric,   /* Generic PHY - must be last */
-};
+extern EnetPhy_DrvInfoTbl gEnetPhyDrvTbl;
 
 /*! \brief Enet MAC port objects. */
 static EnetPhy_Obj gEnetPhy_phyObjs[ENET_CFG_ENETPHY_PHY_MAX];
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 /*! \brief Name of the FSM states. */
 static const char *gEnetPhyStateNames[] =
 {
@@ -213,12 +194,12 @@ static const char *gEnetPhyStateNames[] =
 };
 #endif
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 /*! \brief Ethernet PHY capabilities string buffer. */
 static char gEnetPhyCapsBuf[ENETPHY_CAPS_BUF_LEN];
 #endif
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 /*! \brief Ethernet PHY mode string buffer. */
 static char gEnetPhyModeBuf[ENETPHY_MODE_BUF_LEN];
 #endif
@@ -575,12 +556,13 @@ bool EnetPhy_isLinked(EnetPhy_Handle hPhy)
     EnetPhy_State *state = &hPhy->state;
     EnetPhy_FsmState fsmState = state->fsmState;
     EnetPhy_FsmState linkupFsmState;
+    bool isLinked;
 
     /* Link up is reached in LINKED or LOOPBACK states */
     linkupFsmState = state->loopbackEn ?
-                     ENETPHY_FSM_STATE_LOOPBACK : ENETPHY_FSM_STATE_LINKED;
-
-    return (fsmState == linkupFsmState);
+                    ENETPHY_FSM_STATE_LOOPBACK : ENETPHY_FSM_STATE_LINKED;
+    isLinked = (fsmState == linkupFsmState);
+    return isLinked;
 }
 
 int32_t EnetPhy_getLinkCfg(EnetPhy_Handle hPhy,
@@ -601,7 +583,6 @@ int32_t EnetPhy_getLinkCfg(EnetPhy_Handle hPhy,
         ENETTRACE_WARN("PHY %u: PHY is not linked, can't get link config\r\n", hPhy->addr);
         status = ENETPHY_EPERM;
     }
-
     return status;
 }
 
@@ -806,7 +787,7 @@ void EnetPhy_printRegs(EnetPhy_Handle hPhy)
     }
 }
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_WARN) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 static const char *EnetPhy_getCapsString(uint32_t linkCaps)
 {
     snprintf(gEnetPhyCapsBuf, ENETPHY_CAPS_BUF_LEN, "%s%s%s%s%s%s%s",
@@ -822,7 +803,7 @@ static const char *EnetPhy_getCapsString(uint32_t linkCaps)
 }
 #endif
 
-#if (ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG)
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_DEBUG) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
 static const char *EnetPhy_getModeString(EnetPhy_Speed speed,
                                          EnetPhy_Duplexity duplexity)
 {
@@ -1067,6 +1048,7 @@ static void EnetPhy_enableState(EnetPhy_Handle hPhy)
     EnetPhy_State *state = &hPhy->state;
     uint32_t socLinkCaps;
     uint32_t commonLinkCaps;
+
 
     Enet_devAssert(!hPhy->phyCfg.isStrapped,
                    "PHY %u: unexpected state for strapped PHY\r\n", hPhy->addr);
@@ -1691,9 +1673,9 @@ static int32_t EnetPhy_bindDriver(EnetPhy_Handle hPhy)
     status = EnetPhy_getId(hPhy, &version);
     if (status == ENETPHY_SOK)
     {
-        for (i = 0U; i < ENETPHY_ARRAYSIZE(gEnetPhyDrvs); i++)
+        for (i = 0U; i < gEnetPhyDrvTbl.numHandles; i++)
         {
-            hDrv = gEnetPhyDrvs[i];
+            hDrv = gEnetPhyDrvTbl.hPhyDrvList[i];
 
             Enet_devAssert(hDrv != NULL,
                            "PHY %u: No PHY driver handle at index %u\r\n",

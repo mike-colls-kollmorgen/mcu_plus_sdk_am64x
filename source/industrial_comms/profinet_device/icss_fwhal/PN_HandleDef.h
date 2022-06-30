@@ -33,6 +33,12 @@
 #ifndef PN_HANDLE_DEF_H_
 #define PN_HANDLE_DEF_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -305,5 +311,10 @@ typedef struct PN_Config_s
 #endif /*WATCHDOG_SUPPORT*/
 
 } PN_Config;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PN_HANDLE_DEF_H_ */

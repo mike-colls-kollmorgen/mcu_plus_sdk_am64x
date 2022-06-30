@@ -57,10 +57,13 @@
 #include <enet_appmemutils.h>
 #include <enet_appmemutils_cfg.h>
 #include <enet_appboardutils.h>
-#include <enet_board_cfg.h>
+
 /* SDK includes */
+#include "ti_board_config.h"
 #include "ti_drivers_open_close.h"
 #include "ti_board_open_close.h"
+#include "ti_enet_config.h"
+#include "ti_enet_open_close.h"
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
@@ -161,9 +164,6 @@ typedef struct EnetTas_PerCtxt_s
     /* Name of this port to be used for logging */
     char *name;
 
-    /* Enet driver handle for this peripheral type/instance */
-    Enet_Handle hEnet;
-
     /* ICSSG configuration */
     Icssg_Cfg icssgCfg;
 
@@ -210,10 +210,10 @@ typedef struct EnetTas_PerCtxt_s
     SemaphoreP_Object asyncIoctlSemObj;
 
     /* Timestamp of the last received packets */
-    uint64_t rxTs[ENET_MEM_NUM_RX_PKTS];
+    uint64_t rxTs[ENET_SYSCFG_NUM_RX_PKT];
 
     /* Timestamp of the last transmitted packets */
-    uint64_t txTs[ENET_MEM_NUM_RX_PKTS];
+    uint64_t txTs[ENET_SYSCFG_NUM_RX_PKT];
 
     /* Sequence number used as cookie for timestamp events. This value is passed
      * to the DMA packet when submitting a packet for transmission. Driver will
@@ -222,6 +222,12 @@ typedef struct EnetTas_PerCtxt_s
 
     /* Semaphore posted from event callback upon asynchronous IOCTL completion */
     SemaphoreP_Object txTsSemObj;
+
+    /* Enet and Udma handle info for the peripheral */
+    EnetApp_HandleInfo handleInfo;
+
+   /* Core attach info for the peripheral */
+    EnetPer_AttachCoreOutArgs attachInfo;
 } EnetTas_PerCtxt;
 
 typedef struct EnetTas_Obj_s
@@ -232,24 +238,8 @@ typedef struct EnetTas_Obj_s
     /* This core's id */
     uint32_t coreId;
 
-    /* Core key returned by Enet RM after attaching this core */
-    uint32_t coreKey;
-
-    /* Main UDMA driver handle */
-    Udma_DrvHandle hMainUdmaDrv;
-
     /* Queue of free TX packets */
     EnetDma_PktQ txFreePktInfoQ;
-
-    /* Periodic tick timer - used only to post a semaphore */
-    ClockP_Object tickTimerObj;
-
-    /* Periodic tick task - Enet period tick needs to be called from task context
-     * hence it's called from this task (i.e. as opposed to in timer callback) */
-    TaskP_Object tickTaskObj;
-
-    /* Semaphore posted by tick timer to run tick task */
-    SemaphoreP_Object timerSemObj;
 
     /* Array of all peripheral/port contexts used in the test */
     EnetTas_PerCtxt perCtxt[ENETTAS_PER_MAX];
@@ -270,19 +260,13 @@ typedef struct EnetTas_Obj_s
 
 void EnetTas_mainTask(void *args);
 
-static int32_t EnetTas_init(void);
-
-static void EnetTas_deinit(void);
+static void EnetTas_init(void);
 
 static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
                            uint32_t numPerCtxts);
 
 static void EnetTas_close(EnetTas_PerCtxt *perCtxts,
                          uint32_t numPerCtxts);
-
-static int32_t EnetTas_openPort(EnetTas_PerCtxt *perCtxt);
-
-static void EnetTas_closePort(EnetTas_PerCtxt *perCtxt);
 
 static void EnetTas_printStats(EnetTas_PerCtxt *perCtxts,
                               uint32_t numPerCtxts);
@@ -294,14 +278,6 @@ static int32_t EnetTas_waitForLinkUp(EnetTas_PerCtxt *perCtxt);
 
 static void EnetTas_macMode2MacMii(emac_mode macMode,
                                   EnetMacPort_Interface *mii);
-
-static void EnetTas_createClock(void);
-
-static void EnetTas_deleteClock(void);
-
-static void EnetTas_timerCallback(ClockP_Object *clkInst, void * arg);
-
-static void EnetTas_tickTask(void *args);
 
 static int32_t EnetTas_openDma(EnetTas_PerCtxt *perCtxt);
 
@@ -382,11 +358,7 @@ uint8_t ENET_testPkt1[] =
 volatile uint32_t txTsCbCount = 0;
 
 /* Test application stack */
-static uint8_t gEnetTasTaskStackTick[ENETTAS_TASK_STACK_SZ] __attribute__ ((aligned(32)));
 static uint8_t gEnetTasTaskStackRx[ENETTAS_PER_MAX][ENETTAS_TASK_STACK_SZ] __attribute__ ((aligned(32)));
-
-extern Icssg_FwPoolMem gEnetSoc_Icssg1_1_FwPoolMem[];
-extern Icssg_FwPoolMem gEnetSoc_Icssg1_Swt_FwPoolMem[];
 
 // #define DUAL_MAC_MODE  /* TODO: Need to allocate TX channels as 2 in enet_cfg.h file */
 /* Use this array to select the ports that will be used in the test */
@@ -403,18 +375,6 @@ static EnetTas_TestParams testParams[] =
 /* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
-
-Icssg_FwPoolMem* EnetCb_getFwPoolMem(Enet_Type enetType, uint32_t instId)
-{
-#if defined(DUAL_MAC_MODE)
-    EnetAppUtils_assert(ENET_ICSSG_DUALMAC == enetType);
-    return ((Icssg_FwPoolMem*)&gEnetSoc_Icssg1_1_FwPoolMem);
-#else
-    EnetAppUtils_assert((ENET_ICSSG_SWITCH == enetType) && (1U == instId));
-    return ((Icssg_FwPoolMem*)&gEnetSoc_Icssg1_Swt_FwPoolMem);
-#endif
-
-}
 
 static void EnetTas_showMenu(void)
 {
@@ -460,27 +420,16 @@ void EnetTas_mainTask(void *args)
     }
 
     /* Init driver */
-    status = EnetTas_init();
+    EnetTas_init();
+
+    status = EnetTas_open(gEnetTas.perCtxt, gEnetTas.numPerCtxts);
     if (status != ENET_SOK)
     {
-        EnetAppUtils_print("Failed to initialize multiport test: %d\r\n", status);
-    }
-
-    /* Open all peripherals */
-    if (status == ENET_SOK)
-    {
-        status = EnetTas_open(gEnetTas.perCtxt, gEnetTas.numPerCtxts);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("Failed to open peripherals: %d\r\n", status);
-        }
+        EnetAppUtils_print("Failed to open peripherals: %d\r\n", status);
     }
 
     if (status == ENET_SOK)
     {
-        /* Start periodic tick timer */
-        ClockP_start(&gEnetTas.tickTimerObj);
-
         /* Wait for user input to exit the test */
         EnetTas_showMenu();
         while (true)
@@ -525,64 +474,19 @@ void EnetTas_mainTask(void *args)
         }
 
         EnetAppUtils_print("All RX tasks have exited\r\n");
-        /* Stop periodic tick timer */
-        ClockP_stop(&gEnetTas.tickTimerObj);
     }
 
     /* Close all peripherals */
     EnetTas_close(gEnetTas.perCtxt, gEnetTas.numPerCtxts);
 
-    /* Deinit driver */
-    EnetTas_deinit();
 }
 
-static int32_t EnetTas_init(void)
+static void EnetTas_init(void)
 {
-    EnetOsal_Cfg osalCfg;
-    EnetUtils_Cfg utilsCfg;
-    int32_t status = ENET_SOK;
-
-    /* Initialize Enet driver (use default OSAL and utils) */
-    EnetAppUtils_print("Init Enet's OSAL and utils to use defaults\r\n");
-    Enet_initOsalCfg(&osalCfg);
-    Enet_initUtilsCfg(&utilsCfg);
-    Enet_init(&osalCfg, &utilsCfg);
-
     gEnetTas.coreId = EnetSoc_getCoreId();
-
-    /* Initialize memory */
-    EnetAppUtils_print("Init memory utils\r\n");
-    status = EnetMem_init();
-    if (status != ENET_SOK)
-    {
-        EnetAppUtils_print("Failed to initialize memory utils: %d\r\n", status);
-        EnetAppUtils_assert(false);
-    }
 
     /* Initialize all queues */
     EnetQueue_initQ(&gEnetTas.txFreePktInfoQ);
-
-    /* Create task, clock and semaphore used for periodic tick */
-    if (status == ENET_SOK)
-    {
-        EnetAppUtils_print("Create clock and task for periodic tick\r\n");
-        EnetTas_createClock();
-    }
-
-    /* Open UDMA driver which is the same handle to be used for all peripherals */
-    if (status == ENET_SOK)
-    {
-        EnetAppUtils_print("Open Main UDMA driver\r\n");
-        gEnetTas.hMainUdmaDrv = EnetAppUtils_udmaOpen(ENET_ICSSG_DUALMAC, NULL);
-        if (gEnetTas.hMainUdmaDrv == NULL)
-        {
-            EnetAppUtils_print("Failed to open Main UDMA driver: %d\r\n", status);
-            status = ENET_EALLOC;
-            EnetAppUtils_assert(false);
-        }
-    }
-
-    return status;
 }
 
 static void EnetTas_asyncIoctlCb(Enet_Event evt,
@@ -609,33 +513,11 @@ static void EnetTas_txTsCb(Enet_Event evt,
     uint64_t txTs = txTsInfo->ts;
 
     /* Save current timestamp for future monotonicity checks */
-     perCtxt->txTs[tsId % ENET_MEM_NUM_RX_PKTS] = txTs;
+     perCtxt->txTs[tsId % ENET_SYSCFG_NUM_RX_PKT] = txTs;
 
     /* increment the txTsCb counter which is checked by the EST test function */
     txTsCbCount++;
     SemaphoreP_post(&perCtxt->txTsSemObj);
-}
-
-static void EnetTas_deinit(void)
-{
-    /* Open UDMA driver which is the same handle to be used for all peripherals */
-    EnetAppUtils_print("Close UDMA driver\r\n");
-    EnetAppUtils_udmaclose(gEnetTas.hMainUdmaDrv);
-
-    /* Initialize Enet driver (use default OSAL and utils) */
-    EnetAppUtils_print("Deinit Enet driver\r\n");
-    Enet_deinit();
-
-    /* Delete task, clock and semaphore used for periodic tick */
-    EnetAppUtils_print("Delete clock and task for periodic tick\r\n");
-    EnetTas_deleteClock();
-
-    /* Deinitialize memory */
-    EnetAppUtils_print("Deinit memory utils\r\n");
-    EnetMem_deInit();
-
-    EnetAppUtils_print("Deinit complete\r\n");
-
 }
 
 static void EnetTas_portLinkStatusChangeCb(Enet_MacPort macPort,
@@ -646,14 +528,62 @@ static void EnetTas_portLinkStatusChangeCb(Enet_MacPort macPort,
                        ENET_MACPORT_ID(macPort), isLinkUp ? "up" : "down");
 }
 
+int32_t EnetTas_getPerIdx(Enet_Type enetType, uint32_t instId, uint32_t *perIdx)
+{
+    uint32_t i;
+    int32_t status = ENET_SOK;
+
+    /* Initialize async IOCTL and TX timestamp semaphores */
+    for (i = 0U; i < gEnetTas.numPerCtxts; i++)
+    {
+        EnetTas_PerCtxt *perCtxt = &(gEnetTas.perCtxt[i]);
+        if ((perCtxt->enetType == enetType) && (perCtxt->instId == instId))
+        {
+            break;
+        }
+    }
+    if (i < gEnetTas.numPerCtxts)
+    {
+        *perIdx = i;
+        status = ENET_SOK;
+    }
+    else
+    {
+        status = ENET_ENOTFOUND;
+    }
+    return status;
+}
+
+void EnetApp_updateIcssgInitCfg(Enet_Type enetType, uint32_t instId, Icssg_Cfg *icssgCfg)
+{
+    EnetRm_ResCfg *resCfg;
+    uint32_t i;
+    uint32_t perIdx;
+    int32_t status;
+
+    /* Prepare init configuration for all peripherals */
+    EnetAppUtils_print("\nInit  configs EnetType:%u, InstId :%u\r\n", enetType, instId);
+    EnetAppUtils_print("----------------------------------------------\r\n");
+
+    resCfg = &icssgCfg->resCfg;
+
+    /* We use software MAC address pool from apputils, but it will give same MAC address.
+        * Add port index to make them unique */
+    status = EnetTas_getPerIdx(enetType, instId, &perIdx);
+    EnetAppUtils_assert(status == ENET_SOK);
+    for (i = 0U; i < ENETTAS_PORT_MAX; i++)
+    {
+        resCfg->macList.macAddress[i][ENET_MAC_ADDR_LEN - 1] += (perIdx * ENETTAS_PORT_MAX) + i;
+    }
+    resCfg->macList.numMacAddress = ENETTAS_PORT_MAX;
+}
+
+
+
 static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
                            uint32_t numPerCtxts)
 {
-    EnetUdma_Cfg *dmaCfg;
-    EnetRm_ResCfg *resCfg;
-    Enet_IoctlPrms prms;
-    EnetPer_AttachCoreOutArgs attachCoreOutArgs;
-    uint32_t i, j;
+    uint32_t i;
     int32_t status = ENET_SOK;
 
     /* Initialize async IOCTL and TX timestamp semaphores */
@@ -684,29 +614,14 @@ static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
     {
         EnetTas_PerCtxt *perCtxt = &perCtxts[i];
 
-        dmaCfg = &perCtxt->dmaCfg;
-        dmaCfg->rxChInitPrms.dmaPriority = UDMA_DEFAULT_RX_CH_DMA_PRIORITY;
-        EnetAppUtils_print("%s: init config\r\n", perCtxt->name);
-        Icssg_Cfg *icssgCfg = &perCtxt->icssgCfg;
+        status = EnetApp_driverOpen(perCtxt->enetType, perCtxt->instId);
 
-        Enet_initCfg(perCtxt->enetType, perCtxt->instId, icssgCfg, sizeof(*icssgCfg));
-        resCfg = &icssgCfg->resCfg;
-
-        /* Set DMA configuration */
-        dmaCfg->hUdmaDrv = gEnetTas.hMainUdmaDrv;
-        icssgCfg->dmaCfg = (void *)dmaCfg;
-
-        /* Initialize RM */
-        EnetAppUtils_initResourceConfig(perCtxt->enetType, EnetSoc_getCoreId(), resCfg);
-
-        /* We use software MAC address pool from apputils, but it will give same MAC address.
-         * Add port index to make them unique */
-        for (j = 0U; j < ENETTAS_PORT_MAX; j++)
+        if (status != ENET_SOK)
         {
-            resCfg->macList.macAddress[j][ENET_MAC_ADDR_LEN - 1] += (i * ENETTAS_PORT_MAX) + j;
+            EnetAppUtils_print("Failed to open ENET: %d\r\n", status);
         }
-        resCfg->macList.numMacAddress = ENETTAS_PORT_MAX;
 
+        EnetApp_acquireHandleInfo(perCtxt->enetType, perCtxt->instId, &(perCtxt->handleInfo));
     }
 
     /* Open Enet driver for all peripherals */
@@ -715,21 +630,11 @@ static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
     for (i = 0U; i < numPerCtxts; i++)
     {
         EnetTas_PerCtxt *perCtxt = &perCtxts[i];
-        EnetAppUtils_print("%s: Open enet\r\n", perCtxt->name);
-        Icssg_Cfg *icssgCfg = &perCtxt->icssgCfg;
-        perCtxt->hEnet = Enet_open(perCtxt->enetType, perCtxt->instId, icssgCfg, sizeof(*icssgCfg));
-
-        if (perCtxt->hEnet == NULL)
-        {
-            EnetAppUtils_print("%s: failed to open enet\r\n", perCtxt->name);
-            status = ENET_EFAIL;
-            break;
-        }
 
         if (Enet_isIcssFamily(perCtxt->enetType))
         {
             EnetAppUtils_print("%s: Register async IOCTL callback\r\n", perCtxt->name);
-            Enet_registerEventCb(perCtxt->hEnet,
+            Enet_registerEventCb(perCtxt->handleInfo.hEnet,
                                  ENET_EVT_ASYNC_CMD_RESP,
                                  0U,
                                  EnetTas_asyncIoctlCb,
@@ -737,7 +642,7 @@ static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
 
             EnetAppUtils_print("%s: Register TX timestamp callback\r\n", perCtxt->name);
             perCtxt->txTsSeqId = 0U;
-            Enet_registerEventCb(perCtxt->hEnet,
+            Enet_registerEventCb(perCtxt->handleInfo.hEnet,
                                  ENET_EVT_TIMESTAMP_TX,
                                  0U,
                                  EnetTas_txTsCb,
@@ -756,17 +661,7 @@ static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
 
             EnetAppUtils_print("%s: Attach core\r\n", perCtxt->name);
 
-            ENET_IOCTL_SET_INOUT_ARGS(&prms, &gEnetTas.coreId, &attachCoreOutArgs);
-
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_PER_IOCTL_ATTACH_CORE, &prms);
-            if (status != ENET_SOK)
-            {
-                EnetAppUtils_print("%s: failed to attach: %d\r\n", perCtxt->name, status);
-            }
-            else
-            {
-                gEnetTas.coreKey = attachCoreOutArgs.coreKey;
-            }
+            EnetApp_coreAttach(perCtxt->enetType, perCtxt->instId, gEnetTas.coreId, &perCtxt->attachInfo);
         }
     }
 
@@ -791,9 +686,7 @@ static int32_t EnetTas_open(EnetTas_PerCtxt *perCtxts,
 static void EnetTas_close(EnetTas_PerCtxt *perCtxts,
                          uint32_t numPerCtxts)
 {
-    Enet_IoctlPrms prms;
     uint32_t i;
-    int32_t status;
 
     EnetAppUtils_print("\nClose DMA for all peripherals\r\n");
     EnetAppUtils_print("----------------------------------------------\r\n");
@@ -822,13 +715,7 @@ static void EnetTas_close(EnetTas_PerCtxt *perCtxts,
         EnetTas_PerCtxt *perCtxt = &perCtxts[i];
 
         EnetAppUtils_print("%s: Detach core\r\n", perCtxt->name);
-
-        ENET_IOCTL_SET_IN_ARGS(&prms, &gEnetTas.coreKey);
-        status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_PER_IOCTL_DETACH_CORE, &prms);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to detach: %d\r\n", perCtxt->name);
-        }
+        EnetApp_coreDetach(perCtxt->enetType, perCtxt->instId, gEnetTas.coreId, perCtxt->attachInfo.coreKey);
     }
 
     /* Close opened Enet drivers if any peripheral failed */
@@ -842,18 +729,18 @@ static void EnetTas_close(EnetTas_PerCtxt *perCtxts,
         if (Enet_isIcssFamily(perCtxt->enetType))
         {
             EnetAppUtils_print("%s: Unregister async IOCTL callback\r\n", perCtxt->name);
-            Enet_unregisterEventCb(perCtxt->hEnet,
+            Enet_unregisterEventCb(perCtxt->handleInfo.hEnet,
                                    ENET_EVT_ASYNC_CMD_RESP,
                                    0U);
 
             EnetAppUtils_print("%s: Unregister TX timestamp callback\r\n", perCtxt->name);
-            Enet_unregisterEventCb(perCtxt->hEnet,
+            Enet_unregisterEventCb(perCtxt->handleInfo.hEnet,
                                    ENET_EVT_TIMESTAMP_TX,
                                    0U);
         }
 
-        Enet_close(perCtxt->hEnet);
-        perCtxt->hEnet = NULL;
+        EnetApp_releaseHandleInfo(perCtxt->enetType, perCtxt->instId);
+        perCtxt->handleInfo.hEnet = NULL;
     }
 
     /* Do peripheral dependent initalization */
@@ -893,7 +780,7 @@ static void EnetTas_printStats(EnetTas_PerCtxt *perCtxts,
             EnetAppUtils_print("\n %s - PA statistics\r\n", perCtxt->name);
             EnetAppUtils_print("--------------------------------\r\n");
             ENET_IOCTL_SET_OUT_ARGS(&prms, &gEnetTas_icssgPaStats);
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_GET_HOSTPORT_STATS, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_GET_HOSTPORT_STATS, &prms);
             if (status != ENET_SOK)
             {
                 EnetAppUtils_print("%s: Failed to get PA stats\r\n", perCtxt->name);
@@ -912,7 +799,7 @@ static void EnetTas_printStats(EnetTas_PerCtxt *perCtxts,
 
             ENET_IOCTL_SET_INOUT_ARGS(&prms, &macPort, &gEnetTas_icssgStats);
 
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_GET_MACPORT_STATS, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_GET_MACPORT_STATS, &prms);
             if (status != ENET_SOK)
             {
                 EnetAppUtils_print("%s: Failed to get port %u stats\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
@@ -944,7 +831,7 @@ static void EnetTas_resetStats(EnetTas_PerCtxt *perCtxts,
         EnetAppUtils_print("%s: Reset statistics\r\n", perCtxt->name);
 
         ENET_IOCTL_SET_NO_ARGS(&prms);
-        status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_RESET_HOSTPORT_STATS, &prms);
+        status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_RESET_HOSTPORT_STATS, &prms);
         if (status != ENET_SOK)
         {
             EnetAppUtils_print("%s: Failed to reset  host port stats\r\n", perCtxt->name);
@@ -956,7 +843,7 @@ static void EnetTas_resetStats(EnetTas_PerCtxt *perCtxts,
             macPort = perCtxt->macPort[j];
 
             ENET_IOCTL_SET_IN_ARGS(&prms, &macPort);
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_RESET_MACPORT_STATS, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_STATS_IOCTL_RESET_MACPORT_STATS, &prms);
             if (status != ENET_SOK)
             {
                 EnetAppUtils_print("%s: Failed to reset port %u stats\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
@@ -966,135 +853,98 @@ static void EnetTas_resetStats(EnetTas_PerCtxt *perCtxts,
     }
 }
 
-static int32_t EnetTas_openPort(EnetTas_PerCtxt *perCtxt)
+void EnetApp_initLinkArgs(Enet_Type enetType,
+                          uint32_t instId,
+                          EnetPer_PortLinkCfg *portLinkCfg,
+                          Enet_MacPort macPort)
 {
-    Enet_IoctlPrms prms;
     EnetBoard_EthPort ethPort;
     const EnetBoard_PhyCfg *boardPhyCfg;
-    EnetPer_PortLinkCfg portLinkCfg;
-    IcssgMacPort_Cfg icssgMacCfg;
-    EnetMacPort_LinkCfg *linkCfg = &portLinkCfg.linkCfg;
-    EnetMacPort_Interface *mii = &portLinkCfg.mii;
-    EnetPhy_Cfg *phyCfg = &portLinkCfg.phyCfg;
-    Enet_MacPort macPort;
-    uint32_t i;
+    IcssgMacPort_Cfg *icssgMacCfg;
+    EnetMacPort_LinkCfg *linkCfg = &portLinkCfg->linkCfg;
+    EnetMacPort_Interface *mii = &portLinkCfg->mii;
+    EnetPhy_Cfg *phyCfg = &portLinkCfg->phyCfg;
     int32_t status = ENET_SOK;
+    EnetTas_PerCtxt *perCtxt;
+    uint32_t perIdx;
 
-    for (i = 0U; i < perCtxt->macPortNum; i++)
+    status = EnetTas_getPerIdx(enetType, instId, &perIdx);
+    EnetAppUtils_assert(status == ENET_SOK);
+
+    perCtxt = &gEnetTas.perCtxt[perIdx];
+
+    EnetAppUtils_print("%s: Open port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
+
+    /* Setup board for requested Ethernet port */
+    ethPort.enetType = perCtxt->enetType;
+    ethPort.instId   = perCtxt->instId;
+    ethPort.macPort  = macPort;
+    ethPort.boardId  = ENETBOARD_AM64X_AM243X_EVM;
+    EnetTas_macMode2MacMii(RGMII, &ethPort.mii);
+
+    status = EnetBoard_setupPorts(&ethPort, 1U);
+    if (status != ENET_SOK)
     {
-        macPort = perCtxt->macPort[i];
+        EnetAppUtils_print("%s: Failed to setup MAC port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
+        EnetAppUtils_assert(false);
+    }
 
-        EnetAppUtils_print("%s: Open port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-
-        /* Setup board for requested Ethernet port */
-        ethPort.enetType = perCtxt->enetType;
-        ethPort.instId   = perCtxt->instId;
-        ethPort.macPort  = macPort;
-        ethPort.boardId  = ENETBOARD_AM64X_AM243X_EVM;
-        EnetTas_macMode2MacMii(RGMII, &ethPort.mii);
-
-        status = EnetBoard_setupPorts(&ethPort, 1U);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to setup MAC port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-            EnetAppUtils_assert(false);
-        }
-
-        IcssgMacPort_initCfg(&icssgMacCfg);
-        icssgMacCfg.specialFramePrio = 1U;
-        portLinkCfg.macCfg = &icssgMacCfg;
+    icssgMacCfg = portLinkCfg->macCfg;
+    IcssgMacPort_initCfg(icssgMacCfg);
+    icssgMacCfg->specialFramePrio = 1U;
 
         /* Set port link params */
-        portLinkCfg.macPort = macPort;
+    portLinkCfg->macPort = macPort;
 
-        mii->layerType     = ethPort.mii.layerType;
-        mii->sublayerType  = ethPort.mii.sublayerType;
-        mii->variantType   = ENET_MAC_VARIANT_FORCED;
+    mii->layerType     = ethPort.mii.layerType;
+    mii->sublayerType  = ethPort.mii.sublayerType;
+    mii->variantType   = ENET_MAC_VARIANT_FORCED;
 
-        linkCfg->speed     = ENET_SPEED_AUTO;
-        linkCfg->duplexity = ENET_DUPLEX_AUTO;
+    linkCfg->speed     = ENET_SPEED_AUTO;
+    linkCfg->duplexity = ENET_DUPLEX_AUTO;
 
-        boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
-        if (boardPhyCfg != NULL)
+    boardPhyCfg = EnetBoard_getPhyCfg(&ethPort);
+    if (boardPhyCfg != NULL)
+    {
+        EnetPhy_initCfg(phyCfg);
+        if ((ENET_ICSSG_DUALMAC == perCtxt->enetType) && (2U == perCtxt->instId))
         {
-            EnetPhy_initCfg(phyCfg);
-            if ((ENET_ICSSG_DUALMAC == perCtxt->enetType) && (2U == perCtxt->instId))
+            phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY1_ADDR;
+        }
+        else if ((ENET_ICSSG_DUALMAC == perCtxt->enetType) && (3U == perCtxt->instId))
+        {
+            phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY2_ADDR;
+        }
+        else if ((ENET_ICSSG_SWITCH == perCtxt->enetType) && (1U == perCtxt->instId))
+        {
+            if (macPort == ENET_MAC_PORT_1)
             {
                 phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY1_ADDR;
             }
-            else if ((ENET_ICSSG_DUALMAC == perCtxt->enetType) && (3U == perCtxt->instId))
+            else
             {
                 phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY2_ADDR;
             }
-            else if ((ENET_ICSSG_SWITCH == perCtxt->enetType) && (1U == perCtxt->instId))
-            {
-                if (macPort == ENET_MAC_PORT_1)
-                {
-                    phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY1_ADDR;
-                }
-                else
-                {
-                    phyCfg->phyAddr     = CONFIG_ENET_ICSS0_PHY2_ADDR;
-                }
-            }
-            else
-            {
-                EnetAppUtils_assert(false);
-            }
-
-            phyCfg->isStrapped  = boardPhyCfg->isStrapped;
-            phyCfg->loopbackEn  = false;
-            phyCfg->skipExtendedCfg = boardPhyCfg->skipExtendedCfg;
-            phyCfg->extendedCfgSize = boardPhyCfg->extendedCfgSize;
-            memcpy(phyCfg->extendedCfg, boardPhyCfg->extendedCfg, phyCfg->extendedCfgSize);
         }
         else
         {
-            EnetAppUtils_print("%s: No PHY configuration found\r\n", perCtxt->name);
             EnetAppUtils_assert(false);
         }
 
-        /* Open port link */
-        if (status == ENET_SOK)
-        {
-            ENET_IOCTL_SET_IN_ARGS(&prms, &portLinkCfg);
-
-            EnetAppUtils_print("%s: Open port %u link\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_PER_IOCTL_OPEN_PORT_LINK, &prms);
-            if (status != ENET_SOK)
-            {
-                EnetAppUtils_print("%s: Failed to open port link: %d\r\n", perCtxt->name, status);
-            }
-        }
+        phyCfg->isStrapped  = boardPhyCfg->isStrapped;
+        phyCfg->loopbackEn  = false;
+        phyCfg->skipExtendedCfg = boardPhyCfg->skipExtendedCfg;
+        phyCfg->extendedCfgSize = boardPhyCfg->extendedCfgSize;
+        memcpy(phyCfg->extendedCfg, boardPhyCfg->extendedCfg, phyCfg->extendedCfgSize);
     }
-
-    return status;
-}
-
-static void EnetTas_closePort(EnetTas_PerCtxt *perCtxt)
-{
-    Enet_IoctlPrms prms;
-    Enet_MacPort macPort;
-    uint32_t i;
-    int32_t status;
-
-    for (i = 0U; i < perCtxt->macPortNum; i++)
+    else
     {
-        macPort = perCtxt->macPort[i];
-
-        EnetAppUtils_print("%s: Close port %u\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-
-        /* Close port link */
-        ENET_IOCTL_SET_IN_ARGS(&prms, &macPort);
-
-        EnetAppUtils_print("%s: Close port %u link\r\n", perCtxt->name, ENET_MACPORT_ID(macPort));
-        status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_PER_IOCTL_CLOSE_PORT_LINK, &prms);
-        if (status != ENET_SOK)
-        {
-            EnetAppUtils_print("%s: Failed to close port link: %d\r\n", perCtxt->name, status);
-        }
+        EnetAppUtils_print("%s: No PHY configuration found\r\n", perCtxt->name);
+        EnetAppUtils_assert(false);
     }
+
 }
+
 
 static int32_t EnetTas_waitForLinkUp(EnetTas_PerCtxt *perCtxt)
 {
@@ -1102,7 +952,6 @@ static int32_t EnetTas_waitForLinkUp(EnetTas_PerCtxt *perCtxt)
     Enet_MacPort macPort;
     IcssgMacPort_SetPortStateInArgs setPortStateInArgs;
     bool linked;
-    int32_t semStatus;
     uint32_t i;
     int32_t status = ENET_SOK;
 
@@ -1117,7 +966,7 @@ static int32_t EnetTas_waitForLinkUp(EnetTas_PerCtxt *perCtxt)
         {
             ENET_IOCTL_SET_INOUT_ARGS(&prms, &macPort, &linked);
 
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_PER_IOCTL_IS_PORT_LINK_UP, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_PER_IOCTL_IS_PORT_LINK_UP, &prms);
             if (status != ENET_SOK)
             {
                 EnetAppUtils_print("%s: Failed to get port %u link status: %d\r\n",
@@ -1145,15 +994,15 @@ static int32_t EnetTas_waitForLinkUp(EnetTas_PerCtxt *perCtxt)
                 setPortStateInArgs.portState = ICSSG_PORT_STATE_FORWARD;
                 ENET_IOCTL_SET_IN_ARGS(&prms, &setPortStateInArgs);
 
-                status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_SET_PORT_STATE, &prms);
+                status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_SET_PORT_STATE, &prms);
                 if (status == ENET_SINPROGRESS)
                 {
                     /* Wait for asyc ioctl to complete */
                     do
                     {
-                        Enet_poll(perCtxt->hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
-                        semStatus = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, 1U);
-                    } while (gEnetTas.run && (semStatus != SystemP_SUCCESS));
+                        Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
+                        status = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, SystemP_WAIT_FOREVER);
+                    } while (gEnetTas.run && (status != SystemP_SUCCESS));
 
                     status = ENET_SOK;
                 }
@@ -1191,80 +1040,6 @@ static void EnetTas_macMode2MacMii(emac_mode macMode,
     }
 }
 
-static void EnetTas_createClock(void)
-{
-    TaskP_Params taskParams;
-    ClockP_Params clkParams;
-    int32_t status;
-    /* Create timer semaphore */
-    status = SemaphoreP_constructCounting(&gEnetTas.timerSemObj, 0, COUNTING_SEM_COUNT);
-    DebugP_assert(SystemP_SUCCESS == status);
-
-    /* Initialize the periodic tick task params */
-    TaskP_Params_init(&taskParams);
-    taskParams.priority       = 7U;
-    taskParams.stack          = gEnetTasTaskStackTick;
-    taskParams.stackSize      = sizeof(gEnetTasTaskStackTick);
-    taskParams.args           = (void*)&gEnetTas.timerSemObj;
-    taskParams.name           = "Periodic tick task";
-    taskParams.taskMain       = &EnetTas_tickTask;
-    /* Create periodic tick task */
-    EnetAppUtils_print("Create periodic tick task\r\n");
-
-    status = TaskP_construct(&gEnetTas.tickTaskObj, &taskParams);
-    DebugP_assert(SystemP_SUCCESS == status);
-
-    ClockP_Params_init(&clkParams);
-    clkParams.timeout    = ENETTAS_PERIODIC_TICK_MS;
-    clkParams.period    = ENETTAS_PERIODIC_TICK_MS;
-    clkParams.args       = (void*)&gEnetTas.timerSemObj;
-    clkParams.callback  = &EnetTas_timerCallback;
-
-    clkParams.start = FALSE;
-    /* Creating timer and setting timer callback function */
-    EnetAppUtils_print("Create periodic tick clock\r\n");
-    status = ClockP_construct(&gEnetTas.tickTimerObj, &clkParams);
-    DebugP_assert(SystemP_SUCCESS == status);
-
-}
-
-static void EnetTas_deleteClock(void)
-{
-    /* Delete periodic tick timer */
-    EnetAppUtils_print("Delete periodic tick clock\r\n");
-    ClockP_destruct(&gEnetTas.tickTimerObj);
-    /* Delete periodic tick task */
-     TaskP_destruct(&gEnetTas.tickTaskObj);
-    /* Delete periodic tick timer */
-    SemaphoreP_destruct(&gEnetTas.timerSemObj);
-
-}
-
-static void EnetTas_timerCallback(ClockP_Object *clkInst, void * arg)
-{
-    SemaphoreP_Object* hSem = (SemaphoreP_Object*)arg;
-
-    /* Tick! */
-    SemaphoreP_post(hSem);
-}
-
-static void EnetTas_tickTask(void *args)
-{
-    SemaphoreP_Object* hSem = (SemaphoreP_Object*)args;
-    uint32_t i;
-
-    while (gEnetTas.run)
-    {
-        SemaphoreP_pend(hSem, SystemP_WAIT_FOREVER);
-
-        /* Periodic tick should be called from non-ISR context */
-        for (i = 0U; i < gEnetTas.numPerCtxts; i++)
-        {
-            Enet_periodicTick(gEnetTas.perCtxt[i].hEnet);
-        }
-    }
-    TaskP_exit();
-}
 
 static void EnetTas_rxIsrFxn(void *appData)
 {
@@ -1283,16 +1058,16 @@ static int32_t EnetTas_openDma(EnetTas_PerCtxt *perCtxt)
     /* Open the TX channel */
     EnetDma_initTxChParams(&txChCfg);
 
-    txChCfg.hUdmaDrv = gEnetTas.hMainUdmaDrv;
+    txChCfg.hUdmaDrv = perCtxt->handleInfo.hUdmaDrv;
     txChCfg.cbArg    = NULL;
     txChCfg.notifyCb = NULL;
     txChCfg.useGlobalEvt = true;
 
     EnetAppUtils_setCommonTxChPrms(&txChCfg);
-    txChCfg.numTxPkts = ENET_MEM_NUM_TX_PKTS/2U;
+    txChCfg.numTxPkts = ENET_SYSCFG_NUM_TX_PKT/2U;
 
-    EnetAppUtils_openTxCh(perCtxt->hEnet,
-                          gEnetTas.coreKey,
+    EnetAppUtils_openTxCh(perCtxt->handleInfo.hEnet,
+                          perCtxt->attachInfo.coreKey,
                           gEnetTas.coreId,
                           &perCtxt->txChNum,
                           &perCtxt->hTxCh,
@@ -1301,8 +1076,8 @@ static int32_t EnetTas_openDma(EnetTas_PerCtxt *perCtxt)
     {
 #if FIX_RM
         /* Free the channel number if open Tx channel failed */
-        EnetAppUtils_freeTxCh(gEnetTas.hEnet,
-                              gEnetTas.coreKey,
+        EnetAppUtils_freeTxCh(perCtxt->handleInfo.hEnet,
+                              perCtxt->attachInfo.coreKey,
                               gEnetTas.coreId,
                               gEnetTas.txChNum);
 #endif
@@ -1324,7 +1099,7 @@ static int32_t EnetTas_openDma(EnetTas_PerCtxt *perCtxt)
 
         EnetDma_initRxChParams(&rxChCfg);
 
-        rxChCfg.hUdmaDrv = gEnetTas.hMainUdmaDrv;
+        rxChCfg.hUdmaDrv = perCtxt->handleInfo.hUdmaDrv;
         rxChCfg.notifyCb = EnetTas_rxIsrFxn;
         rxChCfg.cbArg    = perCtxt;
         rxChCfg.useGlobalEvt = true;
@@ -1333,10 +1108,10 @@ static int32_t EnetTas_openDma(EnetTas_PerCtxt *perCtxt)
         for (i = 0U; i < perCtxt->numHwRxCh; i++)
         {
             EnetAppUtils_setCommonRxFlowPrms(&rxChCfg);
-            rxChCfg.numRxPkts = ENET_MEM_NUM_RX_PKTS/2U;
+            rxChCfg.numRxPkts = ENET_SYSCFG_NUM_RX_PKT/2U;
             EnetAppUtils_openRxFlowForChIdx(perCtxt->enetType,
-                                            perCtxt->hEnet,
-                                            gEnetTas.coreKey,
+                                            perCtxt->handleInfo.hEnet,
+                                            perCtxt->attachInfo.coreKey,
                                             gEnetTas.coreId,
                                             true,
                                             i,
@@ -1379,8 +1154,8 @@ static void EnetTas_closeDma(EnetTas_PerCtxt *perCtxt)
     for (i = 0U; i < perCtxt->numHwRxCh; i++)
     {
         EnetAppUtils_closeRxFlowForChIdx(perCtxt->enetType,
-                                         perCtxt->hEnet,
-                                         gEnetTas.coreKey,
+                                         perCtxt->handleInfo.hEnet,
+                                         perCtxt->attachInfo.coreKey,
                                          gEnetTas.coreId,
                                          true,
                                          &fqPktInfoQ,
@@ -1402,8 +1177,8 @@ static void EnetTas_closeDma(EnetTas_PerCtxt *perCtxt)
     /* Retrieve any pending TX packets from driver */
     EnetTas_retrieveFreeTxPkts(perCtxt);
 
-    EnetAppUtils_closeTxCh(perCtxt->hEnet,
-                           gEnetTas.coreKey,
+    EnetAppUtils_closeTxCh(perCtxt->handleInfo.hEnet,
+                           perCtxt->attachInfo.coreKey,
                            gEnetTas.coreId,
                            &fqPktInfoQ,
                            &cqPktInfoQ,
@@ -1422,7 +1197,7 @@ static void EnetTas_initTxFreePktQ(void)
     uint32_t i;
 
     /* Initialize TX EthPkts and queue them to txFreePktInfoQ */
-    for (i = 0U; i < (ENET_MEM_NUM_TX_PKTS/2); i++)
+    for (i = 0U; i < (ENET_SYSCFG_NUM_TX_PKT/2); i++)
     {
         pPktInfo = EnetMem_allocEthPkt(&gEnetTas,
                                        ENET_MEM_LARGE_POOL_PKT_SIZE,
@@ -1447,7 +1222,7 @@ static void EnetTas_initRxReadyPktQ(EnetDma_RxChHandle hRxCh)
 
     EnetQueue_initQ(&rxFreeQ);
 
-    for (i = 0U; i < (ENET_MEM_NUM_RX_PKTS/2); i++)
+    for (i = 0U; i < (ENET_SYSCFG_NUM_RX_PKT/2); i++)
     {
         pPktInfo = EnetMem_allocEthPkt(&gEnetTas,
                                        ENET_MEM_LARGE_POOL_PKT_SIZE,
@@ -1552,12 +1327,6 @@ static void EnetTas_perTask(void *args)
 
     perCtxt->perTaskLinkUp = ENETTAS_LINK_NOT_UP;
 
-    status = EnetTas_openPort(perCtxt);
-    if (status != ENET_SOK)
-    {
-        EnetAppUtils_print("%s: Failed to open port link: %d\r\n", perCtxt->name, status);
-    }
-
     status = EnetTas_waitForLinkUp(perCtxt);
     if (status != ENET_SOK)
     {
@@ -1591,7 +1360,7 @@ static void EnetTas_perTask(void *args)
             EnetUtils_copyMacAddr(&inArgs.macAddr[0U], &perCtxt->macAddr[0U]);
             ENET_IOCTL_SET_IN_ARGS(&prms, &inArgs);
 
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_MACPORT_IOCTL_SET_MACADDR, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_MACPORT_IOCTL_SET_MACADDR, &prms);
         }
         else
         {
@@ -1601,7 +1370,7 @@ static void EnetTas_perTask(void *args)
             EnetUtils_copyMacAddr(&addr.macAddr[0U], &perCtxt->macAddr[0U]);
             ENET_IOCTL_SET_IN_ARGS(&prms, &addr);
 
-            status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_HOSTPORT_IOCTL_SET_MACADDR, &prms);
+            status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_HOSTPORT_IOCTL_SET_MACADDR, &prms);
         }
 
         if (status != ENET_SOK)
@@ -1624,8 +1393,6 @@ static void EnetTas_perTask(void *args)
         /* Wait here until the application is closed */
         ClockP_usleep(1000);
     }
-
-    EnetTas_closePort(perCtxt);
 
     SemaphoreP_post(&perCtxt->rxDoneSemObj);
     TaskP_exit();
@@ -1727,22 +1494,22 @@ static int32_t EnetTas_tasTest(EnetTas_PerCtxt *perCtxt,
     Enet_IoctlPrms prms;
     EnetTas_SetAdminListInArgs adminListInArgs;
     EnetTas_SetStateInArgs setStateInArgs;
-    EnetTas_OperStatus operStatus = TAS_OPER_LIST_NOT_YET_UPDATED;
+    EnetTas_OperStatus operStatus = ENET_TAS_OPER_LIST_NOT_YET_UPDATED;
     int32_t semStatus;
     int32_t status = ENET_SOK;
 
     /* set TAS state to reset */
     setStateInArgs.macPort = macPort;
-    setStateInArgs.state = TAS_RESET;
+    setStateInArgs.state = ENET_TAS_RESET;
     ENET_IOCTL_SET_IN_ARGS(&prms, &setStateInArgs);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_STATE, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_STATE, &prms);
     if (status == ENET_SINPROGRESS)
     {
         /* Wait for asyc ioctl to complete */
         do
         {
-            Enet_poll(perCtxt->hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
+            Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
             semStatus = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, 1U);
         } while (gEnetTas.run && (semStatus != SystemP_SUCCESS));
 
@@ -1772,13 +1539,13 @@ static int32_t EnetTas_tasTest(EnetTas_PerCtxt *perCtxt,
 
     ENET_IOCTL_SET_IN_ARGS(&prms, &adminListInArgs);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_ADMIN_LIST, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_ADMIN_LIST, &prms);
     if (status == ENET_SINPROGRESS)
     {
         /* Wait for asyc ioctl to complete */
         do
         {
-            Enet_poll(perCtxt->hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
+            Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
             semStatus = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, 1U);
         } while (gEnetTas.run && (semStatus != SystemP_SUCCESS));
 
@@ -1793,26 +1560,26 @@ static int32_t EnetTas_tasTest(EnetTas_PerCtxt *perCtxt,
     ENET_IOCTL_SET_INOUT_ARGS(&prms, &macPort, &operStatus);
     do
     {
-        status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_GET_OPER_LIST_STATUS, &prms);
+        status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_GET_OPER_LIST_STATUS, &prms);
         if (status != ENET_SOK)
         {
             EnetAppUtils_print("%s: Failed to check TAS operational list update status : %d\r\n", perCtxt->name, status);
         }
-    } while (operStatus == TAS_OPER_LIST_NOT_YET_UPDATED);
+    } while (operStatus == ENET_TAS_OPER_LIST_NOT_YET_UPDATED);
 
 
     /* set TAS state to enable */
     setStateInArgs.macPort = macPort;
-    setStateInArgs.state = TAS_ENABLE;
+    setStateInArgs.state = ENET_TAS_ENABLE;
     ENET_IOCTL_SET_IN_ARGS(&prms, &setStateInArgs);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_STATE, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_TAS_IOCTL_SET_STATE, &prms);
     if (status == ENET_SINPROGRESS)
     {
         /* Wait for asyc ioctl to complete */
         do
         {
-            Enet_poll(perCtxt->hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
+            Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
             semStatus = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, 1U);
         } while (gEnetTas.run && (semStatus != SystemP_SUCCESS));
 
@@ -1838,7 +1605,7 @@ static int32_t EnetTas_tasTest(EnetTas_PerCtxt *perCtxt,
         /* Wait for TX timestamp */
         while (gEnetTas.run && (txTsCbCount < 16U))
         {
-            Enet_poll(perCtxt->hEnet, ENET_EVT_TIMESTAMP_TX, &macPort, sizeof(macPort));
+                Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_TIMESTAMP_TX, &macPort, sizeof(macPort));
             SemaphoreP_pend(&perCtxt->txTsSemObj, 1U);
         }
 
@@ -1893,7 +1660,7 @@ static int32_t EnetTas_setPriorityRegMapping(EnetTas_PerCtxt *perCtxt,
 
     ENET_IOCTL_SET_IN_ARGS(&prms, &regenMap);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_MACPORT_IOCTL_SET_PRI_REGEN_MAP, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_MACPORT_IOCTL_SET_PRI_REGEN_MAP, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("ERROR: IOCTL command for priority regeneration for PORT = %u\r\n", macPort);
@@ -1920,7 +1687,7 @@ static int32_t EnetTas_setPriorityMapping(EnetTas_PerCtxt *perCtxt,
     }
     ENET_IOCTL_SET_IN_ARGS(&prms, &priMap);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ENET_MACPORT_IOCTL_SET_EGRESS_QOS_PRI_MAP, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ENET_MACPORT_IOCTL_SET_EGRESS_QOS_PRI_MAP, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("ERROR: IOCTL command for priority mapping for PORT = %u\r\n", macPort);
@@ -1942,7 +1709,7 @@ int32_t EnetTas_addDefaultHostVid(EnetTas_PerCtxt *perCtxt,
     vlanDefaultEntry.portPri = pcp;
     ENET_IOCTL_SET_IN_ARGS(&prms, &vlanDefaultEntry);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_HOSTPORT_DFLT_VID, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_HOSTPORT_DFLT_VID, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("Failed to set default VID");
@@ -1965,7 +1732,7 @@ int32_t EnetTas_addDefaultPortVid(EnetTas_PerCtxt *perCtxt,
     vlanDefaultEntry.vlanCfg.portPri = pcp;
     ENET_IOCTL_SET_IN_ARGS(&prms, &vlanDefaultEntry);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_MACPORT_DFLT_VID, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_MACPORT_DFLT_VID, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("Failed to set default VID");
@@ -1997,7 +1764,7 @@ int32_t EnetTas_addMacFdbEntry(EnetTas_PerCtxt *perCtxt,
 
     ENET_IOCTL_SET_IN_ARGS(&prms, &fdbEntry);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_FDB_IOCTL_ADD_ENTRY, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_FDB_IOCTL_ADD_ENTRY, &prms);
     if (status == ENET_SINPROGRESS)
     {
         EnetAppUtils_print("Success: IOCTL command sent for making MAC entry in FDB \r\n");
@@ -2005,7 +1772,7 @@ int32_t EnetTas_addMacFdbEntry(EnetTas_PerCtxt *perCtxt,
         /* Wait for asyc ioctl to complete */
         do
         {
-            Enet_poll(perCtxt->hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
+            Enet_poll(perCtxt->handleInfo.hEnet, ENET_EVT_ASYNC_CMD_RESP, NULL, 0U);
             semStatus = SemaphoreP_pend(&perCtxt->asyncIoctlSemObj, 1U);
         } while (gEnetTas.run && (semStatus != SystemP_SUCCESS));
 
@@ -2076,7 +1843,7 @@ static int32_t EnetTas_setupDefaultPortSettings(EnetTas_PerCtxt *perCtxt)
     vlanEntry.vlanId = (uint16_t)ENETTAS_VLAN_ID;
     ENET_IOCTL_SET_IN_ARGS(&prms, &vlanEntry);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_ENTRY, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_ENTRY, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("FID VLAN entry for HOST is FAILED = %u : FAILED\r\n", status);
@@ -2088,7 +1855,7 @@ static int32_t EnetTas_setupDefaultPortSettings(EnetTas_PerCtxt *perCtxt)
     vlanEntry.vlanId = (uint16_t)0;
     ENET_IOCTL_SET_IN_ARGS(&prms, &vlanEntry);
 
-    status = Enet_ioctl(perCtxt->hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_ENTRY, &prms);
+    status = Enet_ioctl(perCtxt->handleInfo.hEnet, gEnetTas.coreId, ICSSG_PER_IOCTL_VLAN_SET_ENTRY, &prms);
     if (status != ENET_SOK)
     {
         EnetAppUtils_print("FID VLAN entry for VID = 0: FAILED = %u : FAILED\r\n", status);

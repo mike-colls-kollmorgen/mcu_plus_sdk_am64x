@@ -20,7 +20,7 @@
  * queues. Make sure this number is sufficiently high to accommodate all the 
  * buffers that could potentially be made by the stack in worst scenario.
  */
-#define MAXFREE PBUF_POOL_SIZE
+#define MAXFREE (PBUF_POOL_SIZE * 2)
 
 #define pbufQ_count(pQ) ((pQ)->count)
 

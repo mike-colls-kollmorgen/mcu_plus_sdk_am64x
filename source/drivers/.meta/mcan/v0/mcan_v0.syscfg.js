@@ -70,6 +70,9 @@ let mcan_module_name = "/drivers/mcan/mcan";
 let mcan_module = {
     displayName: "MCAN",
     templates: {
+        "/drivers/system/system_config.c.xdt": {
+            driver_config: "/drivers/mcan/templates/mcan_config.c.xdt",
+        },
         "/drivers/system/system_config.h.xdt": {
             driver_config: "/drivers/mcan/templates/mcan.h.xdt",
             moduleName: mcan_module_name,
@@ -82,6 +85,105 @@ let mcan_module = {
         },
     },
     defaultInstanceName: "CONFIG_MCAN",
+    moduleStatic: {
+        name: "mcanGlobal",
+        displayName: "MCAN Global",
+        config: [
+            {
+                name: "nomRatePrescalar",
+                displayName: "Prescalar Value for Nom Bitrate",
+                default: 7,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.nomBitRate = 80000 / (inst.nomRatePrescalar + 1) / (3 + inst.nomTimeSeg1 + inst.nomTimeSeg2)
+                }
+            },
+            {
+                name: "nomTimeSeg1",
+                displayName: "Time Seg 1 Value for Nom Bitrate",
+                default: 5,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.nomBitRate = 80000 / (inst.nomRatePrescalar + 1) / (3 + inst.nomTimeSeg1 + inst.nomTimeSeg2)
+                }
+            },
+            {
+                name: "nomTimeSeg2",
+                displayName: "Time Seg 2 Value for Nom Bitrate",
+                default: 2,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.nomBitRate = 80000 / (inst.nomRatePrescalar + 1) / (3 + inst.nomTimeSeg1 + inst.nomTimeSeg2)
+                }
+            },
+            {
+                name: "nomSynchJumpWidth",
+                displayName: "Synch Jump Width for Nom Bitrate",
+                default: 0,
+                displayFormat: "dec",
+            },
+            {
+                name: "nomBitRate",
+                displayName: "Effective Nom Bitrate (Kbps)",
+                default: 1000,
+                readOnly: true,
+                displayFormat: "dec",
+            },
+            {
+                name: "dataRatePrescalar",
+                displayName: "Prescalar Value for Data Bitrate",
+                default: 1,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.dataBitRate = 80000 / (inst.dataRatePrescalar + 1) / (3 + inst.dataTimeSeg1 + inst.dataTimeSeg2)
+                }
+            },
+            {
+                name: "dataTimeSeg1",
+                displayName: "Time Seg 1 Value for Data Bitrate",
+                default: 3,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.dataBitRate = 80000 / (inst.dataRatePrescalar + 1) / (3 + inst.dataTimeSeg1 + inst.dataTimeSeg2)
+                }
+            },
+            {
+                name: "dataTimeSeg2",
+                displayName: "Time Seg 2 Value for Data Bitrate",
+                default: 2,
+                displayFormat: "dec",
+                onChange: function (inst, ui) {
+                    inst.dataBitRate = 80000 / (inst.dataRatePrescalar + 1) / (3 + inst.dataTimeSeg1 + inst.dataTimeSeg2)
+                }
+            },
+            {
+                name: "dataSynchJumpWidth",
+                displayName: "Synch Jump Width for Data Bitrate",
+                default: 0,
+                displayFormat: "dec",
+            },
+            {
+                name: "dataBitRate",
+                displayName: "Effective Data Bitrate (Kbps)",
+                default: 5000,
+                readOnly: true,
+                displayFormat: "dec",
+            },
+        ],
+
+        validate : function (instance, report) {
+            common.validate.checkNumberRange(instance, report, "nomRatePrescalar", 0, 511, "dec");
+            common.validate.checkNumberRange(instance, report, "nomTimeSeg1", 1, 255, "dec");
+            common.validate.checkNumberRange(instance, report, "nomTimeSeg2", 0, 127, "dec");
+            common.validate.checkNumberRange(instance, report, "nomSynchJumpWidth", 0, 127, "dec");
+
+            common.validate.checkNumberRange(instance, report, "dataRatePrescalar", 0, 31, "dec");
+            common.validate.checkNumberRange(instance, report, "dataTimeSeg1", 0, 31, "dec");
+            common.validate.checkNumberRange(instance, report, "dataTimeSeg2", 0, 15, "dec");
+            common.validate.checkNumberRange(instance, report, "dataSynchJumpWidth", 0, 15, "dec");
+        },
+    },
+
     validate: validate,
     modules: function(instance) {
         return [{

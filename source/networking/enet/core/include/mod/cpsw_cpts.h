@@ -220,6 +220,15 @@ typedef enum CpswCpts_Ioctl_s
      * - outArgs: #CpswCpts_Event
      */
     CPSW_CPTS_IOCTL_LOOKUP_EVENT = CPSW_CPTS_PUBLIC_IOCTL(12U),
+
+    /*!
+     * \brief CPTS lookup EST event/.
+     *
+     * IOCTL parameters:
+     * -  inArgs: #CpswCpts_EstEventMatchParams
+     * - outArgs: #CpswCpts_EstEvent
+     */
+    CPSW_CPTS_IOCTL_LOOKUP_EST_EVENT = CPSW_CPTS_PUBLIC_IOCTL(13U),
 } CpswCpts_Ioctl;
 
 /*!
@@ -410,6 +419,43 @@ typedef struct CpswCpts_Event_s
     /*! Hardware push instance number which triggered the event */
     CpswCpts_HwPush hwPushNum;
 } CpswCpts_Event;
+
+/*!
+ * \brief CPTS EST event match params.
+ */
+typedef struct CpswCpts_EstEventMatchParams_s
+{
+    /*! MAC port number */
+    Enet_MacPort macPort;
+
+    /*! Domain number of the event. The generated EST events will have the domain
+     *  set via \ref CpswMacPort_EstTimestampCfg::domain */
+    uint32_t domain;
+} CpswCpts_EstEventMatchParams;
+
+/*!
+ * \brief CPTS EST timestamp.
+ */
+typedef struct CpswCpts_EstEvent_s
+{
+    /*! Time stamp value when the event occurred */
+    uint64_t tsVal;
+
+    /*! Hardware switch priority */
+    uint8_t priority;
+
+    /*! Sequence number of the event */
+    uint32_t seqNum;
+
+    /*! Packet receive port number */
+    uint32_t ingressPort;
+
+    /*! Transmit port number */
+    uint32_t egressPort;
+
+    /*! Domain number of the event */
+    uint32_t domain;
+} CpswCpts_EstEvent;
 
 /*!
  * \brief CPTS event notify callback.

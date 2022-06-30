@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('UART_MIGRATION_GUIDE.html',''); initRe
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_migration_guides_uart_migration_guide"></a> This section describes the differences between UART APIs of MCU+ SDK and Processor SDK RTOS (PDK). This can be used as a migration aid when moving from Processor SDK RTOS (PDK) to MCU+ SDK.</p>
 <p>In MCU+ SDK, the UART module provides higher level driver APIs.Refer <a class="el" href="DRIVERS_UART_PAGE.html">UART</a> for more details.</p>
-<h1><a class="anchor" id="autotoc_md337"></a>
+<h1><a class="anchor" id="autotoc_md393"></a>
 API changes</h1>
 <p>There are changes in functions names, structure names and macro names. The changes in function names are listed below.</p>
 <table class="doxtable">
@@ -150,14 +150,14 @@ API changes</h1>
 <tr>
 <td>UART_write2 </td><td><a class="el" href="group__DRV__UART__MODULE.html#ga10c9465c727e535023d9097b8b842bf9">UART_write</a> </td><td>API rename  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md338"></a>
+<h1><a class="anchor" id="autotoc_md394"></a>
 Important Notes</h1>
 <ul>
 <li>In MCU+ SDK, users are recommended to use SysConfig as this will greatly simplify the task of driver configuration.</li>
 <li>In MCU+ SDK, <a class="el" href="group__DRV__UART__MODULE.html#UART_ReadReturnMode">UART_ReadReturnMode</a> is introduced as compared to UART_ReturnMode in PDK.</li>
 <li>In MCU+ SDK, UART_DataMode is not supported.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md339"></a>
+<h1><a class="anchor" id="autotoc_md395"></a>
 See Also</h1>
 <ul>
 <li><a class="el" href="DRIVERS_UART_PAGE.html">UART</a></li>

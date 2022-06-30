@@ -59,8 +59,8 @@ void ospi_flash_io_main(void *args)
 
     flashAttrs = Flash_getAttrs(CONFIG_FLASH0);
 
-    /* Fill buffers with known data, 
-     * find block number from offset, 
+    /* Fill buffers with known data,
+     * find block number from offset,
      * erase block, write the data, read back from a specific offset
      * and finally compare the results.
      */
@@ -115,7 +115,7 @@ int32_t ospi_flash_io_compare_buffers()
         {
             status = SystemP_FAILURE;
             DebugP_logError("OSPI read data mismatch !!!\r\n");
-            break;    
+            break;
         }
     }
     return status;

@@ -30,7 +30,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * Auto generated file - DO NOT MODIFY
+ * Auto generated file 
  */
 
 #include "ti_drivers_config.h"
@@ -79,31 +79,43 @@ Bootloader_Config gBootloaderConfig[CONFIG_BOOTLOADER_NUM_INSTANCES] =
         &gBootloaderMemFxns,
         &gBootloader0Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
     {
         &gBootloaderMemFxns,
         &gBootloader1Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
     {
         &gBootloaderMemFxns,
         &gBootloader2Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
     {
         &gBootloaderMemFxns,
         &gBootloader3Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
     {
         &gBootloaderMemFxns,
         &gBootloader4Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
     {
         &gBootloaderMemFxns,
         &gBootloader5Args,
         BOOTLOADER_MEDIA_MEM,
+        0,
+        0,
     },
 };
 

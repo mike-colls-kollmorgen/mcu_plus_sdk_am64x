@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,23 +108,23 @@ $(document).ready(function(){initNavTree('EXAMPLES_ENET_LAYER2_ICSSG.html',''); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1329">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md1330">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1331">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1332">Build the example</a></li>
-<li class="level2"><a href="#autotoc_md1333">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1334">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1335">For ICSSG based example</a></li>
+<ul><li class="level1"><a href="#autotoc_md1555">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md1556">Supported Combinations</a></li>
+<li class="level1"><a href="#autotoc_md1557">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1558">Build the example</a></li>
+<li class="level2"><a href="#autotoc_md1559">HW Setup</a><ul><li class="level3"><a href="#autotoc_md1560">AM64X-EVM</a><ul><li class="level4"><a href="#autotoc_md1561">For ICSSG based example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md1336">Run the example</a></li>
-<li class="level2"><a href="#autotoc_md1337">Sample output for Layer2 ICSSG example</a></li>
+<li class="level2"><a href="#autotoc_md1562">Run the example</a></li>
+<li class="level2"><a href="#autotoc_md1563">Sample output for Layer2 ICSSG example</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md1338">See Also</a></li>
+<li class="level1"><a href="#autotoc_md1564">See Also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_examples_networking_enet_layer2_icssg"></a></p>
-<h1><a class="anchor" id="autotoc_md1329"></a>
+<h1><a class="anchor" id="autotoc_md1555"></a>
 Introduction</h1>
 <p>This layer 2 icssg example demonstrates usage of Enet with ICSSG peripheral operation.</p>
 <p>On AM64X, we can do ethernet based communication using ICSSG HW Mechanism</p>
@@ -162,7 +162,7 @@ Introduction</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1330"></a>
+<h1><a class="anchor" id="autotoc_md1556"></a>
 Supported Combinations</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -178,21 +178,21 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/networking/enet_layer2_icssg   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1331"></a>
+<h1><a class="anchor" id="autotoc_md1557"></a>
 Steps to Run the Example</h1>
-<h2><a class="anchor" id="autotoc_md1332"></a>
+<h2><a class="anchor" id="autotoc_md1558"></a>
 Build the example</h2>
 <ul>
 <li>When using CCS projects to build, import the CCS project for the required combination and build it using the CCS project menu (see <a class="el" href="CCS_PROJECTS_PAGE.html">Using SDK with CCS Projects</a>).</li>
 <li>When using makefiles to build, note the required combination and build using make command (see <a class="el" href="MAKEFILE_BUILD_PAGE.html">Using SDK with Makefiles</a>)</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>Enable the ENET_TEST_MII_MODE macro in test application and change the mode to MII from RGMII in SysConfig and rebuid the application to test the ICSSG ports in MII mode.</dd></dl>
-<h2><a class="anchor" id="autotoc_md1333"></a>
+<h2><a class="anchor" id="autotoc_md1559"></a>
 HW Setup</h2>
 <dl class="section note"><dt>Note</dt><dd>Make sure you have setup the EVM with cable connections as shown here, <a class="el" href="EVM_SETUP_PAGE.html">EVM Setup</a>. In addition do below steps.</dd></dl>
-<h3><a class="anchor" id="autotoc_md1334"></a>
+<h3><a class="anchor" id="autotoc_md1560"></a>
 AM64X-EVM</h3>
-<h4><a class="anchor" id="autotoc_md1335"></a>
+<h4><a class="anchor" id="autotoc_md1561"></a>
 For ICSSG based example</h4>
 <ul>
 <li>Connect two ethernet cables to the EVM from two host PC's as shown below</li>
@@ -201,7 +201,7 @@ For ICSSG based example</h4>
 <img src="am64x_evm_lwip_example_01.png" alt=""/>
 <div class="caption">
 Ethernet cable for ICSS based ethernet</div></div>
-<h2><a class="anchor" id="autotoc_md1336"></a>
+<h2><a class="anchor" id="autotoc_md1562"></a>
 Run the example</h2>
 <dl class="section attention"><dt>Attention</dt><dd>If you need to reload and run again, a CPU power-cycle is MUST</dd></dl>
 <ul>
@@ -209,29 +209,26 @@ Run the example</h2>
 <li>You will see logs in the UART terminal as shown in the next section.</li>
 <li>We can start sending packets from Colasoft Pkt Builder or packETH tool and capture the packets in Wireshark.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1337"></a>
+<h2><a class="anchor" id="autotoc_md1563"></a>
 Sample output for Layer2 ICSSG example</h2>
 <div class="fragment"><div class="line">==========================</div>
 <div class="line">      MULTIPORT TEST</div>
 <div class="line">==========================</div>
-<div class="line">Init Enet&#39;s OSAL and utils to use defaults</div>
-<div class="line">Init memory utils</div>
-<div class="line">Create clock and task for periodic tick</div>
-<div class="line">Create periodic tick task</div>
-<div class="line">Create periodic tick clock</div>
-<div class="line">Open Main UDMA driver</div>
 <div class="line"> </div>
 <div class="line">Init all peripheral clocks</div>
 <div class="line">----------------------------------------------</div>
 <div class="line">Enabling clocks!</div>
 <div class="line"> </div>
-<div class="line">Init all configs</div>
-<div class="line">----------------------------------------------</div>
-<div class="line">icssg1: init config</div>
-<div class="line"> </div>
 <div class="line">Open all peripherals</div>
 <div class="line">----------------------------------------------</div>
-<div class="line">icssg1: Open enet</div>
+<div class="line"> </div>
+<div class="line">Init  configs EnetType:2, InstId :1</div>
+<div class="line">----------------------------------------------</div>
+<div class="line">icssg1: Open port 1</div>
+<div class="line">icssg1: Open port 2</div>
+<div class="line">EnetPhy_bindDriver:</div>
+<div class="line">PHY 3 is alive</div>
+<div class="line">PHY 15 is alive</div>
 <div class="line">icssg1: Register async IOCTL callback</div>
 <div class="line">icssg1: Register TX timestamp callback</div>
 <div class="line"> </div>
@@ -242,12 +239,6 @@ Sample output for Layer2 ICSSG example</h2>
 <div class="line">Create RX tasks</div>
 <div class="line">----------------------------------------------</div>
 <div class="line">icssg1: Create RX task</div>
-<div class="line">icssg1: Open port 1</div>
-<div class="line">icssg1: Open port 1 link</div>
-<div class="line">EnetPhy_bindDriver: PHY 15: OUI:080028 Model:0f Ver:01 &lt;-&gt; &#39;dp83869&#39; : OK</div>
-<div class="line">icssg1: Open port 2</div>
-<div class="line">icssg1: Open port 2 link</div>
-<div class="line">EnetPhy_bindDriver: PHY 3: OUI:080028 Model:0f Ver:01 &lt;-&gt; &#39;dp83869&#39; : OK</div>
 <div class="line">icssg1: Waiting for link up...</div>
 <div class="line"> </div>
 <div class="line">Enet Multiport Menu:</div>
@@ -256,10 +247,12 @@ Sample output for Layer2 ICSSG example</h2>
 <div class="line"> &#39;s&#39;  -  Print statistics</div>
 <div class="line"> &#39;r&#39;  -  Reset statistics</div>
 <div class="line"> &#39;m&#39;  -  Show allocated MAC addresses</div>
+<div class="line"> &#39;d&#39;  -  Enable dscp based priority mapping</div>
 <div class="line"> &#39;x&#39;  -  Stop the test</div>
 <div class="line"> </div>
-<div class="line">Icssg_handleLinkUp: icssg1: Port 2: Link up: 1-Gbps Full-Duplex</div>
-<div class="line">Icssg_handleLinkUp: icssg1: Port 1: Link up: 1-Gbps Full-Duplex</div>
+<div class="line">EnetPhy_bindDriver:</div>
+<div class="line">Icssg_handleLinkUp:</div>
+<div class="line">Icssg_handleLinkUp:</div>
 <div class="line">icssg1: Port 1 link is up</div>
 <div class="line">icssg1: Set port state to &#39;Forward&#39;</div>
 <div class="line">icssg1: Async IOCTL completed</div>
@@ -281,30 +274,8 @@ Sample output for Layer2 ICSSG example</h2>
 <div class="line"> &#39;s&#39;  -  Print statistics</div>
 <div class="line"> &#39;r&#39;  -  Reset statistics</div>
 <div class="line"> &#39;m&#39;  -  Show allocated MAC addresses</div>
+<div class="line"> &#39;d&#39;  -  Enable dscp based priority mapping</div>
 <div class="line"> &#39;x&#39;  -  Stop the test</div>
-<div class="line"> </div>
-<div class="line">T</div>
-<div class="line">Enable timestamp prints</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =      41324 (RX=27019158184, TX=27019199508)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =      35972 (RX=27019170024, TX=27019205996)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12469412 (RX=27019181860, TX=27031651272)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12459496 (RX=27019193700, TX=27031653196)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12449848 (RX=27019205540, TX=27031655388)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12439688 (RX=27019217380, TX=27031657068)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12430028 (RX=27019229220, TX=27031659248)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12420140 (RX=27019241060, TX=27031661200)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12410236 (RX=27019252900, TX=27031663136)</div>
-<div class="line">icssg1: Port 2: RX-to-TX timestamp delta =   12400584 (RX=27019264740, TX=27031665324)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =      48996 (RX=34153601112, TX=34153650108)</div>
-<div class="line">icssg1: Drop due to TX pkt not available</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8513776 (RX=34153612952, TX=34162126728)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8503872 (RX=34153624792, TX=34162128664)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8494220 (RX=34153636632, TX=34162130852)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8484304 (RX=34153648472, TX=34162132776)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8474392 (RX=34153660312, TX=34162134704)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8464740 (RX=34153672152, TX=34162136892)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8454836 (RX=34153683992, TX=34162138828)</div>
-<div class="line">icssg1: Port 1: RX-to-TX timestamp delta =    8444944 (RX=34153695832, TX=34162140776)</div>
 <div class="line"> </div>
 <div class="line">s</div>
 <div class="line"> </div>
@@ -313,44 +284,33 @@ Sample output for Layer2 ICSSG example</h2>
 <div class="line"> </div>
 <div class="line"> icssg1 - PA statistics</div>
 <div class="line">--------------------------------</div>
-<div class="line">  hostRxByteCnt              = 2560</div>
-<div class="line">  hostTxByteCnt              = 2356</div>
-<div class="line">  hostRxPktCnt               = 20</div>
-<div class="line">  hostTxPktCnt               = 19</div>
+<div class="line">  port1Q0Overflow            = 234</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> icssg1 - Port 1 statistics</div>
 <div class="line">--------------------------------</div>
-<div class="line">  rxGoodFrames            = 10</div>
-<div class="line">  rxBCastFrames           = 10</div>
-<div class="line">  rxMCastFrames           = 10</div>
-<div class="line">  rxClass8                = 10</div>
-<div class="line">  rxClass9                = 10</div>
-<div class="line">  rxBucket2SizedFrame     = 10</div>
-<div class="line">  rxTotalByte             = 1280</div>
-<div class="line">  rxTxTotalByte           = 4000</div>
-<div class="line">  txGoodFrame             = 19</div>
-<div class="line">  txBcastFrame            = 10</div>
-<div class="line">  txMcastFrame            = 10</div>
-<div class="line">  txBucket3SizedFrame     = 19</div>
-<div class="line">  txTotalByte             = 2584</div>
+<div class="line">  rxGoodFrames            = 25337838</div>
+<div class="line">  rxClass8                = 25337838</div>
+<div class="line">  rxClass9                = 25337838</div>
+<div class="line">  rxBucket2SizedFrame     = 65535</div>
+<div class="line">  rxTotalByte             = 3243243264</div>
+<div class="line">  rxTxTotalByte           = 4294967295</div>
+<div class="line">  txGoodFrame             = 25337838</div>
+<div class="line">  txBucket3SizedFrame     = 65535</div>
+<div class="line">  txTotalByte             = 3445945968</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> icssg1 - Port 2 statistics</div>
 <div class="line">--------------------------------</div>
-<div class="line">  rxGoodFrames            = 10</div>
-<div class="line">  rxBCastFrames           = 10</div>
-<div class="line">  rxMCastFrames           = 10</div>
-<div class="line">  rxClass8                = 10</div>
-<div class="line">  rxClass9                = 10</div>
-<div class="line">  rxBucket2SizedFrame     = 10</div>
-<div class="line">  rxTotalByte             = 1280</div>
-<div class="line">  rxTxTotalByte           = 3864</div>
-<div class="line">  txGoodFrame             = 20</div>
-<div class="line">  txBcastFrame            = 10</div>
-<div class="line">  txMcastFrame            = 10</div>
-<div class="line">  txBucket3SizedFrame     = 20</div>
-<div class="line">  txTotalByte             = 2720</div>
+<div class="line">  rxGoodFrames            = 25337838</div>
+<div class="line">  rxClass8                = 25337838</div>
+<div class="line">  rxClass9                = 25337838</div>
+<div class="line">  rxBucket2SizedFrame     = 65535</div>
+<div class="line">  rxTotalByte             = 3243243264</div>
+<div class="line">  rxTxTotalByte           = 4294967295</div>
+<div class="line">  txGoodFrame             = 25337604</div>
+<div class="line">  txBucket3SizedFrame     = 65535</div>
+<div class="line">  txTotalByte             = 3445914144</div>
 </div><!-- fragment --><ul>
 <li>On Wireshark we can see the packets received:</li>
 </ul>
@@ -358,7 +318,7 @@ Sample output for Layer2 ICSSG example</h2>
 <img src="layer2_icssg_example_wireshark_log.png" alt=""/>
 <div class="caption">
 Wireshark log for Layer 2 ICSSG Example</div></div>
-<h1><a class="anchor" id="autotoc_md1338"></a>
+<h1><a class="anchor" id="autotoc_md1564"></a>
 See Also</h1>
 <p><a class="el" href="group__DRV__ENET__MODULE.html">APIs for Enet LLD</a> <a class="el" href="NETWORKING.html">Networking</a> </p>
 </div></div><!-- contents -->

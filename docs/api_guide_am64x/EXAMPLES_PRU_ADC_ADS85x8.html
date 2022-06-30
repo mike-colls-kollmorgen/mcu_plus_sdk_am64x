@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
-<title>AM64x MCU+ SDK: PRU ADC (ADS85x8)</title>
+<title>AM64x MCU+ SDK: ADS85x8</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -104,27 +104,23 @@ $(document).ready(function(){initNavTree('EXAMPLES_PRU_ADC_ADS85x8.html',''); in
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">PRU ADC (ADS85x8) </div>  </div>
+<div class="title">ADS85x8 </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1457">Introduction</a></li>
+<ul><li class="level1"><a href="#autotoc_md1695">Introduction</a></li>
 <li class="level1"><a href="#EXAMPLES_PRU_ADC_ADS85x8_DEMO_COMBOS">Supported Combinations</a></li>
-<li class="level1"><a href="#autotoc_md1458">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1459">Features</a></li>
+<li class="level1"><a href="#autotoc_md1696">Steps to Run the Example</a><ul><li class="level2"><a href="#autotoc_md1697">Features</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#EXAMPLES_PRU_ADC_ADS85X8_IMPORTANT_USAGE_GUIDELINES">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md1460">Important files and directory structure</a></li>
-<li class="level1"><a href="#autotoc_md1461">Sample Output</a></li>
-<li class="level1"><a href="#autotoc_md1462">Implementation Details</a><ul><ul><li class="level3"><a href="#autotoc_md1463">R5F Function:</a></li>
-<li class="level3"><a href="#autotoc_md1464">PRU Function:</a></li>
-</ul>
-</ul>
-</li>
+<li class="level1"><a href="#autotoc_md1698">Important files and directory structure</a></li>
+<li class="level1"><a href="#autotoc_md1699">Sample Output</a></li>
+<li class="level1"><a href="#autotoc_md1700">Implementation Details</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="md_examples_pru_io_adc"></a></p>
-<h1><a class="anchor" id="autotoc_md1457"></a>
+<div class="textblock"><p><a class="anchor" id="md_examples_pru_io_ads85x8"></a></p>
+<h1><a class="anchor" id="autotoc_md1695"></a>
 Introduction</h1>
 <p>This example uses ADC ICs from the below list to convert analog input signal on adc channels to samples and store the results in a shared memory which can be configured by the user (using <a class="el" href="DRIVERS_PRU_IPC.html">PRU IPC</a> module). The read samples are finally printed to the R5F console, or can also be visualized using CCS Graph plotter. GUI Composer app available on TI Gallery can also be used to evaluate the ADC using a GUI based interface.</p><ul>
 <li><a href="https://www.ti.com/product/ADS8598H">ADS8598H</a></li>
@@ -154,10 +150,10 @@ Supported Combinations</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Example folder  </td><td class="markdownTableBodyNone">examples/pru_io/adc/ads85x8/   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1458"></a>
+<h1><a class="anchor" id="autotoc_md1696"></a>
 Steps to Run the Example</h1>
 <ul>
-<li>Setup: Connect the ADC EVM to adapter board and connect the adapter board to AM64x GP EVM. When using "T&amp;M SEM Adapter Board", refer to <a class="el" href="EXAMPLES_PRU_ADC_ADS85x8.html#EXAMPLES_PRU_ADC_ADS85X8_IMPORTANT_USAGE_GUIDELINES">Important Usage Guidelines</a> for additional details.</li>
+<li>Setup: The ADC EVM is connected to AM64x/AM243x GP EVM using an Adapter Board inbetween. When using "T&amp;M SEM Adapter Board", refer to <a class="el" href="EXAMPLES_PRU_ADC_ADS85x8.html#EXAMPLES_PRU_ADC_ADS85X8_IMPORTANT_USAGE_GUIDELINES">Important Usage Guidelines</a> for additional details.</li>
 </ul>
 <p> <style>div.image img[src="AM64_adapter_adc_setup.png"]{width:20%}</style> </p><div class="image">
 <img src="AM64_adapter_adc_setup.png" alt=""/>
@@ -180,7 +176,7 @@ ADC SysConfig Options</div></div>
 </li>
 <li>Launch a CCS debug session and run the executable, see <a class="el" href="CCS_LAUNCH_PAGE.html">CCS Launch, Load and Run</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md1459"></a>
+<h2><a class="anchor" id="autotoc_md1697"></a>
 Features</h2>
 <p>Supported:</p>
 <ul>
@@ -195,20 +191,20 @@ Features</h2>
 </ul>
 <h1><a class="anchor" id="EXAMPLES_PRU_ADC_ADS85X8_IMPORTANT_USAGE_GUIDELINES"></a>
 Important Usage Guidelines</h1>
-<p>To evaluate ADS8598H use the <a href="https://www.ti.com/tool/ADS8588SEVM-PDK">ADS8588SEVM-PDK</a> but solder the ADS8598H part in place of ADS8588S. To connect the boards use T&amp;M SEM Adapter Board, and connect it with ADC EVM and <a href="https://www.ti.com/tool/TMDS64GPEVM">AM64x GP EVM</a></p>
+<p>To evaluate ADS8598H use the <a href="https://www.ti.com/tool/ADS8588SEVM-PDK">ADS8588SEVM-PDK</a> but solder the ADS8598H part in place of ADS8588S. To connect the boards use T&amp;M SEM Adapter Board, and connect it with ADC EVM and <a href="https://www.ti.com/tool/TMDS64GPEVM">AM64x/AM243x GP EVM</a></p>
 <ul>
-<li>When interfacing with T&amp;M SEM Adapter Board, AM64x GP EVM requires some hardware changes as mentioned:</li>
+<li>When interfacing with T&amp;M SEM Adapter Board (deprecated), AM64x/AM243x GP EVM requires some hardware changes as mentioned:</li>
 </ul>
 <p> <style>div.image img[src="am64x_hardware_changes_sem_board.png"]{width:50%}</style> </p><div class="image">
 <img src="am64x_hardware_changes_sem_board.png" alt=""/>
 <div class="caption">
-AM64x GP EVM Changes</div></div>
+AM64x/AM243x GP EVM Changes</div></div>
 <ul>
 <li>Make sure the J9 jumper on the adapter board is in "Parallel" mode for ADS85xx adcs for all modes of interface (serial, parallel or byte-parallel).</li>
 <li>From now on, T&amp;M SEM Adapter Board won't be available for purchase, and Schematics and other details about this board can be found at: <a href="../am64x_am243x/T_M_SEM_Adapter_Board_files.zip">T&amp;M SEM Adapter Board files</a></li>
-<li><a href="https://www.ti.com/tool/ADC-PHI-PRU-EVM">AM64x Adapter Board</a> will be mainly supported in future as this will be replacing the T&amp;M SEM Adapter Board once it becomes available in March 2022.</li>
+<li><a href="https://www.ti.com/tool/ADC-PHI-PRU-EVM">ADC-PHI-PRU-EVM Adapter Board</a> is supported from now on [orderable from May 2022]. Use of T&amp;M SEM Adapter Board is deprecated.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1460"></a>
+<h1><a class="anchor" id="autotoc_md1698"></a>
 Important files and directory structure</h1>
 <table class="doxtable">
 <tr>
@@ -220,7 +216,7 @@ Important files and directory structure</h1>
 <tr>
 <td>driver/ </td><td>PRU IPC source files for sending ADC samples from PRU to R5F  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md1461"></a>
+<h1><a class="anchor" id="autotoc_md1699"></a>
 Sample Output</h1>
 <p>Shown below is a sample output when the application is run:</p>
 <div class="fragment"><div class="line">--------------------------------------------------</div>
@@ -244,73 +240,9 @@ Sample Output</h1>
 <div class="line">Sample 2:  50304</div>
 <div class="line">Sample 3:  50304</div>
 <div class="line">Sample 4:  50304</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1462"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1700"></a>
 Implementation Details</h1>
-<p>The control of ADC pins is divided between PRU and R5F cores as shown:</p>
-<p> <style>div.image img[src="AM64x-ads85x8_interface.png"]{width:40%}</style> </p><div class="image">
-<img src="AM64x-ads85x8_interface.png" alt=""/>
-<div class="caption">
-PRU ADS85x8 Setup</div></div>
-<h3><a class="anchor" id="autotoc_md1463"></a>
-R5F Function:</h3>
-<ul>
-<li>Initialize ADC and PRU</li>
-<li>Send instructions to PRU core</li>
-<li>Wait for interrupt from PRU indicating 1 block of adc samples has been received</li>
-<li>On interrupt fetch the block id to read and read the samples</li>
-<li>Process them as needed</li>
-</ul>
-<div class="fragment"><div class="line">ADC_init();</div>
-<div class="line">ADC_powerUp();</div>
-<div class="line">ADC_reset();</div>
-<div class="line">ADC_startConversion();</div>
-<div class="line"> </div>
-<div class="line">/* Get ADC data from PRU */</div>
-<div class="line">PRU_IPC_getData(gPruIpc0Handle, samples);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md1464"></a>
-PRU Function:</h3>
-<ul>
-<li>Wait for commands from R5F and do accordingly While executing ADC interface section:</li>
-<li>Wait for ADC Busy to go low indicating conversion has completed</li>
-<li>Start reading samples from each ADC channel</li>
-<li>Preprocess samples as required</li>
-<li>Send samples to shared memory using ipc</li>
-<li>Repeat above steps again</li>
-</ul>
-<div class="fragment"><div class="line">START:</div>
-<div class="line">    ; Wait for Busy to go low indicating conversion has completed</div>
-<div class="line">    m_wait_high_pulse       4, 16</div>
-<div class="line">    ; Fetch and store channel 1-8 Sample</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_1</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_2</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_3</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_4</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_5</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_6</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_7</div>
-<div class="line">    m_parallel_read_packet   ADC_COMM_MODE, ADC_COMM_INTERFACE, ADC_COMM_DATAWIDTH, ADC_COMM_TRIG_PRD, ADC_DATA_REG_8</div>
-<div class="line"> </div>
-<div class="line">    ; Sign extend data to 32 bits</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_1</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_2</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_3</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_4</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_5</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_6</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_7</div>
-<div class="line">    m_sign_ext_32bit    ADC_DATA_REG_8</div>
-<div class="line"> </div>
-<div class="line">    ; Send samples to R5F</div>
-<div class="line">    ldi        R1.b0, &amp;R2</div>
-<div class="line">    m_pru_ipc_send  R1.b0, R2, R0.b0, PRU_IPC_RX_INTR_ENABLE, PRU_IPC_RX_EVENT</div>
-<div class="line"> </div>
-<div class="line">    ; Check if there is some instruction from R5F</div>
-<div class="line">    m_prgm_flow_jump_on_intr    0x16, 31, 5, TEMP_REG_1, IDLE, task_manager, sample_transfer, iep, main_loop</div>
-<div class="line"> </div>
-<div class="line">    qba    START ; loop</div>
-<div class="line">    halt</div>
-</div><!-- fragment --><dl class="section user"><dt></dt><dd>The current firmware does sign extension of 18bits data to 32 bits data. For ADCs with resolution 16 bits, replace the macro <code>m_sign_ext_32bit</code> in <code>examples/pru_io/adc/ads85x8/firmware/main.asm</code> with <code>m_sign_ext_16to32_bits</code>.</dd></dl>
-<p>Refer to <a href="../pru_macros_docs/index.html">PRU Source Macros Documentation</a> for making changes to PRU firmware. </p>
+<p>Refer here for complete implementation explanation: <a class="el" href="EXAMPLES_PRU_ADC_ADS85X8_DETAILS.html">ADS85x8 Implementation Details</a> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

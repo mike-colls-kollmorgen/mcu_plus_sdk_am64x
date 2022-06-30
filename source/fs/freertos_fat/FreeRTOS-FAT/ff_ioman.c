@@ -596,7 +596,7 @@ int32_t FF_BlockRead( FF_IOManager_t * pxIOManager,
                 FF_PendSemaphore( pxIOManager->pvSemaphore );
             }
 
-            slRetVal = pxIOManager->xBlkDevice.fnpReadBlocks( pxBuffer, ulSectorLBA, ulNumSectors, pxIOManager->xBlkDevice.pxDisk );
+            slRetVal = pxIOManager->xBlkDevice.fnpReadBlocks( (uint8_t *) pxBuffer, ulSectorLBA, ulNumSectors, pxIOManager->xBlkDevice.pxDisk );
 
             if( ( xSemLocked == pdFALSE ) &&
                 ( ( pxIOManager->ucFlags & FF_IOMAN_BLOCK_DEVICE_IS_REENTRANT ) == pdFALSE ) )
@@ -648,7 +648,7 @@ int32_t FF_BlockWrite( FF_IOManager_t * pxIOManager,
                 FF_PendSemaphore( pxIOManager->pvSemaphore );
             }
 
-            slRetVal = pxIOManager->xBlkDevice.fnpWriteBlocks( pxBuffer, ulSectorLBA, ulNumSectors, pxIOManager->xBlkDevice.pxDisk );
+            slRetVal = pxIOManager->xBlkDevice.fnpWriteBlocks( (uint8_t *) pxBuffer, ulSectorLBA, ulNumSectors, pxIOManager->xBlkDevice.pxDisk );
 
             if( ( xSemLocked == pdFALSE ) &&
                 ( ( pxIOManager->ucFlags & FF_IOMAN_BLOCK_DEVICE_IS_REENTRANT ) == pdFALSE ) )

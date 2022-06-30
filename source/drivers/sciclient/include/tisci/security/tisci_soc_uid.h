@@ -53,6 +53,12 @@
 #ifndef TISCI_SOC_UID_H_
 #define TISCI_SOC_UID_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Request to provide the SOC UID via TISCI_MSG_GET_SOC_UID
@@ -74,6 +80,11 @@ struct tisci_msg_get_soc_uid_resp {
     struct tisci_header    hdr;
     uint32_t            soc_uid[UID_LEN_WORDS];
 } __attribute__((__packed__));
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 /** @} */

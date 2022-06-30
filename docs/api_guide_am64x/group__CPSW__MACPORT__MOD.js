@@ -60,6 +60,12 @@ var group__CPSW__MACPORT__MOD =
       [ "macPort", "structCpswMacPort__EnableTsEventInArgs.html#a94da7916b5839608f0ccf9867f9acc08", null ],
       [ "tsEventCfg", "structCpswMacPort__EnableTsEventInArgs.html#a84fdb0f30d5c60d781203c13fcac1bd8", null ]
     ] ],
+    [ "CpswMacPort_EstTimestampCfg", "structCpswMacPort__EstTimestampCfg.html", [
+      [ "macPort", "structCpswMacPort__EstTimestampCfg.html#a0834d78e12f91c633215b4bbdcc7b848", null ],
+      [ "mode", "structCpswMacPort__EstTimestampCfg.html#a9326e5f75b12c942feb7f1771443a1bb", null ],
+      [ "priority", "structCpswMacPort__EstTimestampCfg.html#af0e0719ce83b5cf0fa4af08ee6aad3f5", null ],
+      [ "domain", "structCpswMacPort__EstTimestampCfg.html#a9dfefe4cb28d1d6a17d47c99d1236595", null ]
+    ] ],
     [ "CpswMacPort_Cfg", "structCpswMacPort__Cfg.html", [
       [ "loopbackEn", "structCpswMacPort__Cfg.html#a790b30fc14e792d4876f9d7a90f263a9", null ],
       [ "crcType", "structCpswMacPort__Cfg.html#a64577e1ab5deef710e6eb5b4421a66fd", null ],
@@ -70,10 +76,23 @@ var group__CPSW__MACPORT__MOD =
       [ "sgmiiMode", "structCpswMacPort__Cfg.html#a8126e409d5a8516ab6d25afbbb5f79db", null ]
     ] ],
     [ "CPSW_MACPORT_PUBLIC_IOCTL", "group__CPSW__MACPORT__MOD.html#gadae753a93d70b841e8eddb875ae848d8", null ],
+    [ "CPSW_MACPORT_EST_TIME_INTERVAL_MIN", "group__CPSW__MACPORT__MOD.html#gac9c5c76b0aea8dff605820b2d937fd4a", null ],
+    [ "CPSW_MACPORT_EST_TIME_INTERVAL_MAX", "group__CPSW__MACPORT__MOD.html#ga7280806f52a5e709b33da2553eef0166", null ],
+    [ "CPSW_MACPORT_EST_TIME_STEP_1G", "group__CPSW__MACPORT__MOD.html#ga27d8c394491153e153e42dd76c802958", null ],
+    [ "CPSW_MACPORT_EST_TIME_STEP_100M", "group__CPSW__MACPORT__MOD.html#ga2d043cdbbfd84800849c8d9b0a74b878", null ],
+    [ "CPSW_MACPORT_EST_TIME_STEP_10M", "group__CPSW__MACPORT__MOD.html#ga259889f3dd5e276e861fbd75d05b4a63", null ],
+    [ "CPSW_MACPORT_EST_TIME_MIN", "group__CPSW__MACPORT__MOD.html#ga2ef98baf8d908bc2481b71df41104d81", null ],
+    [ "CPSW_MACPORT_EST_TIME_MAX", "group__CPSW__MACPORT__MOD.html#gafc8ca272ffe736067aac1f901b990710", null ],
+    [ "CPSW_MACPORT_EST_ALLOWCNT_FACTOR_1G", "group__CPSW__MACPORT__MOD.html#ga59187aed99905d1fb5a43f4fdad66e2d", null ],
+    [ "CPSW_MACPORT_EST_ALLOWCNT_FACTOR_100M", "group__CPSW__MACPORT__MOD.html#ga9894ad0e452b0939ccef34bd39d4b7b6", null ],
+    [ "CPSW_MACPORT_EST_ALLOWCNT_FACTOR_10M", "group__CPSW__MACPORT__MOD.html#gab09b4d891b932e6c4c6546deade085e9", null ],
+    [ "CPSW_MACPORT_EST_GUARD_BAND", "group__CPSW__MACPORT__MOD.html#gaae5e9fdf93fa3f0ad3228cbeb496e83d", null ],
     [ "CpswMacPort_Ioctl", "group__CPSW__MACPORT__MOD.html#ga9f78d0e84102d48a7c5097bd27620d6f", [
       [ "CPSW_MACPORT_IOCTL_GET_FIFO_STATS", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6fa460a5db34b7568d06f7c0384f93a567a", null ],
       [ "CPSW_MACPORT_IOCTL_ENABLE_CPTS_EVENT", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6fae61513680ae3cea251da1b021512d5c4", null ],
-      [ "CPSW_MACPORT_IOCTL_DISABLE_CPTS_EVENT", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6fa34a3d1d6434d12e2ae073f2011297fbb", null ]
+      [ "CPSW_MACPORT_IOCTL_DISABLE_CPTS_EVENT", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6fa34a3d1d6434d12e2ae073f2011297fbb", null ],
+      [ "CPSW_MACPORT_IOCTL_EST_ENABLE_TIMESTAMP", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6fab182235fcc76e2ab7328ff1de0ca10a6", null ],
+      [ "CPSW_MACPORT_IOCTL_EST_DISABLE_TIMESTAMP", "group__CPSW__MACPORT__MOD.html#gga9f78d0e84102d48a7c5097bd27620d6faa68211d9809d6aa5fca41f07e3c3f97b", null ]
     ] ],
     [ "CpswMacPort_InterVlanRouteId", "group__CPSW__MACPORT__MOD.html#ga35edb69444ff2d14486527bf4b0a29f7", [
       [ "CPSW_MACPORT_INTERVLAN_ROUTEID_FIRST", "group__CPSW__MACPORT__MOD.html#gga35edb69444ff2d14486527bf4b0a29f7a385a00d4a67137ad3782fa68829c4fa3", null ],
@@ -82,6 +101,12 @@ var group__CPSW__MACPORT__MOD =
       [ "CPSW_MACPORT_INTERVLAN_ROUTEID_3", "group__CPSW__MACPORT__MOD.html#gga35edb69444ff2d14486527bf4b0a29f7ab4c36dc109fa445a7418ced5015e92fa", null ],
       [ "CPSW_MACPORT_INTERVLAN_ROUTEID_4", "group__CPSW__MACPORT__MOD.html#gga35edb69444ff2d14486527bf4b0a29f7a14ba789b3e9aa7d8d6bc62c9482ec990", null ],
       [ "CPSW_MACPORT_INTERVLAN_ROUTEID_LAST", "group__CPSW__MACPORT__MOD.html#gga35edb69444ff2d14486527bf4b0a29f7a5267201bf00bfeafa259ffcc79b69594", null ]
+    ] ],
+    [ "CpswMacPort_EstTimestampMode", "group__CPSW__MACPORT__MOD.html#ga9975e049d2db0ff20240055f9673566b", [
+      [ "CPSW_MACPORT_EST_TIMESTAMP_ALL", "group__CPSW__MACPORT__MOD.html#gga9975e049d2db0ff20240055f9673566bac87053d94c3cee86a57f3d5493c58b75", null ],
+      [ "CPSW_MACPORT_EST_TIMESTAMP_ONEPRI", "group__CPSW__MACPORT__MOD.html#gga9975e049d2db0ff20240055f9673566ba378d2ea8fc14f9daee8332d411df6952", null ],
+      [ "CPSW_MACPORT_EST_TIMESTAMP_FIRST", "group__CPSW__MACPORT__MOD.html#gga9975e049d2db0ff20240055f9673566bac42f409da5d24f406e3a152feb60c324", null ],
+      [ "CPSW_MACPORT_EST_TIMESTAMP_FIRST_ONEPRI", "group__CPSW__MACPORT__MOD.html#gga9975e049d2db0ff20240055f9673566baf3a4e41242b4dcb595ac99b1c7fc677e", null ]
     ] ],
     [ "CpswMacPort_initCfg", "group__CPSW__MACPORT__MOD.html#ga0840800cbfc598300796592a959e0577", null ]
 ];

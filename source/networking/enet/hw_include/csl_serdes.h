@@ -44,6 +44,12 @@
 #ifndef CSL_SERDES_H_
 #define CSL_SERDES_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 #include <drivers/hw_include/tistdtypes.h>
 
@@ -57,6 +63,11 @@
 #include <serdes_cd/V2/csl_serdes3.h>
 #else
 #include <ti/csl/src/ip/serdes_sb/V0/csl_serdes2.h>
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* CSL_SERDES_H_ */

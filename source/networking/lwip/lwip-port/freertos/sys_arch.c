@@ -218,7 +218,7 @@ sys_mutex_lock(sys_mutex_t *mutex)
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
   LWIP_ASSERT("mutex->mut != NULL", mutex->mut != NULL);
 
-  ret = xSemaphoreTakeRecursive(mutex->mut, portMAX_DELAY);
+  ret = xSemaphoreTakeRecursive((QueueHandle_t) mutex->mut, portMAX_DELAY);
   LWIP_ASSERT("failed to take the mutex", ret == pdTRUE);
 }
 
@@ -229,7 +229,7 @@ sys_mutex_unlock(sys_mutex_t *mutex)
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
   LWIP_ASSERT("mutex->mut != NULL", mutex->mut != NULL);
 
-  ret = xSemaphoreGiveRecursive(mutex->mut);
+  ret = xSemaphoreGiveRecursive((QueueHandle_t) mutex->mut);
   LWIP_ASSERT("failed to give the mutex", ret == pdTRUE);
 }
 
@@ -289,11 +289,11 @@ sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout_ms)
 
   if(!timeout_ms) {
     /* wait infinite */
-    ret = xSemaphoreTake(sem->sem, portMAX_DELAY);
+    ret = xSemaphoreTake((QueueHandle_t) sem->sem, portMAX_DELAY);
     LWIP_ASSERT("taking semaphore failed", ret == pdTRUE);
   } else {
     TickType_t timeout_ticks = timeout_ms / portTICK_RATE_MS;
-    ret = xSemaphoreTake(sem->sem, timeout_ticks);
+    ret = xSemaphoreTake((QueueHandle_t) sem->sem, timeout_ticks);
     if (ret == errQUEUE_EMPTY) {
       /* timed out */
       return SYS_ARCH_TIMEOUT;
@@ -340,7 +340,7 @@ sys_mbox_post(sys_mbox_t *mbox, void *msg)
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
 
-  ret = xQueueSendToBack(mbox->mbx, &msg, portMAX_DELAY);
+  ret = xQueueSendToBack((QueueHandle_t) mbox->mbx, &msg, portMAX_DELAY);
   LWIP_ASSERT("mbox post failed", ret == pdTRUE);
 }
 
@@ -351,7 +351,7 @@ sys_mbox_trypost(sys_mbox_t *mbox, void *msg)
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
 
-  ret = xQueueSendToBack(mbox->mbx, &msg, 0);
+  ret = xQueueSendToBack((QueueHandle_t) mbox->mbx, &msg, 0);
   if (ret == pdTRUE) {
     return ERR_OK;
   } else {
@@ -369,7 +369,7 @@ sys_mbox_trypost_fromisr(sys_mbox_t *mbox, void *msg)
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
 
-  ret = xQueueSendToBackFromISR(mbox->mbx, &msg, &xHigherPriorityTaskWoken);
+  ret = xQueueSendToBackFromISR((QueueHandle_t) mbox->mbx, &msg, &xHigherPriorityTaskWoken);
   if (ret == pdTRUE) {
     if (xHigherPriorityTaskWoken == pdTRUE) {
       return ERR_NEED_SCHED;
@@ -396,11 +396,11 @@ sys_arch_mbox_fetch(sys_mbox_t *mbox, void **msg, u32_t timeout_ms)
 
   if (!timeout_ms) {
     /* wait infinite */
-    ret = xQueueReceive(mbox->mbx, &(*msg), portMAX_DELAY);
+    ret = xQueueReceive((QueueHandle_t) mbox->mbx, &(*msg), portMAX_DELAY);
     LWIP_ASSERT("mbox fetch failed", ret == pdTRUE);
   } else {
     TickType_t timeout_ticks = timeout_ms / portTICK_RATE_MS;
-    ret = xQueueReceive(mbox->mbx, &(*msg), timeout_ticks);
+    ret = xQueueReceive((QueueHandle_t) mbox->mbx, &(*msg), timeout_ticks);
     if (ret == errQUEUE_EMPTY) {
       /* timed out */
       *msg = NULL;
@@ -427,7 +427,7 @@ sys_arch_mbox_tryfetch(sys_mbox_t *mbox, void **msg)
     msg = &msg_dummy;
   }
 
-  ret = xQueueReceive(mbox->mbx, &(*msg), 0);
+  ret = xQueueReceive((QueueHandle_t) mbox->mbx, &(*msg), 0);
   if (ret == errQUEUE_EMPTY) {
     *msg = NULL;
     return SYS_MBOX_EMPTY;
@@ -448,7 +448,7 @@ sys_mbox_free(sys_mbox_t *mbox)
 
 #if LWIP_FREERTOS_CHECK_QUEUE_EMPTY_ON_FREE
   {
-    UBaseType_t msgs_waiting = uxQueueMessagesWaiting(mbox->mbx);
+    UBaseType_t msgs_waiting = uxQueueMessagesWaiting((QueueHandle_t) mbox->mbx);
     LWIP_ASSERT("mbox quence not empty", msgs_waiting == 0);
 
     if (msgs_waiting != 0) {
@@ -457,7 +457,7 @@ sys_mbox_free(sys_mbox_t *mbox)
   }
 #endif
 
-  vQueueDelete(mbox->mbx);
+  vQueueDelete((QueueHandle_t) mbox->mbx);
 
   SYS_STATS_DEC(mbox.used);
 }

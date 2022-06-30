@@ -1,6 +1,3 @@
-/*
- * Auto generated file - DO NOT MODIFY
- */
 
 --stack_size=16384
 --heap_size=32768

@@ -61,3 +61,19 @@
  *  \brief NO-RTOS portable header file for FreeRTOS includes in FreeRTOS+FAT module.
  *
  */
+
+#ifndef PORTABLE_H_
+#define PORTABLE_H_
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* PORTABLE_H_ */

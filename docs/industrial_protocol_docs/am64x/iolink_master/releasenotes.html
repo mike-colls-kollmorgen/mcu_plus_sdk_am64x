@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">IO-Link Master
-   &#160;<span id="projectnumber">1.06.00</span>
+   &#160;<span id="projectnumber">1.07.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -128,6 +128,49 @@ Redistributions in binary form must reproduce the above copyright notice, this l
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
 </ol>
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h1><a class="anchor" id="version_release10700"></a>
+Release Version 1.07.00</h1>
+<p><b>New Features:</b></p>
+<dl>
+</dl>
+<ul>
+<li>
+<p class="startli">[IOL8M-195] Test on AM243x EVM <br  />
+ AM243x EVM example has been successfully tested on AM243x EVM hardware. <br  />
+ </p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli">[IOL8M-958] 400 &micro;s Cycle Time <br  />
+ Adjusted the IO-Link master to support IO-Link devices with a 400 &micro;s cycle time. <br  />
+ Currently, only one device with a 400 &micro;s cycle time can be guaranteed; further <br  />
+ testing will be required to verify that more than one device with a cycle time of <br  />
+ 400 &micro;s can be supported. <br  />
+ </p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli">[IMS-35] Wrong error code (IoLError_ServiceTempUnavailable) <br  />
+ When the port was correctly configured to output, the stack generated an incorrect <br  />
+ error code (IoLError_ServiceTempUnavailable). The corrected code is now <br  />
+ generated: IOLM_SMI_ePortStatus_DO_DQ. <br  />
+ </p>
+<p class="endli"></p>
+</li>
+</ul>
+<h1><a class="anchor" id="version_release10601"></a>
+Release Version 1.06.01</h1>
+<p><b>New Features:</b></p>
+<dl>
+</dl>
+<ul>
+<li>
+<p class="startli">[IOL8M-856] Reduced start-up time <br  />
+ Removed testing artefacts. <br  />
+ </p>
+<p class="endli"></p>
+</li>
+</ul>
 <h1><a class="anchor" id="version_release10600"></a>
 Release Version 1.06.00</h1>
 <p><b>New Features:</b></p>

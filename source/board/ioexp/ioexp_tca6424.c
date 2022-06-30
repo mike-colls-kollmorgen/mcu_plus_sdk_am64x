@@ -107,11 +107,9 @@ int32_t TCA6424_open(TCA6424_Config *config, const TCA6424_Params *params)
 
 void TCA6424_close(TCA6424_Config *config)
 {
-    int32_t         status = SystemP_SUCCESS;
 
     if(NULL == config)
     {
-        status = SystemP_FAILURE;
     }
     else
     {

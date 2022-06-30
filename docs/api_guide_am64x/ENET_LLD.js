@@ -3,9 +3,9 @@ var ENET_LLD =
     [ "Enet LLD Introduction", "enetlld_top.html", [
       [ "Introduction", "enetlld_top.html#enetlld_intro", null ],
       [ "Application Programming Interface", "enetlld_top.html#enetlld_api_overview", [
-        [ "Control path API", "enetlld_top.html#autotoc_md865", null ],
-        [ "Data path (DMA) API", "enetlld_top.html#autotoc_md866", null ],
-        [ "Life cycle of an Enet LLD based application", "enetlld_top.html#autotoc_md867", null ]
+        [ "Control path API", "enetlld_top.html#autotoc_md949", null ],
+        [ "Data path (DMA) API", "enetlld_top.html#autotoc_md950", null ],
+        [ "Life cycle of an Enet LLD based application", "enetlld_top.html#autotoc_md951", null ]
       ] ],
       [ "Enet Peripherals", "enetlld_top.html#enetlld_enetpers", [
         [ "CPSW Peripheral", "enetlld_top.html#enetper_cpsw", null ],
@@ -52,8 +52,8 @@ var ENET_LLD =
         [ "Init Sequence", "enet_integration_guide_top.html#enet_init_sequence", null ],
         [ "Peripheral Open Sequence", "enet_integration_guide_top.html#enet_open_sequence", null ],
         [ "Port Open Sequence", "enet_integration_guide_top.html#enet_openport_sequence", [
-          [ "MAC-PHY link", "enet_integration_guide_top.html#autotoc_md868", null ],
-          [ "MAC-to-MAC link", "enet_integration_guide_top.html#autotoc_md869", null ]
+          [ "MAC-PHY link", "enet_integration_guide_top.html#autotoc_md952", null ],
+          [ "MAC-to-MAC link", "enet_integration_guide_top.html#autotoc_md953", null ]
         ] ],
         [ "Packet Send/Receive Sequence", "enet_integration_guide_top.html#enet_pktrxtx_sequence", null ],
         [ "IOCTL Sequence", "enet_integration_guide_top.html#enet_ioctl_sequence", null ],
@@ -62,5 +62,13 @@ var ENET_LLD =
         [ "Deinit Sequence", "enet_integration_guide_top.html#enet_deinit_sequence", null ],
         [ "Peripheral-specific", "enet_integration_guide_top.html#enetper_specific_handling", null ]
       ] ]
+    ] ],
+    [ "Enet EST/TAS Support", "enet_tas_top.html", [
+      [ "Introduction", "enet_tas_top.html#enet_est_intro", [
+        [ "IEEE 802.1Qbv EST/TAS", "enet_tas_top.html#enet_est_intro_est_tas", null ],
+        [ "Guard band", "enet_tas_top.html#enet_est_intro_guard_band", null ]
+      ] ],
+      [ "Enet LLD API", "enet_tas_top.html#enet_est_api", null ],
+      [ "CPSW Support", "enet_tas_top.html#enet_est_cpsw", null ]
     ] ]
 ];

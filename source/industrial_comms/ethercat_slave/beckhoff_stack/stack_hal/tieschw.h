@@ -33,6 +33,12 @@
 #ifndef _TIESCHW_H_
 #define _TIESCHW_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -388,5 +394,10 @@ PROTO void PDI_Swi(void);
 /* ========================================================================== */
 
 extern PRUICSS_Handle pruIcss1Handle;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_TIESCHW_H_

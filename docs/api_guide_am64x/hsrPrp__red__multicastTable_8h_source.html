@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -111,32 +111,43 @@ $(document).ready(function(){initNavTree('hsrPrp__red__multicastTable_8h_source.
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef RED_MULTICASTTABLE_H_</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define RED_MULTICASTTABLE_H_</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a>&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/*                             Include Files                                  */</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#ab1cfe71f9f88bb7d34655aa874ef1b92">   61</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#ab1cfe71f9f88bb7d34655aa874ef1b92">hsrPrp_multicast_filter_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        uint8_t command);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#a8b006f058ddc2ea3c3a60ed27df78d70">   76</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#a8b006f058ddc2ea3c3a60ed27df78d70">hsrPrp_multicast_filter_update_macid</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        pruicssHandle,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        uint8_t *multicastAddr, uint8_t command);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#af46c72ff0c761c9e79a6d88bd313cf95">   89</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#af46c72ff0c761c9e79a6d88bd313cf95">hsrPrp_multicast_filter_override_hashmask</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        pruicssHandle,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        uint8_t *mask);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_MULTICASTTABLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a>&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">/*                          Function Declarations                             */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">/* ========================================================================== */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#ab1cfe71f9f88bb7d34655aa874ef1b92">   67</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#ab1cfe71f9f88bb7d34655aa874ef1b92">hsrPrp_multicast_filter_config</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a> pruicssHandle,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        uint8_t command);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#a8b006f058ddc2ea3c3a60ed27df78d70">   82</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#a8b006f058ddc2ea3c3a60ed27df78d70">hsrPrp_multicast_filter_update_macid</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        pruicssHandle,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        uint8_t *multicastAddr, uint8_t command);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="hsrPrp__red__multicastTable_8h.html#af46c72ff0c761c9e79a6d88bd313cf95">   95</a></span>&#160;<a class="code" href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a> <a class="code" href="hsrPrp__red__multicastTable_8h.html#af46c72ff0c761c9e79a6d88bd313cf95">hsrPrp_multicast_filter_override_hashmask</a>(<a class="code" href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        pruicssHandle,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        uint8_t *mask);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RED_MULTICASTTABLE_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="ahsrPrp__red__multicastTable_8h_html_af46c72ff0c761c9e79a6d88bd313cf95"><div class="ttname"><a href="hsrPrp__red__multicastTable_8h.html#af46c72ff0c761c9e79a6d88bd313cf95">hsrPrp_multicast_filter_override_hashmask</a></div><div class="ttdeci">RED_STATUS hsrPrp_multicast_filter_override_hashmask(PRUICSS_Handle pruicssHandle, uint8_t *mask)</div><div class="ttdoc">configure the mask</div></div>
 <div class="ttc" id="ahsrPrp__red__common_8h_html"><div class="ttname"><a href="hsrPrp__red__common_8h.html">hsrPrp_red_common.h</a></div><div class="ttdoc">Commonly used Macros, structures and Offsets.</div></div>
-<div class="ttc" id="ahsrPrp__red__common_8h_html_a8aa64482bce36e6a488d046eb834dcac"><div class="ttname"><a href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a></div><div class="ttdeci">RED_STATUS</div><div class="ttdoc">RED Status.</div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:524</div></div>
+<div class="ttc" id="ahsrPrp__red__common_8h_html_a8aa64482bce36e6a488d046eb834dcac"><div class="ttname"><a href="hsrPrp__red__common_8h.html#a8aa64482bce36e6a488d046eb834dcac">RED_STATUS</a></div><div class="ttdeci">RED_STATUS</div><div class="ttdoc">RED Status.</div><div class="ttdef"><b>Definition:</b> hsrPrp_red_common.h:530</div></div>
 <div class="ttc" id="ahsrPrp__red__multicastTable_8h_html_ab1cfe71f9f88bb7d34655aa874ef1b92"><div class="ttname"><a href="hsrPrp__red__multicastTable_8h.html#ab1cfe71f9f88bb7d34655aa874ef1b92">hsrPrp_multicast_filter_config</a></div><div class="ttdeci">RED_STATUS hsrPrp_multicast_filter_config(PRUICSS_Handle pruicssHandle, uint8_t command)</div><div class="ttdoc">set the M_MULTICAST_TABLE_SEARCH_OP_CONTROL_BIT to enable/disable multicast filtering</div></div>
 <div class="ttc" id="ahsrPrp__red__multicastTable_8h_html_a8b006f058ddc2ea3c3a60ed27df78d70"><div class="ttname"><a href="hsrPrp__red__multicastTable_8h.html#a8b006f058ddc2ea3c3a60ed27df78d70">hsrPrp_multicast_filter_update_macid</a></div><div class="ttdeci">RED_STATUS hsrPrp_multicast_filter_update_macid(PRUICSS_Handle pruicssHandle, uint8_t *multicastAddr, uint8_t command)</div><div class="ttdoc">insert/delete a multicast MAC ID in the multicast filter table</div></div>
 <div class="ttc" id="agroup__DRV__PRUICSS__MODULE_html_gafdf3be241ef82d4dd736032e9020f163"><div class="ttname"><a href="group__DRV__PRUICSS__MODULE.html#gafdf3be241ef82d4dd736032e9020f163">PRUICSS_Handle</a></div><div class="ttdeci">struct PRUICSS_Config_s * PRUICSS_Handle</div><div class="ttdoc">A handle that is returned from a PRUICSS_open() call. This handle is required for calling other APIs.</div><div class="ttdef"><b>Definition:</b> pruicss/g_v0/pruicss.h:234</div></div>

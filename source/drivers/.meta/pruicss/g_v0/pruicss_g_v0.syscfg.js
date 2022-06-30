@@ -98,14 +98,20 @@ let pruicss_top_module = {
                     name: 333333333,
                 },
             ],
+            onChange: (inst, ui) => {
+                if(inst.iepSyncMode)
+                    inst.iepClk = inst.coreClk;
+            },
         },
         {
             name: "iepSyncMode",
             displayName: "SYNC MODE",
             longDescription: "In this mode the async IEP bridge is bypassed and the source of IEP CLK is ICSSGn_CORE_CLK. This means all PRU-ICSSG IOs which use internal IEP clock will use internal core clock.",
-            default: true,
+            default: false,
             onChange: (inst, ui) => {
-                ui.iepClk.hidden = inst.iepSyncMode;
+                ui.iepClk.readOnly = inst.iepSyncMode;
+                if(inst.iepSyncMode)
+                    inst.iepClk = inst.coreClk;
             },
         },
         {
@@ -132,7 +138,6 @@ let pruicss_top_module = {
                     name: 500*1000000,
                 },
             ],
-            hidden: true,
         }
     ],
     validate: validate,
@@ -150,7 +155,7 @@ function validate(inst, report) {
 function moduleInstances(instance) {
     let device = common.getDeviceName();
     let modInstances = new Array();
-    if((device === "am64x-evm") || (device === "am243x-evm"))
+    if((device === "am64x-evm") || (device === "am243x-evm") || (device === "am243x-lp"))
     {
          modInstances.push({
              name: "AdditionalICSSSettings",

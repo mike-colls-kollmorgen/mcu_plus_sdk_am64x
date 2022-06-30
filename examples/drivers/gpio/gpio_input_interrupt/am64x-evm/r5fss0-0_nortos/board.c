@@ -77,19 +77,42 @@ static void Sciclient_gpioIrqSet(void)
     struct tisci_msg_rm_irq_set_req     rmIrqReq;
     struct tisci_msg_rm_irq_set_resp    rmIrqResp;
 
-    rmIrqReq.valid_params           = 0U;
+    /* For setting the IRQ for GPIO using sciclient APIs, we need to populate
+     * a structure, tisci_msg_rm_irq_set_req instantiated above. The definition
+     * of this struct and details regarding the struct members can be found in 
+     * the tisci_rm_irq.h.
+     */
+    /* Initialize all flags to zero since we'll be setting only a few */
+    rmIrqReq.valid_params           = 0U; 
+    /* Our request has a destination id, so enable the flag for DST ID */
     rmIrqReq.valid_params          |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
+    /* DST HOST IRQ is the output index of the interrupt router. We need to make sure this is also enabled as a valid param */
     rmIrqReq.valid_params          |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
+    /* This is not a global event */
     rmIrqReq.global_event           = 0U;
+    /* Our interrupt source would be the GPIO peripheral. The source id has to be a device id recognizable by the SYSFW.
+     * The list of device IDs can be found in tisci_devices.h file under source/drivers/sciclient/include/tisci/am64x_am243x/.
+     * In GPIO case there are 3 possible options - TISCI_DEV_GPIO0, TISCI_DEV_GPIO1, TISCI_DEV_MCU_GPIO0. For input interrupt,
+     * we need to choose the TISCI_DEV_GPIO1
+     */
     rmIrqReq.src_id                 = TISCI_DEV_GPIO1;
+    /* This is the interrupt source index within the GPIO peripheral */
     rmIrqReq.src_index              = TISCI_BANK_SRC_IDX_BASE_GPIO1 + GPIO_GET_BANK_INDEX(GPIO_PUSH_BUTTON_PIN);
+    /* This is the destination of the interrupt, usually a CPU core. Here we choose the TISCI device ID for R5F0-0 core.
+     * For a different core, the corresponding TISCI device id has to be provided */
     rmIrqReq.dst_id                 = TISCI_DEV_R5FSS0_CORE0;
+    /* This is the output index of the interrupt router. This depends on the core and board configuration */
     rmIrqReq.dst_host_irq           = Board_getGpioButtonIntrNum();
+    /* Rest of the struct members are unused for GPIO interrupt */
     rmIrqReq.ia_id                  = 0U;
     rmIrqReq.vint                   = 0U;
     rmIrqReq.vint_status_bit_index  = 0U;
     rmIrqReq.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
 
+    /* To set the interrupt we now invoke the Sciclient_rmIrqSet function which
+     * will find out the route to configure the interrupt and request DMSC to
+     * grant the resource
+     */
     retVal = Sciclient_rmIrqSet(&rmIrqReq, &rmIrqResp, SystemP_WAIT_FOREVER);
     if(0 != retVal)
     {
@@ -104,20 +127,42 @@ static void Sciclient_gpioIrqRelease(void)
 {
     int32_t                             retVal;
     struct tisci_msg_rm_irq_release_req rmIrqReq;
-
+    /* For releasing the IRQ for GPIO using sciclient APIs, we need to populate
+     * a structure, tisci_msg_rm_irq_release_req instantiated above. The definition
+     * of this struct and details regarding the struct members can be found in 
+     * the tisci_rm_irq.h. These are similar to the struct members for the set request
+     * used above.
+     */
+    /* Initialize all flags to zero since we'll be setting only a few */
     rmIrqReq.valid_params           = 0U;
+    /* Our request has a destination id, so enable the flag for DST ID */
     rmIrqReq.valid_params          |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
+    /* DST HOST IRQ is the output index of the interrupt router. We need to make sure this is also enabled as a valid param */
     rmIrqReq.valid_params          |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
+    /* This is not a global event */
     rmIrqReq.global_event           = 0U;
+    /* Our interrupt source would be the GPIO peripheral. The source id has to be a device id recognizable by the SYSFW.
+     * The list of device IDs can be found in tisci_devices.h file under source/drivers/sciclient/include/tisci/am64x_am243x/.
+     * In GPIO case there are 3 possible options - TISCI_DEV_GPIO0, TISCI_DEV_GPIO1, TISCI_DEV_MCU_GPIO0. For input interrupt,
+     * we need to choose the TISCI_DEV_GPIO1
+     */
     rmIrqReq.src_id                 = TISCI_DEV_GPIO1;
+    /* This is the interrupt source index within the GPIO peripheral */
     rmIrqReq.src_index              = TISCI_BANK_SRC_IDX_BASE_GPIO1 + GPIO_GET_BANK_INDEX(GPIO_PUSH_BUTTON_PIN);
+    /* This is the destination of the interrupt, usually a CPU core. Here we choose the TISCI device ID for R5F0-0 core.
+     * For a different core, the corresponding TISCI device id has to be provided */
     rmIrqReq.dst_id                 = TISCI_DEV_R5FSS0_CORE0;
+    /* This is the output index of the interrupt router. This depends on the core and board configuration */
     rmIrqReq.dst_host_irq           = Board_getGpioButtonIntrNum();
+    /* Rest of the struct members are unused for GPIO interrupt */
     rmIrqReq.ia_id                  = 0U;
     rmIrqReq.vint                   = 0U;
     rmIrqReq.vint_status_bit_index  = 0U;
     rmIrqReq.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
 
+    /* To set the interrupt we now invoke the Sciclient_rmIrqRelease function which
+     * will find specifics about the route and request DMSC/SYSFW to relase/clear the interrupt
+     */
     retVal = Sciclient_rmIrqRelease(&rmIrqReq, SystemP_WAIT_FOREVER);
     if(0 != retVal)
     {

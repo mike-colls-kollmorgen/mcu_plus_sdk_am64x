@@ -378,7 +378,7 @@ int32_t PN_delPmList(PN_Handle pnHandle, t_rtcPacket *pmPkt)
         nullPkt.frameId = 0;
         nullPkt.frameOffset = 0;
         nullPkt.length = 0;
-        nullPkt.pBuffer = (void *)0xFFFFFFFF;
+        nullPkt.pBuffer = (t_rtcMemBuff *)0xFFFFFFFF;
 
         /* just clear the descriptor used previously*/
         if(PN_writeCpmDesc(pnHandle, &nullPkt, index) < 0)

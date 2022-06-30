@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,26 +108,26 @@ $(document).ready(function(){initNavTree('KERNEL_DPL_CYCLE_COUNTER_PAGE.html',''
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md439">Features Supported</a></li>
-<li class="level1"><a href="#autotoc_md440">Features NOT Supported</a></li>
-<li class="level1"><a href="#autotoc_md441">Important Usage Guidelines</a></li>
-<li class="level1"><a href="#autotoc_md442">Example Usage</a></li>
-<li class="level1"><a href="#autotoc_md443">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md500">Features Supported</a></li>
+<li class="level1"><a href="#autotoc_md501">Features NOT Supported</a></li>
+<li class="level1"><a href="#autotoc_md502">Important Usage Guidelines</a></li>
+<li class="level1"><a href="#autotoc_md503">Example Usage</a></li>
+<li class="level1"><a href="#autotoc_md504">API</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_kernel_dpl_CycleCountP"></a></p>
-<h1><a class="anchor" id="autotoc_md439"></a>
+<h1><a class="anchor" id="autotoc_md500"></a>
 Features Supported</h1>
 <ul>
 <li>API to return CPU cycles executed so far</li>
 <li>API to reset the CPU cycle counter</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md440"></a>
+<h1><a class="anchor" id="autotoc_md501"></a>
 Features NOT Supported</h1>
 <ul>
 <li>Additional event counters in the CPU are not supported via this API. Refer to CPU architecture specific technical and architecture reference manuals, to access additional CPU architecture specific counter features.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md441"></a>
+<h1><a class="anchor" id="autotoc_md502"></a>
 Important Usage Guidelines</h1>
 <ul>
 <li>Make sure to call <a class="el" href="group__KERNEL__DPL__CYCLE__COUNTER.html#ga12544e8e8cedd5547c1e1ae418b9ba8f" title="Enable, reset, clear overflow for CPU cycle counter.">CycleCounterP_reset()</a> to enable and reset the CPU cycle counter before using it</li>
@@ -135,7 +135,7 @@ Important Usage Guidelines</h1>
 <li>Application can have logic to handle one wraparound of the counter, as shown in the example usage below. i.e max time duration that can be measured will be limited to 0xFFFFFFFF CPU cycles, i.e few seconds only.</li>
 <li>This API is meant to used for very fine, short duration measurements. To measure longer durations use <a class="el" href="group__KERNEL__DPL__CLOCK.html#ga7e8e4791754ece82b27b152d754638ca">ClockP_getTimeUsec()</a> from <a class="el" href="KERNEL_DPL_CLOCK_PAGE.html">Clock</a> module.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md442"></a>
+<h1><a class="anchor" id="autotoc_md503"></a>
 Example Usage</h1>
 <p>Include the below file to access the APIs, </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="CycleCounterP_8h.html">kernel/dpl/CycleCounterP.h</a>&gt;</span></div>
 </div><!-- fragment --><p> Example usage for counting CPU cycles, </p><div class="fragment"><div class="line">        uint32_t cycleCountBefore, cycleCountAfter, cpuCycles;</div>
@@ -163,7 +163,7 @@ Example Usage</h1>
 <div class="line">        {</div>
 <div class="line">            cpuCycles = (0xFFFFFFFFU - cycleCountBefore) + cycleCountAfter;</div>
 <div class="line">        }</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md443"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md504"></a>
 API</h1>
 <p><a class="el" href="group__KERNEL__DPL__CYCLE__COUNTER.html">APIs for Counting CPU Cycles</a> </p>
 </div></div><!-- contents -->

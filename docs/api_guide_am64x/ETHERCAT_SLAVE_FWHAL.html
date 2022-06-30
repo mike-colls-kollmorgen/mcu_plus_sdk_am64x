@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,25 +108,30 @@ $(document).ready(function(){initNavTree('ETHERCAT_SLAVE_FWHAL.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md707">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md708">SysConfig Features</a></li>
-<li class="level1"><a href="#autotoc_md709">PRU-ICSS EtherCAT Slave Firmware</a><ul><li class="level2"><a href="#autotoc_md710">Features Supported</a></li>
-<li class="level2"><a href="#autotoc_md711">Features Not Supported</a></li>
-<li class="level2"><a href="#autotoc_md712">Known Issues</a></li>
+<ul><li class="level1"><a href="#autotoc_md790">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md791">SysConfig Features</a></li>
+<li class="level1"><a href="#autotoc_md792">PRU-ICSS EtherCAT Slave Firmware</a><ul><li class="level2"><a href="#autotoc_md793">Features Supported</a><ul><li class="level3"><a href="#autotoc_md794">Release Notes</a><ul><li class="level4"><a href="#autotoc_md795">MCU+ SDK Version 08.03.00</a></li>
+<li class="level4"><a href="#autotoc_md796">MCU+ SDK Version 08.02.00</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md713">Important Files and Directory Structure</a></li>
-<li class="level1"><a href="#autotoc_md714">API Documentation</a></li>
-<li class="level1"><a href="#autotoc_md715">Procedure to kick-off the EtherCAT Slave Controller(ESC)</a></li>
-<li class="level1"><a href="#autotoc_md716">Interrupts</a></li>
-<li class="level1"><a href="#autotoc_md717">EtherCAT Slave Controller(ESC) Register List</a></li>
-<li class="level1"><a href="#autotoc_md718">EtherCAT Slave Controller(ESC) Exceptions</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md797">Features Not Supported</a></li>
+<li class="level2"><a href="#autotoc_md798">Known Issues</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md799">Important Files and Directory Structure</a></li>
+<li class="level1"><a href="#autotoc_md800">API Documentation</a></li>
+<li class="level1"><a href="#autotoc_md801">Procedure to kick-off the EtherCAT Slave Controller(ESC)</a></li>
+<li class="level1"><a href="#autotoc_md802">Interrupts</a></li>
+<li class="level1"><a href="#autotoc_md803">EtherCAT Slave Controller(ESC) Register List</a></li>
+<li class="level1"><a href="#autotoc_md804">EtherCAT Slave Controller(ESC) Exceptions</a></li>
 <li class="level1"><a href="#ETHERCAT_SLAVE_ADDITIONAL_REFERENCES">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md719">See also</a></li>
+<li class="level1"><a href="#autotoc_md805">See also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_industrial_comms_ethercat_slave"></a></p>
-<h1><a class="anchor" id="autotoc_md707"></a>
+<h1><a class="anchor" id="autotoc_md790"></a>
 Introduction</h1>
 <p>This software is designed for the TI SoCs with PRU-ICSS IP to enable customers add EtherCAT Slave protocol support to their system. It implements EtherCAT Slave Controller(ESC) Layer 2 functionality with two MII ports (one IN and one OUT port per PRU-ICSS) in accordance with ETG.1000.4 Data Link Layer protocol specification. This provides EtherCAT ASIC like functionality integrated into TI SoCs.</p>
 <div class="image">
@@ -134,7 +139,7 @@ Introduction</h1>
 <div class="caption">
 Software Architecture</div></div>
 <p>EtherCAT firmware for PRU-ICSS is a black box product maintained by TI. EtherCAT Slave FWHAL(Firmware and Hardware Abstraction Layer) allows loading and running the EtherCAT firmware and acts as an interface with ESC firmware. FWHAL implements the key interface between EtherCAT Slave Controller Emulation firmware and EtherCAT stack.</p>
-<h1><a class="anchor" id="autotoc_md708"></a>
+<h1><a class="anchor" id="autotoc_md791"></a>
 SysConfig Features</h1>
 <dl class="section note"><dt>Note</dt><dd>It is strongly recommend to use SysConfig where it is available instead of using direct SW API calls. This will help simplify the SW application and also catch common mistakes early in the development cycle.</dd></dl>
 <p>SysConfig can be used to configure things mentioned below:</p><ul>
@@ -142,9 +147,9 @@ SysConfig Features</h1>
 <li>Configuring PINMUX needed for MII mode</li>
 <li>Configuring ETHPHY for the two PHY ports of PRU-ICSS</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md709"></a>
+<h1><a class="anchor" id="autotoc_md792"></a>
 PRU-ICSS EtherCAT Slave Firmware</h1>
-<h2><a class="anchor" id="autotoc_md710"></a>
+<h2><a class="anchor" id="autotoc_md793"></a>
 Features Supported</h2>
 <ul>
 <li>All EtherCAT Commands (NOP, APRD, APWR, APRW, FPRD, FPWR, FPRW, BRD, BWR, BRW, LRD, LWR, LRW, ARMW and FRMW)</li>
@@ -181,14 +186,31 @@ Features Supported</h2>
 <li>Management Interface for PHY over EtherCAT</li>
 <li>PHY address configuration and host side API for PHY programming</li>
 <li>Cable redundancy support</li>
-<li>Firmware based on 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock</li>
+<li>Firmware based on 200 MHz or 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd><ul>
-<li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_BECKHOFF_SSC_DEMO.html">EtherCAT Slave Beckhoff SSC Example</a> is using firmware version 6.5.0, which is based on 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</li>
-<li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_DEMOS.html">EtherCAT Slave Demos</a> is still using an older firmware (version 5.4.243), which is based on 200 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</li>
+<li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_BECKHOFF_SSC_DEMO.html">EtherCAT Slave Beckhoff SSC Example</a> is using firmware version 6.5.6, which allows dynamic selection of 200 MHz or 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</li>
+<li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_DEMOS.html">EtherCAT Slave Demos</a> is still using an older firmware (version 6.5.2), which is based on 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock.</li>
 </ul>
 </dd></dl>
-<h2><a class="anchor" id="autotoc_md711"></a>
+<h3><a class="anchor" id="autotoc_md794"></a>
+Release Notes</h3>
+<h4><a class="anchor" id="autotoc_md795"></a>
+MCU+ SDK Version 08.03.00</h4>
+<ul>
+<li>Added selection of 200 MHz or 333 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock used by EtherCAT Slave Firmware using PRU Clock Frequency Selection Register (0x0E34)</li>
+<li>Added PDI ISR Time Register (0x0E2C)</li>
+<li>Changed default value of Bit 3 and Bit 7 in Sync/Latch PDI Configuration Register (0x0151) to 0</li>
+<li>Bug-fixes in implementation of RX Error Counter</li>
+</ul>
+<h4><a class="anchor" id="autotoc_md796"></a>
+MCU+ SDK Version 08.02.00</h4>
+<ul>
+<li>EtherCAT Slave Firmware based on 333 MHz (instead of 200 MHz) clock frequency for PRU-ICSS Core Clock and IEP Clock for better process path latency</li>
+<li>Add PHY RX Error Counter Register (0x0E28) for improving RX Error Counter accuracy (See <a class="el" href="ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS.html#ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS_REGISTER_EXCEPTIONS">Register Exceptions</a> for more details)</li>
+<li>Bug-fixes for PINDSW-3120, PINDSW-5194, PINDSW-5229 and PINDSW-5267</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md797"></a>
 Features Not Supported</h2>
 <ul>
 <li>EtherCAT Slave Controller<ul>
@@ -199,7 +221,7 @@ Features Not Supported</h2>
 <li>EtherCAT G</li>
 <li>Reset Isolation</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md712"></a>
+<h2><a class="anchor" id="autotoc_md798"></a>
 Known Issues</h2>
 <table class="doxtable">
 <tr>
@@ -218,9 +240,11 @@ Known Issues</h2>
 <td>PINDSW-2360 </td><td>System time of next Sync0 pulse register (0x990:0x993) is not instantaneous, resulting in read of incorrect value if read immediately after sync pulse </td><td>None  </td></tr>
 <tr>
 <td>PINDSW-5135 </td><td>Read permissions and byte level write permissions for RW type commands are not checked </td><td>None  </td></tr>
+<tr>
+<td>PINDSW-5145 </td><td>RX_ER counter does not count errors outside frame in MII RX_CLK units precisely </td><td>Added PHY RX Error Counter Register (0x0E28) for improving RX Error Counter accuracy. Configuring this register will track RX_ERs within a frame precisely using PHY registers. Refer <a class="el" href="ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS.html#ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS_REGISTER_EXCEPTIONS">Register Exceptions</a> for more details.  </td></tr>
 </table>
 <p>For more details, please see the <a href="../industrial_protocol_docs/EtherCAT_Slave_Errata.pdf">EtherCAT Slave Errata</a> document.</p>
-<h1><a class="anchor" id="autotoc_md713"></a>
+<h1><a class="anchor" id="autotoc_md799"></a>
 Important Files and Directory Structure</h1>
 <table class="doxtable">
 <tr>
@@ -238,7 +262,7 @@ Important Files and Directory Structure</h1>
 <tr>
 <td colspan="2" bgcolor="#F0F0F0">${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave </td></tr>
 <tr>
-<td>icss_fwhal/firmware/g_v1.3 </td><td>Firmware for the PRU cores in PRU-ICSS. <b>Firmware Version : 6.5.1</b>   </td></tr>
+<td>icss_fwhal/firmware/g_v1.3 </td><td>Firmware for the PRU cores in PRU-ICSS. <b>Firmware Version : 6.5.6</b>   </td></tr>
 <tr>
 <td>icss_fwhal/lib/ </td><td>FWHAL library for EtherCAT Slave  </td></tr>
 <tr>
@@ -258,11 +282,11 @@ Important Files and Directory Structure</h1>
 <tr>
 <td>beckhoff_stack/stack_sources </td><td>Folder where Beckhoff Slave Stack Code(SSC) sources should be copied. Stack sources are not packaged in the SDK  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md714"></a>
+<h1><a class="anchor" id="autotoc_md800"></a>
 API Documentation</h1>
 <p>Please see <a class="el" href="group__INDUSTRIAL__COMMS__ETHERCAT__SLAVE__FWHAL__MODULE.html">APIs for Ethercat Slave FWHAL</a> for API documentation.</p>
 <p>It is recommended to use these FWHAL APIs in the stack adaptation files. For example, see <code>${SDK_INSTALL_PATH}/source/industrial_comms/ethercat_slave/beckhoff_stack/stack_hal</code>, which contains the stack adaptation APIs for Beckhoff Slave Stack Code(SSC).</p>
-<h1><a class="anchor" id="autotoc_md715"></a>
+<h1><a class="anchor" id="autotoc_md801"></a>
 Procedure to kick-off the EtherCAT Slave Controller(ESC)</h1>
 <ul>
 <li>Initialize memories (register protection, register reset values, EEPROM cache) and PRU-ICSS INTC module. This is done by FWHAL(Firmware and Hardware Abstraction Layer).</li>
@@ -272,7 +296,7 @@ Procedure to kick-off the EtherCAT Slave Controller(ESC)</h1>
 <li>Wait for AL Event Request and SYNC (in DC synchronous mode) interrupts from PRU and run EtherCAT stack main loop for handling mailbox and ESC state machine.</li>
 <li>Handle the events as needed. Note that this is handled by the stack.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md716"></a>
+<h1><a class="anchor" id="autotoc_md802"></a>
 Interrupts</h1>
 <p>EtherCAT Slave Controller firmware generates the following interrupts.</p>
 <p>8 Host Interrupts (Host Interrupts 2 through 9) are exported from the PRU_ICSSG internal INTC for signaling the device level interrupt controllers. PRU_EVTOUT0 to PRU_EVTOUT7 correspond to these eight interrupts in the following table. Please check <a class="el" href="DRIVERS_PRUICSS_PAGE.html#PRUICSS_INTC">PRUICSS Interrupt Controller</a> section for more details.</p>
@@ -288,10 +312,10 @@ Interrupts</h1>
 <tr>
 <td>ESC Command Acknowledgement </td><td>PRU_EVTOUT4 </td><td>ESC firmware command completion acknowledgement to Host  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md717"></a>
+<h1><a class="anchor" id="autotoc_md803"></a>
 EtherCAT Slave Controller(ESC) Register List</h1>
 <p><a class="el" href="ETHERCAT_SLAVE_CONTROLLER_REGISTER_LIST.html">TI EtherCAT Slave Controller Register List</a> contains descriptions of the registers in TI's EtherCAT Slave Controller implementation.</p>
-<h1><a class="anchor" id="autotoc_md718"></a>
+<h1><a class="anchor" id="autotoc_md804"></a>
 EtherCAT Slave Controller(ESC) Exceptions</h1>
 <p><a class="el" href="ETHERCAT_SLAVE_CONTROLLER_EXCEPTIONS.html">TI EtherCAT Slave Controller Exceptions</a> lists the exceptions TI's EtherCAT Slave Controller implementation when compared with ET1100 ASIC. Please note that TI ESC is a 2 port EtherCAT slave and it does not support E-bus interface and all the corresponding register fields are not implemented.</p>
 <h1><a class="anchor" id="ETHERCAT_SLAVE_ADDITIONAL_REFERENCES"></a>
@@ -315,7 +339,7 @@ Additional References</h1>
 <tr>
 <td><a href="https://download.beckhoff.com/download/document/io/ethercat-development-products/ethercat_slave_design_quick_guide.pdf">EtherCAT Slave Design Quick Guide from Beckhoff</a> </td><td>This contains information on modifying PDO when using Beckhoff SSC Tool for code generation.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md719"></a>
+<h1><a class="anchor" id="autotoc_md805"></a>
 See also</h1>
 <ul>
 <li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_ETHERCAT_SLAVE_DEMOS.html">EtherCAT Slave Demos</a></li>

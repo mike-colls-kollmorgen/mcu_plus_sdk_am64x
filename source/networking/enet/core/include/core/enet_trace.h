@@ -80,8 +80,8 @@ extern "C" {
 #define ENET_CFG_TRACE_LEVEL_VERBOSE          (5U)
 
 /*! \brief Default trace level if none is set. */
-#ifndef ENET_CFG_TRACE_TRACE_LEVEL
-#define ENET_CFG_TRACE_TRACE_LEVEL            (ENET_CFG_TRACE_LEVEL_INFO)
+#ifndef ENET_CFG_TRACE_LEVEL
+#define ENET_CFG_TRACE_LEVEL                  (ENET_CFG_TRACE_LEVEL_INFO)
 #endif
 
 /*! \brief Trace prefix: "<func>: string" */

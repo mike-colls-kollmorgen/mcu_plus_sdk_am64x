@@ -33,6 +33,12 @@
 #ifndef FLASH_H_
 #define FLASH_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include <stdint.h>
 #include <kernel/dpl/SystemP.h>
 #include <drivers/hw_include/soc_config.h>
@@ -335,5 +341,10 @@ uint32_t Flash_getPhyTuningOffset(Flash_Handle handle);
 Flash_Attrs *Flash_getAttrs(uint32_t instanceId);
 
 /** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FLASH_H_ */

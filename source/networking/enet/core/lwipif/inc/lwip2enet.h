@@ -102,8 +102,8 @@ extern "C" {
  * for the number of packets maintained
  */
 
-#define LWIP2ENET_TX_PACKETS             (PBUF_POOL_SIZE/3)
-#define LWIP2ENET_RX_PACKETS             (LWIP2ENET_TX_PACKETS*2)
+#define LWIP2ENET_TX_PACKETS             (16U)
+#define LWIP2ENET_RX_PACKETS             (PBUF_POOL_SIZE)
 
 /* ========================================================================== */
 /*                         Structures and Enums                               */
@@ -120,7 +120,7 @@ enum LWIP2ENET_IOCTL_
     LWIP2ENET_IOCTL_GET_TXTASK_LOAD = 0x0000ABAB
 };
 
-#define HISTORY_CNT ((uint32_t)256U)
+#define HISTORY_CNT ((uint32_t)8U)
 
 typedef LwipifEnetAppIf_GetHandleOutArgs Lwip2Enet_AppInfo;
 
@@ -153,6 +153,7 @@ typedef struct Lwip2Enet_STATS_
     uint32_t rxChkSumErr;
     uint32_t rxStackNotifyCnt;
     uint32_t rxPbufAllocFailCnt;
+    uint32_t rxLwipInputFail;
 
     Lwip2Enet_PktTaskStats txStats;
     uint32_t txReadyPbufPktEnq;
@@ -200,7 +201,12 @@ typedef struct Lwip2Enet_OBJECT_
     uint32_t inDLBMode;
     /** Total number of PBM packets allocated by application - used for debug purpose.*/
     uint32_t numAllocPbufPkts;
-
+    /** Rx buffer count to be allocated via pbuf_alloc .*/
+    uint32_t rxReclaimCount;
+    /** Rx buffer count last allocated in periodic reclain rx buffers function .*/
+    uint32_t lastRxReclaimCount;
+    /** Rx buffer count allocated via pbuf_alloc .*/
+    uint32_t rxAllocCount;
     /*! Enet LLD packet info structure used to exchange data between adaptation
      *  layer and the driver.
      *
@@ -292,8 +298,9 @@ Lwip2Enet_Object, *Lwip2Enet_Handle;
 /* ========================================================================== */
 /*                         Global Variables Declarations                      */
 /* ========================================================================== */
-
+#if defined(LWIPIF_INSTRUMENTATION_ENABLED)
 extern Lwip2Enet_Stats gLwip2EnetStats;
+#endif
 
 /* ========================================================================== */
 /*                          Function Declarations                             */
@@ -331,18 +338,22 @@ extern void Lwip2Enet_periodicFxn(Lwip2Enet_Handle hLwip2Enet);
 
 static inline void Lwip2EnetStats_addOne(uint32_t *statCnt)
 {
-#if defined(LWIPIF_INSTRUMENTATION_ENABLED)
     *statCnt += 1U;
-#endif
 }
 
 static inline void Lwip2EnetStats_addNum(uint32_t *statCnt,
                                          uint32_t addCnt)
 {
-#if defined(LWIPIF_INSTRUMENTATION_ENABLED)
     *statCnt += addCnt;
-#endif
 }
+
+#if defined(LWIPIF_INSTRUMENTATION_ENABLED)
+#define LWIP2ENETSTATS_ADDONE(statsCntPtr)           Lwip2EnetStats_addOne((statsCntPtr))
+#define LWIP2ENETSTATS_ADDNUM(statsCntPtr, addCnt)   Lwip2EnetStats_addNum((statsCntPtr), (addCnt))
+#else
+#define LWIP2ENETSTATS_ADDONE(statsCntPtr)           do {} while (0)
+#define LWIP2ENETSTATS_ADDNUM(statsCntPtr, addCnt)   do {} while (0)
+#endif
 
 static inline void Lwip2Enet_assert(bool cond)
 {

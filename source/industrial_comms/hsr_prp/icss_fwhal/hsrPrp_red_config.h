@@ -38,6 +38,12 @@
 #ifndef RED_CONFIG_H_
 #define RED_CONFIG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -107,5 +113,10 @@ void       RedInit(PRUICSS_Handle pruicssHandle);
  *
  */
 uint8_t    RedLoadFirmware(PRUICSS_Handle pruicssHandle);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RED_CONFIG_H_ */

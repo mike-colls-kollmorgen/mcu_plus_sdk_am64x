@@ -1194,7 +1194,7 @@ bool SSC_ecatApplRunning(void)
  * */
 void SSC_ecatApplSetRunning(bool run_p)
 {
-#if !KUNBUS_SSC_EVAL
+#if !(defined KUNBUS_SSC_EVAL) || (0==KUNBUS_SSC_EVAL)
     EC_API_SLV_SSC_setLicense(KUNBUS_SSC_LICENSE, strlen(KUNBUS_SSC_LICENSE));
 #endif
 

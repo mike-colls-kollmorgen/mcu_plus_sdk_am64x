@@ -55,9 +55,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef SEMPHR_H_
+#define SEMPHR_H_
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  *  \file semphr.h
  *
  *  \brief NO-RTOS portable file for FreeRTOS includes in FreeRTOS+FAT module.
  *
  */
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* SEMPHR_H_ */

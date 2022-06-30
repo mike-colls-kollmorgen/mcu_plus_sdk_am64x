@@ -78,15 +78,43 @@ typedef struct EnetMem_DmaDescMemPoolEntry_s
 
 }EnetMem_DmaDescMemPoolEntry;
 
+typedef struct EnetMem_DmaDescMem_s
+{
+    /*! The node element so this packet can be added to a queue
+     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
+     *       and deferences to this member */
+    EnetQ_Node node;
+
+    /*! DMA descriptor element */
+    EnetUdma_DmaDesc *dmaDescPtr;
+
+    /*! DMA descriptor state, refer to CpswUtils_DescStateMemMgr */
+    uint32_t dmaDescState;
+}EnetMem_DmaDescMem;
+
 /**
  *  \brief
  */
 typedef struct EnetMem_RingMemPoolEntry_s
 {
     /*! Ring memory element */
-    uint8_t ringEle[ENET_UTILS_ALIGN(ENET_MEM_RING_MAX_SIZE, ENETDMA_CACHELINE_ALIGNMENT)]
-    __attribute__ ((aligned(ENETDMA_CACHELINE_ALIGNMENT)));
+    uint8_t ringEle[ENET_UTILS_ALIGN(ENET_MEM_RING_MAX_SIZE, UDMA_CACHELINE_ALIGNMENT)]
+    __attribute__ ((aligned(UDMA_CACHELINE_ALIGNMENT)));
 }EnetMem_RingMemPoolEntry;
+
+/**
+ *  \brief
+ */
+typedef struct EnetMem_RingMem_s
+{
+    /*! The node element so this packet can be added to a queue
+     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
+     *       and deferences to this member */
+    EnetQ_Node node;
+
+    /*! Ring memory element */
+    uint8_t * ringElePtr;
+}EnetMem_RingMem;
 
 /**
  *  \brief
@@ -96,6 +124,8 @@ typedef struct EnetMem_DmaDescPoolCfg_s
     uint32_t numDesc;
     EnetMem_DmaDescMemPoolEntry *descMemBase;
     uint32_t                     descMemSize;
+    EnetMem_DmaDescMem           *descInfoContainerMemBase;
+    uint32_t                     descInfoContainerMemSize;
 } EnetMem_DmaDescPoolCfg;
 
 /**
@@ -106,8 +136,28 @@ typedef struct EnetMem_RingPoolCfg_s
     uint32_t numRings;
     EnetMem_RingMemPoolEntry *ringMemBase;
     uint32_t                  ringMemSize;
+    EnetMem_RingMem          *ringInfoContainerBase;
+    uint32_t                  ringInfoContainerSize;
 } EnetMem_RingPoolCfg;
 #endif
+
+/**
+ *  \brief Memutils packet info container
+ */
+typedef struct EnetMem_EthPktMem_s
+{
+    /*! The node element so this packet can be added to a queue
+     * Note- Keep EnetQ_Node as first member always as driver uses generic Q functions
+     *       and deferences to this member */
+    EnetQ_Node node;
+
+    /*! Eth packet info structure - shared with driver */
+    EnetDma_Pkt *dmaPktPtr;
+
+    /*! Original packet size - we can't use this info from dmaPkt as app can change it */
+    uint32_t orgBufSize;
+}EnetMem_AppPktInfoMem;
+
 
 /**
  *  \brief
@@ -120,7 +170,10 @@ typedef struct EnetMem_PktPoolCfg_s
     uint32_t     pktInfoSize;
     uint8_t     *pktBufMem;
     uint32_t     pktBufSize;
+    EnetMem_AppPktInfoMem *pktInfoContainerMem;
+    uint32_t     pktInfoContainerSize;
 } EnetMem_PktPoolCfg;
+
 
 /**
  *  \brief
@@ -142,27 +195,27 @@ typedef struct EnetMem_Cfg_s
 #if defined (ENET_SOC_HOSTPORT_DMA_TYPE_UDMA)
 /*! Ring memory allocation function  */
 uint8_t *EnetMem_allocRingMem(void *appPriv,
-                                         uint32_t numRingEle,
-                                         uint32_t alignSize);
+                              uint32_t numRingEle,
+                              uint32_t alignSize);
 
 /*! Ring memory free function  */
 void EnetMem_freeRingMem(void *appPriv,
-                                    void *ringMemPtr,
-                                    uint32_t numRingEle);
+                         void *ringMemPtr,
+                         uint32_t numRingEle);
 
 /*! DMA packet allocation function  */
 EnetUdma_DmaDesc *EnetMem_allocDmaDesc(void *appPriv,
-                                                 uint32_t alignSize);
+                                       uint32_t alignSize);
 
 /*! DMA packet free function  */
 void EnetMem_freeDmaDesc(void *appPriv,
-                                    EnetUdma_DmaDesc *dmaDescPtr);
+                         EnetUdma_DmaDesc *dmaDescPtr);
 
 #endif
 /*! Ethernet packet allocation function  */
 EnetDma_Pkt *EnetMem_allocEthPkt(void *appPriv,
-                                                uint32_t pktSize,
-                                                uint32_t alignSize);
+                                 uint32_t pktSize,
+                                 uint32_t alignSize);
 
 /*! Ethernet packet free function  */
 void EnetMem_freeEthPkt(EnetDma_Pkt *pPktInfo);

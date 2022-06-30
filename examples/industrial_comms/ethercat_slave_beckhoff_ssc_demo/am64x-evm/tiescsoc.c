@@ -76,6 +76,7 @@
 /* MDIO Clock Divider Value */
 #define MDIO_CLK_DIV_CFG                        (0x1A9U)
 
+#define DP83869_RX_ERR_CNT_REG_ADDRESS          (0x15)
 /* ========================================================================== */
 /*                            Global Variables                                */
 /* ========================================================================== */
@@ -199,6 +200,14 @@ void tiesc_socParamsInit(bsp_params *bspInitParams)
     bspInitParams->phy1_address = ((const ETHPHY_Attrs *)ETHPHY_getAttrs(CONFIG_ETHPHY1))->phyAddress;
     bspInitParams->default_tiesc_eeprom = (const unsigned char *)(&(tiesc_eeprom));
     bspInitParams->eeprom_pointer_for_stack = &(pEEPROM);
+    /*CONFIG_PRU_ICSS1_CORE_CLK_FREQ_HZ is defined in SysConfig generated code*/
+#if CONFIG_PRU_ICSS1_CORE_CLK_FREQ_HZ == (333333333U)
+    bspInitParams->pruicssClkFreq = TIESC_PRUICSS_CLOCK_FREQUENCY_333_MHZ;
+#elif CONFIG_PRU_ICSS1_CORE_CLK_FREQ_HZ == (200000000U)
+    bspInitParams->pruicssClkFreq = TIESC_PRUICSS_CLOCK_FREQUENCY_200_MHZ;
+#endif
+
+
 #ifndef ENABLE_PDI_TASK
     bspInitParams->pdi_isr = PDI_Isr;
 #endif
@@ -307,9 +316,9 @@ void tiesc_ethphyInit(PRUICSS_Handle pruIcssHandle, uint8_t phy0addr,
     ETHPHY_command(gEthPhyHandle[CONFIG_ETHPHY0], ETHPHY_CMD_CONFIGURE_LED_SOURCE, (void *)&ledConfig, sizeof(ledConfig));
     ETHPHY_command(gEthPhyHandle[CONFIG_ETHPHY1], ETHPHY_CMD_CONFIGURE_LED_SOURCE, (void *)&ledConfig, sizeof(ledConfig));
 
-    /* PHY pin LED_1 as 1G link established */
+    /* PHY pin LED_1 as RX_ER. Needed for detecting RX_ER during frame. */
     ledConfig.ledNum = ETHPHY_DP83869_LED1;
-    ledConfig.mode = ETHPHY_DP83869_LED_MODE_1000BT_LINK_UP;
+    ledConfig.mode = ETHPHY_DP83869_LED_MODE_RX_ERROR;
     ETHPHY_command(gEthPhyHandle[CONFIG_ETHPHY0], ETHPHY_CMD_CONFIGURE_LED_SOURCE, (void *)&ledConfig, sizeof(ledConfig));
     ETHPHY_command(gEthPhyHandle[CONFIG_ETHPHY1], ETHPHY_CMD_CONFIGURE_LED_SOURCE, (void *)&ledConfig, sizeof(ledConfig));
 
@@ -368,10 +377,12 @@ void tiesc_ethphyInit(PRUICSS_Handle pruIcssHandle, uint8_t phy0addr,
 
 void tiesc_ethphyEnablePowerDown()
 {
+#if CONFIG_PRU_ICSS1_CORE_CLK_FREQ_HZ == (333333333U)
     /*Update clock divider for MDIO according to 333 MHz PRU Core Clock*/
     /*FIXME: Fix cleanly by updating the MDIO_initClock API*/
     uint32_t mdioBaseAddress = ((const ETHPHY_Attrs *)ETHPHY_getAttrs(CONFIG_ETHPHY0))->mdioBaseAddress;
     HW_WR_REG32((mdioBaseAddress + CSL_MDIO_CONTROL_REG), (CSL_FMKT(MDIO_CONTROL_REG_ENABLE, YES) | CSL_FMK(MDIO_CONTROL_REG_CLKDIV, MDIO_CLK_DIV_CFG)));
+#endif
 
     /* Ensure that PHY register access is working by checking the Identifier register */
     while(SystemP_SUCCESS != ETHPHY_command(gEthPhyHandle[CONFIG_ETHPHY0], ETHPHY_CMD_VERIFY_IDENTIFIER_REGISTER, NULL, 0));

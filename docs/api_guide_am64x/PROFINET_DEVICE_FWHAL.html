@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -108,73 +108,73 @@ $(document).ready(function(){initNavTree('PROFINET_DEVICE_FWHAL.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md737">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md738">PRU-ICSS Profinet Device Firmware</a><ul><li class="level2"><a href="#autotoc_md739">Features Supported</a></li>
-<li class="level2"><a href="#autotoc_md740">Features Not Supported</a></li>
+<ul><li class="level1"><a href="#autotoc_md822">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md823">PRU-ICSS Profinet Device Firmware</a><ul><li class="level2"><a href="#autotoc_md824">Features Supported</a></li>
+<li class="level2"><a href="#autotoc_md825">Features Not Supported</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md741">Important Files and Directory Structure</a></li>
-<li class="level1"><a href="#autotoc_md742">Terms and Abbreviations</a></li>
-<li class="level1"><a href="#autotoc_md743">API Documentation</a></li>
-<li class="level1"><a href="#autotoc_md744">Procedure to kick-off the Profinet Device</a></li>
-<li class="level1"><a href="#autotoc_md745">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md746">Interface with ICSS-EMAC</a></li>
+<li class="level1"><a href="#autotoc_md826">Important Files and Directory Structure</a></li>
+<li class="level1"><a href="#autotoc_md827">Terms and Abbreviations</a></li>
+<li class="level1"><a href="#autotoc_md828">API Documentation</a></li>
+<li class="level1"><a href="#autotoc_md829">Procedure to kick-off the Profinet Device</a></li>
+<li class="level1"><a href="#autotoc_md830">Integration with ICSS-EMAC</a><ul><li class="level2"><a href="#autotoc_md831">Interface with ICSS-EMAC</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md747">OS Components</a><ul><li class="level2"><a href="#autotoc_md748">Interrupts</a></li>
-<li class="level2"><a href="#autotoc_md749">Tasks</a></li>
-<li class="level2"><a href="#autotoc_md750">Semaphores</a></li>
+<li class="level1"><a href="#autotoc_md832">OS Components</a><ul><li class="level2"><a href="#autotoc_md833">Interrupts</a></li>
+<li class="level2"><a href="#autotoc_md834">Tasks</a></li>
+<li class="level2"><a href="#autotoc_md835">Semaphores</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md751">CPM/PPM Management</a><ul><li class="level2"><a href="#autotoc_md752">Initialization</a></li>
-<li class="level2"><a href="#autotoc_md753">Establishing a connection</a><ul><li class="level3"><a href="#autotoc_md754">Establishing a PPM connection</a></li>
-<li class="level3"><a href="#autotoc_md755">Establishing a CPM connection</a></li>
+<li class="level1"><a href="#autotoc_md836">CPM/PPM Management</a><ul><li class="level2"><a href="#autotoc_md837">Initialization</a></li>
+<li class="level2"><a href="#autotoc_md838">Establishing a connection</a><ul><li class="level3"><a href="#autotoc_md839">Establishing a PPM connection</a></li>
+<li class="level3"><a href="#autotoc_md840">Establishing a CPM connection</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md756">Updating CPM/PPM data</a></li>
+<li class="level2"><a href="#autotoc_md841">Updating CPM/PPM data</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#PROFINET_DEVICE_TRIPLE_BUFFER_MANAGEMENT">Triple Buffer Management</a><ul><li class="level2"><a href="#autotoc_md757">PPM Triple buffer management</a></li>
-<li class="level2"><a href="#autotoc_md758">CPM Triple buffer management</a></li>
+<li class="level1"><a href="#PROFINET_DEVICE_TRIPLE_BUFFER_MANAGEMENT">Triple Buffer Management</a><ul><li class="level2"><a href="#autotoc_md842">PPM Triple buffer management</a></li>
+<li class="level2"><a href="#autotoc_md843">CPM Triple buffer management</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#PROFINET_DEVICE_MRP">Media Redundancy Protocol (MRP)</a><ul><li class="level2"><a href="#autotoc_md759">MRP State Machine</a></li>
+<li class="level1"><a href="#PROFINET_DEVICE_MRP">Media Redundancy Protocol (MRP)</a><ul><li class="level2"><a href="#autotoc_md844">MRP State Machine</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md760">Profinet IRT Legacy Startup Support</a><ul><li class="level2"><a href="#autotoc_md761">Profinet IRT Legacy Startup State Machine</a></li>
+<li class="level1"><a href="#autotoc_md845">Profinet IRT Legacy Startup Support</a><ul><li class="level2"><a href="#autotoc_md846">Profinet IRT Legacy Startup State Machine</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md762">Phase Management</a><ul><li class="level2"><a href="#autotoc_md763">Implementation</a></li>
+<li class="level1"><a href="#autotoc_md847">Phase Management</a><ul><li class="level2"><a href="#autotoc_md848">Implementation</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md764">PTCP</a><ul><li class="level2"><a href="#autotoc_md765">Implementation</a><ul><li class="level3"><a href="#autotoc_md766">SYNC handling</a></li>
-<li class="level3"><a href="#autotoc_md767">Delay Handling</a></li>
+<li class="level1"><a href="#autotoc_md849">PTCP</a><ul><li class="level2"><a href="#autotoc_md850">Implementation</a><ul><li class="level3"><a href="#autotoc_md851">SYNC handling</a></li>
+<li class="level3"><a href="#autotoc_md852">Delay Handling</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md768">Integrating with the stack</a></li>
+<li class="level2"><a href="#autotoc_md853">Integrating with the stack</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md769">Isochronous Mode</a><ul><li class="level2"><a href="#autotoc_md770">Implementation</a></li>
+<li class="level1"><a href="#autotoc_md854">Isochronous Mode</a><ul><li class="level2"><a href="#autotoc_md855">Implementation</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md771">DCP Filter</a></li>
-<li class="level1"><a href="#autotoc_md772">Multicast Filter Tables</a></li>
-<li class="level1"><a href="#autotoc_md773">Watchdog Timer</a></li>
+<li class="level1"><a href="#autotoc_md856">DCP Filter</a></li>
+<li class="level1"><a href="#autotoc_md857">Multicast Filter Tables</a></li>
+<li class="level1"><a href="#autotoc_md858">Watchdog Timer</a></li>
 <li class="level1"><a href="#PROFINET_DEVICE_ADDITIONAL_REFERENCES">Additional References</a></li>
-<li class="level1"><a href="#autotoc_md774">See also</a></li>
+<li class="level1"><a href="#autotoc_md859">See also</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_components_industrial_comms_profinet_device"></a></p>
-<h1><a class="anchor" id="autotoc_md737"></a>
+<h1><a class="anchor" id="autotoc_md822"></a>
 Introduction</h1>
 <p>This software is designed for the TI SoCs with PRU-ICSS IP to enable customers add Profinet Device protocol support to their system. It provides Profinet ASIC like functionality integrated into TI SoCs.</p>
 <div class="image">
 <img src="Profinet_Device_Software_Architecture.PNG" alt=""/>
 <div class="caption">
 Software Architecture</div></div>
-<p>Profinet firmware for PRU-ICSS is a black box product maintained by TI. Profinet Device FWHAL (Firmware and Hardware Abstraction Layer) allows loading and run Profinet firmware and acts as an interface with the firmware. FWHAL implements the key interface between Profinet Device firmware and Profinet Device firm stack. It provides stack interface for CPM/PPM management, Triple Buffer Management, MRP, DCP Filter, Multicast Filter, Phase management and PTCP modules.</p>
-<h1><a class="anchor" id="autotoc_md738"></a>
+<p>Profinet firmware for PRU-ICSS is a black box product maintained by TI. Profinet Device FWHAL (Firmware and Hardware Abstraction Layer) allows loading and running Profinet firmware and acts as an interface with the firmware. FWHAL implements the key interface between Profinet Device firmware and Profinet Device firm stack. It provides stack interface for CPM/PPM management, Triple Buffer Management, MRP, DCP Filter, Multicast Filter, Phase management and PTCP modules.</p>
+<h1><a class="anchor" id="autotoc_md823"></a>
 PRU-ICSS Profinet Device Firmware</h1>
-<h2><a class="anchor" id="autotoc_md739"></a>
+<h2><a class="anchor" id="autotoc_md824"></a>
 Features Supported</h2>
 <ul>
 <li>Supports minimum cycle time of 250 us</li>
@@ -208,7 +208,7 @@ Features Supported</h2>
 <li>Isochronous Mode</li>
 <li>Firmware based on 200 MHz clock frequency for PRU-ICSS Core Clock and IEP Clock</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md740"></a>
+<h2><a class="anchor" id="autotoc_md825"></a>
 Features Not Supported</h2>
 <ul>
 <li>Media Redundancy Protocol (MRP)<ul>
@@ -219,7 +219,7 @@ Features Not Supported</h2>
 <li>Profinet IRT MRPD support</li>
 <li>Profinet IRT High Performance Profile</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md741"></a>
+<h1><a class="anchor" id="autotoc_md826"></a>
 Important Files and Directory Structure</h1>
 <table class="doxtable">
 <tr>
@@ -241,7 +241,7 @@ Important Files and Directory Structure</h1>
 <tr>
 <td>stack </td><td>Stack header files and stack library  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md742"></a>
+<h1><a class="anchor" id="autotoc_md827"></a>
 Terms and Abbreviations</h1>
 <table class="doxtable">
 <tr>
@@ -265,10 +265,10 @@ Terms and Abbreviations</h1>
 <tr>
 <td>DCP </td><td>Discovery and Basic Configuration Protocol  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md743"></a>
+<h1><a class="anchor" id="autotoc_md828"></a>
 API Documentation</h1>
 <p>Please see <a class="el" href="group__INDUSTRIAL__COMMS__PROFINET__DEVICE__FWHAL__MODULE.html">APIs for Profinet Device FWHAL</a> for API documentation. It is recommended to use these FWHAL APIs in the stack adaptation files.</p>
-<h1><a class="anchor" id="autotoc_md744"></a>
+<h1><a class="anchor" id="autotoc_md829"></a>
 Procedure to kick-off the Profinet Device</h1>
 <ul>
 <li>Initialize ICSS-EMAC to work as a switch</li>
@@ -279,19 +279,19 @@ Procedure to kick-off the Profinet Device</h1>
 <li>Start firmware</li>
 <li>Handle the events as needed. The event/ISR definitions are availale in iRtcDrv.c, these have respective callbacks that can be registered to custom stack APIs.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md745"></a>
+<h1><a class="anchor" id="autotoc_md830"></a>
 Integration with ICSS-EMAC</h1>
 <p>Profinet examples use the ICSS-EMAC as its base switch layer. The PRU Firmware is customized for Profinet functionalities. The NRT (non-real time) traffic is handled by ICSS-EMAC, wherein the packets are forwarded either to the TCP stack or a custom custom callback (configurable in ICSS-EMAC).</p>
-<h2><a class="anchor" id="autotoc_md746"></a>
+<h2><a class="anchor" id="autotoc_md831"></a>
 Interface with ICSS-EMAC</h2>
 <p>In case of Profinet firmware, the queues are designed as shown in the diagram below. The highest priority queues are used for LLDP, MRP, DCP, RTA and PTCP. These packets are directly forwarded to the registered callback in ICSS-EMAC (using rxRTCallBack). And the Queues 2 and 3 are forwarded to TCP/IP. Profinet FWHAL and stack also uses the TX/RX APIs available in the ICSS-EMAC for transmission/reception of packets like PTCP, LLDP, etc. More info on ICSS-EMAC can be found <a class="el" href="ICSS_EMAC.html">here</a>.</p>
 <div class="image">
 <img src="Profinet_Device_Priority_Queue_Decision_Block.PNG" alt=""/>
 </div>
-<h1><a class="anchor" id="autotoc_md747"></a>
+<h1><a class="anchor" id="autotoc_md832"></a>
 OS Components</h1>
 <p>This section describes the OS entities used by Profinet Device FWHAL.</p>
-<h2><a class="anchor" id="autotoc_md748"></a>
+<h2><a class="anchor" id="autotoc_md833"></a>
 Interrupts</h2>
 <p>Profinet Device firmware generates the following interrupts.</p>
 <p>8 Host Interrupts (Host Interrupts 2 through 9) are exported from the PRU_ICSSG internal INTC for signaling the device level interrupt controllers. PRU_EVTOUT0 to PRU_EVTOUT7 corresponds to these eight interrupts in the following table. Please check <a class="el" href="DRIVERS_PRUICSS_PAGE.html#PRUICSS_INTC">PRUICSS Interrupt Controller</a> section for more details.</p>
@@ -313,7 +313,7 @@ Interrupts</h2>
 <tr>
 <td>ISOM </td><td>PRU_EVTOUT7 </td><td>Interrupt is raised ISOM event occurs. Applicable for ISOM Interrupt mode only  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md749"></a>
+<h2><a class="anchor" id="autotoc_md834"></a>
 Tasks</h2>
 <table class="doxtable">
 <tr>
@@ -329,7 +329,7 @@ Tasks</h2>
 <tr>
 <td>PN_tapWatchDog_task </td><td>Tap the ICSS WatchDog Timer  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md750"></a>
+<h2><a class="anchor" id="autotoc_md835"></a>
 Semaphores</h2>
 <table class="doxtable">
 <tr>
@@ -339,10 +339,10 @@ Semaphores</h2>
 <tr>
 <td>ptcpTriggerMeasurementSem </td><td>Triggers delay measurement  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md751"></a>
+<h1><a class="anchor" id="autotoc_md836"></a>
 CPM/PPM Management</h1>
 <p>Profinet FWHAL supports upto 8 PPMs and CPMs. These CPMs/PPMs are managed internally as two lists of type (<a class="el" href="structt__descList.html">t_descList</a>). In case of PPM, the descriptor buffer (pDescs of <a class="el" href="structt__descList.html">t_descList</a>) has two instances to maintain an <a class="el" href="group__INDUSTRIAL__COMMS__PROFINET__DEVICE__FWHAL__MODULE.html#ga180104733d54734641dc00b6bdd160c8">ACTIVE_LIST</a> and <a class="el" href="group__INDUSTRIAL__COMMS__PROFINET__DEVICE__FWHAL__MODULE.html#gaf6c862b1dee7c2c657c7e9e39f74ab1f">SHADOW_LIST</a> of buffers. Any data update to the PPM descriptors happens only on the <a class="el" href="group__INDUSTRIAL__COMMS__PROFINET__DEVICE__FWHAL__MODULE.html#gaf6c862b1dee7c2c657c7e9e39f74ab1f">SHADOW_LIST</a>. This data is picked up by the PRU after a list toggle (<a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga3b219787388ef41498be3fc993e253bc">PN_togglePpmList</a>), which is currently done in the <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga102b5e90c7cfafefad05bfe543a9efe2">PN_insPpmList</a>. In the PPM descritor list, at any time the descriptors are sorted by port and phase, which is done by an internal API (<a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga6bc755dd1be94926e44ec71dc5e295d5">PN_writeSortedList</a>). CPM does not have the concept of Shadow and Active list. The API definitions can be found <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html">here</a>.</p>
-<h2><a class="anchor" id="autotoc_md752"></a>
+<h2><a class="anchor" id="autotoc_md837"></a>
 Initialization</h2>
 <p>The initialization of the Profinet system, lists and buffers are done in <a class="el" href="iPNDrv_8h.html#afb6314abeb4db734f83ff6dda191bccc">PN_initDrv</a>. All the OS related initializations are done in <a class="el" href="iPnOs_8h.html#a9620063edc831b064d9a2d74c6701f9a">PN_initOs</a>.</p>
 <p>Taking a deeper look at <a class="el" href="iPNDrv_8h.html#afb6314abeb4db734f83ff6dda191bccc">PN_initDrv</a>, it initializes the following (in order of execution):</p><ul>
@@ -363,17 +363,17 @@ Initialization</h2>
 <li>The driver memory blocks ppmBlock0, ppmBlock1 and cpmBlock (using <code>PN_initRtcBuffs</code>).</li>
 <li>Internal structure storing the Profinet configuration (currPN of <a class="el" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a>). This structure stores the maximum size of CPM/PPM, number of ARs supported and the base structure for PPM/CPM (<a class="el" href="structt__rtcPacket.html">t_rtcPacket</a>).</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md753"></a>
+<h2><a class="anchor" id="autotoc_md838"></a>
 Establishing a connection</h2>
 <p>Whenever a connection has to be established, the stack should update the connection data in the internal driver lists. This can be done using the APIs <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga102b5e90c7cfafefad05bfe543a9efe2">PN_insPpmList</a> and <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga9ebdee50d464337c1bcddd6321c3eeaa">PN_insCpmList</a>. For configuring the CPM/PPM lists, the stack has to first allocate a buffer (in the driver). This can be done using <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#gae4c22e6a13c4bddcb5609f8b50c3fdd6">PN_allocPkt</a>. This initializes the packet input to the API, finds a free slot in the list (ppmPkts/cpmPkts of currPN of <a class="el" href="PN__Handle_8h.html#ada5f9f33afc81eb9c9cd231fc4945a0c">PN_Handle</a>) and allocates a particular block <a class="el" href="structt__ppmBlock.html">t_ppmBlock</a> or <a class="el" href="structt__cpmBlock.html">t_cpmBlock</a> to the buffer.</p>
-<h3><a class="anchor" id="autotoc_md754"></a>
+<h3><a class="anchor" id="autotoc_md839"></a>
 Establishing a PPM connection</h3>
 <p>Once the buffer is allocated, the stack can update the data in the structure (<a class="el" href="structt__rtcPacket.html">t_rtcPacket</a>) and call <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga102b5e90c7cfafefad05bfe543a9efe2">PN_insPpmList</a> to update the driver with the new data. This API sorts the <a class="el" href="structt__descList.html">t_descList</a> in terms of Port and Phase and requests the PRU to toggle the list (i.e., shadow to active list) using <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga3b219787388ef41498be3fc993e253bc">PN_togglePpmList</a> . When the PRU is ready, it toggles the list and sends out the new data (also fires the <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#gab293eff8169194e785fd0cb225e9353a">PN_ppmIsrHandler</a>).</p>
 <dl class="section note"><dt>Note</dt><dd>All data updates are done to the <a class="el" href="group__INDUSTRIAL__COMMS__PROFINET__DEVICE__FWHAL__MODULE.html#gaf6c862b1dee7c2c657c7e9e39f74ab1f">SHADOW_LIST</a> only.</dd></dl>
-<h3><a class="anchor" id="autotoc_md755"></a>
+<h3><a class="anchor" id="autotoc_md840"></a>
 Establishing a CPM connection</h3>
 <p>Similar to establishing a connection in PPM, <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga9ebdee50d464337c1bcddd6321c3eeaa">PN_insCpmList</a> is used to update the driver with a new connection. As the concept of Shadow lists is not present in CPM, the data is directly inserted to the list using <a class="el" href="group__PN__CPM__PPM__MANAGEMENT.html#ga7b7a5419e7032b80deeb352a320508b6">PN_writeCpmDesc</a>. It also locks the PROC buffer (PROC buffer is explained in <a class="el" href="PROFINET_DEVICE_FWHAL.html#PROFINET_DEVICE_TRIPLE_BUFFER_MANAGEMENT">Triple Buffer Management</a>).</p>
-<h2><a class="anchor" id="autotoc_md756"></a>
+<h2><a class="anchor" id="autotoc_md841"></a>
 Updating CPM/PPM data</h2>
 <p>Once the connection is established, the CPM and PPM data can be updated using the Triple Buffer Scheme. Read more about it <a class="el" href="PROFINET_DEVICE_FWHAL.html#PROFINET_DEVICE_TRIPLE_BUFFER_MANAGEMENT">here</a>.</p>
 <h1><a class="anchor" id="PROFINET_DEVICE_TRIPLE_BUFFER_MANAGEMENT"></a>
@@ -402,7 +402,7 @@ Triple Buffer Management</h1>
 </li>
 </ul>
 <p>The API definitions can be found <a class="el" href="group__PN__IRT__TRIPLE__BUFFER.html">here</a>.</p>
-<h2><a class="anchor" id="autotoc_md757"></a>
+<h2><a class="anchor" id="autotoc_md842"></a>
 PPM Triple buffer management</h2>
 <p>In case of PPM, the stack is the Producer, and PRU consumes it to send it out on the wire.</p>
 <p>When the stack has a new PPM to be updated to send, it calls the API <a class="el" href="group__PN__IRT__TRIPLE__BUFFER.html#gaf6211b517bbfc9c142d974c3d3b1387e">PN_getPpmBuff</a>, which returns the a free buffer in the triple buffer(NEXT). The stack then starts updating data in NEXT (marked by grey box in the following diagram).</p>
@@ -420,7 +420,7 @@ Figure 2</div></div>
 <img src="Profinet_Device_ppm_triplebuffer_3.png" alt=""/>
 <div class="caption">
 Figure 3</div></div>
-<h2><a class="anchor" id="autotoc_md758"></a>
+<h2><a class="anchor" id="autotoc_md843"></a>
 CPM Triple buffer management</h2>
 <p>In case of CPM, the PRU is the Producer, and the stack consumes it to use the data.</p>
 <p>The stack always reads from the PROC buffer and also has it locked using <a class="el" href="group__PN__IRT__TRIPLE__BUFFER.html#gab34c216e6c3035a97527a599503715a4">PN_cpmBuffLock</a>. The PRU never writes into this buffer. Figure 4 shows that the PRU is writing in NEXT buffer, while PROC (Buffer 2) is locked by the stack.</p>
@@ -442,7 +442,7 @@ Figure 6</div></div>
 Media Redundancy Protocol (MRP)</h1>
 <p>A state machine is implemented by <code>PN_MRP_CPMTask</code> to implement MRP. If a break is detected in the topology, this state machine switches to a state where the PRU sends PPM on both ports. It is also made sure that the FDB for both the ports are cleared. Once all the CPMs learn the correct port number (port of <a class="el" href="structt__rtcPacket.html">t_rtcPacket</a>), the flush mode is deactivated. The API definitions are present <a class="el" href="group__PN__MRP.html">here</a>.</p>
 <dl class="section note"><dt>Note</dt><dd>To enable MRP, it is required to set the macro <code>MRP_SUPPORT</code> in <code>${SDK_INSTALL_PATH}/source/industrial_comms/profinet_device/RT_MRP/pnDrvConfig.h</code> file</dd></dl>
-<h2><a class="anchor" id="autotoc_md759"></a>
+<h2><a class="anchor" id="autotoc_md844"></a>
 MRP State Machine</h2>
 <p>The MRP state machine has 5 states defined by <a class="el" href="group__PN__MRP.html#ga26676c1e30ce84e443879a4bfdd79486">tMrpStates</a>. The state machine flow chart is shown in Figure 7.</p>
 <div class="image">
@@ -456,12 +456,12 @@ Figure 7</div></div>
 <li><a class="el" href="group__PN__MRP.html#gga26676c1e30ce84e443879a4bfdd79486ac97fa621aaa197a50a3e0d2de1d4149f">MRPCHECK</a> : This state checks if the port of all CPMs are learned, if yes it goes to <a class="el" href="group__PN__MRP.html#gga26676c1e30ce84e443879a4bfdd79486ad5ab3076ef75af9f34a54c182b59aa52">MRPEXIT</a>, else sleep(going to <a class="el" href="group__PN__MRP.html#gga26676c1e30ce84e443879a4bfdd79486a5e4d4b9c059fd9223f1a4fff9a1c685c">MRPWAIT</a>).</li>
 <li><a class="el" href="group__PN__MRP.html#gga26676c1e30ce84e443879a4bfdd79486ad5ab3076ef75af9f34a54c182b59aa52">MRPEXIT</a> : Resets the state machine back to <a class="el" href="group__PN__MRP.html#gga26676c1e30ce84e443879a4bfdd79486ab4bf32501411120990cd6c31345939c4">MRPREADY</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md760"></a>
+<h1><a class="anchor" id="autotoc_md845"></a>
 Profinet IRT Legacy Startup Support</h1>
 <p>The Profinet IRT Legacy startup feature is implemented using a state machine <code>PN_IRT_legacyTask</code>.</p>
 <p>Before a connection is established(i.e., <code>RTC_CPM_STATUS_OFFSET</code> is not set to <code>RTC_CPM_RUN</code>), if legacy mode is enabled, the driver configures a PPM packet to be send in Green period. The API definitions are present <a class="el" href="group__PN__IRT__LEGACY.html">here</a>.</p>
 <dl class="section note"><dt>Note</dt><dd>To enable Legacy startup, it is required to set the macro <code>IRT_LEGACY_STARTUP_SUPPORT</code> in <code>${SDK_INSTALL_PATH}/source/industrial_comms/profinet_device/IRT/pnDrvConfig.h</code> file</dd></dl>
-<h2><a class="anchor" id="autotoc_md761"></a>
+<h2><a class="anchor" id="autotoc_md846"></a>
 Profinet IRT Legacy Startup State Machine</h2>
 <p>The IRT Legacy Startup state machine has 4 states defined by <a class="el" href="group__PN__IRT__LEGACY.html#gaafe4a9572aa436edc740c4c05144ceac">tLegStates</a>. The state machine flow charts is shown in Figure 8.</p>
 <div class="image">
@@ -474,13 +474,13 @@ Figure 8</div></div>
 <li><a class="el" href="group__PN__IRT__LEGACY.html#ggaafe4a9572aa436edc740c4c05144ceaca20614c5e0d41d65e293a6627f3a2a5b6">SENDPPM</a> : When the PPM packet is ready, the application sets the state to <a class="el" href="group__PN__IRT__LEGACY.html#ggaafe4a9572aa436edc740c4c05144ceaca20614c5e0d41d65e293a6627f3a2a5b6">SENDPPM</a> (by callback function <code>irtLegStateCall</code>. When this is done, the driver will send out the latest PPM data from <code>pLegPkt</code> (which is set by the callback <code>irtLegPktCall</code>). The driver calls the callback in <a class="el" href="iPNLegacy_8h.html#a39ee11c667fc3ece8dca6ac88e7326ff">insPpmList</a> if the input param to the API has legMode configured). The packet is send out in intervals, till the connection is established.</li>
 <li><a class="el" href="group__PN__IRT__LEGACY.html#ggaafe4a9572aa436edc740c4c05144ceaca781ad2788df9e25c59a70894c7832096">ABORT</a> : Error state.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md762"></a>
+<h1><a class="anchor" id="autotoc_md847"></a>
 Phase Management</h1>
 <p>Every cycle in Profinet IRT is split into a RED and GREEN period. The driver has APIs to configure these periods, which is mostly done during establishment of connection. GREEN period can be further classified into Green steady period and Yellow period. If a packet has to be transmitted during Yellow period, the driver has to check if the packet can be send out in the remaining time left. Otherwise it is send out in the next green period. The API definitions are present <a class="el" href="group__PN__PHASE__MANAGEMENT.html">here</a>.</p>
 <div class="image">
 <img src="Profinet_Device_phase_mgmnt.png" alt=""/>
 </div>
-<h2><a class="anchor" id="autotoc_md763"></a>
+<h2><a class="anchor" id="autotoc_md848"></a>
 Implementation</h2>
 <ul>
 <li>The phases are mapped to profiles(which holds the information regarding RX start of green period and TX start of green period). There can be 5 profiles each for a port, which is configured by <a class="el" href="group__PN__PHASE__MANAGEMENT.html#gacc691722f2ec42a7ab6b505a941cdcb4">PN_setProfile</a>.</li>
@@ -489,35 +489,35 @@ Implementation</h2>
 <li>The RED guard also should be set by the stack, which defines a range of valid Red frame IDs(<a class="el" href="group__PN__PHASE__MANAGEMENT.html#ga20ab85d2418e524acd6be46241fef011">PN_setRedGuard</a>).</li>
 <li>The API <a class="el" href="group__PN__PHASE__MANAGEMENT.html#ga71b7d83b962c1b6acc5f0edb9b2e247a">PN_setRtc3PortStatus</a> can be used by the stack to set the Port status to enable RTC3 on the port(valid states <a class="el" href="iPNDrv_8h.html#a35f69a612b07bbf1de53bbbd8d877c09">RUN</a>, <a class="el" href="iPNDrv_8h.html#a1965eaca47dbf3f87acdafc2208f04eb">UP</a> and <a class="el" href="iPNDrv_8h.html#a29e413f6725b2ba32d165ffaa35b01e5">OFF</a>).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md764"></a>
+<h1><a class="anchor" id="autotoc_md849"></a>
 PTCP</h1>
 <p>The API definitions are present <a class="el" href="group__PN__PTCP.html">here</a>.</p>
-<h2><a class="anchor" id="autotoc_md765"></a>
+<h2><a class="anchor" id="autotoc_md850"></a>
 Implementation</h2>
 <p>PTCP is implemented in the PRU and PTCP driver. It mainly has two parts</p>
-<h3><a class="anchor" id="autotoc_md766"></a>
+<h3><a class="anchor" id="autotoc_md851"></a>
 SYNC handling</h3>
 <p>PTCP has an ISR <a class="el" href="group__PN__PTCP.html#ga949d3bdb91a7f44b5e0ceed7b798f281">PN_PTCP_isrHandler</a> which is triggered when a SYNC packet is received from the PRU. The ISR internally calls an important API <a class="el" href="group__PN__PTCP.html#gaa133e3ecb79d739bb1ea1bd6148f2715">PN_PTCP_syncHandling</a> which calculates the deltaT between the master and slave, and according initiates the clock adjustment process. There is also a filter implemented which makes sure the compensation is done only once the deltaT is stable. The driver also maintains a task <code>PN_PTCP_syncMonitorTask</code> to monitor if there is a sync timeout.</p>
-<h3><a class="anchor" id="autotoc_md767"></a>
+<h3><a class="anchor" id="autotoc_md852"></a>
 Delay Handling</h3>
 <p>Another task <code>PN_PTCP_task</code> does the handling of delays (cable delay, line delay etc.). This task sends out multiple delay requests in a particular interval, and processes the delay responses(<a class="el" href="group__PN__PTCP.html#ga902d4181e53da39c31c05e8f3a3f3bcd">PN_PTCP_delayMeasurement</a>). The calculated line delays (<a class="el" href="structdeviceDelays__t.html">deviceDelays_t</a>) and port delays (<a class="el" href="structptcpPortDelayVal__t.html">ptcpPortDelayVal_t</a>) are stored in the internal structures.</p>
-<h2><a class="anchor" id="autotoc_md768"></a>
+<h2><a class="anchor" id="autotoc_md853"></a>
 Integrating with the stack</h2>
 <p>The driver provides two main callbacks that can be used by the stack for certain even triggers. They are <code>ptcpSyncStatusCall</code> and <code>ptcpDelayUpdateCall</code> (which can be registered by calling the APIs <a class="el" href="group__PN__PTCP.html#ga5ef2888414f341f7f2cfe821b79f2b0c">PN_PTCP_registerSyncStatusCall</a> and <a class="el" href="group__PN__PTCP.html#ga6e47ee54216c9c001b25ca3c5b1477ca">PN_PTCP_registerDelayUpdateCall</a>). The <code>ptcpDelayUpdateCall</code> is triggered whenever there is any update in the delays calculated. The <code>ptcpSyncStatusCall</code> is used by Sync to notify any update in the SYNC state. It also indates error events like <a class="el" href="group__PN__PTCP.html#gga65a2860bf2747e33eb92949aca1f2d24aa0efbe3de6681be67e24e7a121048460">TAKEOVER_TIMEOUT</a> and <a class="el" href="group__PN__PTCP.html#gga65a2860bf2747e33eb92949aca1f2d24a58da16289d76573f3fdde8c127be69d5">SYNC_TIMEOUT</a>.</p>
-<h1><a class="anchor" id="autotoc_md769"></a>
+<h1><a class="anchor" id="autotoc_md854"></a>
 Isochronous Mode</h1>
 <p>The firmare supports generation of two ISOM events in a network cycle. <a class="el" href="group__PN__ISOM.html">Isochronous Mode APIs</a> can be used to to configure the firmware.</p>
-<h2><a class="anchor" id="autotoc_md770"></a>
+<h2><a class="anchor" id="autotoc_md855"></a>
 Implementation</h2>
 <p>The ISOM implementation supports configuration of two types of ISOM events: Interrupt mode and GPIO mode.</p>
 <ul>
 <li>Interrupt Mode : Interrupts will be generated at configured intervals. The details of the Hardware interrupt (Interrupt number and ISR) need to be configured in the ISOM structure in PN handle. Firmware uses SYNC1_OUT_EVENT to trigger the intterupt. By default this event is mapped to PRU_EVTOUT7.</li>
 <li>GPIO Mode : In this mode, the firware is configured to generate signals at specific intervals. The signals are available at the pin prX_edc_sync1_out. Current implementation supports only single pulse width configuration for the signals. Pulse width used in latest configuration is taken.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md771"></a>
+<h1><a class="anchor" id="autotoc_md856"></a>
 DCP Filter</h1>
 <p>In a chain of devices, during startup the first device receives a storm of Ident Requests. As all these packets go to ARM, there is a possibility that the device might lose the Ident Req which is meant for the device. To avoid this situation, the DCP Filter can be used. This ensures that only the Ident Request packet with the configured station name is forwarded to ARM. A maximum of 8 characters is compared by the firmware(last 8 characters). If the length of station name is set to 0, this indicates the DCP Filter is not in use. The API definitions are present <a class="el" href="group__PN__DCP__FILTER.html">here</a>.</p>
-<h1><a class="anchor" id="autotoc_md772"></a>
+<h1><a class="anchor" id="autotoc_md857"></a>
 Multicast Filter Tables</h1>
 <p>The stack has to configure the Multicast filter table. This is done by the API <a class="el" href="group__PN__FILTER__TABLE.html#gac2bb99dc02c60a616be4ad35d80c4991">PN_setStaticFilterTable</a>. There are two tables, <a class="el" href="group__PN__MRP.html#ga22b7cf9459e149feb38a5c3ead8f5b68">FORWARDING</a> table and <a class="el" href="group__PN__MRP.html#gabe4c463bf79e1012602b9a0e2b40f29f">BLOCKING</a> table. The Multicast addresses can be configured to function in one of these states:</p><ul>
 <li><a class="el" href="iPNDrv_8h.html#a5281b06c92fd6e90539122a3ae1e55d3">NO_RCV_NO_FWD</a></li>
@@ -526,7 +526,7 @@ Multicast Filter Tables</h1>
 <li><a class="el" href="iPNDrv_8h.html#aaef232969a9d9f42d1572def08633595">RCV_FWD</a></li>
 </ul>
 <p>The API definitions are present <a class="el" href="group__PN__FILTER__TABLE.html">here</a>.</p>
-<h1><a class="anchor" id="autotoc_md773"></a>
+<h1><a class="anchor" id="autotoc_md858"></a>
 Watchdog Timer</h1>
 <p>Watchdog timer is used as a safety feature to monitor the application state and to turn off the PPM transmission after pre-defined interval if application is not responding. The watchdog will thereby protect the system from errors or faults by timeout or expiration. The expiration is used to initiate corrective action in order to keep the system in a safe state and restore normal operation based on configuration. Therefore, if the system is stable, the watchdog timer should be regularly reset or cleared to avoid timeout or expiration.</p>
 <p>Application can use the API <a class="el" href="group__PN__WATCHDOG.html#gaa6e064ab1a0b2224834664ae1654b53e">PN_setWatchDogTimer</a> (defined in iPNDrv.c) to set the timeout value. Application needs to enable the <code>WATCHDOG_SUPPORT</code> macro in <code>${SDK_INSTALL_PATH}/source/industrial_comms/profinet_device/IRT/pnDrvConfig.h</code> or <code>${SDK_INSTALL_PATH}/source/industrial_comms/profinet_device/RT_MRP/pnDrvConfig.h</code> file to use this feature. By default the PROFINET Slave driver sets the timeout to 100ms (watchDogExpireDuration defined in iPndrv.h) using <code>PN_setWatchDogTimer(pnHandle, watchDogExpireDuration)</code>. The PN_tapWatchDog_task task defined in iPnOs.c resets the watchdog timer periodically.</p>
@@ -545,7 +545,7 @@ Additional References</h1>
 <tr>
 <td><a href="https://www.ti.com/lit/pdf/spry252">PROFINET on TI's Sitara processors</a> </td><td>Application note by TI on the Profinet implementation on TI's Sitara Processors.  </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md774"></a>
+<h1><a class="anchor" id="autotoc_md859"></a>
 See also</h1>
 <ul>
 <li><a class="el" href="EXAMPLES_INDUSTRIAL_COMMS_PROFINET_DEVICE_DEMOS.html">Profinet Device Demos</a> </li>

@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -116,6 +116,8 @@ $(document).ready(function(){initNavTree('group__DRV__PRU__IPC__MODULE.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structConfig__Mem__Struct.html">Config_Mem_Struct</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPRU__IPC__Attrs.html">PRU_IPC_Attrs</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPRU__IPC__Params.html">PRU_IPC_Params</a></td></tr>
@@ -383,7 +385,7 @@ Typedefs</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td><a class="el" href="group__DRV__PRU__IPC__MODULE.html#ga173c714b09fd88ccaf2f19784fc66dc2" title="A handle that is returned from a PRU_IPC_open() call. This handle is required for calling other PRU_I...">PRU_IPC_Handle</a> returned from <a class="el" href="group__DRV__PRU__IPC__MODULE.html#gaf8db5f54464b6defa5878970ba4a8e89" title="To initialize and configure PRU_IPC instance.">PRU_IPC_open()</a> </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">container</td><td>To store the data read from the configured shared memory, type: 2D Array - int(size)_t container[BUFFERS][BLOCKSIZE]</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">container</td><td>To store the data read from the configured shared memory, type: 2D Array - int32_t container[BUFFERS][BLOCKSIZE]</td></tr>
   </table>
   </dd>
 </dl>
@@ -421,7 +423,7 @@ Typedefs</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td><a class="el" href="group__DRV__PRU__IPC__MODULE.html#ga173c714b09fd88ccaf2f19784fc66dc2" title="A handle that is returned from a PRU_IPC_open() call. This handle is required for calling other PRU_I...">PRU_IPC_Handle</a> returned from <a class="el" href="group__DRV__PRU__IPC__MODULE.html#gaf8db5f54464b6defa5878970ba4a8e89" title="To initialize and configure PRU_IPC instance.">PRU_IPC_open()</a> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">container</td><td>To write the data to the configured shared memory type: 2D Array - int(size)_t container[BUFFERS][BLOCKSIZE]</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">container</td><td>To write the data to the configured shared memory type: 2D Array - int32_t container[BUFFERS][BLOCKSIZE]</td></tr>
   </table>
   </dd>
 </dl>

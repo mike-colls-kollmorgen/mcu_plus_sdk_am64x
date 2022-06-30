@@ -166,6 +166,9 @@ typedef void (*fnResetPhyT)(void* ctxt, uint8_t idx, bool bReset);
 typedef struct EIP_SLoadParameter
 {
     uint8_t ai8uMacAddr[EIP_MAC_ADDR_LEN];
+    uint32_t pruInstance;
+    uint32_t phy0Instance;
+    uint32_t phy1Instance;
 } EIP_SLoadParameter;
 
 typedef enum
@@ -226,8 +229,9 @@ typedef struct EIP_SPortState
 
 
 // Basic adapter functions
-extern ETHIP_API uint32_t           EI_API_ADP_loadMac(EIP_SLoadParameter* ptPara_p, uint8_t pruInstance);
-extern ETHIP_API void               EI_API_ADP_startFirmware(void);
+extern ETHIP_API uint32_t           EI_API_ADP_pruicssInit(EIP_SLoadParameter* ptPara_p);
+extern ETHIP_API void               EI_API_ADP_pruicssStart(void);
+extern ETHIP_API void               EI_API_ADP_pruicssStop(void);
 
 extern ETHIP_API T* EI_API_ADP_new(uint8_t numInterfaces_p);
 extern ETHIP_API uint32_t EI_API_ADP_delete(T* pAdp_p);
@@ -356,7 +360,6 @@ extern ETHIP_API uint32_t EI_API_ADP_getTimeSyncProductDescription(T* pAdp_p, ch
 extern ETHIP_API uint32_t EI_API_ADP_setTimeSyncProductDescription(T* pAdp_p, const char* pProductDesc_p);
 extern ETHIP_API uint32_t EI_API_ADP_getTimeSyncRevisionData(T* pAdp_p, char* pRevisionData_p);
 extern ETHIP_API uint32_t EI_API_ADP_setTimeSyncRevisionData(T* pAdp_p, const char* pRevisionData_p);
-extern ETHIP_API uint32_t EI_API_ADP_setTimeSyncProductDescription(T* pAdp_p, const char* pProductDesc_p);
 extern ETHIP_API uint32_t EI_API_ADP_getTimeSyncUserDescription(T* pAdp_p, char* pUserDescription_p);
 extern ETHIP_API uint32_t EI_API_ADP_setTimeSyncUserDescription(T* pAdp_p, const char* pUserDescription_p);
 

@@ -35,6 +35,12 @@
 #ifndef CUSBD_STRUCTS_IF_H
 #define CUSBD_STRUCTS_IF_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 #include "cdn_stdtypes.h"
 #include "cusbd_if.h"
 
@@ -429,5 +435,10 @@ struct CUSBD_PrivateData_s
 /**
  *  @}
  */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* CUSBD_STRUCTS_IF_H */

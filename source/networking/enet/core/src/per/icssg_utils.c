@@ -257,6 +257,16 @@ static IcssgUtils_R30Cmd IcssgUtils_R30Bitmask[ICSSG_UTILS_MAX_COMMANDS] =
     {
         { 0xffef0000, ICSSG_UTILS_CMD_NONE, 0xffef0000, ICSSG_UTILS_CMD_NONE},
     },
+
+    [ICSSG_UTILS_R30_CMD_DSCP_ENABLE] =
+    {
+        { 0xffff0040, ICSSG_UTILS_CMD_NONE, 0xffff0040, ICSSG_UTILS_CMD_NONE },
+    },
+
+    [ICSSG_UTILS_R30_CMD_DSCP_DISABLE] =
+    {
+        { 0xffbf0000, ICSSG_UTILS_CMD_NONE, 0xffbf0000, ICSSG_UTILS_CMD_NONE},
+    },
 };
 
 IcssgUtils_R30Cmd *IcssgUtils_R30DmemAddr[ICSSG_INSTANCE_NUM][ICSSG_MAC_PORT_MAX] =
@@ -318,6 +328,8 @@ static const char *gIcssg_r30CmdNames[] =
     [ICSSG_UTILS_R30_CMD_PREMPT_TX_DISABLE] = "PREMPT_TX_DISABLE",
     [ICSSG_UTILS_R30_CMD_VLAN_AWARE_ENABLE] = "VLAN_AWARE_ENABLE",
     [ICSSG_UTILS_R30_CMD_VLAN_AWARE_DISABLE] = "VLAN_AWARE_DISABLE",
+    [ICSSG_UTILS_R30_CMD_DSCP_ENABLE] = "IPV4_DSCP_ENABLE",
+    [ICSSG_UTILS_R30_CMD_DSCP_DISABLE] = "IPV4_DSCP_DISABLE",
 };
 #endif
 
@@ -1524,8 +1536,7 @@ void IcssgUtils_configSwtFw(Icssg_Handle hIcssg,
     /* Host egress queue memory */
     startAddr = (uint32_t)fwPoolMem0->hostEgressQueueMem;
     endAddr   = startAddr +
-                (fwPoolMem0->hostEgressQueueSize * fwPoolMem0->hostEgressQueueNum) -
-                ICSSG_HOST_EGRESS_BUFFER_PADDING;
+                (fwPoolMem0->hostEgressQueueSize * fwPoolMem0->hostEgressQueueNum);
 
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_EXP_CONTEXT_OFFSET,       startAddr);
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_EXP_CONTEXT_OFFSET + 4U,  startAddr);
@@ -1535,8 +1546,7 @@ void IcssgUtils_configSwtFw(Icssg_Handle hIcssg,
     /* Host egress queue memory */
     startAddr = (uint32_t)fwPoolMem0->hostEgressPreQueueMem;
     endAddr   = startAddr +
-                (fwPoolMem0->hostEgressPreQueueSize * fwPoolMem0->hostEgressQueueNum) -
-                ICSSG_HOST_EGRESS_BUFFER_PADDING;
+                (fwPoolMem0->hostEgressPreQueueSize * fwPoolMem0->hostEgressQueueNum);
 
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_PRE_CONTEXT_OFFSET,       startAddr);
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_PRE_CONTEXT_OFFSET + 4U,  startAddr);
@@ -1628,8 +1638,7 @@ void IcssgUtils_configSwtFw(Icssg_Handle hIcssg,
     /* Host egress queue memory */
     startAddr = (uint32_t)fwPoolMem1->hostEgressQueueMem;
     endAddr   = startAddr +
-                (fwPoolMem1->hostEgressQueueSize * fwPoolMem1->hostEgressQueueNum) -
-                ICSSG_HOST_EGRESS_BUFFER_PADDING;
+                (fwPoolMem1->hostEgressQueueSize * fwPoolMem1->hostEgressQueueNum);
 
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_EXP_CONTEXT_OFFSET,       startAddr);
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_EXP_CONTEXT_OFFSET + 4U,  startAddr);
@@ -1639,8 +1648,7 @@ void IcssgUtils_configSwtFw(Icssg_Handle hIcssg,
     /* Host egress queue memory */
     startAddr = (uint32_t)fwPoolMem1->hostEgressPreQueueMem;
     endAddr   = startAddr +
-                (fwPoolMem1->hostEgressPreQueueSize * fwPoolMem1->hostEgressQueueNum) -
-                ICSSG_HOST_EGRESS_BUFFER_PADDING;
+                (fwPoolMem1->hostEgressPreQueueSize * fwPoolMem1->hostEgressQueueNum);
 
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_PRE_CONTEXT_OFFSET,       startAddr);
     Icssg_wr32(hIcssg, dram + HOST_RX_Q_PRE_CONTEXT_OFFSET + 4U,  startAddr);
@@ -1683,7 +1691,9 @@ void IcssgUtils_configSwtFw(Icssg_Handle hIcssg,
 int32_t IcssgUtils_createPruss(Icssg_Handle hIcssg)
 {
     PRUICSS_Handle hPruss;
+#if ((ENET_CFG_TRACE_LEVEL >= ENET_CFG_TRACE_LEVEL_ERROR) && ENET_CFG_IS_OFF(TRACE_DISABLE_INFOSTRING))
     uint32_t inst = hIcssg->pruss->instance;
+#endif
     int32_t status = ENET_SOK;
 
     EnetOsal_lockMutex(hIcssg->pruss->lock);
@@ -1961,13 +1971,13 @@ int32_t IcssgUtils_checkFwPoolMem(Icssg_Handle hIcssg,
     if (hPer->enetType == ENET_ICSSG_DUALMAC)
     {
         portBufferPoolNum  = ICSSG_DUALMAC_PORT_BUFFER_POOL_NUM;
-        hostBufferPoolNum  = ICSSG_DUALMAC_HOST_BUFFER_POOL_NUM;
+        hostBufferPoolNum  = ICSSG_DUALMAC_GET_HOST_BUFFER_POOL_NUM(hIcssg->qosLevels);
         hostEgressQueueNum = ICSSG_DUALMAC_HOST_EGRESS_QUEUE_NUM;
     }
     else
     {
         portBufferPoolNum  = ICSSG_SWITCH_PORT_BUFFER_POOL_NUM;
-        hostBufferPoolNum  = ICSSG_SWITCH_HOST_BUFFER_POOL_NUM;
+        hostBufferPoolNum  = ICSSG_SWITCH_GET_HOST_BUFFER_POOL_NUM(hIcssg->qosLevels);
         hostEgressQueueNum = ICSSG_SWITCH_HOST_EGRESS_QUEUE_NUM;
     }
 
@@ -2097,32 +2107,36 @@ int32_t IcssgUtils_checkFwPoolMem(Icssg_Handle hIcssg,
     }
     else
     {
-        if (hostEgressQueueNum != 0U)
+
+        if(hIcssg->isPremQueEnable)
         {
-            if ((fwPoolMem->hostEgressPreQueueMem == NULL) ||
-                (fwPoolMem->hostEgressPreQueueSize == 0U))
+            if (hostEgressQueueNum != 0U)
             {
-                ENETTRACE_ERR("%s: Invalid host egress queue memory (addr=0x%08x size=%u bytes)\n",
-                              ENET_PER_NAME(hIcssg), fwPoolMem->hostEgressPreQueueMem, fwPoolMem->hostEgressPreQueueSize);
-                status = ENET_EINVALIDPARAMS;
+                if ((fwPoolMem->hostEgressPreQueueMem == NULL) ||
+                    (fwPoolMem->hostEgressPreQueueSize == 0U))
+                {
+                    ENETTRACE_ERR("%s: Invalid host egress queue memory (addr=0x%08x size=%u bytes)\n",
+                                  ENET_PER_NAME(hIcssg), fwPoolMem->hostEgressPreQueueMem, fwPoolMem->hostEgressPreQueueSize);
+                    status = ENET_EINVALIDPARAMS;
+                }
+                else
+                {
+                    if (!ENET_UTILS_IS_ALIGNED(fwPoolMem->hostEgressPreQueueMem, ENETDMA_CACHELINE_ALIGNMENT))
+                    {
+                        ENETTRACE_ERR("%s: Host egress queue memory is not aligned (addr 0x%08x)\n",
+                                      ENET_PER_NAME(hIcssg), fwPoolMem->hostEgressPreQueueMem);
+                        status = ENET_EINVALIDPARAMS;
+                    }
+                }
             }
             else
             {
-                if (!ENET_UTILS_IS_ALIGNED(fwPoolMem->hostEgressPreQueueMem, ENETDMA_CACHELINE_ALIGNMENT))
+                if ((fwPoolMem->hostEgressPreQueueMem != NULL) ||
+                    (fwPoolMem->hostEgressPreQueueSize != 0U))
                 {
-                    ENETTRACE_ERR("%s: Host egress queue memory is not aligned (addr 0x%08x)\n",
-                                  ENET_PER_NAME(hIcssg), fwPoolMem->hostEgressPreQueueMem);
+                    ENETTRACE_ERR("%s: Valid host egress queue memory passed, but none required\n", ENET_PER_NAME(hIcssg));
                     status = ENET_EINVALIDPARAMS;
                 }
-            }
-        }
-        else
-        {
-            if ((fwPoolMem->hostEgressPreQueueMem != NULL) ||
-                (fwPoolMem->hostEgressPreQueueSize != 0U))
-            {
-                ENETTRACE_ERR("%s: Valid host egress queue memory passed, but none required\n", ENET_PER_NAME(hIcssg));
-                status = ENET_EINVALIDPARAMS;
             }
         }
     }
@@ -2138,3 +2152,4 @@ int32_t IcssgUtils_checkFwPoolMem(Icssg_Handle hIcssg,
 
     return status;
 }
+

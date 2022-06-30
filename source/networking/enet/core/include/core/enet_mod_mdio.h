@@ -180,6 +180,93 @@ typedef enum EnetMdio_Ioctl_e
      * - outArgs: None
      */
     ENET_MDIO_IOCTL_C45_WRITE = ENET_MDIO_PUBLIC_IOCTL(8U),
+
+    /*!
+     * \brief Trigger Asynchronous read to PHY register
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45ReadInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C22_ASYNC_READ_TRIGGER = ENET_MDIO_PUBLIC_IOCTL(9U),
+
+        /*!
+     * \brief Checks for async read completion to PHY register
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45ReadInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C22_ASYNC_READ_COMPLETE = ENET_MDIO_PUBLIC_IOCTL(10U),
+
+        /*!
+     * \brief Trigger Asynchronous Write to PHY register
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45WriteInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C22_ASYNC_WRITE_TRIGGER = ENET_MDIO_PUBLIC_IOCTL(11U),
+
+        /*!
+     * \brief Checks for async Write completion to PHY register
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45WriteInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C22_ASYNC_WRITE_COMPLETE = ENET_MDIO_PUBLIC_IOCTL(12U),
+
+        /*!
+     * \brief  Trigger Asynchronous Read to PHY register using clause-45 frame.
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45ReadInArgs
+     * - outArgs: uint16_t
+     */
+    ENET_MDIO_IOCTL_C45_ASYNC_READ_TRIGGER = ENET_MDIO_PUBLIC_IOCTL(13U),
+
+            /*!
+     * \brief Checks for async Read completion to PHY register using clause-45 frame.
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45ReadInArgs
+     * - outArgs: uint16_t
+     */
+    ENET_MDIO_IOCTL_C45_ASYNC_READ_COMPLETE = ENET_MDIO_PUBLIC_IOCTL(14U),
+
+    /*!
+     * \brief  Trigger Asynchronous Write to PHY register using clause-45 frame.
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45WriteInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C45_ASYNC_WRITE_TRIGGER = ENET_MDIO_PUBLIC_IOCTL(15U),
+
+    /*!
+     * \brief Checks for async Write completion to PHY register using clause-45 frame.
+     *
+     * IOCTL parameters:
+     * -  inArgs: #EnetMdio_C45WriteInArgs
+     * - outArgs: None
+     */
+    ENET_MDIO_IOCTL_C45_ASYNC_WRITE_COMPLETE = ENET_MDIO_PUBLIC_IOCTL(16U),
+
+    /*!
+     * \brief Enable MDIO state machine. Use
+     *
+     * If Mdio_Cfg.disableStateMachineOnInit is set, this IOCTL allows
+     * enabling Mdio state machine via IOCTL. This is used for
+     * sequencing external PHY management operation with MDIO state 
+     * machine so that any link interrupts are not missed and MDIO 
+     * state machine is enabled only after PHY initialization is complete
+     * IOCTL parameters:
+     * -  inArgs: None
+     * -  outArgs: None
+     */
+
+    ENET_MDIO_IOCTL_ENABLE_STATE_MACHINE = ENET_MDIO_PUBLIC_IOCTL(17U),
 } EnetMdio_Ioctl;
 
 /*!

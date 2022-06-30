@@ -54,6 +54,12 @@
 #ifndef RM_TISCI_CORE_H
 #define RM_TISCI_CORE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 
 /**
  * \brief Retrieves a host's assigned range for a resource
@@ -128,6 +134,11 @@ struct tisci_msg_rm_get_resource_range_resp {
     uint16_t            range_start_sec;
     uint16_t            range_num_sec;
 } __attribute__((__packed__));
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RM_TISCI_CORE_H */
 

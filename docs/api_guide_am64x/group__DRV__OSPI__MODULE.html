@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -120,8 +120,6 @@ $(document).ready(function(){initNavTree('group__DRV__OSPI__MODULE.html',''); in
 Sub Modules</h2></td></tr>
 <tr class="memitem:group__DRV__OSPI__NOR__FLASH__API__MODULE"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__OSPI__NOR__FLASH__API__MODULE.html">Generic NOR Flash API for single pin mode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__DRV__OSPI__SFDP__API__MODULE"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__OSPI__SFDP__API__MODULE.html">SFDP API for single pin mode</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
@@ -190,6 +188,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7e7fe11788a7985ea5075fa1f628b437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__OSPI__MODULE.html#ga7e7fe11788a7985ea5075fa1f628b437">OSPI_WriteCmdParams_init</a> (<a class="el" href="structOSPI__WriteCmdParams.html">OSPI_WriteCmdParams</a> *wrParams)</td></tr>
 <tr class="memdesc:ga7e7fe11788a7985ea5075fa1f628b437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to initialize the <a class="el" href="structOSPI__WriteCmdParams.html">OSPI_WriteCmdParams</a> structure.  <a href="group__DRV__OSPI__MODULE.html#ga7e7fe11788a7985ea5075fa1f628b437">More...</a><br /></td></tr>
 <tr class="separator:ga7e7fe11788a7985ea5075fa1f628b437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac2f47121c92b9d033b0b1c7540d0c8d7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__OSPI__MODULE.html#gac2f47121c92b9d033b0b1c7540d0c8d7">OSPI_getInputClk</a> (<a class="el" href="group__DRV__OSPI__MODULE.html#gaf94e42c41b084bb2f3c9cc4409213188">OSPI_Handle</a> handle)</td></tr>
+<tr class="memdesc:gac2f47121c92b9d033b0b1c7540d0c8d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns the input clk frequency OSPI was programmed at.  <a href="group__DRV__OSPI__MODULE.html#gac2f47121c92b9d033b0b1c7540d0c8d7">More...</a><br /></td></tr>
+<tr class="separator:gac2f47121c92b9d033b0b1c7540d0c8d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfdbd06fc0504e3a3eed1c31a2d42fd3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DRV__OSPI__MODULE.html#gacfdbd06fc0504e3a3eed1c31a2d42fd3">OSPI_isDacEnable</a> (<a class="el" href="group__DRV__OSPI__MODULE.html#gaf94e42c41b084bb2f3c9cc4409213188">OSPI_Handle</a> handle)</td></tr>
 <tr class="memdesc:gacfdbd06fc0504e3a3eed1c31a2d42fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function checks if the Direct Access Controller is enabled.  <a href="group__DRV__OSPI__MODULE.html#gacfdbd06fc0504e3a3eed1c31a2d42fd3">More...</a><br /></td></tr>
 <tr class="separator:gacfdbd06fc0504e3a3eed1c31a2d42fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1553,6 +1554,34 @@ Different OSPI Transfer functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="gac2f47121c92b9d033b0b1c7540d0c8d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac2f47121c92b9d033b0b1c7540d0c8d7">&#9670;&nbsp;</a></span>OSPI_getInputClk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t OSPI_getInputClk </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__DRV__OSPI__MODULE.html#gaf94e42c41b084bb2f3c9cc4409213188">OSPI_Handle</a>&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns the input clk frequency OSPI was programmed at. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>OSPI controller has been opened using <a class="el" href="group__DRV__OSPI__MODULE.html#gaf74c4b8836a43513f0b2c0a7893c02da" title="This function opens a given OSPI peripheral.">OSPI_open()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>An <a class="el" href="group__DRV__OSPI__MODULE.html#gaf94e42c41b084bb2f3c9cc4409213188" title="A handle that is returned from a OSPI_open() call.">OSPI_Handle</a> returned from an <a class="el" href="group__DRV__OSPI__MODULE.html#gaf74c4b8836a43513f0b2c0a7893c02da" title="This function opens a given OSPI peripheral.">OSPI_open()</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>OSPI RCLK in Hertz </dd></dl>
 
 </div>
 </div>

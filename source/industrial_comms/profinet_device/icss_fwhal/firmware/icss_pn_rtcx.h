@@ -46,6 +46,12 @@
 #ifndef __ICSS_PN_RTCX__
 #define __ICSS_PN_RTCX__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 // Target switches: PRU / ARM
 // Protocol switches: PROFINET , PN_IOD, PN_IOC
 //
@@ -617,5 +623,10 @@
 #define STATIC_MAC_TABLE_RCV_PORT2 STATIC_MAC_TABLE_FWD_PORT1  + 256
 #define STATIC_MAC_TABLE_FWD_PORT1 STATIC_MAC_TABLE_RCV_PORT1  + 256
 #define STATIC_MAC_TABLE_RCV_PORT1 0x2000
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif //__ICSS_PN_RTCX__
 

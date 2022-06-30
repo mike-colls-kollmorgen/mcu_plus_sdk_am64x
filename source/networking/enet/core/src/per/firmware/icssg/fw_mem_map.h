@@ -313,6 +313,10 @@
 #define HD_RAND_SEED_OFFSET                                0x0934
 /*16B for Host Egress MSMC Q (Express) context*/
 #define HOST_RX_Q_EXP_CONTEXT_OFFSET                       0x0940
+/*DSCP enable/disable written here*/
+#define DSCP_ENABLE_DISABLE_STATUS                         0x0A50
+/*DSCP priority map is written here 8 dscp to 8 queues */
+#define DSCP_BASED_PRI_MAP_INDEX_OFFSET                    0x0A51
 
 /* Memory Usage of
  * DMEM1

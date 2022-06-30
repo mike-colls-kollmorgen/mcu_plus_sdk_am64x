@@ -41,7 +41,7 @@
   <td id="projectlogo"><a href="https://www.ti.com"><img alt="Logo" src="ti_logo.svg"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AM64x MCU+ SDK
-   &#160;<span id="projectnumber">08.02.00</span>
+   &#160;<span id="projectnumber">08.03.00</span>
    </div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -183,6 +183,9 @@ Macros</h2></td></tr>
 <tr class="separator:a5f5f0656e9bb9750aa48ae45a8d989d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a494c4d900c4ac377d7e9014c717801cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="enet__cfg_8h.html#a494c4d900c4ac377d7e9014c717801cf">ENET_CFG_USE_OPTIMIZED_IRQ_CRITICAL_SECTION</a>&#160;&#160;&#160;(0U)</td></tr>
 <tr class="separator:a494c4d900c4ac377d7e9014c717801cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecff5765a41b2077fe55156778b2ad0e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="enet__cfg_8h.html#aecff5765a41b2077fe55156778b2ad0e">ENET_CFG_TRACE_DISABLE_INFOSTRING</a>&#160;&#160;&#160;(<a class="el" href="enet__cfg_8h.html#a0a863c1211ebd81ebcac95ed6fd1696d">ENET_ON</a>)</td></tr>
+<tr class="memdesc:aecff5765a41b2077fe55156778b2ad0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of CPDMA channels allocated by application.  <a href="enet__cfg_8h.html#aecff5765a41b2077fe55156778b2ad0e">More...</a><br /></td></tr>
+<tr class="separator:aecff5765a41b2077fe55156778b2ad0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a0a863c1211ebd81ebcac95ed6fd1696d"></a>
@@ -574,6 +577,24 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aecff5765a41b2077fe55156778b2ad0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecff5765a41b2077fe55156778b2ad0e">&#9670;&nbsp;</a></span>ENET_CFG_TRACE_DISABLE_INFOSTRING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENET_CFG_TRACE_DISABLE_INFOSTRING&#160;&#160;&#160;(<a class="el" href="enet__cfg_8h.html#a0a863c1211ebd81ebcac95ed6fd1696d">ENET_ON</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maximum number of CPDMA channels allocated by application. </p>
+<p>Eliminate embedded strings from all ASSERT/TRACE invocation.</p>
+<p>Enabling this option reduces rodata footprint of enet library by removing strings in trace. Removal of strings will result in cryptic trace msgs because informative strings are removed and only function name, file,line num info will be printed based on ENET_CFG_TRACE_TRACE_FORMAT define. </p>
 
 </div>
 </div>
