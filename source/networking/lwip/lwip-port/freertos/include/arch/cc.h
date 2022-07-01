@@ -47,10 +47,14 @@ extern "C"
 #include <sys/select.h>
 
 /* Define byte order of the system */
+#if defined(__clang__)
 #define BYTE_ORDER LITTLE_ENDIAN
+#endif
 
 /* Use lwip provided errors as ti compiler is too granular*/
+#if defined(__clang__)
 #define LWIP_PROVIDE_ERRNO  1
+#endif
 
 #define LWIP_RAND() ((u32_t)rand())
 

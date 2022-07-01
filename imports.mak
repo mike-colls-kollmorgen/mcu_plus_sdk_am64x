@@ -43,7 +43,7 @@ else
     CGT_TI_ARM_CLANG_PATH=$(TOOLS_PATH)/ti-cgt-armllvm_1.3.1.LTS
 endif
 CCS_NODE = $(CCS_PATH)/tools/node/node
-SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1.12.1
+SYSCFG_PATH ?= $(TOOLS_PATH)/sysconfig_1_12_1
 SYSCFG_CLI_PATH ?= $(SYSCFG_PATH)
 SYSCFG_NODE = $(SYSCFG_PATH)/nodejs/node
 SYSCFG_NWJS = $(SYSCFG_PATH)/nw/nw

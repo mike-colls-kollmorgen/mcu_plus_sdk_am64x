@@ -391,7 +391,9 @@ void sys_unlock_tcpip_core(void);
 #define LWIP_FREERTOS_CHECK_QUEUE_EMPTY_ON_FREE       1
 
 /*---------------------------------------------------------------*/
-#if defined(__ARM_ARCH) && (defined(__TI_EABI__) || defined(__clang__))
+#if defined(__GNUC__) && !defined(__clang__)
+	#include <errno.h>
+#elif defined(__ARM_ARCH) && (defined(__TI_EABI__) || defined(__clang__))
     /*------------------------------------------------------------------------*/
     /* Under EABI, use function to access errno since it likely has TLS in    */
     /* a thread-safe version of the RTS library.                              */

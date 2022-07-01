@@ -465,10 +465,10 @@ BUILD_COMBO_pru_ipc = pru_ipc_r5f.ti-arm-clang
 BUILD_COMBO_security = security_r5f.ti-arm-clang
 BUILD_COMBO_usb_device_nortos = usb_device_nortos_r5f.ti-arm-clang
 BUILD_COMBO_usb_device_freertos = usb_device_freertos_r5f.ti-arm-clang
-BUILD_COMBO_enet-lwip-cpsw = enet-lwip-cpsw_r5f.ti-arm-clang
+BUILD_COMBO_enet-lwip-cpsw = enet-lwip-cpsw_r5f.ti-arm-clang enet-lwip-cpsw_r5f.gcc-armv7
 BUILD_COMBO_enet-lwip-icssg = enet-lwip-icssg_r5f.ti-arm-clang
-BUILD_COMBO_lwip-freertos = lwip-freertos_r5f.ti-arm-clang
-BUILD_COMBO_lwip-contrib = lwip-contrib_r5f.ti-arm-clang
+BUILD_COMBO_lwip-freertos = lwip-freertos_r5f.ti-arm-clang lwip-freertos_r5f.gcc-armv7
+BUILD_COMBO_lwip-contrib = lwip-contrib_r5f.ti-arm-clang lwip-contrib_r5f.gcc-armv7
 
 # Combine all Components
 BUILD_COMBO_ALL = $(BUILD_COMBO_board) $(BUILD_COMBO_dhrystone_benchmark) $(BUILD_COMBO_drivers) $(BUILD_COMBO_freertos_fat) $(BUILD_COMBO_ethercat_slave_icss_fwhal) $(BUILD_COMBO_ethernetip_adapter_mii_icss_fwhal) $(BUILD_COMBO_ethernetip_adapter_rgmii_icss_fwhal) $(BUILD_COMBO_prp_mii_icss_fwhal) $(BUILD_COMBO_prp_rgmii_icss_fwhal) $(BUILD_COMBO_profinet_device_irt_mii_icss_fwhal) $(BUILD_COMBO_profinet_device_irt_rgmii_icss_fwhal) $(BUILD_COMBO_profinet_device_rt_mrp_mii_icss_fwhal) $(BUILD_COMBO_profinet_device_rt_mrp_rgmii_icss_fwhal) $(BUILD_COMBO_nortos) $(BUILD_COMBO_freertos) $(BUILD_COMBO_motorcontrol_endat) $(BUILD_COMBO_icss_emac) $(BUILD_COMBO_icss_emac_lwip_if) $(BUILD_COMBO_icss_timesync) $(BUILD_COMBO_pru_ipc) $(BUILD_COMBO_security) $(BUILD_COMBO_usb_device_nortos) $(BUILD_COMBO_usb_device_freertos) $(BUILD_COMBO_enet-lwip-cpsw) $(BUILD_COMBO_enet-lwip-icssg) $(BUILD_COMBO_lwip-freertos) $(BUILD_COMBO_lwip-contrib)
